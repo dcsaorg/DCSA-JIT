@@ -31,7 +31,7 @@ public class TransportCallSubscription extends AuditBase implements GetId<UUID> 
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    private Integer vesselIMONumber;
+    private String vesselIMONumber;
 
     @JsonProperty("unLocationCode")
     @Column("un_location_code")

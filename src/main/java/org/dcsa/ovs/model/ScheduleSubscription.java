@@ -10,6 +10,8 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -37,11 +39,11 @@ public class ScheduleSubscription extends AuditBase implements GetId<UUID> {
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    private Integer vesselIMONumber;
+    private String vesselIMONumber;
 
     @JsonProperty("startDate")
     @Column("start_date")
-    private OffsetDateTime startDate;
+    private LocalDate startDate;
 
     @JsonProperty("carrierServiceCode")
     @Column("carrier_service_code")
