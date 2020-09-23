@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.controller.BaseController;
+import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.TransportCall;
 import org.dcsa.ovs.service.TransportCallService;
 import org.springframework.http.MediaType;
@@ -26,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping(value = "transport-calls", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Tag(name = "Transport Calls", description = "The Transport Call API")
-public class TransportCallController extends BaseController<TransportCallService, TransportCall, UUID> {
+public class TransportCallController extends ExtendedBaseController<TransportCallService, TransportCall, UUID> {
 
     private final TransportCallService transportCallService;
 
@@ -48,7 +48,7 @@ public class TransportCallController extends BaseController<TransportCallService
     })
     @GetMapping
     public Flux<TransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request) {
-    return getService().findAll();
+        return super.findAll(response, request);
     }
 
 

@@ -1,7 +1,7 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.service.impl.BaseServiceImpl;
+import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
 import org.dcsa.ovs.model.Schedule;
 import org.dcsa.ovs.repository.ScheduleRepository;
 import org.dcsa.ovs.service.ScheduleService;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleRepository, Schedule, UUID> implements ScheduleService {
+public class ScheduleServiceImpl extends ExtendedBaseServiceImpl<ScheduleRepository, Schedule, UUID> implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
 
@@ -21,7 +21,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleRepository, Sch
     }
 
     @Override
-    public String getType() {
-        return getClass().getSimpleName();
+    public Class<Schedule> getModelClass() {
+        return Schedule.class;
     }
 }

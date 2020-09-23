@@ -9,12 +9,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import javax.validation.constraints.Pattern;
-import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.UUID;
 
-@Table("schedule_subscription")
+@Table("transport_call_subscription")
 @Data
 @NoArgsConstructor
 public class TransportCallSubscription extends AuditBase implements GetId<UUID> {
@@ -34,7 +31,7 @@ public class TransportCallSubscription extends AuditBase implements GetId<UUID> 
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    private Integer vesselIMONumber;
+    private String vesselIMONumber;
 
     @JsonProperty("unLocationCode")
     @Column("un_location_code")

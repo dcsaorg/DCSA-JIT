@@ -10,10 +10,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.controller.BaseController;
+import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.Schedule;
 import org.dcsa.ovs.service.ScheduleService;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping(value = "schedules", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Tag(name = "Schedules", description = "The schedule API")
-public class ScheduleController extends BaseController<ScheduleService, Schedule, UUID> {
+public class ScheduleController extends ExtendedBaseController<ScheduleService, Schedule, UUID> {
 
     private final ScheduleService scheduleService;
 
@@ -45,8 +47,8 @@ public class ScheduleController extends BaseController<ScheduleService, Schedule
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Schedule.class))))
     })
     @GetMapping
-    public Flux<Schedule> findAll() {
-        return getService().findAll();
+    public Flux<Schedule> findAll(ServerHttpResponse response, ServerHttpRequest request) {
+        return super.findAll(response, request);
     }
 
     @Operation(summary = "Find Schedule by ID", description = "Returns a single Schedule", tags = { "Schedule" }, parameters = {
