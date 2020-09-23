@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.controller.BaseController;
+import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.ScheduleSubscription;
 import org.dcsa.ovs.service.ScheduleSubscriptionService;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping(value = "schedule-subscriptions", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Tag(name = "Schedule Subscriptions", description = "The Schedule subscription API")
-public class ScheduleSubscriptionController extends BaseController<ScheduleSubscriptionService, ScheduleSubscription, UUID> {
+public class ScheduleSubscriptionController extends ExtendedBaseController<ScheduleSubscriptionService, ScheduleSubscription, UUID> {
 
     private final ScheduleSubscriptionService scheduleSubscriptionService;
 
@@ -42,8 +44,8 @@ public class ScheduleSubscriptionController extends BaseController<ScheduleSubsc
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = ScheduleSubscription.class))))
     })
     @GetMapping
-    public Flux<ScheduleSubscription> findAll() {
-        return getService().findAll();
+    public Flux<ScheduleSubscription> findAll(ServerHttpResponse response, ServerHttpRequest request) {
+        return super.findAll(response, request);
     }
 
     @Operation(summary = "Create a Schedule Subscription", description = "Create a Schedule Subscription", tags = { "Schedule" })

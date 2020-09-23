@@ -1,17 +1,17 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.service.BaseService;
-import org.dcsa.core.service.impl.BaseServiceImpl;
+import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
 import org.dcsa.ovs.model.ScheduleSubscription;
 import org.dcsa.ovs.repository.ScheduleSubscriptionRepository;
+import org.dcsa.ovs.service.ScheduleSubscriptionService;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class ScheduleSubscriptionServiceImpl extends BaseServiceImpl<ScheduleSubscriptionRepository, ScheduleSubscription, UUID> implements BaseService<ScheduleSubscription, UUID> {
+public class ScheduleSubscriptionServiceImpl extends ExtendedBaseServiceImpl<ScheduleSubscriptionRepository, ScheduleSubscription, UUID> implements ScheduleSubscriptionService {
     private final ScheduleSubscriptionRepository scheduleSubscriptionRepository;
 
     @Override
@@ -20,8 +20,8 @@ public class ScheduleSubscriptionServiceImpl extends BaseServiceImpl<ScheduleSub
     }
 
     @Override
-    public String getType() {
-        return getClass().getSimpleName();
+    public Class<ScheduleSubscription> getModelClass() {
+        return ScheduleSubscription.class;
     }
 
 }

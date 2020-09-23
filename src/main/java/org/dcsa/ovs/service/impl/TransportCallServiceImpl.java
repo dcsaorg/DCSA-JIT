@@ -1,7 +1,7 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.service.impl.BaseServiceImpl;
+import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
 import org.dcsa.ovs.model.TransportCall;
 import org.dcsa.ovs.repository.TransportCallRepository;
 import org.dcsa.ovs.service.TransportCallService;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class TransportCallServiceImpl extends BaseServiceImpl<TransportCallRepository, TransportCall, UUID> implements TransportCallService {
+public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportCallRepository, TransportCall, UUID> implements TransportCallService {
     private final TransportCallRepository transportCallRepository;
 
 
@@ -21,8 +21,8 @@ public class TransportCallServiceImpl extends BaseServiceImpl<TransportCallRepos
     }
 
     @Override
-    public String getType() {
-        return getClass().getSimpleName();
+    public Class<TransportCall> getModelClass() {
+        return TransportCall.class;
     }
 
 }
