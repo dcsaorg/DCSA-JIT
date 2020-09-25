@@ -28,7 +28,7 @@ INSERT INTO dcsa_ovs_v1_0.schedule_subscription (
     start_date,
     carrier_service_code
 ) VALUES (
-    'http://172.17.0.1:4567/webhook/receive',
+    'http://172.17.0.1:4567/webhook/receive-schedule-2',
     null,
     '',
     'NYC',
@@ -45,7 +45,7 @@ INSERT INTO dcsa_ovs_v1_0.schedule_subscription (
     start_date,
     carrier_service_code
 ) VALUES (
-    'http://localhost:4567/webhook/receive',
+    'http://localhost:4567/webhook/receive-schedule-2',
     null,
     '',
     'NYC',

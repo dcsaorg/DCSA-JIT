@@ -52,6 +52,8 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     }
 
 
+
+
     @Operation(summary = "Find Transport Call by ID", description = "Returns a single Transport Call", tags = { "Transport Call" }, parameters = {
             @Parameter(in = ParameterIn.PATH, name = "id", description="Id of the Transport Call to be obtained. Cannot be empty.", required=true),
     })
