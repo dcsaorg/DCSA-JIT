@@ -1,7 +1,7 @@
 package org.dcsa.ovs.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.dcsa.ovs.model.*;
+import org.dcsa.ovs.model.Schedule;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -11,10 +11,16 @@ import static io.restassured.RestAssured.given;
  * A class calling callBackHandlers when subscriptions are activated because an event has been triggered
  */
 @Slf4j
-class ScheduleCallbackHandler extends Thread {
+public class ScheduleCallbackHandler extends Thread {
 
-    Flux<String> callbackUrls;
+
+    public ScheduleCallbackHandler(Flux<String> callbackUrls, Schedule schedule) {
+        this.schedule= schedule;
+        this.callbackUrls=callbackUrls;
+    }
     Schedule schedule;
+    Flux<String> callbackUrls;
+
 
 @Override
     public void run (){

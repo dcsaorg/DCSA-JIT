@@ -11,7 +11,7 @@ INSERT INTO dcsa_ovs_v1_0.schedule_subscription (
     start_date,
     carrier_service_code
 ) VALUES (
-    'http://localhost:4567/webhook/receive',
+    'http://localhost:4567/v1/webhook/receive-schedule-1',
     null,
     '',
     '',
@@ -28,7 +28,24 @@ INSERT INTO dcsa_ovs_v1_0.schedule_subscription (
     start_date,
     carrier_service_code
 ) VALUES (
-    'http://172.17.0.1:4567/webhook/receive-schedule-2',
+    'http://172.17.0.1:4567/v1/webhook/receive-schedule-1',
+    null,
+    '',
+    '',
+    null,
+    null,
+    ''
+);
+INSERT INTO dcsa_ovs_v1_0.schedule_subscription (
+        callback_url,
+    vessel_imo_number,
+    carrier_voyage_number,
+    un_location_code,
+    date_range,
+    start_date,
+    carrier_service_code
+) VALUES (
+    'http://172.17.0.1:4567/v1/webhook/receive-schedule-2',
     null,
     '',
     'NYC',
@@ -45,7 +62,7 @@ INSERT INTO dcsa_ovs_v1_0.schedule_subscription (
     start_date,
     carrier_service_code
 ) VALUES (
-    'http://localhost:4567/webhook/receive-schedule-2',
+    'http://localhost:4567/v1/webhook/receive-schedule-2',
     null,
     '',
     'NYC',
@@ -62,7 +79,7 @@ INSERT INTO dcsa_ovs_v1_0.transport_call_subscription (
     carrier_voyage_number,
     un_location_code
 ) VALUES (
-    'http://172.17.0.1:4567/webhook/receive',
+    'http://172.17.0.1:4567/v1/webhook/receive',
     null,
     '',
     ''
@@ -73,7 +90,7 @@ INSERT INTO dcsa_ovs_v1_0.transport_call_subscription (
     carrier_voyage_number,
     un_location_code
 ) VALUES (
-    'http://localhost:4567/webhook/receive',
+    'http://localhost:4567/v1/webhook/receive',
     null,
     '',
     ''
