@@ -79,7 +79,7 @@ INSERT INTO dcsa_ovs_v1_0.transport_call_subscription (
     carrier_voyage_number,
     un_location_code
 ) VALUES (
-    'http://172.17.0.1:4567/v1/webhook/receive',
+    'http://172.17.0.1:4567/v1/webhook/receive-transportcall-2',
     null,
     '',
     ''
@@ -90,7 +90,30 @@ INSERT INTO dcsa_ovs_v1_0.transport_call_subscription (
     carrier_voyage_number,
     un_location_code
 ) VALUES (
-    'http://localhost:4567/v1/webhook/receive',
+    'http://localhost:4567/v1/webhook/receive-transportcall-2',
+    null,
+    '',
+    ''
+);
+
+INSERT INTO dcsa_ovs_v1_0.transport_call_subscription (
+        callback_url,
+    vessel_imo_number,
+    carrier_voyage_number,
+    un_location_code
+) VALUES (
+    'http://172.17.0.1:4567/v1/webhook/receive-transportcall-1',
+    null,
+    '',
+    ''
+);
+INSERT INTO dcsa_ovs_v1_0.transport_call_subscription (
+        callback_url,
+    vessel_imo_number,
+    carrier_voyage_number,
+    un_location_code
+) VALUES (
+    'http://localhost:4567/v1/webhook/receive-transportcall-1',
     null,
     '',
     ''
