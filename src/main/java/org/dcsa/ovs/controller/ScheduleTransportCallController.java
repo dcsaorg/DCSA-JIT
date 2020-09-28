@@ -56,10 +56,6 @@ public class ScheduleTransportCallController extends BaseController<TransportCal
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = TransportCall.class))))
     })
 
-//    @GetMapping
-//    public Flux<TransportCall> findAllx(@PathVariable UUID scheduleID, ServerHttpResponse response, ServerHttpRequest request) {
-//        return super.findAll(response, request);
-//    }
     @GetMapping()
     public Flux<TransportCall> findAll(@PathVariable UUID scheduleID,ServerHttpResponse response, ServerHttpRequest request) {
         ExtendedRequest<TransportCall> extendedRequest = new ExtendedRequest<TransportCall>(extendedParameters, getService().getModelClass());
