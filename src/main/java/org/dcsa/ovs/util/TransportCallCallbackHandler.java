@@ -2,6 +2,7 @@ package org.dcsa.ovs.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.dcsa.ovs.model.Schedule;
+import org.dcsa.ovs.model.TransportCall;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -11,14 +12,14 @@ import static io.restassured.RestAssured.given;
  * A class calling callBackHandlers when subscriptions are activated because an event has been triggered
  */
 @Slf4j
-public class ScheduleCallbackHandler extends Thread {
+public class TransportCallCallbackHandler extends Thread {
 
 
-    public ScheduleCallbackHandler(Flux<String> callbackUrls, Schedule schedule) {
-        this.schedule= schedule;
+    public TransportCallCallbackHandler(Flux<String> callbackUrls, TransportCall transportCall) {
+        this.transportCall = transportCall;
         this.callbackUrls=callbackUrls;
     }
-    Schedule schedule;
+    TransportCall transportCall;
     Flux<String> callbackUrls;
 
 
@@ -28,7 +29,7 @@ public class ScheduleCallbackHandler extends Thread {
             try {
                 given()
                         .contentType("application/json")
-                        .body(schedule)
+                        .body(transportCall)
                         .post(callbackUrl);
             } catch (Exception e) {
                 log.warn("Failed to connect to "+callbackUrl + " " + e.getMessage());

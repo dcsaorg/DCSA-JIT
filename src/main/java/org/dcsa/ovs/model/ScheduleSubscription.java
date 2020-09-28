@@ -9,6 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,8 +41,9 @@ public class ScheduleSubscription extends AuditBase implements GetId<UUID> {
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    private String vesselIMONumber;
+    private Long vesselIMONumber;
 
+    @Temporal(TemporalType.DATE)
     @JsonProperty("startDate")
     @Column("start_date")
     private LocalDate startDate;
