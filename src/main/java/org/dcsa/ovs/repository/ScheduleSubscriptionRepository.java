@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface ScheduleSubscriptionRepository extends ExtendedRepository<ScheduleSubscription, UUID> {
 
 
-    @Query("SELECT callback_url FROM dcsa_ovs_v1_0.schedule_subscription " )
+    @Query("SELECT callback_url FROM dcsa_ovs_v1_0.schedule_subscription" )
      Flux<String> getCallbackUrlsByFilters();
 
 }

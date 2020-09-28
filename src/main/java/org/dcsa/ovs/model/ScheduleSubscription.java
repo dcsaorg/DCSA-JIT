@@ -41,7 +41,7 @@ public class ScheduleSubscription extends AuditBase implements GetId<UUID> {
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    private String vesselIMONumber;
+    private Long vesselIMONumber;
 
     @Temporal(TemporalType.DATE)
     @JsonProperty("startDate")
