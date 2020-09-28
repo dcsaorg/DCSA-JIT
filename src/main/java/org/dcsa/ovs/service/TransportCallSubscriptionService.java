@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface TransportCallSubscriptionService extends ExtendedBaseService<TransportCallSubscription, UUID> {
 
+
 }
