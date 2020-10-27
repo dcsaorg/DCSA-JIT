@@ -44,7 +44,7 @@ CREATE TABLE dcsa_ovs_v1_0.transport_call (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     schedule_id uuid NOT NULL,
     carrier_service_code text,
-    vessel_imo_number BIGINT,
+    vessel_imo_number varchar(7),
     vessel_name varchar(35),
     carrier_voyage_number varchar(50) NOT NULL,
     un_location_code varchar(5) NOT NULL,
