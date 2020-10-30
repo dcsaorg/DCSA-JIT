@@ -29,7 +29,7 @@ public class ScheduleServiceImpl extends ExtendedBaseServiceImpl<ScheduleReposit
     }
 
     @Override
-    public Mono<Schedule> save(Schedule schedule) {
+    public Mono<Schedule> create(Schedule schedule) {
         return super.save(schedule).doOnNext(
                 e -> new ScheduleCallbackHandler(
                         scheduleSubscriptionRepository.getCallbackUrlsByFilters(), e)

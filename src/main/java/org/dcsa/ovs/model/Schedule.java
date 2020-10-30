@@ -46,7 +46,7 @@ public class Schedule extends AuditBase implements GetId<UUID> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @Pattern(regexp = "^(P(\\dY)?(\\dM)?(\\dD)?)?(T(\\dH)?(\\dM)?(\\dS)?)?$")
+    @Pattern(regexp = "^(P(\\d+Y)?(\\d+M)?(\\d+D)?)?(T(\\d+H)?(\\d+M)?(\\d+S)?)?$")
     @Column("date_range")
     private String dateRange;
 }

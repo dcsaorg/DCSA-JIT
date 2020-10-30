@@ -121,7 +121,7 @@
 
 
 
-    --- Insert data into v2_0 model ---
+    --- Insert data into v1_0 model ---
 
 
     INSERT INTO dcsa_ovs_v1_0.schedule (
@@ -137,7 +137,7 @@
         'ZIM',
         'MSK',
         DATE '2020-07-16',
-        INTERVAL '3 weeks',
+        'P3W',
         'SMDG',
         'SMDG'
     );

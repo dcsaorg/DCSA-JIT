@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -29,7 +30,6 @@ import java.util.UUID;
 public class ScheduleController extends ExtendedBaseController<ScheduleService, Schedule, UUID> {
 
     private final ScheduleService scheduleService;
-
 
     @Override
     public String getType() {
@@ -47,6 +47,7 @@ public class ScheduleController extends ExtendedBaseController<ScheduleService, 
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Schedule.class))))
     })
     @GetMapping
+    @Override
     public Flux<Schedule> findAll(ServerHttpResponse response, ServerHttpRequest request) {
         return super.findAll(response, request);
     }
@@ -70,8 +71,8 @@ public class ScheduleController extends ExtendedBaseController<ScheduleService, 
     })
     @PostMapping(consumes = "application/json", produces = "application/json")
     @Override
-    public Mono<Schedule> save(@RequestBody Schedule schedule) {
-        return super.save(schedule);
+    public Mono<Schedule> create(@Valid @RequestBody Schedule schedule) {
+        return super.create(schedule);
     }
 
 }

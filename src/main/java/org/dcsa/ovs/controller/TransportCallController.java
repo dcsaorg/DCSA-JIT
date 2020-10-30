@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -47,12 +48,10 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = TransportCall.class))))
     })
     @GetMapping
+    @Override
     public Flux<TransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request) {
         return super.findAll(response, request);
     }
-
-
-
 
     @Operation(summary = "Find Transport Call by ID", description = "Returns a single Transport Call", tags = { "Transport Call" }, parameters = {
             @Parameter(in = ParameterIn.PATH, name = "id", description="Id of the Transport Call to be obtained. Cannot be empty.", required=true),
@@ -73,8 +72,8 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     })
     @PostMapping(consumes = "application/json", produces = "application/json")
     @Override
-    public Mono<TransportCall> save(@RequestBody TransportCall transportCall) {
-        return super.save(transportCall);
+    public Mono<TransportCall> create(@Valid @RequestBody TransportCall transportCall) {
+        return super.create(transportCall);
     }
 
 }
