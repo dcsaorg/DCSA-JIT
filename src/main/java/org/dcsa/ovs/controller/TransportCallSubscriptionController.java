@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -45,6 +46,7 @@ public class TransportCallSubscriptionController extends ExtendedBaseController<
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = ScheduleSubscription.class))))
     })
     @GetMapping
+    @Override
     public Flux<TransportCallSubscription> findAll(ServerHttpResponse response, ServerHttpRequest request) {
         return super.findAll(response, request);
     }
@@ -55,8 +57,9 @@ public class TransportCallSubscriptionController extends ExtendedBaseController<
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = TransportCallSubscription.class))))
     })
     @PostMapping( consumes = "application/json", produces = "application/json")
-    public Mono<TransportCallSubscription> save(@RequestBody TransportCallSubscription transportCallSubscription) {
-        return super.save(transportCallSubscription);
+    @Override
+    public Mono<TransportCallSubscription> create(@Valid @RequestBody TransportCallSubscription transportCallSubscription) {
+        return super.create(transportCallSubscription);
     }
 
 

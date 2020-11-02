@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.math.BigDecimal;
+import javax.validation.constraints.Pattern;
 import java.util.UUID;
 
 @Table("transport_call")
@@ -31,7 +31,8 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    private Long vesselIMONumber;
+    @Pattern(regexp="[0-9]{7}")
+    private String vesselIMONumber;
 
     @JsonProperty("vesselName")
     @Column("vessel_name")

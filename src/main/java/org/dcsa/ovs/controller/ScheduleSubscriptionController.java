@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -44,6 +45,7 @@ public class ScheduleSubscriptionController extends ExtendedBaseController<Sched
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = ScheduleSubscription.class))))
     })
     @GetMapping
+    @Override
     public Flux<ScheduleSubscription> findAll(ServerHttpResponse response, ServerHttpRequest request) {
         return super.findAll(response, request);
     }
@@ -54,8 +56,9 @@ public class ScheduleSubscriptionController extends ExtendedBaseController<Sched
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = ScheduleSubscription.class))))
     })
     @PostMapping( consumes = "application/json", produces = "application/json")
-    public Mono<ScheduleSubscription> save(@RequestBody ScheduleSubscription scheduleSubscription) {
-        return super.save(scheduleSubscription);
+    @Override
+    public Mono<ScheduleSubscription> create(@Valid @RequestBody ScheduleSubscription scheduleSubscription) {
+        return super.create(scheduleSubscription);
     }
 
 

@@ -30,7 +30,7 @@ public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportC
     }
 
     @Override
-    public Mono<TransportCall> save(TransportCall transportCall) {
+    public Mono<TransportCall> create(TransportCall transportCall) {
         return super.save(transportCall).doOnNext(
                 e -> new TransportCallCallbackHandler(
                         transportCallSubscriptionRepository.getCallbackUrlsByFilters(), e)
