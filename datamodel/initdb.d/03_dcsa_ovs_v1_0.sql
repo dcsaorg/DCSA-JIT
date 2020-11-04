@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS dcsa_ovs_v1_0.schedule_subscription CASCADE;
 CREATE TABLE dcsa_ovs_v1_0.schedule_subscription (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     callback_url text NOT NULL,
-    vessel_imo_number BIGINT,
+    vessel_imo_number varchar(7),
     carrier_voyage_number varchar(50),
     un_location_code varchar(5),
     date_range text,
@@ -20,7 +20,7 @@ CREATE TABLE dcsa_ovs_v1_0.schedule_subscription (
 CREATE TABLE dcsa_ovs_v1_0.transport_call_subscription (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     callback_url text NOT NULL,
-    vessel_imo_number BIGINT,
+    vessel_imo_number varchar(7),
     carrier_voyage_number varchar(50),
     un_location_code varchar(5)
     );

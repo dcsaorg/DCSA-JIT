@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
 import org.dcsa.core.model.GetId;
+import org.dcsa.core.util.ValidationUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import javax.validation.constraints.Pattern;
 import java.util.UUID;
 
 @Table("transport_call_subscription")
@@ -31,7 +33,13 @@ public class TransportCallSubscription extends AuditBase implements GetId<UUID> 
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    private Long vesselIMONumber;
+    @Pattern(regexp = "[0-9]{7}")
+    private String vesselIMONumber;
+
+    public void setVesselIMONumber(String vesselIMONumber) {
+        ValidationUtils.validateVesselIMONumber(vesselIMONumber);
+        this.vesselIMONumber = vesselIMONumber;
+    }
 
     @JsonProperty("unLocationCode")
     @Column("un_location_code")
