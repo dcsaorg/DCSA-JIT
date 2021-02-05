@@ -67,10 +67,10 @@ CREATE TABLE dcsa_ovs_v1_0.event (
 DROP TABLE IF EXISTS dcsa_ovs_v1_0.portcall_event CASCADE;
 CREATE TABLE dcsa_ovs_v1_0.portcall_event (
     transport_call_id uuid NOT NULL,
-    transport_event_code varchar(4) NOT null,
     location_type varchar(15) NOT null,
     location_id varchar(40),
     comment varchar(40),
     delay_reason_code varchar(3)
 ) INHERITS (dcsa_ovs_v1_0.event);
+
 

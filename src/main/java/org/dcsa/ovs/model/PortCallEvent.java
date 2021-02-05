@@ -14,16 +14,12 @@ import java.util.UUID;
 @Table("portcall_event")
 @Data
 @NoArgsConstructor
-@JsonTypeName("TRANSPORT")
-public class PortCallEvent {
+@JsonTypeName("PORTCALL")
+public class PortCallEvent extends Event {
 
     @JsonProperty("transportCallID")
     @Column("transport_call_id")
     private UUID transportCallID;
-
-    @JsonProperty("transportEventTypeCode")
-    @Column("transport_event_code")
-    private TransportEventCode transportEventCode;
 
     @JsonProperty("locationType")
     @Column("location_type")
@@ -40,6 +36,7 @@ public class PortCallEvent {
     @JsonProperty("delayReasonCode")
     @Column("delay_reason_code")
     private String delayReasonCode;
+
 
 
 }

@@ -7,7 +7,6 @@ import org.dcsa.core.model.AuditBase;
 import org.dcsa.core.model.GetId;
 import org.dcsa.ovs.model.enums.EventClassifierCode;
 import org.dcsa.ovs.model.enums.EventType;
-import org.dcsa.ovs.model.enums.TransportEventCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -25,8 +24,8 @@ import java.util.UUID;
         property = "eventType",
         visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = PortCallEvent.class, name="PORTCALL")
-})
+        @JsonSubTypes.Type(value = PortCallEvent.class, name="PORTCALL"),
+        })
 public class Event extends AuditBase implements GetId<UUID> {
 
     @Id
