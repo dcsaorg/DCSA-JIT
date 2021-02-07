@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.dcsa.ovs.model.enums.LocationType;
-import org.dcsa.ovs.model.enums.TransportEventCode;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -37,6 +36,13 @@ public class PortCallEvent extends Event {
     @Column("delay_reason_code")
     private String delayReasonCode;
 
+    public void setLocationType(String locationType){
+        this.locationType = LocationType.valueOf(locationType);
+    }
+
+    public void setLocationType(LocationType locationType){
+        this.locationType = locationType;
+    }
 
 
 }
