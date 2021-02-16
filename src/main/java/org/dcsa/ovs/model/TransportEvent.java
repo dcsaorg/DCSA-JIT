@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @JsonTypeName("PORTCALL")
-public class PortCallEvent extends Event {
+public class TransportEvent extends Event {
 
     @JsonProperty("transportCallID")
     @Column("transport_call_id")

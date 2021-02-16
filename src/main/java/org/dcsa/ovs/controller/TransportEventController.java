@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
-import org.dcsa.ovs.model.PortCallEvent;
-import org.dcsa.ovs.service.PortCallEventService;
+import org.dcsa.ovs.model.TransportEvent;
+import org.dcsa.ovs.service.transportEventService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -20,23 +20,23 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "transport-calls/port-call-events", produces = {MediaType.APPLICATION_JSON_VALUE})
-@Tag(name = "Port Call Events", description = "The Port Call Event API")
-public class PortCallEventController extends ExtendedBaseController<PortCallEventService, PortCallEvent, UUID> {
+@RequestMapping(value = "transport-calls/transport-events", produces = {MediaType.APPLICATION_JSON_VALUE})
+@Tag(name = "Transport Events", description = "The Transport Event API")
+public class TransportEventController extends ExtendedBaseController<transportEventService, TransportEvent, UUID> {
 
-    private final PortCallEventService portCallEventService;
+    private final transportEventService transportEventService;
 
     @Override
-    public PortCallEventService getService() {
-        return portCallEventService;
+    public transportEventService getService() {
+        return transportEventService;
     }
 
     @Override
     public String getType() {
-        return "PortCallEvent";
+        return "TransportEvent";
     }
 
-    @Operation(summary = "Find Port Call Events by ID", description = "Returns a single Port Call Event", tags = { "Port Call Events" }, parameters = {
+    @Operation(summary = "Find Transport Events by ID", description = "Returns a single Transport Event", tags = { "Transport Event" }, parameters = {
             @Parameter(in = ParameterIn.PATH, name = "id", description="Id of the Port Call Event to be obtained. Cannot be empty.", required=true),
     })
     @ApiResponses(value = {
@@ -45,19 +45,19 @@ public class PortCallEventController extends ExtendedBaseController<PortCallEven
     })
     @GetMapping(value="{id}", produces = "application/json")
     @Override
-    public Mono<PortCallEvent> findById(@PathVariable UUID id) {
+    public Mono<TransportEvent> findById(@PathVariable UUID id) {
         return super.findById(id);
     }
 
-    @Operation(summary = "Save a Port Call Event", description = "Saves a Port Call Event", tags = { "Port Call Events" })
+    @Operation(summary = "Save a Transport Event", description = "Saves a Transport Event", tags = { "Transport Event" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation")
     })
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @Override
-    public Mono<PortCallEvent> create(@Valid @RequestBody PortCallEvent portCallEvent) {
-        return super.create(portCallEvent);
+    public Mono<TransportEvent> create(@Valid @RequestBody TransportEvent transportEvent) {
+        return super.create(transportEvent);
     }
 
 

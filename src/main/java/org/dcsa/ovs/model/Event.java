@@ -24,7 +24,7 @@ import java.util.UUID;
         property = "eventType",
         visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = PortCallEvent.class, name="PORTCALL"),
+        @JsonSubTypes.Type(value = TransportEvent.class, name="PORTCALL"),
         })
 public class Event extends AuditBase implements GetId<UUID> {
 

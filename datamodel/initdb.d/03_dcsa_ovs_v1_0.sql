@@ -64,8 +64,8 @@ CREATE TABLE dcsa_ovs_v1_0.event (
     event_type_code varchar(4) NOT NULL
 );
 
-DROP TABLE IF EXISTS dcsa_ovs_v1_0.portcall_event CASCADE;
-CREATE TABLE dcsa_ovs_v1_0.portcall_event (
+DROP TABLE IF EXISTS dcsa_ovs_v1_0.transport_event CASCADE;
+CREATE TABLE dcsa_ovs_v1_0.transport_event (
     transport_call_id uuid NOT NULL,
     location_type varchar(15) NOT null,
     location_id varchar(40),
