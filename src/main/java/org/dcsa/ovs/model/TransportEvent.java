@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table("portcall_event")
 @Data
 @NoArgsConstructor
-@JsonTypeName("PORTCALL")
+@JsonTypeName("TRANSPORT")
 public class TransportEvent extends Event {
 
     @JsonProperty("transportCallID")
