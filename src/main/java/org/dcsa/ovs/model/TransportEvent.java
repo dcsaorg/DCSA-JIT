@@ -8,6 +8,7 @@ import org.dcsa.ovs.model.enums.LocationType;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Table("portcall_event")
@@ -15,6 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonTypeName("TRANSPORT")
 public class TransportEvent extends Event {
+
+    @JsonProperty("creationDateTime")
+    @Column("creation_date_time")
+    private OffsetDateTime eventDateTime;
 
     @JsonProperty("transportCallID")
     @Column("transport_call_id")
