@@ -11,7 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Table("portcall_event")
+@Table("transport_event")
 @Data
 @NoArgsConstructor
 @JsonTypeName("TRANSPORT")
@@ -19,7 +19,7 @@ public class TransportEvent extends Event {
 
     @JsonProperty("creationDateTime")
     @Column("creation_date_time")
-    private OffsetDateTime eventDateTime;
+    private OffsetDateTime creationDateTime;
 
     @JsonProperty("transportCallID")
     @Column("transport_call_id")
