@@ -66,7 +66,7 @@ CREATE TABLE dcsa_ovs_v1_0.event (
 
 DROP TABLE IF EXISTS dcsa_ovs_v1_0.transport_event CASCADE;
 CREATE TABLE dcsa_ovs_v1_0.transport_event (
-    creation_date_time timestamp with time zone NOT NULL
+    creation_date_time timestamp with time zone NOT NULL,
     transport_call_id uuid NOT NULL,
     location_type varchar(15) NOT null,
     location_id varchar(40),
