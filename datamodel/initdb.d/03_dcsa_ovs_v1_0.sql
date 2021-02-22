@@ -55,4 +55,23 @@ CREATE TABLE dcsa_ovs_v1_0.transport_call (
     other_facility varchar(50)
 );
 
+DROP TABLE IF EXISTS dcsa_ovs_v1_0.event CASCADE;
+CREATE TABLE dcsa_ovs_v1_0.event (
+    event_id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    event_type text NOT NULL,
+    event_classifier_code varchar(3) NOT NULL,
+    event_date_time timestamp with time zone NOT NULL,
+    event_type_code varchar(4) NOT NULL
+);
+
+DROP TABLE IF EXISTS dcsa_ovs_v1_0.transport_event CASCADE;
+CREATE TABLE dcsa_ovs_v1_0.transport_event (
+    creation_date_time timestamp with time zone NOT NULL,
+    transport_call_id uuid NOT NULL,
+    location_type varchar(15) NOT null,
+    location_id varchar(40),
+    comment varchar(40),
+    delay_reason_code varchar(3)
+) INHERITS (dcsa_ovs_v1_0.event);
+
 
