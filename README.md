@@ -1,12 +1,31 @@
-# DCSA Backend
+# DCSA OVS - Operational Vessel Schedule
 
-Building and running manually
------------------------------
+Building and running manually/locally
+-------------------------------------
 
 Initialize your local postgresql database as described in datamodel/README.md, then
 ```
 export db_hostname=localhost
-mvn spring-boot:run
+export DCSA_CORE_Version=0.7.11 #or whatever version is the right one
+```
+If running without auth0, disable it with
+```
+export AUTH0_ENABLED=false
+```
+Then build and run with
+```
+mvn install:install-file -Dfile=../DCSA-Core/target/dcsa_core-$DCSA_CORE_Version.jar -DgroupId=org.dcsa -DartifactId=dcsa_core -Dversion=local-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+mvn spring-boot:run -Ddcsa.version=local-SNAPSHOT
+```
+or using docker-compose
+```
+mvn package -Ddcsa.version=local-SNAPSHOT
+docker-compose up -d -V --build
+```
+
+Then try and access the installation say on
+```
+http://localhost:9090/v1/schedules
 ```
 
 Building and running using docker-compose
@@ -16,13 +35,3 @@ To build using DCSA-core from GitHub packages
 mvn package
 docker-compose up -d -V --build
 ```
-
-To build using locally built DCSA-core
-NOTE: the "mvn install" command's "-DFile" parameter should point to a compiled dcsa_core .jar file
-```
-mvn install:install-file -Dfile=../DCSA-Core/target/dcsa_core-0.3.0.jar -DgroupId=org.dcsa -DartifactId=dcsa_core -Dversion=local-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-
-mvn package -Ddcsa.version=local-SNAPSHOT
-
-docker-compose up -d -V --build
-´´´
