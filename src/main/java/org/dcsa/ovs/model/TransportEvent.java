@@ -41,15 +41,6 @@ public class TransportEvent extends Event {
     @Column("delay_reason_code")
     private String delayReasonCode;
 
-    public void setLocationType(String locationType){
-        this.locationType = LocationType.valueOf(locationType);
-    }
-
-    public void setLocationType(LocationType locationType){
-        this.locationType = locationType;
-    }
-
-
 }
 
 

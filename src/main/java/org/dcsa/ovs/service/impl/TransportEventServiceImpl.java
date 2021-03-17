@@ -15,12 +15,6 @@ public class TransportEventServiceImpl extends ExtendedBaseServiceImpl<Transport
 
     private final TransportEventRepository portCallEventRepository;
 
-
-    @Override
-    public Class<TransportEvent> getModelClass() {
-        return TransportEvent.class;
-    }
-
     @Override
     public TransportEventRepository getRepository() {
         return portCallEventRepository;

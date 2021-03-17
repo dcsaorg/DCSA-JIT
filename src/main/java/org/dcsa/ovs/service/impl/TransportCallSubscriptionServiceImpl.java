@@ -19,8 +19,4 @@ public class TransportCallSubscriptionServiceImpl extends ExtendedBaseServiceImp
         return transportCallSubscriptionRepository;
     }
 
-    @Override
-    public Class<TransportCallSubscription> getModelClass() {
-        return TransportCallSubscription.class;
-    }
 }
