@@ -19,9 +19,4 @@ public class ScheduleSubscriptionServiceImpl extends ExtendedBaseServiceImpl<Sch
         return scheduleSubscriptionRepository;
     }
 
-    @Override
-    public Class<ScheduleSubscription> getModelClass() {
-        return ScheduleSubscription.class;
-    }
-
 }

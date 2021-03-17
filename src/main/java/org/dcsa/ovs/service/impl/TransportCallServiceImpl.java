@@ -25,17 +25,12 @@ public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportC
     }
 
     @Override
-    public Class<TransportCall> getModelClass() {
-        return TransportCall.class;
-    }
-
-    @Override
     public Mono<TransportCall> create(TransportCall transportCall) {
         return super.save(transportCall).doOnNext(
                 e -> new TransportCallCallbackHandler(
                         transportCallSubscriptionRepository.getCallbackUrlsByFilters(), e)
                         .start()
-        ).map(e -> e);
+        );
     }
 
 }
