@@ -24,11 +24,6 @@ public class ScheduleServiceImpl extends ExtendedBaseServiceImpl<ScheduleReposit
     }
 
     @Override
-    public Class<Schedule> getModelClass() {
-        return Schedule.class;
-    }
-
-    @Override
     public Mono<Schedule> create(Schedule schedule) {
         return super.save(schedule).doOnNext(
                 e -> new ScheduleCallbackHandler(
