@@ -24,7 +24,7 @@ import java.util.UUID;
         property = "eventType",
         visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = TransportEvent.class, name="TRANSPORT"),
+        @JsonSubTypes.Type(value = OperationsEvent.class, name="TRANSPORT"),
         })
 public class Event extends AuditBase implements GetId<UUID> {
 
@@ -50,8 +50,5 @@ public class Event extends AuditBase implements GetId<UUID> {
     @Column("event_classifier_code")
     private EventClassifierCode eventClassifierCode;
 
-    @JsonProperty("eventTypeCode")
-    @Column("event_type_code")
-    private String eventTypeCode;
 
 }

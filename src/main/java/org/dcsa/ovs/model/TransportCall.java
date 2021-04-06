@@ -22,14 +22,6 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
     @JsonProperty("transportCallID")
     private UUID id;
 
-    @JsonProperty("scheduleID")
-    @Column("schedule_id")
-    private UUID scheduleId;
-
-    @JsonProperty("carrierServiceCode")
-    @Column("carrier_service_code")
-    private String carrierServiceCode;
-
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
     @Pattern(regexp = "[0-9]{7}")
@@ -44,21 +36,10 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
     @Column("vessel_name")
     private String vesselName;
 
-    @JsonProperty("carrierVoyageNumber")
-    @Column("carrier_voyage_number")
-    private String carrierVoyageNumber;
 
-    @JsonProperty("UNLocationCode")
-    @Column("un_location_code")
-    private String UNLocationCode;
-
-    @JsonProperty("UNLocationName")
-    @Column("un_location_name")
-    private String UNLocationName;
-
-    @JsonProperty("transportCallNumber")
-    @Column("transport_call_number")
-    private Integer transportCallNumber;
+    @JsonProperty("transportCallSequenceNumber")
+    @Column("transport_call_sequence_number")
+    private Integer transportCallSequenceNumber;
 
     @JsonProperty("facilityTypeCode")
     @Column("facility_type_code")
@@ -71,4 +52,8 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
     @JsonProperty("otherFacility")
     @Column("other_facility")
     private String otherFacility;
+
+    @JsonProperty("locationId")
+    @Column("location_id")
+    private UUID locationId;
 }
