@@ -22,7 +22,7 @@ pagination:
 #    # Change name of first-page header name
 #    firstPageName:
 #  # Possibility to change the default pagination size. If not specified all results will be returned as default
-  defaultPageSize: 20
+  defaultPageSize: 2000
 
 spring:
   application:
