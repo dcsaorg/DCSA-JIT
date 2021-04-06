@@ -113,7 +113,7 @@ CREATE TABLE dcsa_ovs_v1_0.operations_event (
     transport_call_id uuid NOT NULL,
     event_location varchar(50) NOT NULL, -- The location where the event takes place.
     port_call_service_type_code varchar(4) REFERENCES dcsa_ovs_v1_0.port_call_service_type(port_call_service_type_code), -- The type of the service provided in the port call.
-    facility_type_code varchar(4) NULL, -- Four character code to identify the specific type of facility.
+    facility_type_code varchar(4) NULL REFERENCES dcsa_ovs_v1_0.facility_type (facility_type_code), -- Four character code to identify the specific type of facility.
     delay_reason_code varchar(3) -- SMDG code indicating the reason for a delay
 ) INHERITS (dcsa_ovs_v1_0.event);
 

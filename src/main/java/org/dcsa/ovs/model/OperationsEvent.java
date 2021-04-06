@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dcsa.ovs.model.enums.LocationType;
+import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
+import org.dcsa.ovs.model.enums.PortCallServiceTypeCode;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -12,8 +13,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Table("operations_event")
-@Data
 @NoArgsConstructor
+@Data
 @JsonTypeName("TRANSPORT")
 public class OperationsEvent extends Event {
 
@@ -27,8 +28,7 @@ public class OperationsEvent extends Event {
 
     @JsonProperty("operationsEventTypeCode")
     @Column("operations_event_type_code")
-    //@ToDO create OperationalEventTypeCodeEnum
-    private String operationsEventTypeCode;
+    private OperationsEventTypeCode operationsEventTypeCode;
 
     @JsonProperty("publisher")
     @Column("publisher")
@@ -44,7 +44,7 @@ public class OperationsEvent extends Event {
 
     @JsonProperty("portCallServiceTypeCode")
     @Column("port_call_service_type_code")
-    private String portCallServiceTypeCode;
+    private PortCallServiceTypeCode portCallServiceTypeCode;
 
     @JsonProperty("facilityTypeCode")
     @Column("facility_type_code")
@@ -60,6 +60,7 @@ public class OperationsEvent extends Event {
     @JsonProperty("delayReasonCode")
     @Column("delay_reason_code")
     private String delayReasonCode;
+
 
 }
 
