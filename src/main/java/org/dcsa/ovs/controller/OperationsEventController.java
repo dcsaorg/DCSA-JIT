@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.OperationsEvent;
-import org.dcsa.ovs.service.operationsEventService;
+import org.dcsa.ovs.service.OperationsEventService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -20,12 +20,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping(value = "transport-calls/operations-events", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Tag(name = "Operations Events", description = "The Operation Event API")
-public class OperationsEventController extends ExtendedBaseController<operationsEventService, OperationsEvent, UUID> {
+public class OperationsEventController extends ExtendedBaseController<OperationsEventService, OperationsEvent, UUID> {
 
-    private final operationsEventService operationsEventService;
+    private final OperationsEventService operationsEventService;
 
     @Override
-    public operationsEventService getService() {
+    public OperationsEventService getService() {
         return operationsEventService;
     }
 

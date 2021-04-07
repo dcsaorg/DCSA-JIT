@@ -12,8 +12,8 @@ import org.dcsa.core.controller.BaseController;
 import org.dcsa.core.exception.GetException;
 import org.dcsa.core.extendedrequest.ExtendedParameters;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
-import org.dcsa.ovs.model.OperationsEvent;
-import org.dcsa.ovs.service.operationsEventService;
+import org.dcsa.ovs.model.TransportEvent;
+import org.dcsa.ovs.service.TransportEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -29,33 +29,33 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "transport-calls/{transportCallID}/operations-events", produces = {MediaType.APPLICATION_JSON_VALUE})
-@Tag(name = "Operations Events", description = "The Operations Event API")
-public class TransportCallOperationasEventController extends BaseController<operationsEventService, OperationsEvent, UUID> {
+@RequestMapping(value = "transport-calls/{transportCallID}/transport-events", produces = {MediaType.APPLICATION_JSON_VALUE})
+@Tag(name = "Transport Events", description = "The Transport Event API")
+public class TransportCallTransportEventController extends BaseController<TransportEventService, TransportEvent, UUID> {
 
-    private final operationsEventService operationsEventService;
+    private final TransportEventService transportEventService;
     @Autowired
     private final ExtendedParameters extendedParameters;
 
 
     @Override
-    public operationsEventService getService() {
-        return operationsEventService;
+    public TransportEventService getService() {
+        return transportEventService;
     }
 
     @Override
     public String getType() {
-        return "OperationsEvent";
+        return "TransportEvent";
     }
 
-    @Operation(summary = "Find all Operations Events", description = "Find all Operations Events in the database", tags = {"Operations Events"})
+    @Operation(summary = "Find all Transport Events", description = "Find all Transport Events in the database", tags = {"Transport Events"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = OperationsEvent.class))))
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = TransportEvent.class))))
     })
     @GetMapping()
-    public Flux<OperationsEvent> findAll(@PathVariable UUID transportCallID, ServerHttpResponse response, ServerHttpRequest request){
-        ExtendedRequest<OperationsEvent> extendedRequest = new ExtendedRequest<OperationsEvent>(extendedParameters, getService().getModelClass());
+    public Flux<TransportEvent> findAll(@PathVariable UUID transportCallID, ServerHttpResponse response, ServerHttpRequest request){
+        ExtendedRequest<TransportEvent> extendedRequest = new ExtendedRequest<TransportEvent>(extendedParameters, getService().getModelClass());
         try {
             Map<String, String> params = request.getQueryParams().toSingleValueMap();
             params.put("transportCallID", transportCallID.toString());

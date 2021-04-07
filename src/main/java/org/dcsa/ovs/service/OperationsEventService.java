@@ -5,5 +5,5 @@ import org.dcsa.ovs.model.OperationsEvent;
 
 import java.util.UUID;
 
-public interface operationsEventService extends ExtendedBaseService<OperationsEvent, UUID> {
+public interface OperationsEventService extends ExtendedBaseService<OperationsEvent, UUID> {
 }

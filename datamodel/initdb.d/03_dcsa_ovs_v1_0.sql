@@ -114,8 +114,17 @@ CREATE TABLE dcsa_ovs_v1_0.operations_event (
     event_location varchar(50) NOT NULL, -- The location where the event takes place.
     port_call_service_type_code varchar(4) REFERENCES dcsa_ovs_v1_0.port_call_service_type(port_call_service_type_code), -- The type of the service provided in the port call.
     facility_type_code varchar(4) NULL REFERENCES dcsa_ovs_v1_0.facility_type (facility_type_code), -- Four character code to identify the specific type of facility.
-    delay_reason_code varchar(3) -- SMDG code indicating the reason for a delay
+    delay_reason_code varchar(3), -- SMDG code indicating the reason for a delay
+     change_remark varchar(250) -- Free text description of the reason for the change in schedule.
 ) INHERITS (dcsa_ovs_v1_0.event);
+
+DROP TABLE IF EXISTS dcsa_ovs_v1_0.transport_event CASCADE;
+CREATE TABLE dcsa_ovs_v1_0.transport_event (
+    transport_event_type_code varchar(4) NOT NULL REFERENCES dcsa_ovs_v1_0.transport_event_type(transport_event_type_code),
+    delay_reason_code varchar(3),
+    change_remark varchar(250), -- Free text description of the reason for the change in schedule.
+    transport_call_id uuid NOT NULL
+) INHERITS (ddcsa_ovs_v1_0.event);
 
 ALTER TABLE dcsa_ovs_v1_0.operations_event
 ADD FOREIGN KEY (event_classifier_code)

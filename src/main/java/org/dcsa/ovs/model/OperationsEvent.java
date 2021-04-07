@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table("operations_event")
 @NoArgsConstructor
 @Data
-@JsonTypeName("TRANSPORT")
+@JsonTypeName("OPERATIONS")
 public class OperationsEvent extends Event {
 
     @JsonProperty("transportCallID")
@@ -26,9 +26,11 @@ public class OperationsEvent extends Event {
     @Column("event_created_date_time")
     private OffsetDateTime creationDateTime;
 
+    // @ToDo change type to Enum OperationsEventTypeCode when there is a bugFix
+    //  on Core for test purposes put to String
     @JsonProperty("operationsEventTypeCode")
     @Column("operations_event_type_code")
-    private OperationsEventTypeCode operationsEventTypeCode;
+    private String operationsEventTypeCode;
 
     @JsonProperty("publisher")
     @Column("publisher")
@@ -42,20 +44,19 @@ public class OperationsEvent extends Event {
     @Column("event_location")
     private String eventLocation;
 
+    // @ToDo change type to Enum PortCallServiceTypeCode when there is a bugFix
+    //  on Core for test purposes put to String
     @JsonProperty("portCallServiceTypeCode")
     @Column("port_call_service_type_code")
-    private PortCallServiceTypeCode portCallServiceTypeCode;
+    private String portCallServiceTypeCode;
 
     @JsonProperty("facilityTypeCode")
     @Column("facility_type_code")
     private String facilityTypeCode;
 
-    // @ToDo Clarify if still needed?
-    /*
-    @JsonProperty("comment")
-    @Column("comment")
-    private String comment;
-    */
+    @JsonProperty("changeRemark")
+    @Column("change_remark")
+    private String changeRemark;
 
     @JsonProperty("delayReasonCode")
     @Column("delay_reason_code")
