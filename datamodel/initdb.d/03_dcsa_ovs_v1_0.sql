@@ -40,6 +40,12 @@ CREATE TABLE dcsa_ovs_v1_0.event_classifier (
     event_classifier_description varchar(250) NULL -- The description of the event classifier.
 );
 
+DROP TABLE IF EXISTS dcsa_ovs_v1_0.transport_event_type CASCADE;
+CREATE TABLE dcsa_ovs_v1_0.transport_event_type (
+    transport_event_type_code varchar(4) PRIMARY KEY,
+    transport_event_type_name varchar(30) NOT NULL
+);
+
 
 --  Schedule related entities
 -- @ToDo Not Updated from IM yet, might change
@@ -124,7 +130,7 @@ CREATE TABLE dcsa_ovs_v1_0.transport_event (
     delay_reason_code varchar(3),
     change_remark varchar(250), -- Free text description of the reason for the change in schedule.
     transport_call_id uuid NOT NULL
-) INHERITS (ddcsa_ovs_v1_0.event);
+) INHERITS (dcsa_ovs_v1_0.event);
 
 ALTER TABLE dcsa_ovs_v1_0.operations_event
 ADD FOREIGN KEY (event_classifier_code)

@@ -1,3 +1,5 @@
+\connect dcsa_openapi
+
 insert
 	into
 	dcsa_ovs_v1_0.schedule_subscription ( callback_url,
@@ -436,4 +438,36 @@ null,
 'BRTH',
 null);
 
+-- ATS PILOTING
 
+insert
+	into
+	dcsa_ovs_v1_0.operations_event (event_id,
+	event_created_date_time,
+	event_type,
+	event_classifier_code,
+	event_date_time,
+	operations_event_type_code,
+	publisher,
+	publisher_role,
+	transport_call_id,
+	event_location,
+	port_call_service_type_code,
+	facility_type_code,
+	delay_reason_code,
+	change_remark)
+values ,
+('d6ecbde8-6c9b-4cd2-a637-ebc412b29620',
+'2021-04-07 17:54:00.000',
+'OPERATIONS',
+'ACT',
+'2021-04-07 16:00:00.000',
+'STRT',
+'DEHAM',
+'POR',
+'eb0533c8-ee0b-4bb2-9c6c-af021d65f161',
+'Bollard 55-70',
+'PILO',
+null,
+null,
+null)

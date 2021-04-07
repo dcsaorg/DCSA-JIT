@@ -10,5 +10,6 @@ BEGIN;
 \copy dcsa_ovs_v1_0.operations_event_type from '../referencedata.d/operationseventtypecodes.csv' CSV HEADER
 \copy dcsa_ovs_v1_0.event_classifier from '../referencedata.d/eventclassifiercodes.csv' CSV HEADER
 \copy dcsa_ovs_v1_0.port_call_service_type from '../referencedata.d/portcallservicetypecodes.csv' CSV HEADER
+\copy dcsa_ovs_v1_0.transport_event_type  from '../referencedata.d/transporteventtypecodes.csv' CSV HEADER
 
 COMMIT;
