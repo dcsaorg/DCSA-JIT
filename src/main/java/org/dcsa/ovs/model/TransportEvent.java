@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Table("operations_event")
+@Table("transport_event")
 @NoArgsConstructor
 @Data
 @JsonTypeName("TRANSPORT")

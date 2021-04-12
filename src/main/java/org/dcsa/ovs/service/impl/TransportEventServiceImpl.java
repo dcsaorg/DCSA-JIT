@@ -2,10 +2,8 @@ package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
-import org.dcsa.ovs.model.OperationsEvent;
 import org.dcsa.ovs.model.TransportEvent;
 import org.dcsa.ovs.repository.TransportEventRepository;
-import org.dcsa.ovs.service.OperationsEventService;
 import org.dcsa.ovs.service.TransportEventService;
 import org.springframework.stereotype.Service;
 

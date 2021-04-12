@@ -26,11 +26,10 @@ public class OperationsEvent extends Event {
     @Column("event_created_date_time")
     private OffsetDateTime creationDateTime;
 
-    // @ToDo change type to Enum OperationsEventTypeCode when there is a bugFix
     //  on Core for test purposes put to String
     @JsonProperty("operationsEventTypeCode")
     @Column("operations_event_type_code")
-    private String operationsEventTypeCode;
+    private OperationsEventTypeCode operationsEventTypeCode;
 
     @JsonProperty("publisher")
     @Column("publisher")
@@ -44,11 +43,10 @@ public class OperationsEvent extends Event {
     @Column("event_location")
     private String eventLocation;
 
-    // @ToDo change type to Enum PortCallServiceTypeCode when there is a bugFix
     //  on Core for test purposes put to String
     @JsonProperty("portCallServiceTypeCode")
     @Column("port_call_service_type_code")
-    private String portCallServiceTypeCode;
+    private PortCallServiceTypeCode portCallServiceTypeCode;
 
     @JsonProperty("facilityTypeCode")
     @Column("facility_type_code")
