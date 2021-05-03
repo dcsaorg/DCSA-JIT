@@ -25,7 +25,7 @@ public class ExtendedTransportCall extends TransportCall {
     //LoadVessel
     @JsonIgnore
     @ModelClass(value = Vessel.class, fieldName = "vesselIMONumber")
-    private int vesselMONumber;
+    private String vesselIMONumber;
 
     @JsonIgnore
     @ModelClass(value = Vessel.class, fieldName = "vesselName")
@@ -43,9 +43,6 @@ public class ExtendedTransportCall extends TransportCall {
     @ModelClass(value = Vessel.class, fieldName = "vesselOperatorCarrierId")
     private String vesselOperatorCarrierId;
 
-
-
-    public void setVesselMONumber(String vesselIMONumber){}
     public void setVesselOperatorCarrierId(UUID vesselOperatorCarrierId){};
 
     public Vessel getVessel(){
