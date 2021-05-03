@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Vessel extends AuditBase {
 
-    @Id
+
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
     @Pattern(regexp = "[0-9]{7}")

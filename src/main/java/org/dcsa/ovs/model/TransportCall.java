@@ -1,5 +1,6 @@
 package org.dcsa.ovs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,8 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
     @JsonProperty("transportCallID")
     private UUID id;
 
-    @JsonProperty("vesselIMONumber")
-    @Column("vessel_imo_number")
+    @JsonIgnore
+    @Column("vessel")
     @Pattern(regexp = "[0-9]{7}")
     private String vesselIMONumber;
 
