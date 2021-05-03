@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.TransportCall;
+import org.dcsa.ovs.model.combined.ExtendedTransportCall;
+import org.dcsa.ovs.service.ExtendedTransportCallService;
 import org.dcsa.ovs.service.TransportCallService;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -27,9 +29,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping(value = "transport-calls", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Tag(name = "Transport Calls", description = "The Transport Call API")
-public class TransportCallController extends ExtendedBaseController<TransportCallService, TransportCall, UUID> {
+public class TransportCallController extends ExtendedBaseController<ExtendedTransportCallService, ExtendedTransportCall, UUID> {
 
     private final TransportCallService transportCallService;
+    private final ExtendedTransportCallService extendedTransportCallService;
 
 
     @Override
@@ -38,8 +41,8 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     }
 
     @Override
-    public TransportCallService getService() {
-        return transportCallService;
+    public ExtendedTransportCallService getService() {
+        return extendedTransportCallService;
     }
 
     @Operation(summary = "Find all Transport Calls", description = "Finds all Transport Calls in the database", tags = { "Transport Call" })
@@ -49,7 +52,7 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     })
     @GetMapping
     @Override
-    public Flux<TransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request) {
+    public Flux<ExtendedTransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request) {
         return super.findAll(response, request);
     }
 
@@ -62,7 +65,7 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     })
     @GetMapping(value="{id}", produces = "application/json")
     @Override
-    public Mono<TransportCall> findById(@PathVariable UUID id) {
+    public Mono<ExtendedTransportCall> findById(@PathVariable UUID id) {
         return super.findById(id);
     }
 
@@ -72,8 +75,8 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     })
     @PostMapping(consumes = "application/json", produces = "application/json")
     @Override
-    public Mono<TransportCall> create(@Valid @RequestBody TransportCall transportCall) {
-        return super.create(transportCall);
+    public Mono<ExtendedTransportCall> create(@Valid @RequestBody ExtendedTransportCall extendedTransportCall) {
+        return super.create(extendedTransportCall);
     }
 
 }

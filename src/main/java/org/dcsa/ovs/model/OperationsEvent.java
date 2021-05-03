@@ -26,7 +26,6 @@ public class OperationsEvent extends Event {
     @Column("event_created_date_time")
     private OffsetDateTime creationDateTime;
 
-    //  on Core for test purposes put to String
     @JsonProperty("operationsEventTypeCode")
     @Column("operations_event_type_code")
     private OperationsEventTypeCode operationsEventTypeCode;
