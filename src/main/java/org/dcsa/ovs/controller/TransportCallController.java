@@ -65,7 +65,7 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     @GetMapping(value="{id}", produces = "application/json")
     @Override
     public Mono<TransportCall> findById(@PathVariable UUID id) {
-        return transportCallService.findById(id);
+        return transportCallService.findByUUID(id);
 
     }
 

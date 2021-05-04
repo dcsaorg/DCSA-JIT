@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
 import org.dcsa.ovs.model.enums.PortCallServiceTypeCode;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -42,6 +43,7 @@ public class OperationsEvent extends Event {
     @JsonProperty("eventLocation")
     @Column("event_location")
     private String eventLocation;
+    public void setEventLocation(UUID id){}
 
     //  on Core for test purposes put to String
     @JsonProperty("portCallServiceTypeCode")
@@ -59,6 +61,10 @@ public class OperationsEvent extends Event {
     @JsonProperty("delayReasonCode")
     @Column("delay_reason_code")
     private String delayReasonCode;
+
+    @JsonProperty("transportCall")
+    @Transient
+    private TransportCall transportCall;
 
 
 }

@@ -11,6 +11,6 @@ import java.util.UUID;
 
 public interface TransportCallService extends ExtendedBaseService<TransportCall, UUID> {
 
-    Mono<TransportCall> findByID(UUID id);
+    Mono<TransportCall> findByUUID(UUID id);
     Flux<TransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request);
 }

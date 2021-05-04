@@ -24,7 +24,7 @@ public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportC
     private final VesselService vesselService;
 
     @Override
-    public Mono<TransportCall> findByID(UUID id){
+    public Mono<TransportCall> findByUUID(UUID id){
         System.out.println(id);
         return transportCallRepository.findById(id)
                 .flatMap(transportCall -> {

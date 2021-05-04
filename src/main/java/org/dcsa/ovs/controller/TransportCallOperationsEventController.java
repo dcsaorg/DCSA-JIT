@@ -59,16 +59,16 @@ public class TransportCallOperationsEventController extends BaseController<Opera
     public Flux<OperationsEvent> findAll(@PathVariable UUID transportCallID, ServerHttpResponse response, ServerHttpRequest request){
         ExtendedRequest<OperationsEvent> extendedRequest = new ExtendedRequest<OperationsEvent>(extendedParameters, r2dbcDialect, getService().getModelClass());
         try {
-          //  Map<String, String> params = request.getQueryParams().toSingleValueMap();
-          //  params.put("transportCallID", transportCallID.toString());
             extendedRequest.parseParameter(request.getQueryParams());
         } catch (GetException getException){
             return Flux.error(getException);
         }
-        return getService().findAllExtended(extendedRequest).doOnComplete(
+        // Map TransportCall into operationsEvent!
+        return operationsEventService.findAll(getService().findAllExtended(extendedRequest).doOnComplete(
                 () -> {
                     extendedRequest.insertHeaders(response, request);
                 }
-        );
+        ));
+
     }
 }
