@@ -15,6 +15,7 @@ import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.ovs.model.TransportCall;
 import org.dcsa.ovs.service.TransportCallService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -34,8 +35,9 @@ import java.util.UUID;
 public class ScheduleTransportCallController extends BaseController<TransportCallService, TransportCall, UUID> {
 
     private final TransportCallService transportCallService;
-    @Autowired
     private final ExtendedParameters extendedParameters;
+    private final R2dbcDialect r2dbcDialect;
+
 
     @Override
     public String getType() {
@@ -54,11 +56,11 @@ public class ScheduleTransportCallController extends BaseController<TransportCal
     })
     @GetMapping()
     public Flux<TransportCall> findAll(@PathVariable UUID scheduleID, ServerHttpResponse response, ServerHttpRequest request) {
-        ExtendedRequest<TransportCall> extendedRequest = new ExtendedRequest<TransportCall>(extendedParameters, getService().getModelClass());
+        ExtendedRequest<TransportCall> extendedRequest = new ExtendedRequest<TransportCall>(extendedParameters, r2dbcDialect, getService().getModelClass());
         try {
             Map<String,String> params = request.getQueryParams().toSingleValueMap();
             params.put("scheduleIDx",scheduleID.toString());
-            extendedRequest.parseParameter(params);
+            extendedRequest.parseParameter(request.getQueryParams());
         } catch (GetException getException) {
             return Flux.error(getException);
         }
@@ -69,4 +71,6 @@ public class ScheduleTransportCallController extends BaseController<TransportCal
                 }
         );
     }
+
+
 }
