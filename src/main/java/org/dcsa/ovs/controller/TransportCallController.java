@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.TransportCall;
 import org.dcsa.ovs.service.TransportCallService;
+import org.dcsa.ovs.service.VesselService;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -30,6 +31,7 @@ import java.util.UUID;
 public class TransportCallController extends ExtendedBaseController<TransportCallService, TransportCall, UUID> {
 
     private final TransportCallService transportCallService;
+    private final VesselService vesselService;
 
 
     @Override
@@ -50,7 +52,7 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     @GetMapping
     @Override
     public Flux<TransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request) {
-        return super.findAll(response, request);
+       return transportCallService.findAll(response, request);
     }
 
     @Operation(summary = "Find Transport Call by ID", description = "Returns a single Transport Call", tags = { "Transport Call" }, parameters = {
@@ -63,7 +65,8 @@ public class TransportCallController extends ExtendedBaseController<TransportCal
     @GetMapping(value="{id}", produces = "application/json")
     @Override
     public Mono<TransportCall> findById(@PathVariable UUID id) {
-        return super.findById(id);
+        return transportCallService.findById(id);
+
     }
 
     @Operation(summary = "Save a Transport Call", description = "Saves a Transpor Call", tags = { "Transport Call" })

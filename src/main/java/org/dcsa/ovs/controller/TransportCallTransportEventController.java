@@ -15,6 +15,7 @@ import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.ovs.model.TransportEvent;
 import org.dcsa.ovs.service.TransportEventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -36,6 +37,7 @@ public class TransportCallTransportEventController extends BaseController<Transp
     private final TransportEventService transportEventService;
     @Autowired
     private final ExtendedParameters extendedParameters;
+    private final R2dbcDialect r2dbcDialect;
 
 
     @Override
@@ -55,11 +57,9 @@ public class TransportCallTransportEventController extends BaseController<Transp
     })
     @GetMapping()
     public Flux<TransportEvent> findAll(@PathVariable UUID transportCallID, ServerHttpResponse response, ServerHttpRequest request){
-        ExtendedRequest<TransportEvent> extendedRequest = new ExtendedRequest<TransportEvent>(extendedParameters, getService().getModelClass());
+        ExtendedRequest<TransportEvent> extendedRequest = new ExtendedRequest<TransportEvent>(extendedParameters, r2dbcDialect, getService().getModelClass());
         try {
-            Map<String, String> params = request.getQueryParams().toSingleValueMap();
-            params.put("transportCallID", transportCallID.toString());
-            extendedRequest.parseParameter(params);
+              extendedRequest.parseParameter(request.getQueryParams());
         } catch (GetException getException){
             return Flux.error(getException);
         }
