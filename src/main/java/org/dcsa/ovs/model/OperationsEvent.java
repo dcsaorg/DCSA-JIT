@@ -42,6 +42,10 @@ public class OperationsEvent extends Event {
     @Column("publisher_role")
     private String publisherRole;
 
+    @JsonProperty("publisherCodeListProvider")
+    @Column("publisher_code_list_provider")
+    private String publisherCodeListProvider;
+
     @JsonProperty("eventLocation")
     @Column("event_location")
     private String eventLocation;
