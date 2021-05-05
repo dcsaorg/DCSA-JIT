@@ -1,5 +1,6 @@
 package org.dcsa.ovs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @JsonTypeName("OPERATIONS")
 public class OperationsEvent extends Event {
 
+    @JsonIgnore
     @JsonProperty("transportCallID")
     @Column("transport_call_id")
     private UUID transportCallID;

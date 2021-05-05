@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -63,10 +62,11 @@ public class TransportCallTransportEventController extends BaseController<Transp
         } catch (GetException getException){
             return Flux.error(getException);
         }
-        return getService().findAllExtended(extendedRequest).doOnComplete(
+        // Map transportCall into transportEvent!
+        return transportEventService.mapTransportCall(getService().findAllExtended(extendedRequest).doOnComplete(
                 () -> {
                     extendedRequest.insertHeaders(response, request);
                 }
-        );
+        ));
     }
 }

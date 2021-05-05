@@ -1,15 +1,13 @@
 package org.dcsa.ovs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
-import org.dcsa.ovs.model.enums.PortCallServiceTypeCode;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
-import java.time.OffsetDateTime;
+import javax.persistence.Transient;
 import java.util.UUID;
 
 @Table("transport_event")
@@ -18,7 +16,7 @@ import java.util.UUID;
 @JsonTypeName("TRANSPORT")
 public class TransportEvent extends Event {
 
-    @JsonProperty("transportCallID")
+    @JsonIgnore
     @Column("transport_call_id")
     private UUID transportCallID;
 
@@ -29,6 +27,10 @@ public class TransportEvent extends Event {
     @JsonProperty("delayReasonCode")
     @Column("delay_reason_code")
     private String delayReasonCode;
+
+    @JsonProperty("transportCall")
+    @Transient
+    private TransportCall transportCall;
 
 
 }

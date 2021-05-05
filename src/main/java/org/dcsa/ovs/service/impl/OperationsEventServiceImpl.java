@@ -24,7 +24,7 @@ public class OperationsEventServiceImpl extends ExtendedBaseServiceImpl<Operatio
     }
 
     @Override
-    public Flux<OperationsEvent> findAll(Flux<OperationsEvent> operationsEvents) {
+    public Flux<OperationsEvent> mapTransportCall(Flux<OperationsEvent> operationsEvents) {
         return operationsEvents
                 .flatMap(operationsEvent -> {
                     return transportCallService.findByUUID(operationsEvent.getTransportCallID())

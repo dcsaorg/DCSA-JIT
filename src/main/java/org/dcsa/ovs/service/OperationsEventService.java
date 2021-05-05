@@ -9,5 +9,5 @@ import reactor.core.publisher.Flux;
 import java.util.UUID;
 
 public interface OperationsEventService extends ExtendedBaseService<OperationsEvent, UUID> {
-    Flux<OperationsEvent> findAll(Flux<OperationsEvent> operationsEvents);
+    Flux<OperationsEvent> mapTransportCall(Flux<OperationsEvent> operationsEvents);
 }
