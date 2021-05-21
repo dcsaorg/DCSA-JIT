@@ -8,6 +8,7 @@ import org.dcsa.ovs.service.OperationsEventService;
 import org.dcsa.ovs.service.TransportCallService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -33,5 +34,13 @@ public class OperationsEventServiceImpl extends ExtendedBaseServiceImpl<Operatio
                                 return operationsEvent;
                             });
                 });
+    }
+
+    @Override
+    public Mono<OperationsEvent> create(OperationsEvent operationsEvent){
+        operationsEvent.setTransportCallID(operationsEvent.getTransportCall().getId());
+        return super.save(operationsEvent);
+
+
     }
 }

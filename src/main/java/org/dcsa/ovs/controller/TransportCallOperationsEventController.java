@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
-import java.util.Collections;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -63,7 +61,7 @@ public class TransportCallOperationsEventController extends BaseController<Opera
         ExtendedRequest<OperationsEvent> extendedRequest = new ExtendedRequest<OperationsEvent>(extendedParameters, r2dbcDialect, getService().getModelClass());
         try {
             MultiValueMap<String, String> params =  new LinkedMultiValueMap<>();
-           // params.add("transportCallID", transportCallID.toString());
+            //params.add("transportCallID", transportCallID.toString());
 
             extendedRequest.parseParameter(params);
         } catch (GetException getException){
