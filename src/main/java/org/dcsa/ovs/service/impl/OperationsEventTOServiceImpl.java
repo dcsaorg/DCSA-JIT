@@ -3,6 +3,7 @@ package org.dcsa.ovs.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
+import org.dcsa.ovs.model.OperationsEvent;
 import org.dcsa.ovs.model.base.AbstractOperationsEvent;
 import org.dcsa.ovs.model.enums.EventType;
 import org.dcsa.ovs.model.transferobjects.OperationsEventTO;
@@ -67,9 +68,13 @@ public class OperationsEventTOServiceImpl extends BaseServiceImpl<OperationsEven
         return null;
     }
 
-    /*
-    private Flux<OperationsEventTO> mapManyD2TO(Flux<OperationsEvent> operationsEventFlux){
-        return operationsEventFlux.map(operationsEvent -> MappingUtils.instanceFrom(operationsEvent, OperationsEventTO::new, OperationsEvent.class))
+
+    private Flux<OperationsEventTO> mapDaoToTO(Flux<OperationsEvent> operationsEventFlux){
+
+        return null;
+
+    }
+        /*  return operationsEventFlux.map(operationsEvent -> MappingUtils.instanceFrom(operationsEvent, OperationsEventTO::new, OperationsEvent.class))
                 .collectList()
                 .flatMapMany(operationsEventsList -> {
                     Map<UUID, OperationsEventTO> id2operations = operationsEventsList.stream().collect(Collectors.toMap(OperationsEvent::getId,
