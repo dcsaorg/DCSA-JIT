@@ -1,11 +1,5 @@
 package org.dcsa.ovs.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.TransportEvent;
@@ -15,13 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "transport-calls/transport-events", produces = {MediaType.APPLICATION_JSON_VALUE})
-@Tag(name = "Transport Events", description = "The Transport Event API")
 public class TransportEventController extends ExtendedBaseController<transportEventService, TransportEvent, UUID> {
 
     private final transportEventService transportEventService;
@@ -36,29 +28,16 @@ public class TransportEventController extends ExtendedBaseController<transportEv
         return "TransportEvent";
     }
 
-    @Operation(summary = "Find Transport Events by ID", description = "Returns a single Transport Event", tags = { "Transport Event" }, parameters = {
-            @Parameter(in = ParameterIn.PATH, name = "id", description="Id of the Port Call Event to be obtained. Cannot be empty.", required=true),
-    })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "404", description = "Port Call Event not found")
-    })
     @GetMapping(value="{id}", produces = "application/json")
     @Override
     public Mono<TransportEvent> findById(@PathVariable UUID id) {
         return super.findById(id);
     }
 
-    @Operation(summary = "Save a Transport Event", description = "Saves a Transport Event", tags = { "Transport Event" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation")
-    })
-
     @PostMapping(consumes = "application/json", produces = "application/json")
     @Override
     public Mono<TransportEvent> create(@Valid @RequestBody TransportEvent transportEvent) {
         return super.create(transportEvent);
     }
-
 
 }
