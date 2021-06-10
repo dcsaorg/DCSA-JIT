@@ -1,12 +1,5 @@
 package org.dcsa.ovs.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.BaseController;
 import org.dcsa.core.exception.GetException;
@@ -30,7 +23,6 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "schedules/{scheduleID}/transport-calls", produces = {MediaType.APPLICATION_JSON_VALUE})
-@Tag(name = "Transport Calls", description = "The Transport Call API")
 public class ScheduleTransportCallController extends BaseController<TransportCallService, TransportCall, UUID> {
 
     private final TransportCallService transportCallService;
@@ -47,11 +39,6 @@ public class ScheduleTransportCallController extends BaseController<TransportCal
         return transportCallService;
     }
 
-    @Operation(summary = "Find all Transport Calls", description = "Finds all Transport Calls in the database", tags = {"Transport Call"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = TransportCall.class))))
-    })
     @GetMapping()
     public Flux<TransportCall> findAll(@PathVariable UUID scheduleID, ServerHttpResponse response, ServerHttpRequest request) {
         ExtendedRequest<TransportCall> extendedRequest = new ExtendedRequest<TransportCall>(extendedParameters, getService().getModelClass());
