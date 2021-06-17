@@ -34,9 +34,11 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
         this.vesselIMONumber = vesselIMONumber;
     }
 
+    /*
     @JsonProperty("vessel")
     @Transient
     private Vessel vessel;
+    */
 
     @JsonProperty("transportCallSequenceNumber")
     @Column("transport_call_sequence_number")

@@ -27,22 +27,20 @@ public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportC
     public Mono<TransportCall> findByUUID(UUID id){
         System.out.println(id);
         return transportCallRepository.findById(id)
-                .flatMap(transportCall -> {
-                    return vesselService.findById(transportCall.getVesselIMONumber())
-                            .map(vessel -> {transportCall.setVessel(vessel);
-                                                return transportCall;});
-                });
+                .flatMap(transportCall ->
+                        vesselService.findById(transportCall.getVesselIMONumber())
+                        //.doOnNext(TransportCall::setVessel);
+                        .thenReturn(transportCall));
 
     }
 
     @Override
     public Flux<TransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request) {
         return transportCallRepository.findAll()
-                .flatMap(transportCall -> {
-                    return vesselService.findById(transportCall.getVesselIMONumber())
-                            .map(vessel -> {transportCall.setVessel(vessel);
-                                            return transportCall;});
-                });
+                .flatMap(transportCall ->
+                        vesselService.findById(transportCall.getVesselIMONumber())
+                        //.doOnNext(TransportCall::setVessel);
+                        .thenReturn(transportCall));
     }
 
     @Override
@@ -52,7 +50,7 @@ public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportC
 
     @Override
     public Mono<TransportCall> create(TransportCall transportCall) {
-        transportCall.setVesselIMONumber(transportCall.getVessel().getId());
+        // transportCall.setVesselIMONumber(transportCall.getVessel().getId());
         return super.save(transportCall).doOnNext(
                 e -> new TransportCallCallbackHandler(
                         transportCallSubscriptionRepository.getCallbackUrlsByFilters(), e)

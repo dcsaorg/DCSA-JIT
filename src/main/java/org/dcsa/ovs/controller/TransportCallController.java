@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.TransportCall;
 import org.dcsa.ovs.service.TransportCallService;
-import org.dcsa.ovs.service.VesselService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
