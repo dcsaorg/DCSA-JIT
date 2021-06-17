@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Set up Java JDK
       uses: actions/setup-java@v1
       with:
@@ -21,6 +23,7 @@ jobs:
       run: mvn package -DskipTests -X #Need to skip the tests as they depend on a running DB
     - name: Build and run the microservices
       run: docker-compose -f docker-compose.yml up -d -V
+
     - name: Checkout dcsaorg/DCSA-API-Validator
       uses: actions/checkout@v2
       with:
