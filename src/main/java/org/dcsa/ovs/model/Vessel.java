@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
 import org.dcsa.core.model.GetId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 @Table("vessel")
 @Data
@@ -34,7 +36,12 @@ public class Vessel extends AuditBase implements GetId<String> {
     private String vesselCallSignNumber;
 
     @Column("vessel_operator_carrier_id")
-    private String vesselOperatorCarrierID;
+    private UUID vesselOperatorCarrierID;
 
+    @Transient
+    private Double teu;
+
+    @Transient
+    private String serviceNameCode;
 
 }
