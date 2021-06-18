@@ -12,6 +12,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Table("vessel")
@@ -26,12 +27,15 @@ public class Vessel extends AuditBase implements GetId<String> {
     @Id
     private String id;
 
+    @Size(max = 35)
     @Column("vessel_name")
     private String vesselName;
 
+    @Size(max = 2)
     @Column("vessel_flag")
     private String vesselFlag;
 
+    @Size(max = 10)
     @Column("vessel_call_sign_number")
     private String vesselCallSignNumber;
 
