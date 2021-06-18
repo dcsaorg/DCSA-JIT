@@ -2,6 +2,7 @@ package org.dcsa.ovs.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
 import org.dcsa.core.model.GetId;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Pattern;
 
 @Table("vessel")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Vessel extends AuditBase implements GetId<String> {
 
