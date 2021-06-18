@@ -1,7 +1,6 @@
 package org.dcsa.ovs.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.dcsa.ovs.model.Schedule;
 import org.dcsa.ovs.model.TransportCall;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
