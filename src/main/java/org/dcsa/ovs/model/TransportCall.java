@@ -3,6 +3,7 @@ package org.dcsa.ovs.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
 import org.dcsa.core.model.GetId;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Table("transport_call")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class TransportCall extends AuditBase implements GetId<UUID> {
 
@@ -25,7 +27,7 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
     private UUID id;
 
     @JsonIgnore
-    @Column("vessel")
+    @Transient
     @Pattern(regexp = "[0-9]{7}")
     private String vesselIMONumber;
 
@@ -34,29 +36,22 @@ public class TransportCall extends AuditBase implements GetId<UUID> {
         this.vesselIMONumber = vesselIMONumber;
     }
 
-    /*
     @JsonProperty("vessel")
     @Transient
     private Vessel vessel;
-    */
 
-    @JsonProperty("transportCallSequenceNumber")
     @Column("transport_call_sequence_number")
     private Integer transportCallSequenceNumber;
 
-    @JsonProperty("facilityTypeCode")
     @Column("facility_type_code")
     private String facilityTypeCode;
 
-    @JsonProperty("facilityCode")
     @Column("facility_code")
     private String facilityCode;
 
-    @JsonProperty("otherFacility")
     @Column("other_facility")
     private String otherFacility;
 
-    @JsonProperty("locationId")
     @Column("location_id")
-    private UUID locationId;
+    private UUID locationID;
 }

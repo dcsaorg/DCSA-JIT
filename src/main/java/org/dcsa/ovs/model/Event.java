@@ -2,6 +2,7 @@ package org.dcsa.ovs.model;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
 import org.dcsa.core.model.GetId;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Table("aggregated_events")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
@@ -35,11 +37,9 @@ public class Event extends AuditBase implements GetId<UUID> {
     @Column("event_id")
     private UUID id;
 
-    @JsonProperty("eventType")
     @Column("event_type")
     private EventType eventType;
 
-    @JsonProperty("eventDateTime")
     @Column("event_date_time")
     private OffsetDateTime eventDateTime;
 
@@ -48,9 +48,7 @@ public class Event extends AuditBase implements GetId<UUID> {
         return eventDateTime;
     }
 
-    @JsonProperty("eventClassifierCode")
     @Column("event_classifier_code")
     private EventClassifierCode eventClassifierCode;
-
 
 }

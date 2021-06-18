@@ -22,23 +22,17 @@ public class Vessel extends AuditBase implements GetId<String> {
     @Id
     private String id;
 
-    @JsonProperty("vesselName")
     @Column("vessel_name")
     private String vesselName;
 
-    @JsonProperty("vesselFlag")
     @Column("vessel_flag")
     private String vesselFlag;
 
-    @JsonProperty("vesselCallSignNumber")
     @Column("vessel_call_sign_number")
     private String vesselCallSignNumber;
 
-    @JsonProperty("vesselOperatorCarrierId")
     @Column("vessel_operator_carrier_id")
-    private String vesselOperatorCarrierId;
-
-
+    private String vesselOperatorCarrierID;
 
 
 }
