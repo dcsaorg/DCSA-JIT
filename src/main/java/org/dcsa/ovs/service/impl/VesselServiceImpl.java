@@ -1,6 +1,7 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
 import org.dcsa.core.util.ValidationUtils;
 import org.dcsa.ovs.model.Vessel;
@@ -23,9 +24,13 @@ public class VesselServiceImpl extends ExtendedBaseServiceImpl<VesselRepository,
     @Override
     public Mono<Vessel> create(Vessel vessel) {
         if (vessel.getId() == null) {
-            throw new IllegalArgumentException("Missing vessel IMO number");
+            return Mono.error(new CreateException("Missing vessel IMO number"));
         }
-        ValidationUtils.validateVesselIMONumber(vessel.getId());
+        try {
+            ValidationUtils.validateVesselIMONumber(vessel.getId());
+        } catch (IllegalArgumentException e) {
+            return Mono.error(new CreateException(e.getLocalizedMessage()));
+        }
         return preCreateHook(vessel)
                 .flatMap(this::preSaveHook)
                 .flatMap(vesselRepository::insert);
