@@ -28,10 +28,8 @@ public class TransportEventServiceImpl extends ExtendedBaseServiceImpl<Transport
     public Flux<TransportEvent> mapTransportCall(Flux<TransportEvent> transportEvents){
         return transportEvents
                 .flatMap(transportEvent ->
-                { return transportCallService.findById(transportEvent.getTransportCallID())
-                        .map(transportCall ->{transportEvent.setTransportCall(transportCall);
-                                    return transportEvent;
-                        });
-                });
+                        transportCallService.findById(transportEvent.getTransportCallID())
+                                .doOnNext(transportEvent::setTransportCall)
+                                .thenReturn(transportEvent));
     }
 }

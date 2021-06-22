@@ -18,30 +18,10 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportCallRepository, TransportCall, UUID> implements TransportCallService {
+public class TransportCallServiceImpl extends ExtendedBaseServiceImpl<TransportCallRepository, TransportCall, String> implements TransportCallService {
     private final TransportCallRepository transportCallRepository;
     private final TransportCallSubscriptionRepository transportCallSubscriptionRepository;
     private final VesselService vesselService;
-
-    @Override
-    public Mono<TransportCall> findByUUID(UUID id){
-        System.out.println(id);
-        return transportCallRepository.findById(id)
-                .flatMap(transportCall ->
-                        vesselService.findById(transportCall.getVesselIMONumber())
-                        //.doOnNext(TransportCall::setVessel);
-                        .thenReturn(transportCall));
-
-    }
-
-    @Override
-    public Flux<TransportCall> findAll(ServerHttpResponse response, ServerHttpRequest request) {
-        return transportCallRepository.findAll()
-                .flatMap(transportCall ->
-                        vesselService.findById(transportCall.getVesselIMONumber())
-                        //.doOnNext(TransportCall::setVessel);
-                        .thenReturn(transportCall));
-    }
 
     @Override
     public TransportCallRepository getRepository() {

@@ -26,7 +26,7 @@ public class AbstractOperationsEvent extends Event {
 
     @JsonIgnore
     @Column("transport_call_id")
-    private UUID transportCallID;
+    private String transportCallID;
 
     @Column("event_created_date_time")
     private OffsetDateTime creationDateTime;

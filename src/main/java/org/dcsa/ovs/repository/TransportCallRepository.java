@@ -5,6 +5,6 @@ import org.dcsa.ovs.model.TransportCall;
 
 import java.util.UUID;
 
-public interface TransportCallRepository extends ExtendedRepository<TransportCall, UUID> {
+public interface TransportCallRepository extends ExtendedRepository<TransportCall, String> {
 
 }

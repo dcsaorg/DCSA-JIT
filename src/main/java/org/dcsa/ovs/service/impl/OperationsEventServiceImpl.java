@@ -27,18 +27,14 @@ public class OperationsEventServiceImpl extends ExtendedBaseServiceImpl<Operatio
     @Override
     public Flux<OperationsEvent> mapTransportCall(Flux<OperationsEvent> operationsEvents) {
         return operationsEvents
-                .flatMap(operationsEvent -> {
-                    return transportCallService.findByUUID(operationsEvent.getTransportCallID())
-                            .map(transportCall -> {
-                                operationsEvent.setTransportCall(transportCall);
-                                return operationsEvent;
-                            });
-                });
+                .flatMap(operationsEvent -> transportCallService.findById(operationsEvent.getTransportCallID())
+                        .doOnNext(operationsEvent::setTransportCall)
+                        .thenReturn(operationsEvent));
     }
 
     @Override
     public Mono<OperationsEvent> create(OperationsEvent operationsEvent){
-        operationsEvent.setTransportCallID(operationsEvent.getTransportCall().getId());
+        operationsEvent.setTransportCallID(operationsEvent.getTransportCall().getTransportCallID());
         return super.save(operationsEvent);
 
 

@@ -23,6 +23,7 @@ public class Vessel extends AuditBase implements GetId<String> {
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
+    @Size(min = 7, max = 7)
     @Pattern(regexp = "[0-9]{7}")
     @Id
     private String id;
