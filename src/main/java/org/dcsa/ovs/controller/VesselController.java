@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "vessels", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "unofficial/vessels", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class VesselController extends ExtendedBaseController<VesselService, Vessel, String> {
 
     private final VesselService vesselService;
