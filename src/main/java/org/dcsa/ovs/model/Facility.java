@@ -1,8 +1,10 @@
 package org.dcsa.ovs.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -23,7 +25,9 @@ public class Facility {
 
     @Size(max = 5)
     @Column("un_location_code")
-    private String UNLocationCode;
+    @JsonProperty("UNLocationCode")
+    // Mismatch between JSON name and Java field name due to how the Core mapper works.
+    private String unLocationCode;
 
     @Size(max = 4)
     @Column("facility_bic_code")

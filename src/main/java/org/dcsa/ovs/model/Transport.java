@@ -38,7 +38,7 @@ public class Transport {
     private String dischargeTransportCallID;
 
     @JsonIgnore
-    @Column("vessel")
+    @Column("vessel_imo_number")
     private String vesselIMONumber;
 
 

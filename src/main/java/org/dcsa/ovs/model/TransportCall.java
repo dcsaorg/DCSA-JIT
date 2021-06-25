@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.dcsa.ovs.model.base.AbstractTransportCall;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("transport_call")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

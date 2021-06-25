@@ -9,7 +9,10 @@ import java.util.UUID;
 
 public interface TransportCallSubscriptionRepository extends ExtendedRepository<TransportCallSubscription, UUID> {
 
-    @Query("SELECT callback_url FROM dcsa_ovs_v1_0.transport_call_subscription" )
+    @Query("SELECT event_subscription.callback_url"
+           + " FROM event_subscription"
+           + " JOIN event_subscription_event_types ON (event_subscription.subscription_id = event_subscription_event_types.subscription_id)"
+           + " WHERE event_subscription_event_types.event_type = 'TRANSPORT'")
     Flux<String> getCallbackUrlsByFilters();
 
 }

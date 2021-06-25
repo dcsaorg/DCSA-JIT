@@ -1,11 +1,9 @@
 package org.dcsa.ovs.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
-import org.dcsa.core.model.GetId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
@@ -19,14 +17,13 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Vessel extends AuditBase implements GetId<String> {
+public class Vessel extends AuditBase {
 
-    @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
     @Size(min = 7, max = 7)
     @Pattern(regexp = "[0-9]{7}")
     @Id
-    private String id;
+    private String vesselIMONumber;
 
     @Size(max = 35)
     @Column("vessel_name")

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "unofficial/transports", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "transports", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class TransportTOController extends ExtendedBaseController<TransportTOService, TransportTO, UUID> {
 
     private final TransportTOService transportCallService;

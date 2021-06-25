@@ -23,11 +23,11 @@ public class VesselServiceImpl extends ExtendedBaseServiceImpl<VesselRepository,
 
     @Override
     public Mono<Vessel> create(Vessel vessel) {
-        if (vessel.getId() == null) {
+        if (vessel.getVesselIMONumber() == null) {
             return Mono.error(new CreateException("Missing vessel IMO number"));
         }
         try {
-            ValidationUtils.validateVesselIMONumber(vessel.getId());
+            ValidationUtils.validateVesselIMONumber(vessel.getVesselIMONumber());
         } catch (IllegalArgumentException e) {
             return Mono.error(new CreateException(e.getLocalizedMessage()));
         }
