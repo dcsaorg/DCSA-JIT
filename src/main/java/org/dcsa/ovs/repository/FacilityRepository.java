@@ -1,8 +1,7 @@
 package org.dcsa.ovs.repository;
 
+import org.dcsa.core.events.model.Facility;
 import org.dcsa.core.repository.ExtendedRepository;
-import org.dcsa.ovs.model.Carrier;
-import org.dcsa.ovs.model.Facility;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

@@ -2,11 +2,11 @@ package org.dcsa.ovs.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.BaseController;
+import org.dcsa.core.events.model.TransportEvent;
+import org.dcsa.core.events.service.TransportEventService;
 import org.dcsa.core.exception.GetException;
 import org.dcsa.core.extendedrequest.ExtendedParameters;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
-import org.dcsa.ovs.model.TransportEvent;
-import org.dcsa.ovs.service.TransportEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 import org.springframework.http.MediaType;
@@ -43,7 +43,7 @@ public class TransportCallTransportEventController extends BaseController<Transp
 
     @GetMapping()
     public Flux<TransportEvent> findAll(@PathVariable UUID transportCallID, ServerHttpResponse response, ServerHttpRequest request){
-        ExtendedRequest<TransportEvent> extendedRequest = new ExtendedRequest<TransportEvent>(extendedParameters, r2dbcDialect, getService().getModelClass());
+        ExtendedRequest<TransportEvent> extendedRequest = new ExtendedRequest<>(extendedParameters, r2dbcDialect, getService().getModelClass());
         try {
               extendedRequest.parseParameter(request.getQueryParams());
         } catch (GetException getException){

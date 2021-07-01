@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.dcsa.core.events.model.TransportEvent;
 import org.dcsa.core.model.AuditBase;
 import org.dcsa.core.model.GetId;
 import org.dcsa.ovs.model.base.AbstractOperationsEvent;

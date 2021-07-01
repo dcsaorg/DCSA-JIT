@@ -2,9 +2,10 @@ package org.dcsa.ovs.model.transferobjects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.model.ForeignKey;
-import org.dcsa.ovs.model.Transport;
-import org.dcsa.ovs.model.Vessel;
+import org.dcsa.core.events.model.Transport;
+import org.dcsa.core.events.model.Vessel;
 import org.springframework.data.annotation.Transient;
 
 @EqualsAndHashCode(callSuper = true)
