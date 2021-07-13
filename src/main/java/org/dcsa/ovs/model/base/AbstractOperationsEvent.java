@@ -1,13 +1,12 @@
 package org.dcsa.ovs.model.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.dcsa.core.events.model.TransportCall;
 import org.dcsa.ovs.model.Event;
-import org.dcsa.ovs.model.TransportCall;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
 import org.dcsa.ovs.model.enums.PortCallServiceTypeCode;
 import org.springframework.data.annotation.Transient;

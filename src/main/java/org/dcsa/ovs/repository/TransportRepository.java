@@ -4,6 +4,7 @@ import org.dcsa.core.repository.ExtendedRepository;
 import org.dcsa.ovs.model.Transport;
 import org.springframework.data.r2dbc.repository.Query;
 import reactor.core.publisher.Flux;
+import org.dcsa.core.events.model.Transport;
 
 import java.util.UUID;
 
