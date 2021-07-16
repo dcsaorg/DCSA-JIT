@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
-import org.dcsa.core.events.model.transferobjects.VesselPositionTO;
 import org.dcsa.ovs.model.enums.EventClassifierCode;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
 import org.springframework.data.annotation.Transient;
@@ -37,7 +36,6 @@ public class Timestamp {
     @Transient
     private PartyTO publisher;
 
-    // TODO: VesselPosition has not yet been added to the IM
     @Transient
-    private VesselPositionTO vesselPosition;
+    private LocationTO vesselPosition;
 }

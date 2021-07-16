@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.dcsa.core.events.model.Location;
 import org.dcsa.core.events.model.TransportCall;
-import org.dcsa.core.events.model.transferobjects.PartyTO;
+import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.ovs.model.Event;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
 import org.dcsa.ovs.model.enums.PortCallServiceTypeCode;
@@ -15,7 +16,6 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Table("operations_event")
 @NoArgsConstructor
@@ -41,7 +41,7 @@ public class AbstractOperationsEvent extends Event {
     private String publisherCodeListProvider;
 
     @Column("event_location")
-    private UUID eventLocation;
+    private String eventLocation;
 
     @Column("port_call_service_type_code")
     private PortCallServiceTypeCode portCallServiceTypeCode;
@@ -55,9 +55,14 @@ public class AbstractOperationsEvent extends Event {
     @Column("delay_reason_code")
     private String delayReasonCode;
 
+    @Column("vessel_position")
+    private String vesselPositionID;
+
     @Transient
     private TransportCall transportCall;
 
+    @Transient
+    private LocationTO vesselPosition;
 }
 
 

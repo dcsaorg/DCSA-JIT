@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.LocationService;
 import org.dcsa.core.events.service.PartyService;
-import org.dcsa.core.events.service.VesselPositionService;
 import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
@@ -23,7 +22,6 @@ import java.util.UUID;
 @Service
 public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> implements TimestampService {
 
-    private final VesselPositionService vesselPositionService;
     private final OperationsEventService operationsEventService;
     private final TransportCallRepository transportCallRepository;
     private final LocationService locationService;
@@ -45,6 +43,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setEventClassifierCode(timestamp.getEventClassifierCode());
         operationsEvent.setEventDateTime(timestamp.getEventDateTime());
         operationsEvent.setOperationsEventTypeCode(timestamp.getOperationsEventTypeCode());
+        operationsEvent.setPublisherRole(timestamp.getPublisherRole());
 
         return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), timestamp.getModeOfTransport(), timestamp.getVesselIMONumber())
                 .switchIfEmpty(Mono.error(new CreateException("No matching TransportCall found!")))
@@ -63,9 +62,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                 })
                 .flatMap(location -> Mono.justOrEmpty(location)
                         .flatMap(locationService::ensureResolvable)
+                        .doOnNext(x -> operationsEvent.setEventLocation(x.getId()))
                         .thenReturn(timestamp.getVesselPosition())
                 ).flatMap(vesselPosition -> Mono.justOrEmpty(vesselPosition)
-                        .flatMap(vesselPositionService::ensureResolvable)
+                        .flatMap(locationService::ensureResolvable)
+                        .doOnNext(x -> operationsEvent.setVesselPositionID(x.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
                 .thenReturn(timestamp);
