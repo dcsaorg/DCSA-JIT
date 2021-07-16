@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.LocationService;
 import org.dcsa.core.events.service.PartyService;
+import org.dcsa.core.events.service.VesselPositionService;
+import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
 import org.dcsa.ovs.model.OperationsEvent;
@@ -21,6 +23,7 @@ import java.util.UUID;
 @Service
 public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> implements TimestampService {
 
+    private final VesselPositionService vesselPositionService;
     private final OperationsEventService operationsEventService;
     private final TransportCallRepository transportCallRepository;
     private final LocationService locationService;
@@ -44,19 +47,28 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setOperationsEventTypeCode(timestamp.getOperationsEventTypeCode());
 
         return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), timestamp.getModeOfTransport(), timestamp.getVesselIMONumber())
-                .switchIfEmpty(Mono.error(new IllegalStateException("No matching TransportCall found!")))
+                .switchIfEmpty(Mono.error(new CreateException("No matching TransportCall found!")))
                 .flatMap(transportCall -> {
                     operationsEvent.setTransportCallID(transportCall.getTransportCallID());
                     operationsEvent.setTransportCall(transportCall);
 
-                    return Mono.just(timestamp.getParty())
+                    if (timestamp.getPublisher() == null) {
+                        return Mono.error(new CreateException("Party is empty or null"));
+                    }
+
+                    return Mono.just(timestamp.getPublisher())
                             .flatMap(partyService::ensureResolvable)
-//                            .justOrEmpty(timestamp.getLocation())
-//                            .flatMap(locationService::ensureResolvable)
-                            .thenReturn(operationsEvent);
-//                    return transportCallTOService.create(MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
-//                            .thenReturn(operationsEvent);
-                }).flatMap(operationsEventService::create).thenReturn(timestamp);
+                            .doOnNext(party -> operationsEvent.setPublisherID(party.getId()))
+                            .thenReturn(timestamp.getEventLocation());
+                })
+                .flatMap(location -> Mono.justOrEmpty(location)
+                        .flatMap(locationService::ensureResolvable)
+                        .thenReturn(timestamp.getVesselPosition())
+                ).flatMap(vesselPosition -> Mono.justOrEmpty(vesselPosition)
+                        .flatMap(vesselPositionService::ensureResolvable)
+                        .thenReturn(operationsEvent)
+                ).flatMap(operationsEventService::create)
+                .thenReturn(timestamp);
     }
 
     @Override

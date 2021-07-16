@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.events.model.TransportCall;
+import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.ovs.model.Event;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
 import org.dcsa.ovs.model.enums.PortCallServiceTypeCode;
@@ -32,9 +33,6 @@ public class AbstractOperationsEvent extends Event {
 
     @Column("operations_event_type_code")
     private OperationsEventTypeCode operationsEventTypeCode;
-
-    @Column("publisher")
-    private String publisher;
 
     @Column("publisher_role")
     private String publisherRole;

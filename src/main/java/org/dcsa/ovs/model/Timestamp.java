@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
+import org.dcsa.core.events.model.transferobjects.VesselPositionTO;
 import org.dcsa.ovs.model.enums.EventClassifierCode;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.OffsetDateTime;
@@ -14,19 +16,28 @@ import java.time.OffsetDateTime;
 @Table("timestamp")
 public class Timestamp {
     private String facilitySMDGCode;
+    private String facilityTypeCode;
 
     @JsonProperty("UNLocationCode")
     private String UNLocationCode;
 
-    private String modeOfTransport;
+    private String publisherRole;
+
     private String vesselIMONumber;
+    private String modeOfTransport;
     private EventClassifierCode eventClassifierCode;
     private OffsetDateTime eventDateTime;
     private OperationsEventTypeCode operationsEventTypeCode;
 
-    @JsonProperty("eventLocation")
-    private LocationTO location;
+    private String portCallServiceTypeCode;
 
-    @JsonProperty("publisher")
-    private PartyTO party;
+    @Transient
+    private LocationTO eventLocation;
+
+    @Transient
+    private PartyTO publisher;
+
+    // TODO: VesselPosition has not yet been added to the IM
+    @Transient
+    private VesselPositionTO vesselPosition;
 }
