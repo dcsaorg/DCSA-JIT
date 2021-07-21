@@ -54,6 +54,10 @@ springdoc:
     # swagger-ui custom path
     path: /docs
 
+dcsa:
+  securityConfig:
+    receiveNotificationEndpoint: "/unofficial/notification-endpoints"
+
 server:
   port: 9090
   error:
@@ -63,4 +67,6 @@ server:
 logging:
   level:
     dk: DEBUG
+    org:
+      dcsa: DEBUG
 
