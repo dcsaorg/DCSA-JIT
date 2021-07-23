@@ -1,7 +1,10 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dcsa.core.events.model.EquipmentEvent;
+import org.dcsa.core.events.model.TransportEvent;
 import org.dcsa.core.events.service.TransportCallService;
+import org.dcsa.core.events.service.TransportCallTOService;
 import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
 import org.dcsa.ovs.model.OperationsEvent;
 import org.dcsa.ovs.repository.OperationsEventRepository;
@@ -17,19 +20,23 @@ import java.util.UUID;
 public class OperationsEventServiceImpl extends ExtendedBaseServiceImpl<OperationsEventRepository, OperationsEvent, UUID> implements OperationsEventService {
 
     private final OperationsEventRepository operationsEventRepository;
-    private final TransportCallService transportCallService;
+    private final TransportCallTOService transportCallTOService;
 
     @Override
     public OperationsEventRepository getRepository() {
         return operationsEventRepository;
     }
 
+    private Mono<OperationsEvent> mapTransportCall(OperationsEvent equipmentEvent){
+        return transportCallTOService
+                .findById(equipmentEvent.getTransportCallID())
+                .doOnNext(equipmentEvent::setTransportCall)
+                .thenReturn(equipmentEvent);
+    }
+
     @Override
-    public Flux<OperationsEvent> mapTransportCall(Flux<OperationsEvent> operationsEvents) {
-        return operationsEvents
-                .flatMap(operationsEvent -> transportCallService.findById(operationsEvent.getTransportCallID())
-                        .doOnNext(operationsEvent::setTransportCall)
-                        .thenReturn(operationsEvent));
+    public Mono<OperationsEvent> loadRelatedEntities(OperationsEvent event) {
+        return mapTransportCall(event);
     }
 
     @Override
