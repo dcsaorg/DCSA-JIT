@@ -1,15 +1,17 @@
 package org.dcsa.ovs.service.impl;
 
+import jdk.dynalink.Operation;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.EquipmentEvent;
 import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.TransportEvent;
-import org.dcsa.core.events.service.EquipmentEventService;
 import org.dcsa.core.events.service.TransportEventService;
 import org.dcsa.core.events.service.impl.GenericEventServiceImpl;
 import org.dcsa.core.exception.NotFoundException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
+import org.dcsa.ovs.model.OperationsEvent;
 import org.dcsa.ovs.service.OVSEventService;
+import org.dcsa.ovs.service.OperationsEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -25,7 +27,7 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
     private TransportEventService transportEventService;
 
     @Autowired
-    private EquipmentEventService equipmentEventService;
+    private OperationsEventService operationsEventService;
 
     @Override
     public Class<Event> getModelClass() {
@@ -38,8 +40,8 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
             switch (event.getEventType()) {
                 case TRANSPORT:
                     return transportEventService.loadRelatedEntities((TransportEvent) event);
-                case EQUIPMENT:
-                    return equipmentEventService.loadRelatedEntities((EquipmentEvent) event);
+                case OPERATIONS:
+                    return operationsEventService.loadRelatedEntities((OperationsEvent) event);
                 default:
                     return Mono.just(event);
             }
@@ -50,7 +52,7 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
     public Mono<Event> findById(UUID id) {
         return Mono.<Event>empty()
                 .switchIfEmpty(transportEventService.findById(id).cast(Event.class))
-                .switchIfEmpty(equipmentEventService.findById(id).cast(Event.class))
+                .switchIfEmpty(operationsEventService.findById(id).cast(Event.class))
                 .switchIfEmpty(Mono.error(new NotFoundException("No event was found with id: " + id)));
     }
 
@@ -59,8 +61,8 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
         switch (event.getEventType()) {
             case TRANSPORT:
                 return transportEventService.create((TransportEvent) event).cast(Event.class);
-            case EQUIPMENT:
-                return equipmentEventService.create((EquipmentEvent) event).cast(Event.class);
+            case OPERATIONS:
+                return operationsEventService.create((OperationsEvent) event).cast(Event.class);
             default:
                 return Mono.error(new IllegalStateException("Unexpected value: " + event.getEventType()));
         }
