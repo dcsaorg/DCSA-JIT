@@ -1,8 +1,6 @@
 package org.dcsa.ovs.service.impl;
 
-import jdk.dynalink.Operation;
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.events.model.EquipmentEvent;
 import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.TransportEvent;
 import org.dcsa.core.events.service.TransportEventService;
@@ -43,7 +41,7 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
                 case OPERATIONS:
                     return operationsEventService.loadRelatedEntities((OperationsEvent) event);
                 default:
-                    return Mono.just(event);
+                    return Mono.empty();
             }
         });
     }
