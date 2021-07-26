@@ -27,11 +27,11 @@ public class OperationsEventServiceImpl extends ExtendedBaseServiceImpl<Operatio
         return operationsEventRepository;
     }
 
-    private Mono<OperationsEvent> mapTransportCall(OperationsEvent equipmentEvent){
+    private Mono<OperationsEvent> mapTransportCall(OperationsEvent operationsEvent) {
         return transportCallTOService
-                .findById(equipmentEvent.getTransportCallID())
-                .doOnNext(equipmentEvent::setTransportCall)
-                .thenReturn(equipmentEvent);
+                .findById(operationsEvent.getTransportCallID())
+                .doOnNext(operationsEvent::setTransportCall)
+                .thenReturn(operationsEvent);
     }
 
     @Override
@@ -40,10 +40,8 @@ public class OperationsEventServiceImpl extends ExtendedBaseServiceImpl<Operatio
     }
 
     @Override
-    public Mono<OperationsEvent> create(OperationsEvent operationsEvent){
+    public Mono<OperationsEvent> create(OperationsEvent operationsEvent) {
         operationsEvent.setTransportCallID(operationsEvent.getTransportCall().getTransportCallID());
         return super.save(operationsEvent);
-
-
     }
 }

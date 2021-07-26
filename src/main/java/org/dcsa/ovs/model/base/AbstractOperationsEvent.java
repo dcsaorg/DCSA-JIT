@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.events.model.Event;
-import org.dcsa.core.events.model.TransportCall;
 import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
@@ -64,5 +63,3 @@ public class AbstractOperationsEvent extends Event {
     @Transient
     private LocationTO vesselPosition;
 }
-
-
