@@ -1,12 +1,15 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dcsa.core.events.model.base.AbstractTransportCall;
+import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.LocationService;
 import org.dcsa.core.events.service.PartyService;
 import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
+import org.dcsa.core.util.MappingUtils;
 import org.dcsa.ovs.model.OperationsEvent;
 import org.dcsa.ovs.model.Timestamp;
 import org.dcsa.ovs.service.*;
@@ -49,7 +52,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                 .switchIfEmpty(Mono.error(new CreateException("No matching TransportCall found!")))
                 .flatMap(transportCall -> {
                     operationsEvent.setTransportCallID(transportCall.getTransportCallID());
-                    operationsEvent.setTransportCall(transportCall);
+                    operationsEvent.setTransportCall(MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class));
 
                     if (timestamp.getPublisher() == null) {
                         return Mono.error(new CreateException("Party is empty or null"));

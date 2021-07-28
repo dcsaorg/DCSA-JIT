@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.dcsa.core.events.model.Location;
-import org.dcsa.core.events.model.TransportCall;
+import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.transferobjects.LocationTO;
-import org.dcsa.ovs.model.Event;
+import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.ovs.model.enums.OperationsEventTypeCode;
 import org.dcsa.ovs.model.enums.PortCallServiceTypeCode;
 import org.springframework.data.annotation.Transient;
@@ -59,10 +58,8 @@ public class AbstractOperationsEvent extends Event {
     private String vesselPositionID;
 
     @Transient
-    private TransportCall transportCall;
+    private TransportCallTO transportCall;
 
     @Transient
     private LocationTO vesselPosition;
 }
-
-

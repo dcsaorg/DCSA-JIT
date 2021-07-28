@@ -28,13 +28,13 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: dcsaorg/DCSA-API-Validator
-        ref: master
+        ref: DDT-10
         token: ${{ secrets.REPO_ACCESS_PAT }}
-    - name: Run API validator
-      run: mvn test -Dtest.suite=OVSV1.xml
+    - name: Run API validator V2
+      run: mvn test -Dtest.suite=OVSV2.xml
       env: 
         client_secret: ${{ secrets.AUTH0_DCSA_CLIENT_SECRET }}
         client_id: 1qEYXCbxWvjeYS8VVm1BfnfZrP3TY9n8
         audience: localhost
         OAuthTokenUri: https://dcsa.eu.auth0.com/oauth/token
-        API_ROOT_URI: http://localhost:9090/v1
+        API_ROOT_URI: http://localhost:9090/v2

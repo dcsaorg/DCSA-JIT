@@ -1,11 +1,11 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dcsa.core.events.model.enums.EventType;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
 import org.dcsa.ovs.model.OperationsEvent;
 import org.dcsa.ovs.model.base.AbstractOperationsEvent;
-import org.dcsa.ovs.model.enums.EventType;
 import org.dcsa.ovs.model.transferobjects.OperationsEventTO;
 import org.dcsa.ovs.repository.OperationsEventRepository;
 import org.dcsa.ovs.service.OperationsEventService;
