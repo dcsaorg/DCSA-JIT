@@ -21,9 +21,9 @@ jobs:
         servers: '[{ "id": "github", "username": "${{ secrets.DCSA_USER }}", "password": "${{ secrets.DCSA_PACKAGES_PAT }}" }]'
     - run : cat /home/runner/.m2/settings.xml        
     - name: Build Operational Vessel Schedules API
-      run: mvn package -DskipTests -X #Need to skip the tests as they depend on a running DB
+      run: cd DCSA-OVS && mvn package -DskipTests -X #Need to skip the tests as they depend on a running DB
     - name: Build and run the microservices
-      run: docker-compose -f docker-compose.yml up -d -V
+      run: cd DCSA-OVS && docker-compose -f docker-compose.yml up -d -V
 
     - name: Checkout dcsaorg/DCSA-API-Validator
       uses: actions/checkout@v2
@@ -31,7 +31,8 @@ jobs:
         repository: dcsaorg/DCSA-API-Validator
         ref: DDT-10
         token: ${{ secrets.REPO_ACCESS_PAT }}
-             
+        path: DCSA-API-Validator
+        
       # Assert that the database is ready to load the test data.
     - run: echo 'SELECT * FROM dcsa_im_v3_0.location;' | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f - 2>/dev/null || sleep 5
 
@@ -39,7 +40,7 @@ jobs:
       run: cat DCSA-Information-Model/datamodel/testdata.d/*.sql | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f -
         
     - name: Run API validator V2
-      run: mvn test -Dtest.suite=OVSV2.xml
+      run: cd DCSA-API-Validator && mvn -Dtest.suite=OVSV2.xml test
       env: 
         client_secret: ${{ secrets.AUTH0_DCSA_CLIENT_SECRET }}
         client_id: 1qEYXCbxWvjeYS8VVm1BfnfZrP3TY9n8
