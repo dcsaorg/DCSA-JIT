@@ -8,6 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
+        path: DCSA-OVS
         submodules: recursive
     - name: Set up Java JDK
       uses: actions/setup-java@v1
