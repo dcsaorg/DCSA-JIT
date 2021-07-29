@@ -2,12 +2,12 @@ package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.Event;
+import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.TransportEvent;
 import org.dcsa.core.events.service.TransportEventService;
 import org.dcsa.core.events.service.impl.GenericEventServiceImpl;
 import org.dcsa.core.exception.NotFoundException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
-import org.dcsa.ovs.model.OperationsEvent;
 import org.dcsa.ovs.service.OVSEventService;
 import org.dcsa.ovs.service.OperationsEventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,8 @@ import java.util.UUID;
 @Service
 public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSEventService {
 
-    @Autowired
-    private TransportEventService transportEventService;
-
-    @Autowired
-    private OperationsEventService operationsEventService;
-
-    @Override
-    public Class<Event> getModelClass() {
-        return Event.class;
-    }
+    private final TransportEventService transportEventService;
+    private final OperationsEventService operationsEventService;
 
     @Override
     public Flux<Event> findAllExtended(ExtendedRequest<Event> extendedRequest) {

@@ -1,11 +1,10 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.enums.EventType;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
-import org.dcsa.ovs.model.OperationsEvent;
-import org.dcsa.ovs.model.base.AbstractOperationsEvent;
 import org.dcsa.ovs.model.transferobjects.OperationsEventTO;
 import org.dcsa.ovs.repository.OperationsEventRepository;
 import org.dcsa.ovs.service.OperationsEventService;
@@ -29,7 +28,7 @@ public class OperationsEventTOServiceImpl extends BaseServiceImpl<OperationsEven
 
 
     @Override
-    public Flux<OperationsEventTO> findAllExtended(ExtendedRequest<AbstractOperationsEvent> extendedRequest) {
+    public Flux<OperationsEventTO> findAllExtended(ExtendedRequest<OperationsEvent> extendedRequest) {
         return null;
     }
 

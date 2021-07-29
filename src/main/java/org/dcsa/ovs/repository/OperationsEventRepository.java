@@ -1,7 +1,7 @@
 package org.dcsa.ovs.repository;
 
+import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.repository.ExtendedRepository;
-import org.dcsa.ovs.model.OperationsEvent;
 
 
 import java.util.UUID;
