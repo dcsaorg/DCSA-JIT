@@ -6,6 +6,7 @@ import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.LocationService;
+import org.dcsa.core.events.service.OperationsEventService;
 import org.dcsa.core.events.service.PartyService;
 import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
