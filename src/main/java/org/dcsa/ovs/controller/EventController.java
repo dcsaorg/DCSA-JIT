@@ -24,6 +24,9 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -48,7 +51,16 @@ public class EventController extends AbstractEventController<OVSEventService, Ev
 
     @Override
     protected ExtendedRequest<Event> newExtendedRequest() {
-        return new ExtendedGenericEventRequest(extendedParameters, r2dbcDialect);
+        return new ExtendedGenericEventRequest(extendedParameters, r2dbcDialect) {
+            @Override
+            public void parseParameter(Map<String, List<String>> params) {
+                Map<String, List<String>> p = new HashMap<>(params);
+                // Add the eventType parameter (if it is missing) in order to limit the resultset
+                // to *only* TRANSPORT and OPERATIONS events
+                p.putIfAbsent("eventType", List.of("TRANSPORT,OPERATIONS"));
+                super.parseParameter(p);
+            }
+        };
     }
 
     @GetMapping
