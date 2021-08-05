@@ -1,6 +1,5 @@
 package org.dcsa.ovs.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.controller.AbstractEventController;
 import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
@@ -10,6 +9,7 @@ import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.validator.EnumSubset;
 import org.dcsa.core.validator.ValidEnum;
 import org.dcsa.ovs.service.OVSEventService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -27,11 +27,14 @@ import javax.validation.constraints.Size;
 
 @RestController
 @Validated
-@RequiredArgsConstructor
 @RequestMapping(value = "events", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class EventController extends AbstractEventController<OVSEventService, Event> {
 
     private final OVSEventService ovsEventService;
+
+    public EventController(@Qualifier("OVSEventServiceImpl") OVSEventService ovsEventService) {
+        this.ovsEventService = ovsEventService;
+    }
 
     @Override
     public OVSEventService getService() {
