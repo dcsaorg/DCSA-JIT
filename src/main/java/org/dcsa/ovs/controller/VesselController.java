@@ -2,9 +2,9 @@ package org.dcsa.ovs.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
-import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.service.VesselService;
+import org.dcsa.core.exception.CreateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
