@@ -68,11 +68,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                 })
                 .flatMap(location -> Mono.justOrEmpty(location)
                         .flatMap(locationService::ensureResolvable)
-                        .doOnNext(x -> operationsEvent.setEventLocationID(x.getId()))
+                        .doOnNext(location2 ->  operationsEvent.setEventLocationID(location2.getId()))
                         .thenReturn(timestamp.getVesselPosition())
                 ).flatMap(vesselPosition -> Mono.justOrEmpty(vesselPosition)
                         .flatMap(locationService::ensureResolvable)
-                        .doOnNext(x -> operationsEvent.setVesselPositionID(x.getId()))
+                        .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
                 .thenReturn(timestamp);
