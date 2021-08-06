@@ -2,6 +2,7 @@ package org.dcsa.ovs.controller;
 
 import org.dcsa.core.events.controller.AbstractEventController;
 import org.dcsa.core.events.model.Event;
+import org.dcsa.core.events.model.enums.EventType;
 import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
 import org.dcsa.core.events.model.enums.TransportEventTypeCode;
 import org.dcsa.core.events.util.ExtendedGenericEventRequest;
@@ -57,7 +58,9 @@ public class EventController extends AbstractEventController<OVSEventService, Ev
                 Map<String, List<String>> p = new HashMap<>(params);
                 // Add the eventType parameter (if it is missing) in order to limit the resultset
                 // to *only* TRANSPORT and OPERATIONS events
-                p.putIfAbsent("eventType", List.of("TRANSPORT,OPERATIONS"));
+                p.putIfAbsent("eventType", List.of(
+                        EventType.TRANSPORT.name() + "," +
+                        EventType.OPERATIONS.name()));
                 super.parseParameter(p);
             }
         };
