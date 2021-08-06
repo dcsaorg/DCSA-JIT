@@ -51,24 +51,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setPublisherRole(timestamp.getPublisherRole());
         operationsEvent.setFacilityTypeCode(timestamp.getFacilityTypeCode());
 
-        if (timestamp.getPublisher() == null)
-            return Mono.error(new CreateException("Party is empty or null"));
-        if (timestamp.getPublisherRole() == null)
-            return Mono.error(new CreateException("PublisherRole is empty or null"));
-        if (timestamp.getVesselIMONumber() == null)
-            return Mono.error(new CreateException("Vessel IMO Number is empty or null"));
-        if (timestamp.getUNLocationCode() == null)
-            return Mono.error(new CreateException("UN Location Code is empty or null"));
-        if (timestamp.getFacilityTypeCode() == null)
-            return Mono.error(new CreateException("Facility Type Code is empty or null"));
-        if (timestamp.getEventClassifierCode() == null)
-            return Mono.error(new CreateException("Event Classifier Code is empty or null"));
-        if (timestamp.getOperationsEventTypeCode() == null)
-            return Mono.error(new CreateException("Operations Event Type Code is empty or null"));
-        if (timestamp.getEventDateTime() == null)
-            return Mono.error(new CreateException("Event Date Time is empty or null"));
-
-
         return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), timestamp.getModeOfTransport(), timestamp.getVesselIMONumber())
                 .flatMap(transportCall -> {
                     if (transportCall != null) {
