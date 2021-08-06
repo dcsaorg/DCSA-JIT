@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.dcsa.core.events.model.enums.EventClassifierCode;
 import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
+import org.dcsa.core.events.model.enums.PortCallServiceTypeCode;
 import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.springframework.data.annotation.Transient;
@@ -28,7 +29,7 @@ public class Timestamp {
     private OffsetDateTime eventDateTime;
     private OperationsEventTypeCode operationsEventTypeCode;
 
-    private String portCallServiceTypeCode;
+    private PortCallServiceTypeCode portCallServiceTypeCode;
 
     @Transient
     private LocationTO eventLocation;
