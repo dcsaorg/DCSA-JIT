@@ -47,16 +47,15 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setEventClassifierCode(timestamp.getEventClassifierCode());
         operationsEvent.setEventDateTime(timestamp.getEventDateTime());
         operationsEvent.setOperationsEventTypeCode(timestamp.getOperationsEventTypeCode());
+        operationsEvent.setPortCallServiceTypeCode(timestamp.getPortCallServiceTypeCode());
         operationsEvent.setPublisherRole(timestamp.getPublisherRole());
+        operationsEvent.setFacilityTypeCode(timestamp.getFacilityTypeCode());
 
         return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), timestamp.getModeOfTransport(), timestamp.getVesselIMONumber())
-                .switchIfEmpty(Mono.error(new CreateException("No matching TransportCall found!")))
                 .flatMap(transportCall -> {
-                    operationsEvent.setTransportCallID(transportCall.getTransportCallID());
-                    operationsEvent.setTransportCall(MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class));
-
-                    if (timestamp.getPublisher() == null) {
-                        return Mono.error(new CreateException("Party is empty or null"));
+                    if (transportCall != null) {
+                        operationsEvent.setTransportCallID(transportCall.getTransportCallID());
+                        operationsEvent.setTransportCall(MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class));
                     }
 
                     return Mono.just(timestamp.getPublisher())
@@ -66,11 +65,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                 })
                 .flatMap(location -> Mono.justOrEmpty(location)
                         .flatMap(locationService::ensureResolvable)
-                        .doOnNext(x -> operationsEvent.setEventLocation(x.getId()))
+                        .doOnNext(location2 -> operationsEvent.setEventLocationID(location2.getId()))
                         .thenReturn(timestamp.getVesselPosition())
                 ).flatMap(vesselPosition -> Mono.justOrEmpty(vesselPosition)
                         .flatMap(locationService::ensureResolvable)
-                        .doOnNext(x -> operationsEvent.setVesselPositionID(x.getId()))
+                        .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
                 .thenReturn(timestamp);

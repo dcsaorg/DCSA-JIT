@@ -30,8 +30,8 @@ public class TimestampController extends ExtendedBaseController<TimestampService
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Timestamp> create(@Valid @RequestBody Timestamp timestamp) {
-        return timestampService.create(timestamp);
+        return timestampService.create(timestamp).flatMap(x -> Mono.empty());
     }
 }
