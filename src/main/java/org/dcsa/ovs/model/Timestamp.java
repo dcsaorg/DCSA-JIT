@@ -11,11 +11,13 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 
 @Data
 @Table("timestamp")
 public class Timestamp {
+    @Size(max = 6)
     private String facilitySMDGCode;
 
     @NotNull
