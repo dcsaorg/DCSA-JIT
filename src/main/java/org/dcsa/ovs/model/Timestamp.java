@@ -7,6 +7,7 @@ import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.util.ValidationUtils;
 import org.dcsa.core.validator.EnumSubset;
+import org.dcsa.core.events.model.enums.FacilityTypeCode;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -17,7 +18,6 @@ import java.time.OffsetDateTime;
 @Data
 @Table("timestamp")
 public class Timestamp {
-
     @Size(max = 6)
     private String facilitySMDGCode;
 
