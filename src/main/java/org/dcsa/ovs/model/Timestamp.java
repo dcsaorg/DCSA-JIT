@@ -2,12 +2,11 @@ package org.dcsa.ovs.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.dcsa.core.events.model.enums.EventClassifierCode;
-import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
-import org.dcsa.core.events.model.enums.PortCallServiceTypeCode;
+import org.dcsa.core.events.model.enums.*;
 import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.util.ValidationUtils;
+import org.dcsa.core.validator.EnumSubset;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -23,16 +22,16 @@ public class Timestamp {
     private String facilitySMDGCode;
 
     @NotNull
-    @Size(min = 4, max = 4)
-    // TODO Move FacilityTypeCode enum out of EBL and into Event-Core
-    private String facilityTypeCode;
+    @EnumSubset(anyOf = {"PBPL", "BRTH"})
+    private FacilityTypeCode facilityTypeCode;
 
     @NotNull
-    @Size(max = 5)
+    @Size(min = 1, max = 5)
     @JsonProperty("UNLocationCode")
     private String UNLocationCode;
 
     @NotNull
+    @Size(min = 1)
     private String publisherRole;
 
     @NotNull
@@ -44,7 +43,7 @@ public class Timestamp {
         this.vesselIMONumber = vesselIMONumber;
     }
 
-    private String modeOfTransport;
+    private DCSATransportType modeOfTransport;
 
     @NotNull
     private EventClassifierCode eventClassifierCode;
