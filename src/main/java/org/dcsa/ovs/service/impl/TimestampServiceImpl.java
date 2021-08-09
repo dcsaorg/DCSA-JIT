@@ -51,7 +51,9 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setPublisherRole(timestamp.getPublisherRole());
         operationsEvent.setFacilityTypeCode(timestamp.getFacilityTypeCode());
 
-        return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), timestamp.getModeOfTransport(), timestamp.getVesselIMONumber())
+        String modeOfTransport = timestamp.getModeOfTransport() != null ? timestamp.getModeOfTransport().name() : null;
+
+        return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), modeOfTransport, timestamp.getVesselIMONumber())
                 .flatMap(transportCall -> {
                     if (transportCall != null) {
                         operationsEvent.setTransportCallID(transportCall.getTransportCallID());
