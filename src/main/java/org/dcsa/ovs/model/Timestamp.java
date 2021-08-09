@@ -21,7 +21,7 @@ public class Timestamp {
     private String facilitySMDGCode;
 
     @NotNull
-    @EnumSubset(anyOf = {"PBPL,BRTH"})
+    @EnumSubset(anyOf = {"PBPL","BRTH"})
     private FacilityTypeCode facilityTypeCode;
 
     @NotNull
