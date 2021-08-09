@@ -38,7 +38,7 @@ jobs:
     - name: Load DCSA test data
       run: cat DCSA-Information-Model/datamodel/testdata.d/*.sql | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f -
         
-    - name: Run API validator V2
+    - name: Run the API validator on OVSV2
       run: cd DCSA-API-Validator && mvn -Dtest.suite=OVSV2.xml test
       env: 
         client_secret: ${{ secrets.AUTH0_DCSA_CLIENT_SECRET }}
