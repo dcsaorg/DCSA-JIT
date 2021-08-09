@@ -44,7 +44,6 @@ public class Timestamp {
         this.vesselIMONumber = vesselIMONumber;
     }
 
-    @Size(max = 3)
     private String modeOfTransport;
 
     @NotNull
