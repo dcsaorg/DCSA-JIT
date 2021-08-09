@@ -23,7 +23,7 @@
         <dcsa.version>0.8.9-SNAPSHOT</dcsa.version>
         <dcsa.tag/>
         <dcsa.artifacttype/>
-        <dcsa.events.version>0.0.11-SNAPSHOT</dcsa.events.version>
+        <dcsa.events.version>0.0.12-SNAPSHOT</dcsa.events.version>
         <dcsa.event.tag/>
     </properties>
 
