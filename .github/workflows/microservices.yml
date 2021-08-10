@@ -37,7 +37,7 @@ jobs:
     - run: echo 'SELECT * FROM dcsa_im_v3_0.location;' | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f - 2>/dev/null || sleep 5
 
     - name: Load DCSA test data
-      run: cat DCSA-Information-Model/datamodel/testdata.d/*.sql | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f -
+      run: cat DCSA-OVS/DCSA-Information-Model/datamodel/testdata.d/*.sql | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f -
         
     - name: Run API validator V2
       run: cd DCSA-API-Validator && mvn -Dtest.suite=OVSV2.xml test
