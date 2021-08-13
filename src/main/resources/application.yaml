@@ -31,7 +31,7 @@ spring:
     url: r2dbc:postgresql://${db_hostname}
     name: dcsa_openapi
     properties:
-      schema: dcsa_ovs_v1_0
+      schema: dcsa_im_v3_0
     username: dcsa_db_owner
     password: 9c072fe8-c59c-11ea-b8d1-7b6577e9f3f5
     initialization-mode: always
@@ -41,7 +41,7 @@ spring:
         jwt:
           issuer-uri: https://dcsa.eu.auth0.com/
   webflux:
-    base-path: /v1
+    base-path: /v2
 
 auth0:
   audience: localhost
@@ -54,10 +54,19 @@ springdoc:
     # swagger-ui custom path
     path: /docs
 
+dcsa:
+  securityConfig:
+    receiveNotificationEndpoint: "/unofficial/notification-endpoints"
+
 server:
   port: 9090
+  error:
+    include-binding-errors: on_param
+    include-message: always
 
 logging:
   level:
     dk: DEBUG
+    org:
+      dcsa: DEBUG
 

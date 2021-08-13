@@ -5,13 +5,9 @@ import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.ovs.model.TransportCallSubscription;
 import org.dcsa.ovs.service.TransportCallSubscriptionService;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -30,17 +26,4 @@ public class TransportCallSubscriptionController extends ExtendedBaseController<
     public String getType() {
         return "TransportCallSubscription";
     }
-
-    @GetMapping
-    @Override
-    public Flux<TransportCallSubscription> findAll(ServerHttpResponse response, ServerHttpRequest request) {
-        return super.findAll(response, request);
-    }
-
-    @PostMapping( consumes = "application/json", produces = "application/json")
-    @Override
-    public Mono<TransportCallSubscription> create(@Valid @RequestBody TransportCallSubscription transportCallSubscription) {
-        return super.create(transportCallSubscription);
-    }
-
 }
