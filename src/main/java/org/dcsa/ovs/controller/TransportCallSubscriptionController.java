@@ -26,5 +26,4 @@ public class TransportCallSubscriptionController extends ExtendedBaseController<
     public String getType() {
         return "TransportCallSubscription";
     }
-
 }
