@@ -2,8 +2,8 @@ package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
-import org.dcsa.ovs.model.Carrier;
-import org.dcsa.ovs.repository.CarrierRepository;
+import org.dcsa.core.events.model.Carrier;
+import org.dcsa.core.events.repository.CarrierRepository;
 import org.dcsa.ovs.service.CarrierService;
 import org.springframework.stereotype.Service;
 

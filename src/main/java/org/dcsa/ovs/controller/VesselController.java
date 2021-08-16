@@ -8,13 +8,14 @@ import org.dcsa.core.exception.CreateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "vessels", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "unofficial-vessels", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class VesselController extends ExtendedBaseController<VesselService, Vessel, String> {
 
     private final VesselService vesselService;
@@ -34,4 +35,28 @@ public class VesselController extends ExtendedBaseController<VesselService, Vess
         }
         return vesselService.create(vessel);
     }
+
+    @PutMapping( path = "{vesselIMONumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Vessel> update(@PathVariable String vesselIMONumber, @Valid @RequestBody Vessel vessel)  {
+        VesselService s = getService();
+        if (!vesselIMONumber.equals(s.getIdOfEntity(vessel))) {
+            return updateMonoError();
+        }
+        return s.update(vessel);
+    }
+
+    @Override
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Mono<Void> delete(@RequestBody Vessel vessel) {
+        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
+    }
+
+    @DeleteMapping( path = "{vesselIMONumber}")
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Mono<Void> deleteById(@PathVariable String vesselIMONumber) {
+        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
+    }
+
 }
