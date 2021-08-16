@@ -2,7 +2,7 @@ package org.dcsa.ovs.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
-import org.dcsa.ovs.model.Carrier;
+import org.dcsa.core.events.model.Carrier;
 import org.dcsa.ovs.service.CarrierService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "carriers", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "unofficial-carriers", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CarrierController extends ExtendedBaseController<CarrierService, Carrier, UUID> {
 
     private final CarrierService carrierService;
