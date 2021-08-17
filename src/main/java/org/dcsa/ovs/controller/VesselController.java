@@ -25,6 +25,12 @@ public class VesselController extends ExtendedBaseController<VesselService, Vess
         return vesselService;
     }
 
+    @Override
+    @GetMapping(value = "{vesselIMONumber}")
+    @ResponseStatus(HttpStatus.OK)
+        public Mono<Vessel> findById(@PathVariable String vesselIMONumber) {
+        return getService().findById(vesselIMONumber);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -39,11 +45,10 @@ public class VesselController extends ExtendedBaseController<VesselService, Vess
     @PutMapping( path = "{vesselIMONumber}")
     @ResponseStatus(HttpStatus.OK)
     public Mono<Vessel> update(@PathVariable String vesselIMONumber, @Valid @RequestBody Vessel vessel)  {
-        VesselService s = getService();
-        if (!vesselIMONumber.equals(s.getIdOfEntity(vessel))) {
+        if (!vesselIMONumber.equals(vesselService.getIdOfEntity(vessel))) {
             return updateMonoError();
         }
-        return s.update(vessel);
+        return vesselService.update(vessel);
     }
 
     @Override
