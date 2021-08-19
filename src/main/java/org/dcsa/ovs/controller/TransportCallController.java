@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "unofficial-TransportCalls", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "unofficial-transport-calls", produces = {MediaType.APPLICATION_JSON_VALUE})
 
 public class TransportCallController extends ExtendedBaseController<TransportCallTOService, TransportCallTO, String> {
 
