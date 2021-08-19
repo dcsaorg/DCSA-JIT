@@ -3,7 +3,7 @@ package org.dcsa.ovs.controller;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.core.events.model.Carrier;
-import org.dcsa.ovs.service.CarrierService;
+import org.dcsa.core.events.service.CarrierService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
