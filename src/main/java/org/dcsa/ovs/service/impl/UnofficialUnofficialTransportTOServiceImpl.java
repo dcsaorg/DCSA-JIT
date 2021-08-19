@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.Facility;
 import org.dcsa.core.events.model.TransportCall;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
-import org.dcsa.core.events.model.transferobjects.TransportCallTO;
+import org.dcsa.ovs.model.transferobjects.ShallowTransportCallTO;
 import org.dcsa.core.events.service.TransportCallService;
 import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedParameters;
@@ -12,11 +12,11 @@ import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.ExtendedBaseServiceImpl;
 import org.dcsa.core.util.MappingUtils;
 import org.dcsa.core.events.model.Transport;
-import org.dcsa.ovs.model.transferobjects.TransportTO;
+import org.dcsa.ovs.model.transferobjects.UnofficialTransportTO;
 import org.dcsa.ovs.repository.FacilityRepository;
 import org.dcsa.ovs.repository.TransportRepository;
-import org.dcsa.ovs.repository.TransportTORepository;
-import org.dcsa.ovs.service.TransportTOService;
+import org.dcsa.ovs.repository.UnofficialTransportTORepository;
+import org.dcsa.ovs.service.UnofficialTransportTOService;
 import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,26 +31,26 @@ import java.util.function.BiFunction;
 
 @RequiredArgsConstructor
 @Service
-public class TransportTOServiceImpl extends ExtendedBaseServiceImpl<TransportTORepository, TransportTO, UUID> implements TransportTOService {
+public class UnofficialUnofficialTransportTOServiceImpl extends ExtendedBaseServiceImpl<UnofficialTransportTORepository, UnofficialTransportTO, UUID> implements UnofficialTransportTOService {
 
     private final FacilityRepository facilityRepository;
     private final TransportCallService transportCallService;
     private final TransportRepository transportRepository;
-    private final TransportTORepository transportTORepository;
+    private final UnofficialTransportTORepository unofficialTransportTORepository;
     private final ExtendedParameters extendedParameters;
     private final R2dbcDialect r2dbcDialect;
 
     @Override
-    public Flux<TransportTO> findAll() {
-        ExtendedRequest<TransportTO> extendedRequest = newExtendedRequest();
-        return transportTORepository.findAllExtended(extendedRequest);
+    public Flux<UnofficialTransportTO> findAll() {
+        ExtendedRequest<UnofficialTransportTO> extendedRequest = newExtendedRequest();
+        return unofficialTransportTORepository.findAllExtended(extendedRequest);
     }
 
     @Override
-    public Mono<TransportTO> findById(UUID id) {
-        ExtendedRequest<TransportTO> extendedRequest = newExtendedRequest();
+    public Mono<UnofficialTransportTO> findById(UUID id) {
+        ExtendedRequest<UnofficialTransportTO> extendedRequest = newExtendedRequest();
         extendedRequest.parseParameter(Map.of("transportID", List.of(String.valueOf(id))));
-        return transportTORepository.findAllExtended(extendedRequest)
+        return unofficialTransportTORepository.findAllExtended(extendedRequest)
                 .take(2)
                 .collectList()
                 .flatMap(transportTOs -> {
@@ -65,7 +65,7 @@ public class TransportTOServiceImpl extends ExtendedBaseServiceImpl<TransportTOR
     }
 
     @Override
-    public Mono<TransportTO> create(TransportTO transport) {
+    public Mono<UnofficialTransportTO> create(UnofficialTransportTO transport) {
         return Flux.concat(
                 mapTransportCall(transport.getDischargeTransportCall())
                         .flatMap(transportCallService::create)
@@ -78,14 +78,14 @@ public class TransportTOServiceImpl extends ExtendedBaseServiceImpl<TransportTOR
                 .flatMap(this::findById);
     }
 
-    private Mono<TransportCall> mapTransportCall(TransportCallTO transportCallTO) {
+    private Mono<TransportCall> mapTransportCall(ShallowTransportCallTO transportCallTO) {
         TransportCall transportCall = MappingUtils.instanceFrom(transportCallTO, TransportCall::new, AbstractTransportCall.class);
         return mapEntity(transportCallTO)
                 .doOnNext(facility -> transportCall.setFacilityID(facility.getFacilityID()))
                 .thenReturn(transportCall);
     }
 
-    private Mono<Facility> mapEntity(TransportCallTO transportCallTO) {
+    private Mono<Facility> mapEntity(ShallowTransportCallTO transportCallTO) {
         BiFunction<String, String, Mono<Facility>> method;
         if (transportCallTO.getFacilityCodeListProvider() == null) {
             throw new CreateException("facility code list provider is required");
@@ -107,7 +107,7 @@ public class TransportTOServiceImpl extends ExtendedBaseServiceImpl<TransportTOR
     }
 
     @Override
-    public Mono<TransportTO> update(TransportTO transport) {
+    public Mono<UnofficialTransportTO> update(UnofficialTransportTO transport) {
         return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
     }
 
@@ -117,23 +117,23 @@ public class TransportTOServiceImpl extends ExtendedBaseServiceImpl<TransportTOR
     }
 
     @Override
-    public Mono<Void> delete(TransportTO transport) {
+    public Mono<Void> delete(UnofficialTransportTO transport) {
         return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
     }
 
     @Override
-    public TransportTORepository getRepository() {
-        return transportTORepository;
+    public UnofficialTransportTORepository getRepository() {
+        return unofficialTransportTORepository;
     }
 
     @Override
-    public UUID getIdOfEntity(TransportTO entity) {
+    public UUID getIdOfEntity(UnofficialTransportTO entity) {
         return entity.getTransportID();
     }
 
 
-    public ExtendedRequest<TransportTO> newExtendedRequest() {
-        return new ExtendedRequest<>(extendedParameters, r2dbcDialect, TransportTO.class);
+    public ExtendedRequest<UnofficialTransportTO> newExtendedRequest() {
+        return new ExtendedRequest<>(extendedParameters, r2dbcDialect, UnofficialTransportTO.class);
     }
 
 }
