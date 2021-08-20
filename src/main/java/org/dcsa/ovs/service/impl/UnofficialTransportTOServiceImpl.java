@@ -31,7 +31,7 @@ import java.util.function.BiFunction;
 
 @RequiredArgsConstructor
 @Service
-public class UnofficialUnofficialTransportTOServiceImpl extends ExtendedBaseServiceImpl<UnofficialTransportTORepository, UnofficialTransportTO, UUID> implements UnofficialTransportTOService {
+public class UnofficialTransportTOServiceImpl extends ExtendedBaseServiceImpl<UnofficialTransportTORepository, UnofficialTransportTO, UUID> implements UnofficialTransportTOService {
 
     private final FacilityRepository facilityRepository;
     private final TransportCallService transportCallService;
