@@ -3,7 +3,9 @@ package org.dcsa.ovs.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.EventSubscription;
 import org.dcsa.core.events.model.base.AbstractEventSubscription;
-import org.dcsa.core.events.model.enums.*;
+import org.dcsa.core.events.model.enums.EventType;
+import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
+import org.dcsa.core.events.model.enums.TransportEventTypeCode;
 import org.dcsa.core.events.repository.EventSubscriptionRepository;
 import org.dcsa.core.events.service.EventSubscriptionService;
 import org.dcsa.core.events.service.impl.EventSubscriptionTOServiceImpl;
@@ -11,11 +13,12 @@ import org.dcsa.core.exception.UpdateException;
 import org.dcsa.core.util.MappingUtils;
 import org.dcsa.ovs.model.transferobjects.OVSEventSubscriptionTO;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
@@ -26,8 +29,8 @@ import java.util.stream.Collectors;
 public class OVSEventSubscriptionTOServiceImpl
     extends EventSubscriptionTOServiceImpl<OVSEventSubscriptionTO, EventSubscriptionService> {
 
-  private static final String ALL_ALLOWED_EVENT_TYPES =
-      EventType.TRANSPORT.name() + "," + EventType.OPERATIONS.name();
+  private static final List<EventType> ALL_ALLOWED_EVENT_TYPES =
+      List.of(EventType.TRANSPORT, EventType.OPERATIONS);
 
   private final EventSubscriptionService eventSubscriptionService;
   private final EventSubscriptionRepository eventSubscriptionRepository;
@@ -69,15 +72,16 @@ public class OVSEventSubscriptionTOServiceImpl
   private Mono<OVSEventSubscriptionTO> createEventTypes(
       OVSEventSubscriptionTO eventSubscriptionTO) {
 
-    String eventTypes;
+    List<EventType> eventTypes;
 
-    if (!StringUtils.hasLength(eventSubscriptionTO.getEventType())) {
+    if (CollectionUtils.isEmpty(eventSubscriptionTO.getEventType())) {
       eventTypes = ALL_ALLOWED_EVENT_TYPES;
       eventSubscriptionTO.setEventType(eventTypes);
     } else {
       eventTypes = eventSubscriptionTO.getEventType();
     }
-    return Flux.fromIterable(stringToEventTypeList.apply(eventTypes))
+
+    return Flux.fromIterable(eventTypes)
         .concatMap(
             eventType ->
                 eventSubscriptionRepository.insertEventTypeForSubscription(
@@ -86,39 +90,25 @@ public class OVSEventSubscriptionTOServiceImpl
   }
 
   private Mono<Void> createTransportEventType(OVSEventSubscriptionTO eventSubscriptionTO) {
-    String transportEventTypeCode = eventSubscriptionTO.getTransportEventTypeCode();
-    if (StringUtils.hasLength(transportEventTypeCode) && transportEventTypeCode.contains(",")) {
-      return Flux.fromIterable(
-              Arrays.stream(transportEventTypeCode.split(",")).collect(Collectors.toList()))
-          .flatMap(
-              e ->
-                  eventSubscriptionRepository.insertTransportEventTypeForSubscription(
-                      eventSubscriptionTO.getSubscriptionID(), TransportEventTypeCode.valueOf(e)))
-          .then();
-    } else if (StringUtils.hasLength(transportEventTypeCode)) {
-      return eventSubscriptionRepository.insertTransportEventTypeForSubscription(
-          eventSubscriptionTO.getSubscriptionID(),
-          TransportEventTypeCode.valueOf(transportEventTypeCode));
-    }
-    return Mono.empty();
+    List<TransportEventTypeCode> transportEventTypeCode =
+        eventSubscriptionTO.getTransportEventTypeCode();
+    return Flux.fromIterable(transportEventTypeCode)
+        .flatMap(
+            t ->
+                eventSubscriptionRepository.insertTransportEventTypeForSubscription(
+                    eventSubscriptionTO.getSubscriptionID(), t))
+        .then();
   }
 
   private Mono<Void> createOperationsEventType(OVSEventSubscriptionTO eventSubscriptionTO) {
-    String operationsEventTypeCode = eventSubscriptionTO.getOperationsEventTypeCode();
-    if (StringUtils.hasLength(operationsEventTypeCode) && operationsEventTypeCode.contains(",")) {
-      return Flux.fromIterable(
-              Arrays.stream(operationsEventTypeCode.split(",")).collect(Collectors.toList()))
-          .flatMap(
-              e ->
-                  eventSubscriptionRepository.insertOperationsEventTypeForSubscription(
-                      eventSubscriptionTO.getSubscriptionID(), OperationsEventTypeCode.valueOf(e)))
-          .then();
-    } else if (StringUtils.hasLength(operationsEventTypeCode)) {
-      return eventSubscriptionRepository.insertOperationsEventTypeForSubscription(
-          eventSubscriptionTO.getSubscriptionID(),
-          OperationsEventTypeCode.valueOf(operationsEventTypeCode));
-    }
-    return Mono.empty();
+    List<OperationsEventTypeCode> operationsEventTypeCode =
+        eventSubscriptionTO.getOperationsEventTypeCode();
+    return Flux.fromIterable(operationsEventTypeCode)
+        .flatMap(
+            o ->
+                eventSubscriptionRepository.insertOperationsEventTypeForSubscription(
+                    eventSubscriptionTO.getSubscriptionID(), o))
+        .then();
   }
 
   @Override
@@ -172,17 +162,12 @@ public class OVSEventSubscriptionTOServiceImpl
                         OVSEventSubscriptionTO subscriptionTO =
                             id2subscription.get(eventSubscriptionEventType.getSubscriptionID());
                         assert subscriptionTO != null;
-                        if (!StringUtils.hasLength(subscriptionTO.getEventType())) {
-                          subscriptionTO.setEventType(
-                              eventSubscriptionEventType.getEventType().name());
-                        } else if (StringUtils.hasLength(subscriptionTO.getEventType())
-                            && !subscriptionTO.getEventType().endsWith(",")) {
-                          subscriptionTO.setEventType(
-                              subscriptionTO
-                                  .getEventType()
-                                  .concat(",")
-                                  .concat(eventSubscriptionEventType.getEventType().name()));
+                        if (CollectionUtils.isEmpty(subscriptionTO.getEventType())) {
+                          subscriptionTO.setEventType(new ArrayList<>());
                         }
+                        subscriptionTO
+                            .getEventType()
+                            .add(eventSubscriptionEventType.getEventType());
                       })
                   .thenMany(Flux.fromIterable(eventSubscriptionList))
                   .map(AbstractEventSubscription::getSubscriptionID)
@@ -194,17 +179,12 @@ public class OVSEventSubscriptionTOServiceImpl
                         OVSEventSubscriptionTO subscriptionTO =
                             id2subscription.get(esTransportEventType.getSubscriptionID());
                         assert subscriptionTO != null;
-                        if (!StringUtils.hasLength(subscriptionTO.getTransportEventTypeCode())) {
-                          subscriptionTO.setTransportEventTypeCode(
-                              esTransportEventType.getTransportEventTypeCode().name());
-                        } else if (StringUtils.hasLength(subscriptionTO.getTransportEventTypeCode())
-                            && !subscriptionTO.getTransportEventTypeCode().endsWith(",")) {
-                          subscriptionTO.setTransportEventTypeCode(
-                              subscriptionTO
-                                  .getTransportEventTypeCode()
-                                  .concat(",")
-                                  .concat(esTransportEventType.getTransportEventTypeCode().name()));
+                        if (CollectionUtils.isEmpty(subscriptionTO.getTransportEventTypeCode())) {
+                          subscriptionTO.setTransportEventTypeCode(new ArrayList<>());
                         }
+                        subscriptionTO
+                            .getTransportEventTypeCode()
+                            .add(esTransportEventType.getTransportEventTypeCode());
                       })
                   .thenMany(Flux.fromIterable(eventSubscriptionList))
                   .map(AbstractEventSubscription::getSubscriptionID)
@@ -216,19 +196,12 @@ public class OVSEventSubscriptionTOServiceImpl
                         OVSEventSubscriptionTO subscriptionTO =
                             id2subscription.get(esOperationsEventType.getSubscriptionID());
                         assert subscriptionTO != null;
-                        if (!StringUtils.hasLength(subscriptionTO.getOperationsEventTypeCode())) {
-                          subscriptionTO.setOperationsEventTypeCode(
-                              esOperationsEventType.getOperationsEventTypeCode().name());
-                        } else if (StringUtils.hasLength(
-                                subscriptionTO.getOperationsEventTypeCode())
-                            && !subscriptionTO.getOperationsEventTypeCode().endsWith(",")) {
-                          subscriptionTO.setOperationsEventTypeCode(
-                              subscriptionTO
-                                  .getOperationsEventTypeCode()
-                                  .concat(",")
-                                  .concat(
-                                      esOperationsEventType.getOperationsEventTypeCode().name()));
+                        if (CollectionUtils.isEmpty(subscriptionTO.getOperationsEventTypeCode())) {
+                          subscriptionTO.setOperationsEventTypeCode(new ArrayList<>());
                         }
+                        subscriptionTO
+                            .getOperationsEventTypeCode()
+                            .add(esOperationsEventType.getOperationsEventTypeCode());
                       })
                   .thenMany(Flux.fromIterable(eventSubscriptionList));
             });
@@ -243,25 +216,25 @@ public class OVSEventSubscriptionTOServiceImpl
             eventSubscriptionTO ->
                 eventSubscriptionRepository
                     .findEventTypesForSubscription(eventSubscriptionTO.getSubscriptionID())
-                    .map(event -> EventType.valueOf(event).name())
+                    .map(EventType::valueOf)
                     .collectList()
-                    .doOnNext(events -> eventSubscriptionTO.setEventType(String.join(",", events)))
+                    .doOnNext(eventSubscriptionTO::setEventType)
                     .thenReturn(eventSubscriptionTO))
         .flatMap(
             esTo ->
                 eventSubscriptionRepository
                     .findTransportEventTypesForSubscriptionID(esTo.getSubscriptionID())
-                    .map(se -> TransportEventTypeCode.valueOf(se).name())
+                    .map(TransportEventTypeCode::valueOf)
                     .collectList()
-                    .doOnNext(events -> esTo.setTransportEventTypeCode(String.join(",", events)))
+                    .doOnNext(esTo::setTransportEventTypeCode)
                     .thenReturn(esTo))
         .flatMap(
             esTo ->
                 eventSubscriptionRepository
                     .findOperationsEventTypesForSubscriptionID(esTo.getSubscriptionID())
-                    .map(se -> OperationsEventTypeCode.valueOf(se).name())
+                    .map(OperationsEventTypeCode::valueOf)
                     .collectList()
-                    .doOnNext(events -> esTo.setOperationsEventTypeCode(String.join(",", events)))
+                    .doOnNext(esTo::setOperationsEventTypeCode)
                     .thenReturn(esTo));
   }
 

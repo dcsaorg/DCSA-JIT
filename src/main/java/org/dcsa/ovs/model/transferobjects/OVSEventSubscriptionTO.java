@@ -3,16 +3,20 @@ package org.dcsa.ovs.model.transferobjects;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.dcsa.core.events.model.base.AbstractEventSubscription;
+import org.dcsa.core.events.model.enums.EventType;
+import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
+import org.dcsa.core.events.model.enums.TransportEventTypeCode;
 import org.dcsa.core.validator.EnumSubset;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class OVSEventSubscriptionTO extends AbstractEventSubscription {
 
   @EnumSubset(anyOf = {"TRANSPORT", "OPERATIONS"})
-  private String eventType;
+  private List<EventType> eventType;
 
-  private String transportEventTypeCode;
+  private List<TransportEventTypeCode> transportEventTypeCode;
 
   private String transportCallID;
 
@@ -22,5 +26,5 @@ public class OVSEventSubscriptionTO extends AbstractEventSubscription {
 
   private String carrierServiceCode;
 
-  private String operationsEventTypeCode;
+  private List<OperationsEventTypeCode> operationsEventTypeCode;
 }
