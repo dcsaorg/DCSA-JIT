@@ -3,13 +3,10 @@ package org.dcsa.ovs.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.EventSubscription;
 import org.dcsa.core.events.model.base.AbstractEventSubscription;
-import org.dcsa.core.events.model.enums.EventType;
-import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
-import org.dcsa.core.events.model.enums.TransportEventTypeCode;
+import org.dcsa.core.events.model.enums.*;
 import org.dcsa.core.events.repository.EventSubscriptionRepository;
 import org.dcsa.core.events.service.EventSubscriptionService;
 import org.dcsa.core.events.service.impl.EventSubscriptionTOServiceImpl;
-import org.dcsa.core.exception.UpdateException;
 import org.dcsa.core.util.MappingUtils;
 import org.dcsa.ovs.model.transferobjects.OVSEventSubscriptionTO;
 import org.springframework.stereotype.Service;
@@ -27,10 +24,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OVSEventSubscriptionTOServiceImpl
-    extends EventSubscriptionTOServiceImpl<OVSEventSubscriptionTO, EventSubscriptionService> {
-
-  private static final List<EventType> ALL_ALLOWED_EVENT_TYPES =
-      List.of(EventType.TRANSPORT, EventType.OPERATIONS);
+    extends EventSubscriptionTOServiceImpl<
+        OVSEventSubscriptionTO, EventSubscriptionService, EventSubscriptionRepository> {
 
   private final EventSubscriptionService eventSubscriptionService;
   private final EventSubscriptionRepository eventSubscriptionRepository;
@@ -41,9 +36,112 @@ public class OVSEventSubscriptionTOServiceImpl
   }
 
   @Override
+  protected EventSubscriptionRepository getRepository() {
+    return this.eventSubscriptionRepository;
+  }
+
+  @Override
+  protected List<EventType> getAllowedEventTypes() {
+    return List.of(EventType.TRANSPORT, EventType.OPERATIONS);
+  }
+
+  // ToDo : replace this with mapstruct
+  @Override
+  protected Function<OVSEventSubscriptionTO, EventSubscription>
+      eventSubscriptionTOToEventSubscription() {
+    return esTo -> {
+      EventSubscription eventSubscription = new EventSubscription();
+      eventSubscription.setSubscriptionID(esTo.getSubscriptionID());
+      eventSubscription.setCallbackUrl(esTo.getCallbackUrl());
+      eventSubscription.setSecret(esTo.getSecret());
+      eventSubscription.setCarrierServiceCode(esTo.getCarrierServiceCode());
+      eventSubscription.setCarrierVoyageNumber(esTo.getCarrierVoyageNumber());
+      eventSubscription.setVesselIMONumber(esTo.getVesselIMONumber());
+      eventSubscription.setTransportCallID(esTo.getTransportCallID());
+      return eventSubscription;
+    };
+  }
+
+  // ToDo : replace this with mapstruct
+  protected Function<EventSubscription, OVSEventSubscriptionTO>
+      eventSubscriptionToEventSubscriptionTo() {
+    return es -> {
+      OVSEventSubscriptionTO eventSubscriptionTo = new OVSEventSubscriptionTO();
+      eventSubscriptionTo.setSubscriptionID(es.getSubscriptionID());
+      eventSubscriptionTo.setCallbackUrl(es.getCallbackUrl());
+      eventSubscriptionTo.setCarrierServiceCode(es.getCarrierServiceCode());
+      eventSubscriptionTo.setCarrierVoyageNumber(es.getCarrierVoyageNumber());
+      eventSubscriptionTo.setVesselIMONumber(es.getVesselIMONumber());
+      eventSubscriptionTo.setTransportCallID(es.getTransportCallID());
+      return eventSubscriptionTo;
+    };
+  }
+
+  @Override
+  protected List<EventType> getEventTypesForTo(OVSEventSubscriptionTO eventSubscriptionTO) {
+
+    if (null == eventSubscriptionTO.getEventType()
+        || eventSubscriptionTO.getEventType().isEmpty()) {
+      eventSubscriptionTO.setEventType(getAllowedEventTypes());
+    }
+
+    return eventSubscriptionTO.getEventType();
+  }
+
+  @Override
+  protected List<TransportDocumentTypeCode> getTransportDocumentTypesForTo(
+      OVSEventSubscriptionTO eventSubscriptionTO) {
+
+    // we don't need TransportDocumentTypeCode for OVS event subscriptions
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected List<ShipmentEventTypeCode> getShipmentEventTypeCodesForTo(
+      OVSEventSubscriptionTO eventSubscriptionTO) {
+
+    // we don't need ShipmentEventTypeCode for OVS event subscriptions
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected List<TransportEventTypeCode> getTransportEventTypeCodesForTo(
+      OVSEventSubscriptionTO eventSubscriptionTO) {
+
+    if (null == eventSubscriptionTO.getTransportEventTypeCode()
+        || eventSubscriptionTO.getTransportEventTypeCode().isEmpty()) {
+      eventSubscriptionTO.setTransportEventTypeCode(ALL_TRANSPORT_EVENT_TYPES);
+    }
+
+    return eventSubscriptionTO.getTransportEventTypeCode();
+  }
+
+  @Override
+  protected List<EquipmentEventTypeCode> getEquipmentEventTypeCodesForTo(
+      OVSEventSubscriptionTO eventSubscriptionTO) {
+
+    // we don't need EquipmentEventTypeCode for OVS event subscriptions
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected List<OperationsEventTypeCode> getOperationsEventTypeCodesForTo(
+      OVSEventSubscriptionTO eventSubscriptionTO) {
+
+    if (null == eventSubscriptionTO.getOperationsEventTypeCode()
+        || eventSubscriptionTO.getOperationsEventTypeCode().isEmpty()) {
+      eventSubscriptionTO.setOperationsEventTypeCode(ALL_OPERATIONS_EVENT_TYPES);
+    }
+
+    return eventSubscriptionTO.getOperationsEventTypeCode();
+  }
+
+  @Override
   public Mono<OVSEventSubscriptionTO> create(OVSEventSubscriptionTO eventSubscriptionTO) {
-    return eventSubscriptionService
-        .create(eventSubscriptionTOToEventSubscription.apply(eventSubscriptionTO))
+    return validateCreateRequest(eventSubscriptionTO)
+        .then(
+            eventSubscriptionService.create(
+                eventSubscriptionTOToEventSubscription().apply(eventSubscriptionTO)))
         .flatMap(
             eventSubscription -> {
               eventSubscriptionTO.setSubscriptionID(eventSubscription.getSubscriptionID());
@@ -54,78 +152,14 @@ public class OVSEventSubscriptionTOServiceImpl
             });
   }
 
-  // ToDo : replace this with mapstruct
-  private final Function<OVSEventSubscriptionTO, EventSubscription>
-      eventSubscriptionTOToEventSubscription =
-          esTo -> {
-            EventSubscription eventSubscription = new EventSubscription();
-            eventSubscription.setSubscriptionID(esTo.getSubscriptionID());
-            eventSubscription.setCallbackUrl(esTo.getCallbackUrl());
-            eventSubscription.setSecret(esTo.getSecret());
-            eventSubscription.setCarrierServiceCode(esTo.getCarrierServiceCode());
-            eventSubscription.setCarrierVoyageNumber(esTo.getCarrierVoyageNumber());
-            eventSubscription.setVesselIMONumber(esTo.getVesselIMONumber());
-            eventSubscription.setTransportCallID(esTo.getTransportCallID());
-            return eventSubscription;
-          };
-
-  private Mono<OVSEventSubscriptionTO> createEventTypes(
-      OVSEventSubscriptionTO eventSubscriptionTO) {
-
-    List<EventType> eventTypes;
-
-    if (CollectionUtils.isEmpty(eventSubscriptionTO.getEventType())) {
-      eventTypes = ALL_ALLOWED_EVENT_TYPES;
-      eventSubscriptionTO.setEventType(eventTypes);
-    } else {
-      eventTypes = eventSubscriptionTO.getEventType();
-    }
-
-    return Flux.fromIterable(eventTypes)
-        .concatMap(
-            eventType ->
-                eventSubscriptionRepository.insertEventTypeForSubscription(
-                    eventSubscriptionTO.getSubscriptionID(), eventType))
-        .then(Mono.just(eventSubscriptionTO));
-  }
-
-  private Mono<Void> createTransportEventType(OVSEventSubscriptionTO eventSubscriptionTO) {
-    List<TransportEventTypeCode> transportEventTypeCode =
-        eventSubscriptionTO.getTransportEventTypeCode();
-    return Flux.fromIterable(transportEventTypeCode)
-        .flatMap(
-            t ->
-                eventSubscriptionRepository.insertTransportEventTypeForSubscription(
-                    eventSubscriptionTO.getSubscriptionID(), t))
-        .then();
-  }
-
-  private Mono<Void> createOperationsEventType(OVSEventSubscriptionTO eventSubscriptionTO) {
-    List<OperationsEventTypeCode> operationsEventTypeCode =
-        eventSubscriptionTO.getOperationsEventTypeCode();
-    return Flux.fromIterable(operationsEventTypeCode)
-        .flatMap(
-            o ->
-                eventSubscriptionRepository.insertOperationsEventTypeForSubscription(
-                    eventSubscriptionTO.getSubscriptionID(), o))
-        .then();
-  }
-
   @Override
   public Mono<OVSEventSubscriptionTO> update(OVSEventSubscriptionTO eventSubscriptionTO) {
-    if (eventSubscriptionTO.getSecret() != null) {
-      return Mono.error(
-          new UpdateException(
-              "Please omit the \"secret\" attribute.  If you want to change the"
-                  + " secret, please use the dedicated secret endpoint"
-                  + " (\"PUT .../event-subscriptions/"
-                  + eventSubscriptionTO.getSubscriptionID()
-                  + "/secret\")."));
-    }
-    return eventSubscriptionRepository
-        .deleteEventTypesForSubscription(eventSubscriptionTO.getSubscriptionID())
+    return validateUpdateRequest(eventSubscriptionTO)
+        .then(
+            eventSubscriptionRepository.deleteEventTypesForSubscription(
+                eventSubscriptionTO.getSubscriptionID()))
         .thenReturn(eventSubscriptionTO)
-        .map(eventSubscriptionTOToEventSubscription)
+        .map(eventSubscriptionTOToEventSubscription())
         .flatMap(
             updated ->
                 eventSubscriptionService
@@ -144,7 +178,7 @@ public class OVSEventSubscriptionTOServiceImpl
   protected Flux<OVSEventSubscriptionTO> mapManyD2TO(
       Flux<EventSubscription> eventSubscriptionFlux) {
     return eventSubscriptionFlux
-        .map(eventSubscriptionToEventSubscriptionTo)
+        .map(eventSubscriptionToEventSubscriptionTo())
         .collectList()
         .flatMapMany(
             eventSubscriptionList -> {
@@ -211,7 +245,7 @@ public class OVSEventSubscriptionTOServiceImpl
   protected Mono<OVSEventSubscriptionTO> mapSingleD2TO(
       Mono<EventSubscription> eventSubscriptionMono) {
     return eventSubscriptionMono
-        .map(eventSubscriptionToEventSubscriptionTo)
+        .map(eventSubscriptionToEventSubscriptionTo())
         .flatMap(
             eventSubscriptionTO ->
                 eventSubscriptionRepository
@@ -238,17 +272,4 @@ public class OVSEventSubscriptionTOServiceImpl
                     .thenReturn(esTo));
   }
 
-  // ToDo : replace this with mapstruct
-  private final Function<EventSubscription, OVSEventSubscriptionTO>
-      eventSubscriptionToEventSubscriptionTo =
-          es -> {
-            OVSEventSubscriptionTO eventSubscriptionTo = new OVSEventSubscriptionTO();
-            eventSubscriptionTo.setSubscriptionID(es.getSubscriptionID());
-            eventSubscriptionTo.setCallbackUrl(es.getCallbackUrl());
-            eventSubscriptionTo.setCarrierServiceCode(es.getCarrierServiceCode());
-            eventSubscriptionTo.setCarrierVoyageNumber(es.getCarrierVoyageNumber());
-            eventSubscriptionTo.setVesselIMONumber(es.getVesselIMONumber());
-            eventSubscriptionTo.setTransportCallID(es.getTransportCallID());
-            return eventSubscriptionTo;
-          };
 }
