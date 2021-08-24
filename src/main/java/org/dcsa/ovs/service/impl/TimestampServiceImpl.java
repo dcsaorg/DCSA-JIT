@@ -50,6 +50,8 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setPortCallServiceTypeCode(timestamp.getPortCallServiceTypeCode());
         operationsEvent.setPublisherRole(timestamp.getPublisherRole());
         operationsEvent.setFacilityTypeCode(timestamp.getFacilityTypeCode());
+        operationsEvent.setRemark(timestamp.getRemark());
+        operationsEvent.setDelayReasonCode(timestamp.getDelayReasonCode());
 
         String modeOfTransport = timestamp.getModeOfTransport() != null ? timestamp.getModeOfTransport().name() : null;
 
