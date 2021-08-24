@@ -63,4 +63,8 @@ public class Timestamp {
 
     @Transient
     private LocationTO vesselPosition;
+
+    private String remark;
+
+    private String delayReasonCode;
 }
