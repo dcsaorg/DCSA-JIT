@@ -8,5 +8,5 @@ RUN apt-get update \
 
 EXPOSE 9090
 ENV db_hostname dcsa_db
-COPY target/dcsa_ovs-*.war .
-CMD java -jar dcsa_ovs-*.war
+COPY target/dcsa_ovs-*.jar .
+CMD java -jar dcsa_ovs-*.jar
