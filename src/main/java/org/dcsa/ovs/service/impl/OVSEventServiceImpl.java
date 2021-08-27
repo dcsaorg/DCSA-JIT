@@ -1,6 +1,5 @@
 package org.dcsa.ovs.service.impl;
 
-import lombok.experimental.SuperBuilder;
 import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.TransportEvent;
@@ -14,6 +13,7 @@ import org.dcsa.core.events.service.impl.GenericEventServiceImpl;
 import org.dcsa.core.exception.NotFoundException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.ovs.service.OVSEventService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,7 +26,7 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
     private final TransportEventService transportEventService;
     private final OperationsEventService operationsEventService;
 
-    public OVSEventServiceImpl(TransportEventService transportEventService, EquipmentEventService equipmentEventService, ShipmentEventService shipmentEventService, OperationsEventService operationsEventService, EventRepository eventRepository, PendingEventRepository pendingEventRepository) {
+    public OVSEventServiceImpl(@Qualifier("operationsTransportEventServiceImpl") TransportEventService transportEventService, EquipmentEventService equipmentEventService, ShipmentEventService shipmentEventService, OperationsEventService operationsEventService, EventRepository eventRepository, PendingEventRepository pendingEventRepository) {
         super(shipmentEventService, transportEventService, equipmentEventService,operationsEventService, eventRepository);
         this.transportEventService = transportEventService;
         this.operationsEventService = operationsEventService;
