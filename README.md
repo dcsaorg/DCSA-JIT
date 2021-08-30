@@ -3,35 +3,27 @@
 Building and running manually/locally
 -------------------------------------
 
-Initialize your local postgresql database as described in datamodel/README.md, then
+1) Initialize your local postgresql database as described in [datamodel/README.md](https://github.com/dcsaorg/DCSA-Information-Model/blob/master/README.md), then
+
+2) Build **DCSA-Core** as described in [DCSA-Core/README.md](https://github.com/dcsaorg/DCSA-Core/blob/master/README.md), then
+
+3) Build **DCSA-Event-Core** as described in [DCSA-Event-Core/README.md](https://github.com/dcsaorg/DCSA-Event-Core/blob/master/README.md), then
+
+4) Build **DCSA-OVS**, ``mvn package``
+
+5) Run application,
 ```
-export db_hostname=localhost
-export DCSA_CORE_Version=0.7.11 #or whatever version is the right one
-```
-If running without auth0, disable it with
-```
-export AUTH0_ENABLED=false
-```
-Then build and run with
-```
-mvn install:install-file -Dfile=../DCSA-Core/target/dcsa_core-$DCSA_CORE_Version.jar -DgroupId=org.dcsa -DartifactId=dcsa_core -Dversion=local-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
-mvn spring-boot:run -Ddcsa.version=local-SNAPSHOT
+mvn spring-boot:run [options] 
+
+options:
+ -Dspring-boot.run.arguments="--DB_HOSTNAME=localhost:5432 --AUTH0_ENABLED=false"
 ```
 or using docker-compose
 ```
-mvn package -Ddcsa.version=local-SNAPSHOT
 docker-compose up -d -V --build
 ```
 
-Then try and access the installation say on
+Check the running application,
 ```
-http://localhost:9090/v1/schedules
-```
-
-Building and running using docker-compose
------------------------------------------
-To build using DCSA-core from GitHub packages
-```
-mvn package
-docker-compose up -d -V --build
+curl http://localhost:9090/v2/actuator/health
 ```

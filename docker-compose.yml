@@ -1,6 +1,10 @@
 version: '3.5'
 services:
-    dcsa-ovs:
+    web:
+        environment:
+            - DB_HOSTNAME=db
+            - AUTH0_ENABLED=false
+        container_name: dcsa_ovs
         build:
            .
         ports:
@@ -9,8 +13,8 @@ services:
             options:
                 max-file: '10'
                 max-size: 200k
-    dcsa-test-db:
-        container_name: dcsa_db
+    db:
+        container_name: dcsa_ovs_db
         environment:
             POSTGRES_PASSWORD: "change_this_password"
         build:

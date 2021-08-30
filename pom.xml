@@ -18,7 +18,7 @@
     <properties>
         <java.version>11</java.version>
         <dcsa.version>0.8.12</dcsa.version>
-        <dcsa.events.version>0.0.16</dcsa.events.version>
+        <dcsa.events.version>0.0.17</dcsa.events.version>
         <dcsa.core.tag/>
         <dcsa.event.tag/>
         <dcsa.artifacttype>-SNAPSHOT</dcsa.artifacttype>
