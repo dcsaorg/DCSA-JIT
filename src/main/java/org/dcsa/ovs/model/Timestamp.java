@@ -7,6 +7,7 @@ import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.util.ValidationUtils;
 import org.dcsa.core.validator.EnumSubset;
+import org.dcsa.core.validator.ValidVesselIMONumber;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -32,14 +33,8 @@ public class Timestamp {
     @NotNull
     private PublisherRole publisherRole;
 
-    @NotNull
-    @Size(min = 7, max = 7)
+    @ValidVesselIMONumber
     private String vesselIMONumber;
-
-    public void setVesselIMONumber(String vesselIMONumber) {
-        ValidationUtils.validateVesselIMONumber(vesselIMONumber);
-        this.vesselIMONumber = vesselIMONumber;
-    }
 
     private DCSATransportType modeOfTransport;
 
