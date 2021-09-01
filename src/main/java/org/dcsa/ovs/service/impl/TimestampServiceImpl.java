@@ -3,17 +3,17 @@ package org.dcsa.ovs.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
+import org.dcsa.core.events.model.enums.DCSATransportType;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.LocationService;
 import org.dcsa.core.events.service.OperationsEventService;
 import org.dcsa.core.events.service.PartyService;
-import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
 import org.dcsa.core.util.MappingUtils;
 import org.dcsa.ovs.model.Timestamp;
-import org.dcsa.ovs.service.*;
+import org.dcsa.ovs.service.TimestampService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -43,6 +43,22 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
 
     @Override
     public Mono<Timestamp> create(Timestamp timestamp) {
+        if (timestamp.getFacilitySMDGCode() == null) {
+            // OVS 2.0.0 Spec says optional, but our code does not function without it.  Let's be honest about it.
+            return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
+        }
+        if (timestamp.getPortCallServiceTypeCode() == null) {
+            // OVS 2.0.0 Spec says optional, operations event says mandatory.  The latter wins for now.
+            return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
+        }
+        if (timestamp.getModeOfTransport() == null) {
+            if (timestamp.getVesselIMONumber() == null) {
+                // OVS 2.0.0 Spec says optional, operations event says mandatory.  The latter wins for now.
+                return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
+            }
+            // Assume vessel IMO number implies VESSEL as mode of transport.
+            timestamp.setModeOfTransport(DCSATransportType.VESSEL);
+        }
         OperationsEvent operationsEvent = new OperationsEvent();
         operationsEvent.setEventClassifierCode(timestamp.getEventClassifierCode());
         operationsEvent.setEventDateTime(timestamp.getEventDateTime());
@@ -56,6 +72,8 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         String modeOfTransport = timestamp.getModeOfTransport() != null ? timestamp.getModeOfTransport().name() : null;
 
         return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), modeOfTransport, timestamp.getVesselIMONumber())
+                // We should create the transport call if it is missing, but we are missing that feature.
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED)))
                 .flatMap(transportCall -> {
                     if (transportCall != null) {
                         operationsEvent.setTransportCallID(transportCall.getTransportCallID());
