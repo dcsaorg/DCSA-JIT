@@ -47,10 +47,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
             // OVS 2.0.0 Spec says optional, but our code does not function without it.  Let's be honest about it.
             return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
         }
-        if (timestamp.getPortCallServiceTypeCode() == null) {
-            // OVS 2.0.0 Spec says optional, operations event says mandatory.  The latter wins for now.
-            return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
-        }
         if (timestamp.getModeOfTransport() == null) {
             if (timestamp.getVesselIMONumber() == null) {
                 // OVS 2.0.0 Spec says optional, operations event says mandatory.  The latter wins for now.
