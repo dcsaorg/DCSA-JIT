@@ -55,6 +55,8 @@ springdoc:
     path: /docs
 
 dcsa:
+  events:
+    transport-event-map-references-and-document-references: false
   securityConfig:
     receiveNotificationEndpoint: "/unofficial/notification-endpoints"
 
