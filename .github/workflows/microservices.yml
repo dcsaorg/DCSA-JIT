@@ -29,7 +29,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: dcsaorg/DCSA-API-Validator
-        ref: jit-tests
+        ref: master
         token: ${{ secrets.REPO_ACCESS_PAT }}
         path: DCSA-API-Validator
         
