@@ -7,6 +7,8 @@ import org.dcsa.core.events.model.enums.EventType;
 import org.dcsa.core.events.model.enums.OperationsEventTypeCode;
 import org.dcsa.core.events.model.enums.TransportEventTypeCode;
 import org.dcsa.core.validator.EnumSubset;
+import org.dcsa.core.validator.ValidVesselIMONumber;
+
 import java.util.List;
 
 @Data
@@ -20,6 +22,7 @@ public class OVSEventSubscriptionTO extends AbstractEventSubscription {
 
   private String transportCallID;
 
+  @ValidVesselIMONumber(allowNull = true)
   private String vesselIMONumber;
 
   private String carrierVoyageNumber;
