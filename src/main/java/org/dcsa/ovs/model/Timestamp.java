@@ -49,6 +49,17 @@ public class Timestamp {
 
     private PortCallServiceTypeCode portCallServiceTypeCode;
 
+    @NotNull
+    @Size(max = 50)
+    private String carrierVoyageNumber;
+
+    @NotNull
+    @Size(max = 5)
+    private String carrierServiceCode;
+
+    @NotNull // FIXME: This parameter is optional in the specification. Use @NotNull temporary.
+    private int transportCallSequenceNumber;
+
     @Transient
     private LocationTO eventLocation;
 
