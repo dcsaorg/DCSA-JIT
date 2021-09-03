@@ -1,14 +1,20 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dcsa.core.events.model.Facility;
 import org.dcsa.core.events.model.OperationsEvent;
+import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
+import org.dcsa.core.events.model.enums.CarrierCodeListProvider;
 import org.dcsa.core.events.model.enums.DCSATransportType;
+import org.dcsa.core.events.model.enums.FacilityCodeListProvider;
+import org.dcsa.core.events.model.transferobjects.FacilityTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.LocationService;
 import org.dcsa.core.events.service.OperationsEventService;
 import org.dcsa.core.events.service.PartyService;
+import org.dcsa.core.events.service.TransportCallTOService;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
 import org.dcsa.core.util.MappingUtils;
@@ -31,6 +37,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     private final TransportCallRepository transportCallRepository;
     private final LocationService locationService;
     private final PartyService partyService;
+    private final TransportCallTOService transportCallTOService;
 
     @Override
     public Flux<Timestamp> findAll() {
@@ -70,13 +77,12 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         String modeOfTransport = timestamp.getModeOfTransport() != null ? timestamp.getModeOfTransport().name() : null;
 
         return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), modeOfTransport, timestamp.getVesselIMONumber())
-                // We should create the transport call if it is missing, but we are missing that feature.
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED)))
-                .flatMap(transportCall -> {
-                    if (transportCall != null) {
-                        operationsEvent.setTransportCallID(transportCall.getTransportCallID());
-                        operationsEvent.setTransportCall(MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class));
-                    }
+                .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
+                // Create transport call if missing
+                .switchIfEmpty(createTransportCallTO(timestamp))
+                .flatMap(transportCallTO -> {
+                    operationsEvent.setTransportCallID(transportCallTO.getTransportCallID());
+                    operationsEvent.setTransportCall(transportCallTO);
 
                     return Mono.just(timestamp.getPublisher())
                             .flatMap(partyService::ensureResolvable)
@@ -118,5 +124,33 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     @Override
     public Flux<Timestamp> findAllExtended(ExtendedRequest<Timestamp> extendedRequest) {
         return Flux.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
+    }
+
+    private Mono<TransportCallTO> createTransportCallTO(Timestamp timestamp) {
+        TransportCallTO transportCallTO = new TransportCallTO();
+        transportCallTO.setTransportCallSequenceNumber(timestamp.getTransportCallSequenceNumber());
+        transportCallTO.setCarrierVoyageNumber(timestamp.getCarrierVoyageNumber());
+        transportCallTO.setCarrierServiceCode(timestamp.getCarrierServiceCode());
+        transportCallTO.setModeOfTransport(timestamp.getModeOfTransport());
+        transportCallTO.setLocation(timestamp.getEventLocation());
+
+        // TransportCallTOServiceImpl will create the vessel if it does not exists
+        // TODO: Find a way to create a valid vessel for timestamp
+        Vessel vessel = new Vessel();
+        vessel.setVesselIMONumber(timestamp.getVesselIMONumber());
+        vessel.setVesselOperatorCarrierCode("MSK"); // FIXME: this should be given in the request
+        vessel.setVesselOperatorCarrierCodeListProvider(CarrierCodeListProvider.SMDG); // FIXME: this should be given in the request
+        transportCallTO.setVessel(vessel);
+
+        transportCallTO.setVesselIMONumber(timestamp.getVesselIMONumber());
+
+        // Facility
+        transportCallTO.setUNLocationCode(timestamp.getUNLocationCode());
+        transportCallTO.setFacilityCodeListProvider(FacilityCodeListProvider.SMDG);
+        transportCallTO.setFacilityCode(timestamp.getFacilitySMDGCode());
+
+        transportCallTO.setFacilityTypeCode(timestamp.getFacilityTypeCode());
+
+        return transportCallTOService.create(transportCallTO);
     }
 }
