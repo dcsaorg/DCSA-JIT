@@ -1,6 +1,5 @@
 package org.dcsa.ovs.service.impl;
 
-import lombok.experimental.SuperBuilder;
 import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.TransportEvent;
@@ -26,10 +25,22 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
     private final TransportEventService transportEventService;
     private final OperationsEventService operationsEventService;
 
-    public OVSEventServiceImpl(TransportEventService transportEventService, EquipmentEventService equipmentEventService, ShipmentEventService shipmentEventService, OperationsEventService operationsEventService, EventRepository eventRepository, PendingEventRepository pendingEventRepository) {
-        super(shipmentEventService, transportEventService, equipmentEventService,operationsEventService, eventRepository);
-        this.transportEventService = transportEventService;
-        this.operationsEventService = operationsEventService;
+    public OVSEventServiceImpl(
+      TransportEventService transportEventService,
+      EquipmentEventService equipmentEventService,
+      ShipmentEventService shipmentEventService,
+      OperationsEventService operationsEventService,
+      EventRepository eventRepository,
+      PendingEventRepository pendingEventRepository) {
+    super(
+        shipmentEventService,
+        transportEventService,
+        equipmentEventService,
+        operationsEventService,
+        eventRepository,
+        pendingEventRepository);
+    this.transportEventService = transportEventService;
+    this.operationsEventService = operationsEventService;
     }
 
     @Override
