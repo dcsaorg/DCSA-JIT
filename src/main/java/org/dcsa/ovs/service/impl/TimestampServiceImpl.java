@@ -2,6 +2,7 @@ package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.Facility;
+import org.dcsa.core.events.model.IdentifyingCode;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
@@ -27,6 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -135,11 +137,29 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         transportCallTO.setLocation(timestamp.getEventLocation());
 
         // TransportCallTOServiceImpl will create the vessel if it does not exists
-        // TODO: Find a way to create a valid vessel for timestamp
         Vessel vessel = new Vessel();
         vessel.setVesselIMONumber(timestamp.getVesselIMONumber());
-        vessel.setVesselOperatorCarrierCode("MSK"); // FIXME: this should be given in the request
-        vessel.setVesselOperatorCarrierCodeListProvider(CarrierCodeListProvider.SMDG); // FIXME: this should be given in the request
+
+        List<IdentifyingCode> identifyingCodes = timestamp.getPublisher().getIdentifyingCodes();
+        IdentifyingCode identifyingCode = null;
+        for (IdentifyingCode code : identifyingCodes) {
+            CarrierCodeListProvider codeListResponsibleAgencyCode = CarrierCodeListProvider.fromCodeListResponsibleAgencyCode(code.getCodeListResponsibleAgencyCode());
+            if (codeListResponsibleAgencyCode == null) {
+                continue;
+            }
+
+            identifyingCode = code;
+
+            if (codeListResponsibleAgencyCode == CarrierCodeListProvider.SMDG) {
+                break;
+            }
+        }
+        if (identifyingCode != null) {
+            vessel.setVesselOperatorCarrierCode(identifyingCode.getPartyCode());
+            CarrierCodeListProvider codeListResponsibleAgencyCode = CarrierCodeListProvider.fromCodeListResponsibleAgencyCode(identifyingCode.getCodeListResponsibleAgencyCode());
+            vessel.setVesselOperatorCarrierCodeListProvider(codeListResponsibleAgencyCode);
+        }
+
         transportCallTO.setVessel(vessel);
 
         transportCallTO.setVesselIMONumber(timestamp.getVesselIMONumber());
