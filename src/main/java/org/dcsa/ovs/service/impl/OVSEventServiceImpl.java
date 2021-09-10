@@ -3,6 +3,7 @@ package org.dcsa.ovs.service.impl;
 import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.TransportEvent;
+import org.dcsa.core.events.model.enums.EventType;
 import org.dcsa.core.events.repository.EventRepository;
 import org.dcsa.core.events.repository.PendingEventRepository;
 import org.dcsa.core.events.service.EquipmentEventService;
@@ -17,13 +18,13 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSEventService {
 
-    private final TransportEventService transportEventService;
-    private final OperationsEventService operationsEventService;
+    private final Set<EventType> SUPPORTED_EVENT_TYPES = Set.of(EventType.OPERATIONS, EventType.TRANSPORT);
 
     public OVSEventServiceImpl(
       TransportEventService transportEventService,
@@ -39,8 +40,10 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
         operationsEventService,
         eventRepository,
         pendingEventRepository);
-    this.transportEventService = transportEventService;
-    this.operationsEventService = operationsEventService;
+    }
+
+    protected Set<EventType> getSupportedEvents() {
+        return SUPPORTED_EVENT_TYPES;
     }
 
     @Override
