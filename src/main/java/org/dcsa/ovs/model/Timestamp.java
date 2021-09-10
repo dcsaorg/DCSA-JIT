@@ -57,8 +57,7 @@ public class Timestamp {
     @Size(max = 5)
     private String carrierServiceCode;
 
-    @NotNull // FIXME: This parameter is optional in the specification. Use @NotNull temporary.
-    private int transportCallSequenceNumber;
+    private Integer transportCallSequenceNumber;
 
     @Transient
     private LocationTO eventLocation;

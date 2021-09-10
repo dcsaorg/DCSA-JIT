@@ -129,7 +129,8 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
 
     private Mono<TransportCallTO> createTransportCallTO(Timestamp timestamp) {
         TransportCallTO transportCallTO = new TransportCallTO();
-        transportCallTO.setTransportCallSequenceNumber(timestamp.getTransportCallSequenceNumber());
+        Integer sequenceNumber = timestamp.getTransportCallSequenceNumber();
+        transportCallTO.setTransportCallSequenceNumber(sequenceNumber != null ? sequenceNumber : 1);
         transportCallTO.setCarrierVoyageNumber(timestamp.getCarrierVoyageNumber());
         transportCallTO.setCarrierServiceCode(timestamp.getCarrierServiceCode());
         transportCallTO.setModeOfTransport(timestamp.getModeOfTransport());
