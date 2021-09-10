@@ -1,15 +1,14 @@
 package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.events.model.Facility;
-import org.dcsa.core.events.model.IdentifyingCode;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.enums.CarrierCodeListProvider;
+import org.dcsa.core.events.model.enums.CodeListResponsibleAgency;
 import org.dcsa.core.events.model.enums.DCSATransportType;
 import org.dcsa.core.events.model.enums.FacilityCodeListProvider;
-import org.dcsa.core.events.model.transferobjects.FacilityTO;
+import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.LocationService;
@@ -140,24 +139,26 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         Vessel vessel = new Vessel();
         vessel.setVesselIMONumber(timestamp.getVesselIMONumber());
 
-        List<IdentifyingCode> identifyingCodes = timestamp.getPublisher().getIdentifyingCodes();
-        IdentifyingCode identifyingCode = null;
-        for (IdentifyingCode code : identifyingCodes) {
-            CarrierCodeListProvider codeListResponsibleAgencyCode = CarrierCodeListProvider.fromCodeListResponsibleAgencyCode(code.getCodeListResponsibleAgencyCode());
-            if (codeListResponsibleAgencyCode == null) {
-                continue;
-            }
+        List<PartyTO.IdentifyingCode> identifyingCodes = timestamp.getPublisher().getIdentifyingCodes();
+        String partyCode = null;
+        CarrierCodeListProvider carrierCodeListProvider = null;
+        for (PartyTO.IdentifyingCode code : identifyingCodes) {
+            CodeListResponsibleAgency.isValidCode(code.getCodeListResponsibleAgencyCode());
 
-            identifyingCode = code;
-
-            if (codeListResponsibleAgencyCode == CarrierCodeListProvider.SMDG) {
+            if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SMDG.getCode())) {
+                partyCode = code.getPartyCode();
+                carrierCodeListProvider = CarrierCodeListProvider.SMDG;
                 break;
             }
+            else if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SCAC.getCode())) {
+                partyCode = code.getPartyCode();
+                carrierCodeListProvider = CarrierCodeListProvider.NMFTA;
+            }
         }
-        if (identifyingCode != null) {
-            vessel.setVesselOperatorCarrierCode(identifyingCode.getPartyCode());
-            CarrierCodeListProvider codeListResponsibleAgencyCode = CarrierCodeListProvider.fromCodeListResponsibleAgencyCode(identifyingCode.getCodeListResponsibleAgencyCode());
-            vessel.setVesselOperatorCarrierCodeListProvider(codeListResponsibleAgencyCode);
+
+        if (partyCode != null && carrierCodeListProvider != null) {
+            vessel.setVesselOperatorCarrierCode(partyCode);
+            vessel.setVesselOperatorCarrierCodeListProvider(carrierCodeListProvider);
         }
 
         transportCallTO.setVessel(vessel);
