@@ -16,6 +16,7 @@ import org.dcsa.ovs.model.Timestamp;
 import org.dcsa.ovs.service.TimestampService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,6 +43,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     }
 
     @Override
+    @Transactional
     public Mono<Timestamp> create(Timestamp timestamp) {
         if (timestamp.getFacilitySMDGCode() == null) {
             // OVS 2.0.0 Spec says optional, but our code does not function without it.  Let's be honest about it.
