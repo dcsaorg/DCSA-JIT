@@ -27,7 +27,7 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
     private final OperationsEventService operationsEventService;
 
     public OVSEventServiceImpl(TransportEventService transportEventService, EquipmentEventService equipmentEventService, ShipmentEventService shipmentEventService, OperationsEventService operationsEventService, EventRepository eventRepository, PendingEventRepository pendingEventRepository) {
-        super(shipmentEventService, transportEventService, equipmentEventService,operationsEventService, eventRepository);
+        super(shipmentEventService, transportEventService, equipmentEventService,operationsEventService, eventRepository, pendingEventRepository);
         this.transportEventService = transportEventService;
         this.operationsEventService = operationsEventService;
     }
