@@ -2,6 +2,8 @@ package org.dcsa.ovs.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.OperationsEvent;
+import org.dcsa.core.events.model.TransportCall;
+import org.dcsa.core.events.model.UnmappedEvent;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.enums.CarrierCodeListProvider;
@@ -11,10 +13,12 @@ import org.dcsa.core.events.model.enums.FacilityCodeListProvider;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
+import org.dcsa.core.events.repository.UnmappedEventRepository;
 import org.dcsa.core.events.service.LocationService;
 import org.dcsa.core.events.service.OperationsEventService;
 import org.dcsa.core.events.service.PartyService;
 import org.dcsa.core.events.service.TransportCallTOService;
+import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
 import org.dcsa.core.util.MappingUtils;
@@ -28,6 +32,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -39,6 +44,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     private final LocationService locationService;
     private final PartyService partyService;
     private final TransportCallTOService transportCallTOService;
+    private final UnmappedEventRepository unmappedEventRepository;
 
     @Override
     public Flux<Timestamp> findAll() {
@@ -77,7 +83,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
 
         String modeOfTransport = timestamp.getModeOfTransport() != null ? timestamp.getModeOfTransport().name() : null;
 
-        return transportCallRepository.getTransportCall(timestamp.getUNLocationCode(), timestamp.getFacilitySMDGCode(), modeOfTransport, timestamp.getVesselIMONumber())
+        return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
                 // Create transport call if missing
                 .switchIfEmpty(createTransportCallTO(timestamp))
@@ -99,6 +105,14 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                         .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
+                .flatMap(
+                        ope -> {
+                            UnmappedEvent unmappedEvent = new UnmappedEvent();
+                            unmappedEvent.setNewRecord(true);
+                            unmappedEvent.setEventID(ope.getEventID());
+                            unmappedEvent.setEnqueuedAtDateTime(ope.getEventCreatedDateTime());
+                            return unmappedEventRepository.save(unmappedEvent);
+                        })
                 .thenReturn(timestamp);
     }
 
@@ -174,5 +188,45 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         transportCallTO.setFacilityTypeCode(timestamp.getFacilityTypeCode());
 
         return transportCallTOService.create(transportCallTO);
+    }
+
+    private Mono<TransportCall> findTransportCall(Timestamp timestamp) {
+        // Caller should have ensured that Mode of Transport is not null at this point.
+        String modeOfTransport = Objects.requireNonNull(timestamp.getModeOfTransport()).name();
+        Integer sequenceNumber = timestamp.getTransportCallSequenceNumber();
+        if (timestamp.getCarrierVoyageNumber() == null ^ timestamp.getCarrierServiceCode() == null) {
+            if (timestamp.getCarrierServiceCode() == null) {
+                return Mono.error(new CreateException("Cannot create timestamp where voyage code is present but service code is missing"));
+            }
+            return Mono.error(new CreateException("Cannot create timestamp where service code is present but voyage code is missing"));
+        }
+        return transportCallRepository.getTransportCall(
+                timestamp.getUNLocationCode(),
+                timestamp.getFacilitySMDGCode(),
+                modeOfTransport,
+                timestamp.getVesselIMONumber(),
+                timestamp.getCarrierServiceCode(),
+                timestamp.getCarrierVoyageNumber(),
+                sequenceNumber
+        ).take(2)
+                .collectList()
+                .flatMap(transportCalls -> {
+                    if (transportCalls.isEmpty()) {
+                        return Mono.empty();
+                    }
+                    if (transportCalls.size() > 1) {
+                        if (timestamp.getCarrierServiceCode() == null) {
+                            if (sequenceNumber == null) {
+                                return Mono.error(new CreateException("Ambiguous transport call; please define sequence number or/and carrier service code + voyage number"));
+                            }
+                            return Mono.error(new CreateException("Ambiguous transport call; please define carrier service code and voyage number"));
+                        }
+                        if (sequenceNumber == null) {
+                            return Mono.error(new CreateException("Ambiguous transport call; please define sequence number"));
+                        }
+                        return Mono.error(new AssertionError("Internal error: Ambitious transport call; the result should be unique but is not"));
+                    }
+                    return Mono.just(transportCalls.get(0));
+                });
     }
 }
