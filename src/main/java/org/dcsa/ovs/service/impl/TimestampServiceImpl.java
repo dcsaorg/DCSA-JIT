@@ -3,7 +3,6 @@ package org.dcsa.ovs.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.TransportCall;
-import org.dcsa.core.events.model.UnmappedEvent;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.enums.CarrierCodeListProvider;
@@ -13,7 +12,6 @@ import org.dcsa.core.events.model.enums.FacilityCodeListProvider;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
-import org.dcsa.core.events.repository.UnmappedEventRepository;
 import org.dcsa.core.events.service.LocationService;
 import org.dcsa.core.events.service.OperationsEventService;
 import org.dcsa.core.events.service.PartyService;
@@ -44,7 +42,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     private final LocationService locationService;
     private final PartyService partyService;
     private final TransportCallTOService transportCallTOService;
-    private final UnmappedEventRepository unmappedEventRepository;
 
     @Override
     public Flux<Timestamp> findAll() {
@@ -105,14 +102,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                         .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
-                .flatMap(
-                        ope -> {
-                            UnmappedEvent unmappedEvent = new UnmappedEvent();
-                            unmappedEvent.setNewRecord(true);
-                            unmappedEvent.setEventID(ope.getEventID());
-                            unmappedEvent.setEnqueuedAtDateTime(ope.getEventCreatedDateTime());
-                            return unmappedEventRepository.save(unmappedEvent);
-                        })
                 .thenReturn(timestamp);
     }
 
