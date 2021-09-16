@@ -49,6 +49,16 @@ public class Timestamp {
 
     private PortCallServiceTypeCode portCallServiceTypeCode;
 
+    @NotNull
+    @Size(max = 50)
+    private String carrierVoyageNumber;
+
+    @NotNull
+    @Size(max = 5)
+    private String carrierServiceCode;
+
+    private Integer transportCallSequenceNumber;
+
     @Transient
     private LocationTO eventLocation;
 
