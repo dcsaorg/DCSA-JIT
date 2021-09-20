@@ -5,10 +5,7 @@ import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.TransportCall;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
-import org.dcsa.core.events.model.enums.CarrierCodeListProvider;
-import org.dcsa.core.events.model.enums.CodeListResponsibleAgency;
-import org.dcsa.core.events.model.enums.DCSATransportType;
-import org.dcsa.core.events.model.enums.FacilityCodeListProvider;
+import org.dcsa.core.events.model.enums.*;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
@@ -138,6 +135,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         transportCallTO.setCarrierServiceCode(timestamp.getCarrierServiceCode());
         transportCallTO.setModeOfTransport(timestamp.getModeOfTransport());
         transportCallTO.setLocation(timestamp.getEventLocation());
+        transportCallTO.setFacilityTypeCode(FacilityTypeCode.POTE);
 
         // TransportCallTOServiceImpl will create the vessel if it does not exists
         Vessel vessel = new Vessel();
