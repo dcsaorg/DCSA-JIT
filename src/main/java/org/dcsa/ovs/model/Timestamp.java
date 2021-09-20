@@ -21,7 +21,6 @@ public class Timestamp {
     @Size(max = 6)
     private String facilitySMDGCode;
 
-    @NotNull
     @EnumSubset(anyOf = {"PBPL","BRTH"})
     private FacilityTypeCode facilityTypeCode;
 
