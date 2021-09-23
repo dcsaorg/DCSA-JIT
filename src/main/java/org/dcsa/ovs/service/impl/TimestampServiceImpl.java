@@ -58,11 +58,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
             return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
         }
         if (timestamp.getModeOfTransport() == null) {
-            if (timestamp.getVesselIMONumber() == null) {
-                // OVS 2.0.0 Spec says optional, operations event says mandatory.  The latter wins for now.
-                return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
-            }
-            // Assume vessel IMO number implies VESSEL as mode of transport.
+            // OVS 2.0.2 IFS says that Mode Of Transport is optional, but vessel IMO number is required.
+            // The vessel IMO number is not null due to validation on the Timestamp entity.
+            assert timestamp.getVesselIMONumber() != null;
+            // Assume vessel IMO number implies VESSEL as mode of transport as this is only logical
+            // value given IMO number is present.
             timestamp.setModeOfTransport(DCSATransportType.VESSEL);
         }
         OperationsEvent operationsEvent = new OperationsEvent();
@@ -74,8 +74,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setFacilityTypeCode(timestamp.getFacilityTypeCode());
         operationsEvent.setRemark(timestamp.getRemark());
         operationsEvent.setDelayReasonCode(timestamp.getDelayReasonCode());
-
-        String modeOfTransport = timestamp.getModeOfTransport() != null ? timestamp.getModeOfTransport().name() : null;
 
         return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
