@@ -1,16 +1,18 @@
 package org.dcsa.ovs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.dcsa.core.events.model.enums.*;
 import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
-import org.dcsa.core.util.ValidationUtils;
 import org.dcsa.core.validator.EnumSubset;
 import org.dcsa.core.validator.ValidVesselIMONumber;
+import org.dcsa.ovs.model.transferobjects.VesselPositionTO;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
@@ -22,7 +24,7 @@ public class Timestamp {
     private String facilitySMDGCode;
 
     @NotNull
-    @EnumSubset(anyOf = {"PBPL","BRTH"})
+    @EnumSubset(anyOf = {"PBPL", "BRTH"})
     private FacilityTypeCode facilityTypeCode;
 
     @NotNull
@@ -60,14 +62,25 @@ public class Timestamp {
     private Integer transportCallSequenceNumber;
 
     @Transient
+    @Valid
     private LocationTO eventLocation;
 
     @NotNull
     @Transient
+    @Valid
     private PartyTO publisher;
 
     @Transient
-    private LocationTO vesselPosition;
+    @Valid
+    private VesselPositionTO vesselPosition;
+
+    @JsonIgnore
+    public LocationTO getVesselPositionAsLocationTO() {
+        if (vesselPosition == null) {
+            return null;
+        }
+        return vesselPosition.toLocation();
+    }
 
     private String remark;
 
