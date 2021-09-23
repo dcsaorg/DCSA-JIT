@@ -74,6 +74,8 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setFacilityTypeCode(timestamp.getFacilityTypeCode());
         operationsEvent.setRemark(timestamp.getRemark());
         operationsEvent.setDelayReasonCode(timestamp.getDelayReasonCode());
+        operationsEvent.setEventLocation(timestamp.getEventLocation());
+        operationsEvent.setVesselPosition(timestamp.getVesselPositionAsLocationTO());
 
         return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
