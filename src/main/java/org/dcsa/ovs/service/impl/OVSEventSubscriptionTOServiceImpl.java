@@ -41,7 +41,7 @@ public class OVSEventSubscriptionTOServiceImpl
   }
 
   @Override
-  protected List<EventType> getAllowedEventTypes() {
+   public List<EventType> getAllowedEventTypes() {
     return List.of(EventType.TRANSPORT, EventType.OPERATIONS);
   }
 
