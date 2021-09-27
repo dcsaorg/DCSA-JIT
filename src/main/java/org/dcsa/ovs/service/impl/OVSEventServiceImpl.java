@@ -48,16 +48,20 @@ public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSE
 
     @Override
     public Flux<Event> findAllExtended(ExtendedRequest<Event> extendedRequest) {
-        return super.findAllExtended(extendedRequest).concatMap(event -> {
-            switch (event.getEventType()) {
+    return super.findAllExtended(extendedRequest)
+        .filter(
+            e -> SUPPORTED_EVENT_TYPES.contains(e.getEventType()))
+        .concatMap(
+            event -> {
+              switch (event.getEventType()) {
                 case TRANSPORT:
-                    return transportEventService.loadRelatedEntities((TransportEvent) event);
+                  return transportEventService.loadRelatedEntities((TransportEvent) event);
                 case OPERATIONS:
-                    return operationsEventService.loadRelatedEntities((OperationsEvent) event);
+                  return operationsEventService.loadRelatedEntities((OperationsEvent) event);
                 default:
-                    return Mono.empty();
-            }
-        });
+                  return Mono.empty();
+              }
+            });
     }
 
     @Override
