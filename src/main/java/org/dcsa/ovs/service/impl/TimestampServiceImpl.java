@@ -145,17 +145,18 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         List<PartyTO.IdentifyingCode> identifyingCodes = timestamp.getPublisher().getIdentifyingCodes();
         String partyCode = null;
         CarrierCodeListProvider carrierCodeListProvider = null;
-        for (PartyTO.IdentifyingCode code : identifyingCodes) {
-            CodeListResponsibleAgency.isValidCode(code.getCodeListResponsibleAgencyCode());
+        if (identifyingCodes != null) {
+            for (PartyTO.IdentifyingCode code : identifyingCodes) {
+                CodeListResponsibleAgency.isValidCode(code.getCodeListResponsibleAgencyCode());
 
-            if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SMDG.getCode())) {
-                partyCode = code.getPartyCode();
-                carrierCodeListProvider = CarrierCodeListProvider.SMDG;
-                break;
-            }
-            else if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SCAC.getCode())) {
-                partyCode = code.getPartyCode();
-                carrierCodeListProvider = CarrierCodeListProvider.NMFTA;
+                if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SMDG.getCode())) {
+                    partyCode = code.getPartyCode();
+                    carrierCodeListProvider = CarrierCodeListProvider.SMDG;
+                    break;
+                } else if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SCAC.getCode())) {
+                    partyCode = code.getPartyCode();
+                    carrierCodeListProvider = CarrierCodeListProvider.NMFTA;
+                }
             }
         }
 
