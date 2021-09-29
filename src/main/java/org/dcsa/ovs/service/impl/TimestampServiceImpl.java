@@ -6,6 +6,7 @@ import org.dcsa.core.events.model.TransportCall;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.enums.*;
+import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
@@ -167,12 +168,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
 
         transportCallTO.setVesselIMONumber(timestamp.getVesselIMONumber());
 
-        // Facility
-        transportCallTO.setUNLocationCode(timestamp.getUNLocationCode());
-        transportCallTO.setFacilityCodeListProvider(FacilityCodeListProvider.SMDG);
-        transportCallTO.setFacilityCode(timestamp.getFacilitySMDGCode());
-
-        transportCallTO.setFacilityTypeCode(timestamp.getFacilityTypeCode());
+        // Note that the facility of the timestamp is *NOT* related to the transport call itself.
+        // Therefore we use a location to store the UNLocationCode
+        LocationTO transportCallLocation = new LocationTO();
+        transportCallLocation.setUnLocationCode(timestamp.getUNLocationCode());
+        transportCallTO.setLocation(transportCallLocation);
 
         return transportCallTOService.create(transportCallTO);
     }
@@ -189,7 +189,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         }
         return transportCallRepository.getTransportCall(
                 timestamp.getUNLocationCode(),
-                timestamp.getFacilitySMDGCode(),
                 modeOfTransport,
                 timestamp.getVesselIMONumber(),
                 timestamp.getCarrierServiceCode(),
