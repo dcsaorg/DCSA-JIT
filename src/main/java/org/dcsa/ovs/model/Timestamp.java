@@ -20,6 +20,7 @@ import java.time.OffsetDateTime;
 @Data
 @Table("timestamp")
 public class Timestamp {
+    @Deprecated
     @Size(max = 6)
     private String facilitySMDGCode;
 
