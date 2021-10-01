@@ -6,6 +6,7 @@ import org.dcsa.core.events.model.TransportCall;
 import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.enums.*;
+import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
@@ -65,6 +66,34 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
             // value given IMO number is present.
             timestamp.setModeOfTransport(DCSATransportType.VESSEL);
         }
+        LocationTO location = timestamp.getEventLocation();
+        if (location != null) {
+            if (location.getUnLocationCode() != null && !location.getUnLocationCode().equals(timestamp.getUNLocationCode())) {
+                return Mono.error(new CreateException("Conflicting UNLocationCode between the timestamp and the event location"));
+            }
+            if (location.getFacilityCode() == null ^ location.getFacilityCodeListProvider() == null) {
+                if (location.getFacilityCode() == null) {
+                    return Mono.error(new CreateException("Cannot create location where facility code list provider is present but facility code is missing"));
+                }
+                return Mono.error(new CreateException("Cannot create location where facility code is present but facility code list provider is missing"));
+            }
+        }
+        if (timestamp.getFacilitySMDGCode() != null) {
+            if (location == null) {
+                location = new LocationTO();
+                timestamp.setEventLocation(location);
+            }
+            // We need the UNLocode to resolve the facility.
+            location.setUnLocationCode(timestamp.getUNLocationCode());
+            if (location.getFacilityCodeListProvider() != null && location.getFacilityCodeListProvider() != FacilityCodeListProvider.SMDG) {
+                return Mono.error(new CreateException("Conflicting facilityCodeListProvider definition (got a facilitySMDGCode but location had a facility with provider: " + location.getFacilityCodeListProvider() + ")"));
+            }
+            if (location.getFacilityCode() != null && !location.getFacilityCode().equals(timestamp.getFacilitySMDGCode())) {
+                return Mono.error(new CreateException("Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)"));
+            }
+            location.setFacilityCodeListProvider(FacilityCodeListProvider.SMDG);
+            location.setFacilityCode(timestamp.getFacilitySMDGCode());
+        }
         OperationsEvent operationsEvent = new OperationsEvent();
         operationsEvent.setEventClassifierCode(timestamp.getEventClassifierCode());
         operationsEvent.setEventDateTime(timestamp.getEventDateTime());
@@ -90,11 +119,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                             .doOnNext(party -> operationsEvent.setPublisherID(party.getId()))
                             .thenReturn(operationsEvent);
                 })
-                .flatMap(ignored -> Mono.justOrEmpty(operationsEvent.getEventLocation())
+                .then(Mono.justOrEmpty(operationsEvent.getEventLocation())
                         .flatMap(locationService::ensureResolvable)
                         .doOnNext(location2 -> operationsEvent.setEventLocationID(location2.getId()))
                         .thenReturn(operationsEvent)
-                ).flatMap(ignored -> Mono.justOrEmpty(operationsEvent.getVesselPosition())
+                ).then(Mono.justOrEmpty(operationsEvent.getVesselPosition())
                         .flatMap(locationService::ensureResolvable)
                         .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
@@ -168,12 +197,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
 
         transportCallTO.setVesselIMONumber(timestamp.getVesselIMONumber());
 
-        // Facility
-        transportCallTO.setUNLocationCode(timestamp.getUNLocationCode());
-        transportCallTO.setFacilityCodeListProvider(FacilityCodeListProvider.SMDG);
-        transportCallTO.setFacilityCode(timestamp.getFacilitySMDGCode());
-
-        transportCallTO.setFacilityTypeCode(timestamp.getFacilityTypeCode());
+        // Note that the facility of the timestamp is *NOT* related to the transport call itself.
+        // Therefore we use a location to store the UNLocationCode
+        LocationTO transportCallLocation = new LocationTO();
+        transportCallLocation.setUnLocationCode(timestamp.getUNLocationCode());
+        transportCallTO.setLocation(transportCallLocation);
 
         return transportCallTOService.create(transportCallTO);
     }
@@ -190,7 +218,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         }
         return transportCallRepository.getTransportCall(
                 timestamp.getUNLocationCode(),
-                timestamp.getFacilitySMDGCode(),
                 modeOfTransport,
                 timestamp.getVesselIMONumber(),
                 timestamp.getCarrierServiceCode(),
