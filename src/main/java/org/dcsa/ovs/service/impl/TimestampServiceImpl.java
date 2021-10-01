@@ -91,11 +91,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                             .doOnNext(party -> operationsEvent.setPublisherID(party.getId()))
                             .thenReturn(operationsEvent);
                 })
-                .flatMap(ignored -> Mono.justOrEmpty(operationsEvent.getEventLocation())
+                .then(Mono.justOrEmpty(operationsEvent.getEventLocation())
                         .flatMap(locationService::ensureResolvable)
                         .doOnNext(location2 -> operationsEvent.setEventLocationID(location2.getId()))
                         .thenReturn(operationsEvent)
-                ).flatMap(ignored -> Mono.justOrEmpty(operationsEvent.getVesselPosition())
+                ).then(Mono.justOrEmpty(operationsEvent.getVesselPosition())
                         .flatMap(locationService::ensureResolvable)
                         .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
