@@ -54,10 +54,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     @Override
     @Transactional
     public Mono<Timestamp> create(Timestamp timestamp) {
-        if (timestamp.getFacilitySMDGCode() == null) {
-            // OVS 2.0.0 Spec says optional, but our code does not function without it.  Let's be honest about it.
-            return Mono.error(new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED));
-        }
         if (timestamp.getModeOfTransport() == null) {
             // OVS 2.0.2 IFS says that Mode Of Transport is optional, but vessel IMO number is required.
             // The vessel IMO number is not null due to validation on the Timestamp entity.
