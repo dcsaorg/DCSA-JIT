@@ -31,7 +31,6 @@ import java.util.Map;
 
 @RestController
 @Validated
-@RequestMapping(value = "events", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class EventController extends AbstractEventController<OVSEventService, Event> {
 
     private final OVSEventService ovsEventService;
@@ -43,11 +42,6 @@ public class EventController extends AbstractEventController<OVSEventService, Ev
     @Override
     public OVSEventService getService() {
         return ovsEventService;
-    }
-
-    @Override
-    public String getType() {
-        return "Event";
     }
 
     @Override
@@ -90,13 +84,4 @@ public class EventController extends AbstractEventController<OVSEventService, Ev
             ServerHttpRequest request) {
         return super.findAll(response, request);
     }
-
-    @Override
-    public Mono<Event> create(@Valid @RequestBody Event event) {
-        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
-    }
-
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid param value")
-    @ExceptionHandler(ConstraintViolationException.class)
-    public void badRequest() {}
 }
