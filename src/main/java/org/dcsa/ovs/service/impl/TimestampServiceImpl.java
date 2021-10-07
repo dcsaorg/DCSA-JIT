@@ -162,7 +162,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         transportCallTO.setLocation(timestamp.getEventLocation());
         transportCallTO.setFacilityTypeCode(FacilityTypeCode.POTE);
 
-        // TransportCallTOServiceImpl will create the vessel if it does not exists
+        // TransportCallTOServiceImpl will create the vessel if it does not exist
         Vessel vessel = new Vessel();
         vessel.setVesselIMONumber(timestamp.getVesselIMONumber());
 
@@ -194,12 +194,14 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         transportCallTO.setVesselIMONumber(timestamp.getVesselIMONumber());
 
         // Note that the facility of the timestamp is *NOT* related to the transport call itself.
-        // Therefore we use a location to store the UNLocationCode
-        LocationTO transportCallLocation = new LocationTO();
-        transportCallLocation.setUnLocationCode(timestamp.getUNLocationCode());
-        transportCallTO.setLocation(transportCallLocation);
+        // Therefore, we use a location to store the UNLocationCode
+        return locationService.ensureResolvable(transportCallTO.getLocation())
+                .doOnNext(x -> transportCallTO.setLocationID(x.getId()))
+                .thenReturn(transportCallTO)
+                .flatMap(transportCallTOService::create)
+                .thenReturn(transportCallTO);
 
-        return transportCallTOService.create(transportCallTO);
+//        return transportCallTOService.create(transportCallTO);
     }
 
     private Mono<TransportCall> findTransportCall(Timestamp timestamp) {
