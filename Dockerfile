@@ -12,4 +12,4 @@ COPY run-in-container.sh /run.sh
 RUN chmod +x /run.sh
 COPY src/main/resources/application.yaml .
 COPY target/dcsa_ovs-*.jar .
-CMD java -jar dcsa_ovs-*.jar
+CMD ["/run.sh"]
