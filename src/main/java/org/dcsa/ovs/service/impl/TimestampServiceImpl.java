@@ -102,6 +102,12 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setEventLocation(timestamp.getEventLocation());
         operationsEvent.setVesselPosition(timestamp.getVesselPositionAsLocationTO());
 
+        if (OperationsEvent.UNKNOWN_TIMESTAMP.equals(operationsEvent.getTimestampTypeName())) {
+            return Mono.error(new CreateException("Cannot derive a known timestamp name from the provided timestamp."
+                    + " Please verify the contents - such as operationsEventType, eventClassifierCode,"
+                    + " portCallServiceTypeCode, and portCallPhaseTypeCode."));
+        }
+
         return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
                 // Create transport call if missing
