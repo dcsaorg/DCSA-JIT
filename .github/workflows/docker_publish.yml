@@ -54,5 +54,5 @@ jobs:
           githubOrg: dcsaorg
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          tags: [${{ env.DOCKER_TAG_NAME }}]
+          tags: ${{ env.DOCKER_TAG_NAME }}
           addLatest: ${{ false }}
