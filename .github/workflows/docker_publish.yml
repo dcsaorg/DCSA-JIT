@@ -9,6 +9,8 @@ on:
   push:
     branches:
       - master
+      - live-hamburg
+      - live-singapore
     
 env:
   # Use docker.io for Docker Hub if empty
@@ -25,6 +27,11 @@ jobs:
       packages: write
 
     steps:
+      - name: Branch name
+        run: |-
+          tag_name=$(echo "${GITHUB_REF}" | sed 's/.*\///g; s/master/latest/')
+          echo DOCKER_TAG_NAME=${tag_name}
+          echo DOCKER_TAG_NAME=${tag_name} >> $GITHUB_ENV
       - name: Checkout repository
         uses: actions/checkout@v2
         
@@ -47,4 +54,5 @@ jobs:
           githubOrg: dcsaorg
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          addLatest: ${{ true }}
+          tags: [${{ env.DOCKER_TAG_NAME }}]
+          addLatest: ${{ false }}
