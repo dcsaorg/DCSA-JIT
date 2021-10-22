@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 @Data
 @Table("timestamp")
@@ -24,7 +25,6 @@ public class Timestamp {
     @Size(max = 6)
     private String facilitySMDGCode;
 
-    @NotNull
     @EnumSubset(anyOf = {"PBPL", "BRTH"})
     private FacilityTypeCode facilityTypeCode;
 
@@ -39,6 +39,7 @@ public class Timestamp {
     @ValidVesselIMONumber
     private String vesselIMONumber;
 
+    @EnumSubset(anyOf = {"VESSEL"})
     private DCSATransportType modeOfTransport;
 
     @NotNull
@@ -49,6 +50,8 @@ public class Timestamp {
 
     @NotNull
     private OperationsEventTypeCode operationsEventTypeCode;
+
+    private PortCallPhaseTypeCode portCallPhaseTypeCode;
 
     private PortCallServiceTypeCode portCallServiceTypeCode;
 
@@ -86,4 +89,41 @@ public class Timestamp {
     private String remark;
 
     private String delayReasonCode;
+
+    public void ensurePhaseTypeIsDefined() {
+        if (portCallPhaseTypeCode != null) {
+            return;
+        }
+        if (portCallServiceTypeCode != null) {
+            Set<PortCallPhaseTypeCode> validPhases = portCallServiceTypeCode.getValidPhases();
+            if (validPhases.size() == 1) {
+                portCallPhaseTypeCode = validPhases.iterator().next();
+            }
+        } else if (facilityTypeCode != null) {
+            switch (facilityTypeCode) {
+                case BRTH:
+                    if (operationsEventTypeCode == OperationsEventTypeCode.ARRI) {
+                        if (eventClassifierCode == EventClassifierCode.ACT) {
+                            portCallPhaseTypeCode = PortCallPhaseTypeCode.ALGS;
+                        } else {
+                            portCallPhaseTypeCode = PortCallPhaseTypeCode.INBD;
+                        }
+                    }
+                    if (operationsEventTypeCode == OperationsEventTypeCode.DEPA) {
+                        if (eventClassifierCode == EventClassifierCode.ACT) {
+                            portCallPhaseTypeCode = PortCallPhaseTypeCode.OUTB;
+                        } else {
+                            portCallPhaseTypeCode = PortCallPhaseTypeCode.ALGS;
+                        }
+                    }
+                    break;
+                case PBPL:
+                    portCallPhaseTypeCode = PortCallPhaseTypeCode.INBD;
+                    break;
+            }
+        }
+        if (portCallPhaseTypeCode == null) {
+            throw new IllegalStateException("Ambiguous timestamp");
+        }
+    }
 }

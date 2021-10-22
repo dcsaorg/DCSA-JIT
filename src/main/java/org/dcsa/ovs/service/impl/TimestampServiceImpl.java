@@ -10,10 +10,7 @@ import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
-import org.dcsa.core.events.service.LocationService;
-import org.dcsa.core.events.service.OperationsEventService;
-import org.dcsa.core.events.service.PartyService;
-import org.dcsa.core.events.service.TransportCallTOService;
+import org.dcsa.core.events.service.*;
 import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
@@ -39,6 +36,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     private final TransportCallRepository transportCallRepository;
     private final LocationService locationService;
     private final PartyService partyService;
+    private final TimestampDefinitionService timestampDefinitionService;
     private final TransportCallTOService transportCallTOService;
 
     @Override
@@ -61,6 +59,11 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
             // Assume vessel IMO number implies VESSEL as mode of transport as this is only logical
             // value given IMO number is present.
             timestamp.setModeOfTransport(DCSATransportType.VESSEL);
+        }
+        try {
+            timestamp.ensurePhaseTypeIsDefined();
+        } catch (IllegalStateException e) {
+            return Mono.error(new CreateException("Cannot derive portCallPhaseTypeCode automatically from this timestamp.  Please define it explicitly"));
         }
         LocationTO location = timestamp.getEventLocation();
         if (location != null) {
@@ -94,6 +97,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setEventClassifierCode(timestamp.getEventClassifierCode());
         operationsEvent.setEventDateTime(timestamp.getEventDateTime());
         operationsEvent.setOperationsEventTypeCode(timestamp.getOperationsEventTypeCode());
+        operationsEvent.setPortCallPhaseTypeCode(timestamp.getPortCallPhaseTypeCode());
         operationsEvent.setPortCallServiceTypeCode(timestamp.getPortCallServiceTypeCode());
         operationsEvent.setPublisherRole(timestamp.getPublisherRole());
         operationsEvent.setFacilityTypeCode(timestamp.getFacilityTypeCode());
@@ -101,12 +105,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setDelayReasonCode(timestamp.getDelayReasonCode());
         operationsEvent.setEventLocation(timestamp.getEventLocation());
         operationsEvent.setVesselPosition(timestamp.getVesselPositionAsLocationTO());
-
-        if (OperationsEvent.UNKNOWN_TIMESTAMP.equals(operationsEvent.getTimestampTypeName())) {
-            return Mono.error(new CreateException("Cannot derive a known timestamp name from the provided timestamp."
-                    + " Please verify the contents - such as operationsEventType, eventClassifierCode,"
-                    + " portCallServiceTypeCode, and portCallPhaseTypeCode."));
-        }
 
         return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
@@ -130,6 +128,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                         .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
+                .flatMap(timestampDefinitionService::markOperationsEventAsTimestamp)
                 .thenReturn(timestamp);
     }
 
