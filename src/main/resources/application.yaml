@@ -43,17 +43,6 @@ spring:
   webflux:
     base-path: ${dcsa.url.prefix:}/v2
 
-auth0:
-  audience: localhost
-  enabled: false
-
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    # swagger-ui custom path
-    path: /docs
-
 dcsa:
   events:
     transport-event-map-references-and-document-references: false
@@ -68,9 +57,10 @@ server:
 
 logging:
   level:
-    dk: DEBUG
+    root: INFO
     org:
-      dcsa: DEBUG
+      springframework:
+        r2dbc: INFO
 
 management:
   endpoint:
