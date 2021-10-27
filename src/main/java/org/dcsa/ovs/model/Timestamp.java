@@ -34,7 +34,8 @@ public class Timestamp {
     private String UNLocationCode;
 
     @NotNull
-    private PublisherRole publisherRole;
+    @EnumSubset(anyOf = {"CA", "AG", "VSL", "ATH", "PLT", "TR", "TWG", "BUK", "LSH"})
+    private PartyFunction publisherRole;
 
     @ValidVesselIMONumber
     private String vesselIMONumber;
@@ -55,9 +56,15 @@ public class Timestamp {
 
     private PortCallServiceTypeCode portCallServiceTypeCode;
 
-    @NotNull
     @Size(max = 50)
+    @Deprecated
     private String carrierVoyageNumber;
+
+    @Size(max = 50)
+    private String exportVoyageNumber;
+
+    @Size(max = 50)
+    private String importVoyageNumber;
 
     @NotNull
     @Size(max = 5)
