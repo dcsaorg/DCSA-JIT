@@ -161,13 +161,14 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         TransportCallTO transportCallTO = new TransportCallTO();
         Integer sequenceNumber = timestamp.getTransportCallSequenceNumber();
         transportCallTO.setTransportCallSequenceNumber(sequenceNumber != null ? sequenceNumber : 1);
-        transportCallTO.setCarrierVoyageNumber(timestamp.getCarrierVoyageNumber());
+        transportCallTO.setExportVoyageNumber(timestamp.getExportVoyageNumber());
+        transportCallTO.setImportVoyageNumber(timestamp.getImportVoyageNumber());
         transportCallTO.setCarrierServiceCode(timestamp.getCarrierServiceCode());
         transportCallTO.setModeOfTransport(timestamp.getModeOfTransport());
         transportCallTO.setLocation(timestamp.getEventLocation());
         transportCallTO.setFacilityTypeCode(FacilityTypeCode.POTE);
 
-        // TransportCallTOServiceImpl will create the vessel if it does not exists
+        // TransportCallTOServiceImpl will create the vessel if it does not exist
         Vessel vessel = new Vessel();
         vessel.setVesselIMONumber(timestamp.getVesselIMONumber());
 
@@ -176,13 +177,13 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         CarrierCodeListProvider carrierCodeListProvider = null;
         if (identifyingCodes != null) {
             for (PartyTO.IdentifyingCode code : identifyingCodes) {
-                CodeListResponsibleAgency.isValidCode(code.getCodeListResponsibleAgencyCode());
+                DCSAResponsibleAgencyCode.ensureIsValidLegacyCode(code.getCodeListResponsibleAgencyCode());
 
-                if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SMDG.getCode())) {
+                if (code.getCodeListResponsibleAgencyCode().equals(DCSAResponsibleAgencyCode.SMDG.getLegacyAgencyCode())) {
                     partyCode = code.getPartyCode();
                     carrierCodeListProvider = CarrierCodeListProvider.SMDG;
                     break;
-                } else if (code.getCodeListResponsibleAgencyCode().equals(CodeListResponsibleAgency.SCAC.getCode())) {
+                } else if (code.getCodeListResponsibleAgencyCode().equals(DCSAResponsibleAgencyCode.SCAC.getLegacyAgencyCode())) {
                     partyCode = code.getPartyCode();
                     carrierCodeListProvider = CarrierCodeListProvider.NMFTA;
                 }
@@ -195,8 +196,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         }
 
         transportCallTO.setVessel(vessel);
-
-        transportCallTO.setVesselIMONumber(timestamp.getVesselIMONumber());
 
         // Note that the facility of the timestamp is *NOT* related to the transport call itself.
         // Therefore we use a location to store the UNLocationCode
@@ -211,18 +210,30 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         // Caller should have ensured that Mode of Transport is not null at this point.
         String modeOfTransport = Objects.requireNonNull(timestamp.getModeOfTransport()).name();
         Integer sequenceNumber = timestamp.getTransportCallSequenceNumber();
-        if (timestamp.getCarrierVoyageNumber() == null ^ timestamp.getCarrierServiceCode() == null) {
-            if (timestamp.getCarrierServiceCode() == null) {
-                return Mono.error(new CreateException("Cannot create timestamp where voyage code is present but service code is missing"));
+        if (timestamp.getExportVoyageNumber() != null ^ timestamp.getImportVoyageNumber() != null) {
+            return Mono.error(new CreateException("exportVoyageNumber and importVoyageNumber must be given together or not at all"));
+        }
+        if (timestamp.getExportVoyageNumber() != null) {
+            if (timestamp.getCarrierVoyageNumber() != null) {
+                return Mono.error(new CreateException("Obsolete carrierVoyageNumber cannot be used with exportVoyageNumber + importVoyageNumber. Please omit it!"));
             }
-            return Mono.error(new CreateException("Cannot create timestamp where service code is present but voyage code is missing"));
+        } else {
+            timestamp.setExportVoyageNumber(timestamp.getCarrierVoyageNumber());
+            timestamp.setImportVoyageNumber(timestamp.getCarrierVoyageNumber());
+        }
+        if (timestamp.getCarrierServiceCode() == null) {
+            return Mono.error(new CreateException("Cannot create timestamp where service code is missing"));
+        }
+        if (timestamp.getExportVoyageNumber() == null) {
+            return Mono.error(new CreateException("Cannot create timestamp where voyage number (carrierVoyageNumber OR exportVoyageNumber + importVoyageNumber) is missing"));
         }
         return transportCallRepository.getTransportCall(
                 timestamp.getUNLocationCode(),
                 modeOfTransport,
                 timestamp.getVesselIMONumber(),
                 timestamp.getCarrierServiceCode(),
-                timestamp.getCarrierVoyageNumber(),
+                timestamp.getImportVoyageNumber(),
+                timestamp.getExportVoyageNumber(),
                 sequenceNumber
         ).take(2)
                 .collectList()
