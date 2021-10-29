@@ -60,6 +60,9 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
             // value given IMO number is present.
             timestamp.setModeOfTransport(DCSATransportType.VESSEL);
         }
+        if (!timestamp.getModeOfTransport().equals(DCSATransportType.VESSEL)) {
+            return Mono.error(new CreateException("modeOfTransport must be blank or \"VESSEL\""));
+        }
         try {
             timestamp.ensurePhaseTypeIsDefined();
         } catch (IllegalStateException e) {
