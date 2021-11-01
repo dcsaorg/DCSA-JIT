@@ -1,4 +1,4 @@
-# DCSA OVS - Operational Vessel Schedule
+# DCSA JIT - Just In Time (Port Call optimization)
 
 Building and running manually/locally
 -------------------------------------
@@ -7,10 +7,6 @@ Initialize your local postgresql database as described in datamodel/README.md, t
 ```
 export db_hostname=localhost
 export DCSA_CORE_Version=0.7.11 #or whatever version is the right one
-```
-If running without auth0, disable it with
-```
-export AUTH0_ENABLED=false
 ```
 Then build and run with
 ```
@@ -25,7 +21,7 @@ docker-compose up -d -V --build
 
 Then try and access the installation say on
 ```
-http://localhost:9090/v1/schedules
+http://localhost:9090/v1/events
 ```
 
 Building and running using docker-compose

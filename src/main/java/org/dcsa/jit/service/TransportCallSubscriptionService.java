@@ -1,7 +1,7 @@
-package org.dcsa.ovs.service;
+package org.dcsa.jit.service;
 
 import org.dcsa.core.service.ExtendedBaseService;
-import org.dcsa.ovs.model.TransportCallSubscription;
+import org.dcsa.jit.model.TransportCallSubscription;
 
 import java.util.UUID;
 

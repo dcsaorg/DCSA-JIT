@@ -1,4 +1,4 @@
-package org.dcsa.ovs.model;
+package org.dcsa.jit.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

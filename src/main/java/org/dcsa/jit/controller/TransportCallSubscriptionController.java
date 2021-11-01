@@ -1,9 +1,9 @@
-package org.dcsa.ovs.controller;
+package org.dcsa.jit.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
-import org.dcsa.ovs.model.TransportCallSubscription;
-import org.dcsa.ovs.service.TransportCallSubscriptionService;
+import org.dcsa.jit.model.TransportCallSubscription;
+import org.dcsa.jit.service.TransportCallSubscriptionService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

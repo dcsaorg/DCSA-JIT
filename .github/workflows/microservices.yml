@@ -18,18 +18,18 @@ jobs:
     - name: Fetch backend
       uses: actions/checkout@v2
       with:
-        path: DCSA-OVS
+        path: DCSA-JIT
         submodules: recursive
     - name: Build Operational Vessel Schedules API
-      run: cd DCSA-OVS && mvn package -DskipTests -X #Need to skip the tests as they depend on a running DB
+      run: cd DCSA-JIT && mvn package -DskipTests -X #Need to skip the tests as they depend on a running DB
     - name: Build and run the microservices
-      run: cd DCSA-OVS && docker-compose -f docker-compose.yml up -d -V
+      run: cd DCSA-JIT && docker-compose -f docker-compose.yml up -d -V
 
     - name: Checkout dcsaorg/DCSA-API-Validator
       uses: actions/checkout@v2
       with:
         repository: dcsaorg/DCSA-API-Validator
-        ref: master
+        ref: Refactor-OVS-to-JIT
         token: ${{ secrets.REPO_ACCESS_PAT }}
         path: DCSA-API-Validator
         
@@ -37,13 +37,13 @@ jobs:
     - run: echo 'SELECT * FROM dcsa_im_v3_0.location;' | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f - 2>/dev/null || sleep 5
 
     - name: Load DCSA test data
-      run: cat DCSA-OVS/DCSA-Information-Model/datamodel/testdata.d/*.sql | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f -
+      run: cat DCSA-JIT/DCSA-Information-Model/datamodel/testdata.d/*.sql | docker exec -i -u postgres dcsa_db psql -d dcsa_openapi -f -
         
-    - name: Run the API validator on OVSV2
-      run: cd DCSA-API-Validator && mvn -Dtest.suite=OVSV2.xml test || (echo "==== OVS logs ====" ; docker logs dcsa-ovs_dcsa-ovs_1; exit 1)
+    - name: Run the API validator on JIT V1
+      run: cd DCSA-API-Validator && mvn -Dtest.suite=JITV1.xml test || (echo "==== JIT logs ====" ; docker logs dcsa-jit_dcsa-jit_1; exit 1)
       env: 
         client_secret: ${{ secrets.AUTH0_DCSA_CLIENT_SECRET }}
         client_id: 1qEYXCbxWvjeYS8VVm1BfnfZrP3TY9n8
         audience: localhost
         OAuthTokenUri: https://dcsa.eu.auth0.com/oauth/token
-        API_ROOT_URI: http://localhost:9090/v2
+        API_ROOT_URI: http://localhost:9090/v1

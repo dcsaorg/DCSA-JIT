@@ -1,4 +1,4 @@
-package org.dcsa.ovs.model.transferobjects;
+package org.dcsa.jit.model.transferobjects;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

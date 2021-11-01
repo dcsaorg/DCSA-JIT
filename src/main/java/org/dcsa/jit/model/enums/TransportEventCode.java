@@ -1,4 +1,4 @@
-package org.dcsa.ovs.model.enums;
+package org.dcsa.jit.model.enums;
 
 public enum TransportEventCode {
     ARRI,

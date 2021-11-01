@@ -1,7 +1,7 @@
-package org.dcsa.ovs.repository;
+package org.dcsa.jit.repository;
 
 import org.dcsa.core.repository.ExtendedRepository;
-import org.dcsa.ovs.model.TransportCallSubscription;
+import org.dcsa.jit.model.TransportCallSubscription;
 import org.springframework.data.r2dbc.repository.Query;
 import reactor.core.publisher.Flux;
 
