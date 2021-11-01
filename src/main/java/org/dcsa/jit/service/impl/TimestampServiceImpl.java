@@ -61,11 +61,7 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         if (!timestamp.getModeOfTransport().equals(DCSATransportType.VESSEL)) {
             return Mono.error(new CreateException("modeOfTransport must be blank or \"VESSEL\""));
         }
-        try {
-            timestamp.ensurePhaseTypeIsDefined();
-        } catch (IllegalStateException e) {
-            return Mono.error(new CreateException("Cannot derive portCallPhaseTypeCode automatically from this timestamp.  Please define it explicitly"));
-        }
+
         LocationTO location = timestamp.getEventLocation();
         if (location != null) {
             if (location.getUnLocationCode() != null && !location.getUnLocationCode().equals(timestamp.getUNLocationCode())) {
@@ -106,6 +102,12 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setDelayReasonCode(timestamp.getDelayReasonCode());
         operationsEvent.setEventLocation(timestamp.getEventLocation());
         operationsEvent.setVesselPosition(timestamp.getVesselPositionAsLocationTO());
+
+        try {
+            operationsEvent.ensurePhaseTypeIsDefined();
+        } catch (IllegalStateException e) {
+            return Mono.error(new CreateException("Cannot derive portCallPhaseTypeCode automatically from this timestamp.  Please define it explicitly"));
+        }
 
         return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
