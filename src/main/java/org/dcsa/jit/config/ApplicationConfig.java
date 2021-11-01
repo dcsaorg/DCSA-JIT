@@ -1,4 +1,4 @@
-package org.dcsa.ovs.config;
+package org.dcsa.jit.config;
 
 import org.dcsa.core.repository.ExtendedRepositoryImpl;
 import org.springframework.context.annotation.ComponentScan;

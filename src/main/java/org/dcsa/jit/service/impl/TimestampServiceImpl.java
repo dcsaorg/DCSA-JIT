@@ -1,4 +1,4 @@
-package org.dcsa.ovs.service.impl;
+package org.dcsa.jit.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.OperationsEvent;
@@ -15,8 +15,8 @@ import org.dcsa.core.exception.CreateException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.service.impl.BaseServiceImpl;
 import org.dcsa.core.util.MappingUtils;
-import org.dcsa.ovs.model.Timestamp;
-import org.dcsa.ovs.service.TimestampService;
+import org.dcsa.jit.model.Timestamp;
+import org.dcsa.jit.service.TimestampService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,11 +53,9 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
     @Transactional
     public Mono<Timestamp> create(Timestamp timestamp) {
         if (timestamp.getModeOfTransport() == null) {
-            // OVS 2.0.2 IFS says that Mode Of Transport is optional, but vessel IMO number is required.
-            // The vessel IMO number is not null due to validation on the Timestamp entity.
-            assert timestamp.getVesselIMONumber() != null;
-            // Assume vessel IMO number implies VESSEL as mode of transport as this is only logical
-            // value given IMO number is present.
+            // JIT IFS says that Mode Of Transport must be omitted for some timestamps and must be VESSEL for others.
+            // Because the distinction is not visible after the timestamp has been created, so we cannot rely on it
+            // in general either way.
             timestamp.setModeOfTransport(DCSATransportType.VESSEL);
         }
         if (!timestamp.getModeOfTransport().equals(DCSATransportType.VESSEL)) {

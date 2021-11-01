@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.dcsa</groupId>
-    <artifactId>dcsa_ovs</artifactId>
+    <artifactId>dcsa_jit</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>DCSA-ovs</name>
+    <name>DCSA-jit</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -58,7 +58,7 @@
         <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/dcsaorg/DCSA-OVS</url>
+            <url>https://maven.pkg.github.com/dcsaorg/DCSA-JIT</url>
         </repository>
     </distributionManagement>
 

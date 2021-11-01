@@ -1,4 +1,4 @@
-package org.dcsa.ovs.service.impl;
+package org.dcsa.jit.service.impl;
 
 import org.dcsa.core.events.model.Event;
 import org.dcsa.core.events.model.OperationsEvent;
@@ -13,7 +13,7 @@ import org.dcsa.core.events.service.TransportEventService;
 import org.dcsa.core.events.service.impl.GenericEventServiceImpl;
 import org.dcsa.core.exception.NotFoundException;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
-import org.dcsa.ovs.service.OVSEventService;
+import org.dcsa.jit.service.JITEventService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,11 +22,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class OVSEventServiceImpl extends GenericEventServiceImpl implements OVSEventService {
+public class JITEventServiceImpl extends GenericEventServiceImpl implements JITEventService {
 
     private final Set<EventType> SUPPORTED_EVENT_TYPES = Set.of(EventType.OPERATIONS, EventType.TRANSPORT);
 
-    public OVSEventServiceImpl(
+    public JITEventServiceImpl(
       TransportEventService transportEventService,
       EquipmentEventService equipmentEventService,
       ShipmentEventService shipmentEventService,

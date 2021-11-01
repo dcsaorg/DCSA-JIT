@@ -1,4 +1,4 @@
-package org.dcsa.ovs.model;
+package org.dcsa.jit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +8,7 @@ import org.dcsa.core.events.model.transferobjects.LocationTO;
 import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.validator.EnumSubset;
 import org.dcsa.core.validator.ValidVesselIMONumber;
-import org.dcsa.ovs.model.transferobjects.VesselPositionTO;
+import org.dcsa.jit.model.transferobjects.VesselPositionTO;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 

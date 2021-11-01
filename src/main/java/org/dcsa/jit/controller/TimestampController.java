@@ -1,9 +1,9 @@
-package org.dcsa.ovs.controller;
+package org.dcsa.jit.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.controller.ExtendedBaseController;
-import org.dcsa.ovs.model.Timestamp;
-import org.dcsa.ovs.service.TimestampService;
+import org.dcsa.jit.model.Timestamp;
+import org.dcsa.jit.service.TimestampService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

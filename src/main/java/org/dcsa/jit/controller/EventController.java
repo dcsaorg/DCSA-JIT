@@ -1,4 +1,4 @@
-package org.dcsa.ovs.controller;
+package org.dcsa.jit.controller;
 
 import org.dcsa.core.events.controller.AbstractEventController;
 import org.dcsa.core.events.model.Event;
@@ -9,20 +9,14 @@ import org.dcsa.core.events.util.ExtendedGenericEventRequest;
 import org.dcsa.core.extendedrequest.ExtendedRequest;
 import org.dcsa.core.validator.EnumSubset;
 import org.dcsa.core.validator.ValidEnum;
-import org.dcsa.ovs.service.OVSEventService;
+import org.dcsa.jit.service.JITEventService;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.util.HashMap;
@@ -31,17 +25,17 @@ import java.util.Map;
 
 @RestController
 @Validated
-public class EventController extends AbstractEventController<OVSEventService, Event> {
+public class EventController extends AbstractEventController<JITEventService, Event> {
 
-    private final OVSEventService ovsEventService;
+    private final JITEventService JITEventService;
 
-    public EventController(@Qualifier("OVSEventServiceImpl") OVSEventService ovsEventService) {
-        this.ovsEventService = ovsEventService;
+    public EventController(@Qualifier("JITEventServiceImpl") JITEventService JITEventService) {
+        this.JITEventService = JITEventService;
     }
 
     @Override
-    public OVSEventService getService() {
-        return ovsEventService;
+    public JITEventService getService() {
+        return JITEventService;
     }
 
     @Override

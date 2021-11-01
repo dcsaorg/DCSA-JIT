@@ -1,29 +1,29 @@
-package org.dcsa.ovs.controller;
+package org.dcsa.jit.controller;
 
 import org.dcsa.core.events.controller.AbstractEventSubscriptionController;
 import org.dcsa.core.events.service.EventSubscriptionTOService;
 import org.dcsa.core.extendedrequest.ExtendedParameters;
-import org.dcsa.ovs.model.transferobjects.OVSEventSubscriptionTO;
+import org.dcsa.jit.model.transferobjects.JITEventSubscriptionTO;
 import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class OVSEventSubscriptionTOController
+public class JITEventSubscriptionTOController
     extends AbstractEventSubscriptionController<
-        EventSubscriptionTOService<OVSEventSubscriptionTO>, OVSEventSubscriptionTO> {
+        EventSubscriptionTOService<JITEventSubscriptionTO>, JITEventSubscriptionTO> {
 
-  private final EventSubscriptionTOService<OVSEventSubscriptionTO> eventSubscriptionTOService;
+  private final EventSubscriptionTOService<JITEventSubscriptionTO> eventSubscriptionTOService;
 
-  public OVSEventSubscriptionTOController(
+  public JITEventSubscriptionTOController(
       ExtendedParameters extendedParameters,
       R2dbcDialect r2dbcDialect,
-      EventSubscriptionTOService<OVSEventSubscriptionTO> eventSubscriptionTOService) {
+      EventSubscriptionTOService<JITEventSubscriptionTO> eventSubscriptionTOService) {
     super(extendedParameters, r2dbcDialect);
     this.eventSubscriptionTOService = eventSubscriptionTOService;
   }
 
   @Override
-  public EventSubscriptionTOService<OVSEventSubscriptionTO> getService() {
+  public EventSubscriptionTOService<JITEventSubscriptionTO> getService() {
     return this.eventSubscriptionTOService;
   }
 }

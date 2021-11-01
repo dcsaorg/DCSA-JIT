@@ -1,4 +1,4 @@
-package org.dcsa.ovs.model.transferobjects;
+package org.dcsa.jit.model.transferobjects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class OVSEventSubscriptionTO extends AbstractEventSubscription {
+public class JITEventSubscriptionTO extends AbstractEventSubscription {
 
   @EnumSubset(anyOf = {"TRANSPORT", "OPERATIONS"})
   private List<EventType> eventType;
