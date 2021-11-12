@@ -103,12 +103,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
         operationsEvent.setEventLocation(timestamp.getEventLocation());
         operationsEvent.setVesselPosition(timestamp.getVesselPositionAsLocationTO());
 
-        try {
-            operationsEvent.ensurePhaseTypeIsDefined();
-        } catch (IllegalStateException e) {
-            return Mono.error(new CreateException("Cannot derive portCallPhaseTypeCode automatically from this timestamp.  Please define it explicitly"));
-        }
-
         return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
                 // Create transport call if missing
@@ -131,7 +125,6 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                         .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
-                .flatMap(timestampDefinitionService::markOperationsEventAsTimestamp)
                 .thenReturn(timestamp);
     }
 
