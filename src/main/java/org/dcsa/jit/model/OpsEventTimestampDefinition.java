@@ -15,6 +15,9 @@ public class OpsEventTimestampDefinition {
     @Column("event_id")
     private UUID eventID;
 
+    @Column("payload_id")
+    private UUID payloadID;
+
     @Column("timestamp_definition")
     private String timestampDefinition;
 }

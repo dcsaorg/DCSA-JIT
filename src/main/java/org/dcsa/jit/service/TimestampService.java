@@ -1,10 +1,9 @@
 package org.dcsa.jit.service;
 
-import org.dcsa.core.service.ExtendedBaseService;
 import org.dcsa.jit.model.Timestamp;
+import reactor.core.publisher.Mono;
 
-import java.util.UUID;
+public interface TimestampService {
 
-public interface TimestampService extends ExtendedBaseService<Timestamp, UUID> {
-
+    Mono<Timestamp> create(Timestamp t, byte[] originalPayload);
 }
