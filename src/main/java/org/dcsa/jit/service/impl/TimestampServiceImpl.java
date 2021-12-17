@@ -12,46 +12,34 @@ import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.*;
 import org.dcsa.core.exception.CreateException;
-import org.dcsa.core.extendedrequest.ExtendedRequest;
-import org.dcsa.core.service.impl.BaseServiceImpl;
 import org.dcsa.core.util.MappingUtils;
+import org.dcsa.jit.model.Payload;
 import org.dcsa.jit.model.Timestamp;
+import org.dcsa.jit.repository.OpsEventTimestampDefinitionRepository;
+import org.dcsa.jit.repository.PayloadRepository;
 import org.dcsa.jit.service.TimestampService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> implements TimestampService {
+public class TimestampServiceImpl implements TimestampService {
 
     private final OperationsEventService operationsEventService;
     private final TransportCallRepository transportCallRepository;
     private final LocationService locationService;
     private final PartyService partyService;
-    private final TimestampDefinitionService timestampDefinitionService;
+    private final OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
+    private final PayloadRepository payloadRepository;
     private final TransportCallTOService transportCallTOService;
 
     @Override
-    public Flux<Timestamp> findAll() {
-        return Flux.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
-    }
-
-    @Override
-    public Mono<Timestamp> findById(UUID id) {
-        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
-    }
-
-    @Override
     @Transactional
-    public Mono<Timestamp> create(Timestamp timestamp) {
+    public Mono<Timestamp> create(Timestamp timestamp, byte[] originalPayload) {
         if (timestamp.getModeOfTransport() == null) {
             // JIT IFS says that Mode Of Transport must be omitted for some timestamps and must be VESSEL for others.
             // Because the distinction is not visible after the timestamp has been created, so we cannot rely on it
@@ -125,33 +113,14 @@ public class TimestampServiceImpl extends BaseServiceImpl<Timestamp, UUID> imple
                         .doOnNext(vesselPosition2 -> operationsEvent.setVesselPositionID(vesselPosition2.getId()))
                         .thenReturn(operationsEvent)
                 ).flatMap(operationsEventService::create)
-                .thenReturn(timestamp);
+                .flatMap(opsEvent -> Mono.justOrEmpty(originalPayload)
+                        .map(Payload::of)
+                        .flatMap(payloadRepository::save)
+                        .map(Payload::getPayloadID)
+                        .flatMap(payloadID -> opsEventTimestampDefinitionRepository.linkPayload(opsEvent.getEventID(), payloadID))
+                ).thenReturn(timestamp);
     }
 
-    @Override
-    public Mono<Timestamp> update(Timestamp transport) {
-        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
-    }
-
-    @Override
-    public Mono<Void> deleteById(UUID id) {
-        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
-    }
-
-    @Override
-    public Mono<Void> delete(Timestamp transport) {
-        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
-    }
-
-    @Override
-    public UUID getIdOfEntity(Timestamp entity) {
-        return null;
-    }
-
-    @Override
-    public Flux<Timestamp> findAllExtended(ExtendedRequest<Timestamp> extendedRequest) {
-        return Flux.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
-    }
 
     private Mono<TransportCallTO> createTransportCallTO(Timestamp timestamp) {
         TransportCallTO transportCallTO = new TransportCallTO();

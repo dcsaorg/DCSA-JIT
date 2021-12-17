@@ -1,7 +1,7 @@
 package org.dcsa.jit.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.controller.ExtendedBaseController;
 import org.dcsa.jit.model.Timestamp;
 import org.dcsa.jit.service.TimestampService;
 import org.springframework.http.HttpStatus;
@@ -10,29 +10,21 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "timestamps", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class TimestampController extends ExtendedBaseController<TimestampService, Timestamp, UUID> {
+public class TimestampController {
 
     private final TimestampService timestampService;
-
-    @Override
-    public TimestampService getService() {
-        return timestampService;
-    }
-
-    @Override
-    public String getType() {
-        return "Timestamps";
-    }
+    private final ObjectMapper objectMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Timestamp> create(@Valid @RequestBody Timestamp timestamp) {
+    public Mono<Timestamp> create(@Valid @RequestBody Timestamp timestamp) throws Exception {
+        // TODO: inverse the mapping so we store the original json payload.
+        byte[] timestampPayload = objectMapper.writeValueAsBytes(timestamp);
         timestamp.getPublisher().adjustIdentifyingCodesIfNmftaIsPresent();
-        return timestampService.create(timestamp).flatMap(x -> Mono.empty());
+        return timestampService.create(timestamp, timestampPayload).flatMap(x -> Mono.empty());
     }
 }
