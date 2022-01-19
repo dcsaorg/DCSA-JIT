@@ -1,8 +1,6 @@
 package org.dcsa.jit.util;
 
-import org.dcsa.core.events.model.Event;
-import org.dcsa.core.events.model.OperationsEvent;
-import org.dcsa.core.events.model.TimestampDefinition;
+import org.dcsa.core.events.model.*;
 import org.dcsa.core.events.util.ExtendedGenericEventRequest;
 import org.dcsa.core.extendedrequest.ExtendedParameters;
 import org.dcsa.core.query.DBEntityAnalysis;
@@ -29,6 +27,10 @@ public class ExtendedOperationsEventRequest extends ExtendedGenericEventRequest 
                 .onFieldEqualsThen("eventID", "eventID")
                 .chainJoin(TimestampDefinition.class)
                 .onFieldEqualsThen("timestampDefinition", "id")
-                .registerQueryFieldFromField("negotiationCycle");
+                .registerQueryFieldFromField("negotiationCycle")
+                .onTable(TransportCall.class)
+                .chainJoin(Location.class)
+                .onFieldEqualsThen("locationID", "id")
+                .registerQueryFieldFromField("unLocationCode");
     }
 }
