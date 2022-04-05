@@ -45,6 +45,16 @@ public class JITEventSubscriptionTOServiceImpl
     return List.of(EventType.TRANSPORT, EventType.OPERATIONS);
   }
 
+  @Override
+  protected Mono<EventSubscription> findShallowEventSubscriptionById(UUID id) {
+    return eventSubscriptionRepository.findById(id);
+  }
+
+  @Override
+  public Flux<JITEventSubscriptionTO> findAll() {
+    return mapManyD2TO(eventSubscriptionRepository.findAll());
+  }
+
   // ToDo : replace this with mapstruct
   @Override
   protected Function<JITEventSubscriptionTO, EventSubscription>

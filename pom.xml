@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.2</version>
+        <version>2.6.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.dcsa</groupId>
@@ -17,19 +17,13 @@
 
     <properties>
         <java.version>11</java.version>
-        <dcsa.version>0.8.23</dcsa.version>
-        <dcsa.events.version>0.0.48</dcsa.events.version>
+        <dcsa.events.version>0.0.60</dcsa.events.version>
         <dcsa.core.tag/>
         <dcsa.event.tag/>
         <dcsa.artifacttype>-SNAPSHOT</dcsa.artifacttype>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.dcsa</groupId>
-            <artifactId>dcsa_core</artifactId>
-            <version>${dcsa.version}${dcsa.core.tag}${dcsa.artifacttype}</version>
-        </dependency>
         <dependency>
             <groupId>org.dcsa</groupId>
             <artifactId>dcsa_event_core</artifactId>
