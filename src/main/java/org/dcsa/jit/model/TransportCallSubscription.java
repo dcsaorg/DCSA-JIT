@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
-import org.dcsa.core.model.GetId;
-import org.dcsa.core.util.ValidationUtils;
+import org.dcsa.core.validator.ValidVesselIMONumber;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Table("transport_call_subscription")
 @Data
 @NoArgsConstructor
-public class TransportCallSubscription extends AuditBase implements GetId<UUID> {
+public class TransportCallSubscription extends AuditBase {
 
     @Id
     @JsonProperty("subscriptionID")
@@ -34,12 +33,8 @@ public class TransportCallSubscription extends AuditBase implements GetId<UUID> 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
     @Pattern(regexp = "[0-9]{7}")
+    @ValidVesselIMONumber
     private String vesselIMONumber;
-
-    public void setVesselIMONumber(String vesselIMONumber) {
-        ValidationUtils.validateVesselIMONumber(vesselIMONumber);
-        this.vesselIMONumber = vesselIMONumber;
-    }
 
     @JsonProperty("unLocationCode")
     @Column("un_location_code")

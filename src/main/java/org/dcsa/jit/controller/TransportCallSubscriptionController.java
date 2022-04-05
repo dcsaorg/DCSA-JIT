@@ -22,8 +22,4 @@ public class TransportCallSubscriptionController extends ExtendedBaseController<
         return transportCallSubscriptionService;
     }
 
-    @Override
-    public String getType() {
-        return "TransportCallSubscription";
-    }
 }
