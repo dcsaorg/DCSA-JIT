@@ -3,31 +3,51 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.4</version>
+        <groupId>org.dcsa</groupId>
+        <artifactId>dcsa-bom</artifactId>
+        <version>1.1-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.dcsa</groupId>
     <artifactId>dcsa_jit</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>DCSA-jit</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Just In Time Port Call Optimization</description>
 
     <properties>
-        <java.version>11</java.version>
-        <dcsa.events.version>0.0.60</dcsa.events.version>
-        <dcsa.core.tag/>
+        <!-- Define DCSA-Event-Core version -->
+        <dcsa.events.version>0.0.61</dcsa.events.version>
         <dcsa.event.tag/>
         <dcsa.artifacttype>-SNAPSHOT</dcsa.artifacttype>
+        <event-core.version>${dcsa.events.version}${dcsa.event.tag}${dcsa.artifacttype}</event-core.version>
+        <!-- End: Define DCSA-Event-Core version -->
+
+        <!-- Re-Define DCSA-Core version -->
+        <dcsa.core.tag/>
+        <dcsa.core.version>0.8.33</dcsa.core.version>
+        <core.version>${dcsa.core.version}${dcsa.core.tag}${dcsa.artifacttype}</core.version>
+        <!-- End: Re-Define DCSA-Core version -->
+
+        <!-- Define Shared Kernel version -->
+        <dcsa.shared-kernel.version>0.0.3</dcsa.shared-kernel.version>
+        <dcsa.shared-kernel.tag/>
+        <dcsa.shared-kernel.artifacttype>-SNAPSHOT</dcsa.shared-kernel.artifacttype>
+        <shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.shared-kernel.artifacttype}</shared-kernel.version>
+        <!-- End: Define Shared kernel version -->
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.dcsa</groupId>
             <artifactId>dcsa_event_core</artifactId>
-            <version>${dcsa.events.version}${dcsa.event.tag}${dcsa.artifacttype}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dcsa</groupId>
+            <artifactId>dcsa_core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dcsa</groupId>
+            <artifactId>shared_kernel</artifactId>
         </dependency>
     </dependencies>
 

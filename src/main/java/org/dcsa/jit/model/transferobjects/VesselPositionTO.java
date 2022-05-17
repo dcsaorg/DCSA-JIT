@@ -3,7 +3,7 @@ package org.dcsa.jit.model.transferobjects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dcsa.core.events.model.transferobjects.LocationTO;
+import org.dcsa.skernel.model.transferobjects.LocationTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

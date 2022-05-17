@@ -67,7 +67,7 @@ public class JITEventSubscriptionTOServiceImpl
       eventSubscription.setCarrierServiceCode(esTo.getCarrierServiceCode());
       eventSubscription.setCarrierVoyageNumber(esTo.getCarrierVoyageNumber());
       eventSubscription.setVesselIMONumber(esTo.getVesselIMONumber());
-      eventSubscription.setTransportCallID(esTo.getTransportCallID());
+      eventSubscription.setTransportCallReference(esTo.getTransportCallReference());
       return eventSubscription;
     };
   }
@@ -82,7 +82,7 @@ public class JITEventSubscriptionTOServiceImpl
       eventSubscriptionTo.setCarrierServiceCode(es.getCarrierServiceCode());
       eventSubscriptionTo.setCarrierVoyageNumber(es.getCarrierVoyageNumber());
       eventSubscriptionTo.setVesselIMONumber(es.getVesselIMONumber());
-      eventSubscriptionTo.setTransportCallID(es.getTransportCallID());
+      eventSubscriptionTo.setTransportCallReference(es.getTransportCallReference());
       return eventSubscriptionTo;
     };
   }
