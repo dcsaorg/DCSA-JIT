@@ -3,11 +3,8 @@ package org.dcsa.jit.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.core.events.model.OperationsEvent;
 import org.dcsa.core.events.model.TransportCall;
-import org.dcsa.core.events.model.Vessel;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.enums.*;
-import org.dcsa.core.events.model.transferobjects.LocationTO;
-import org.dcsa.core.events.model.transferobjects.PartyTO;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
 import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.*;
@@ -18,6 +15,16 @@ import org.dcsa.jit.model.Timestamp;
 import org.dcsa.jit.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.repository.PayloadRepository;
 import org.dcsa.jit.service.TimestampService;
+import org.dcsa.skernel.model.Vessel;
+import org.dcsa.skernel.model.enums.CarrierCodeListProvider;
+import org.dcsa.skernel.model.enums.DCSAResponsibleAgencyCode;
+import org.dcsa.skernel.model.enums.FacilityCodeListProvider;
+import org.dcsa.skernel.model.enums.FacilityTypeCode;
+import org.dcsa.skernel.model.transferobjects.LocationTO;
+import org.dcsa.skernel.model.transferobjects.PartyTO;
+import org.dcsa.skernel.service.LocationService;
+import org.dcsa.skernel.service.PartyService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
@@ -106,6 +113,16 @@ public class TimestampServiceImpl implements TimestampService {
                 })
                 .then(Mono.justOrEmpty(operationsEvent.getEventLocation())
                         .flatMap(locationService::ensureResolvable)
+                        // Work around until DDT-823 is resolved properly in event-core (we needed a quick fix for the clusters)
+                        .onErrorMap(Exception.class, ex -> {
+                            /*if (ex.getCause() != null && ex.getCause().getMessage().contains("location_un_location_code_fkey")) {
+                                return ConcreteRequestErrorMessageException.invalidInput("Unknown UN Location Code "
+                                        + operationsEvent.getEventLocation().getUnLocationCode()
+                                        + ". Note that the reference implementation might not know all valid UN Location codes"
+                                        , ex);
+                            }*/
+                            return ex;
+                        })
                         .doOnNext(location2 -> operationsEvent.setEventLocationID(location2.getId()))
                         .thenReturn(operationsEvent)
                 ).then(Mono.justOrEmpty(operationsEvent.getVesselPosition())
@@ -168,7 +185,17 @@ public class TimestampServiceImpl implements TimestampService {
         transportCallLocation.setUnLocationCode(timestamp.getUNLocationCode());
         transportCallTO.setLocation(transportCallLocation);
 
-        return transportCallTOService.create(transportCallTO);
+        return transportCallTOService.create(transportCallTO)
+                // Work around until DDT-823 is resolved properly in event-core (we needed a quick fix for the clusters)
+                .onErrorMap(Exception.class, ex -> {
+                    /*if (ex.getCause() != null && ex.getCause().getMessage().contains("location_un_location_code_fkey")) {
+                        return ConcreteRequestErrorMessageException.invalidInput("Unknown UN Location Code "
+                                        + transportCallTO.getLocation().getUnLocationCode()
+                                        + ". Note that the reference implementation might not know all valid UN Location codes"
+                                , ex);
+                    }*/
+                    return ex;
+                });
     }
 
     private Mono<TransportCall> findTransportCall(Timestamp timestamp) {

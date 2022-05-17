@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.dcsa.core.model.AuditBase;
-import org.dcsa.core.validator.ValidVesselIMONumber;
+import org.dcsa.skernel.validator.ValidVesselIMONumber;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -32,7 +32,6 @@ public class TransportCallSubscription extends AuditBase {
 
     @JsonProperty("vesselIMONumber")
     @Column("vessel_imo_number")
-    @Pattern(regexp = "[0-9]{7}")
     @ValidVesselIMONumber
     private String vesselIMONumber;
 
