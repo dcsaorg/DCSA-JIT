@@ -80,7 +80,7 @@ public class Timestamp {
     @NotNull
     @Transient
     @Valid
-    private PartyTO publisher;
+    private JITPartyTO publisher;
 
     @Transient
     @Valid
