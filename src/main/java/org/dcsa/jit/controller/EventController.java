@@ -11,6 +11,7 @@ import org.dcsa.core.validator.EnumSubset;
 import org.dcsa.core.validator.ValidEnum;
 import org.dcsa.jit.service.JITEventService;
 import org.dcsa.jit.util.ExtendedOperationsEventRequest;
+import org.dcsa.skernel.validator.ValidVesselIMONumber;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -63,7 +64,7 @@ public class EventController extends AbstractEventController<JITEventService, Ev
                     String transportEventTypeCode,
             @RequestParam(value = "transportCallID", required = false) @Size(max = 100)
                     String transportCallID,
-            @RequestParam(value = "vesselIMONumber", required = false) @Size(max = 7)
+            @RequestParam(value = "vesselIMONumber", required = false) @ValidVesselIMONumber(allowNull = true)
                     String vesselIMONumber,
             @RequestParam(value = "carrierVoyageNumber", required = false) @Size(max = 50)
                     String carrierVoyageNumber,
