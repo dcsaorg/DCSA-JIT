@@ -42,7 +42,7 @@ public class JITEventSubscriptionTOServiceImpl
 
   @Override
    public List<EventType> getAllowedEventTypes() {
-    return List.of(EventType.TRANSPORT, EventType.OPERATIONS);
+    return List.of(EventType.OPERATIONS);
   }
 
   @Override
