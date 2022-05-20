@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class JITEventSubscriptionTO extends AbstractEventSubscription {
 
-  @EnumSubset(anyOf = {"TRANSPORT", "OPERATIONS"})
+  @EnumSubset(anyOf = {"OPERATIONS"})
   private List<EventType> eventType;
 
   private List<TransportEventTypeCode> transportEventTypeCode;
