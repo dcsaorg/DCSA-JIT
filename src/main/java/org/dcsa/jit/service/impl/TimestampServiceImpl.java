@@ -13,6 +13,7 @@ import org.dcsa.core.exception.ConcreteRequestErrorMessageException;
 import org.dcsa.core.util.MappingUtils;
 import org.dcsa.jit.model.Payload;
 import org.dcsa.jit.model.Timestamp;
+import org.dcsa.jit.model.mapper.JITPartyTOMapper;
 import org.dcsa.jit.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.repository.PayloadRepository;
 import org.dcsa.jit.service.TimestampService;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +45,8 @@ public class TimestampServiceImpl implements TimestampService {
     private final OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
     private final PayloadRepository payloadRepository;
     private final TransportCallTOService transportCallTOService;
+
+    private final JITPartyTOMapper jitPartyMapper;
 
     @Override
     @Transactional
@@ -105,9 +109,9 @@ public class TimestampServiceImpl implements TimestampService {
                 .flatMap(transportCallTO -> {
                     operationsEvent.setTransportCallID(transportCallTO.getTransportCallID());
                     operationsEvent.setTransportCall(transportCallTO);
-
-                    return Mono.just(timestamp.getPublisher())
-                            .flatMap(partyService::ensureResolvable)
+                    PartyTO partyTO = jitPartyMapper.jitPartyTOtoPartyTO(timestamp.getPublisher());
+                    partyTO.setPartyContactDetails(Collections.emptyList());
+                    return partyService.createPartyByTO(partyTO)
                             .doOnNext(party -> operationsEvent.setPublisherID(party.getId()))
                             .thenReturn(operationsEvent);
                 })
