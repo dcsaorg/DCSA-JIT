@@ -26,7 +26,7 @@ jobs:
         servers: '[{ "id": "github", "username": "${{ secrets.DCSA_USER }}", "password": "${{ secrets.DCSA_PACKAGES_PAT }}" }]'
 
     - name: Build JIT API
-      run: cd DCSA-JIT && mvn package -DskipTests -X #Need to skip the tests as they depend on a running DB
+      run: cd DCSA-JIT && mvn package -B -DskipTests -X #Need to skip the tests as they depend on a running DB
     - name: Build and run the microservices
       run: cd DCSA-JIT && docker-compose -f docker-compose.yml up -d -V
 
@@ -39,7 +39,7 @@ jobs:
         path: DCSA-API-Validator
 
     - name: Run the API validator on JIT V1
-      run: cd DCSA-API-Validator && mvn -Dtest.suite=JITV1.xml test || (echo "==== JIT logs ====" ; docker logs dcsa-jit_dcsa-jit_1; exit 1)
+      run: cd DCSA-API-Validator && mvn -B -Dtest.suite=JITV1.xml test || (echo "==== JIT logs ====" ; docker logs dcsa-jit_dcsa-jit_1; exit 1)
       env:
         client_secret: ${{ secrets.AUTH0_DCSA_CLIENT_SECRET }}
         client_id: 1qEYXCbxWvjeYS8VVm1BfnfZrP3TY9n8
