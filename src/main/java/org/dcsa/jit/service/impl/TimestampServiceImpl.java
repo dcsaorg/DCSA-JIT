@@ -6,8 +6,8 @@ import org.dcsa.core.events.model.TransportCall;
 import org.dcsa.core.events.model.base.AbstractTransportCall;
 import org.dcsa.core.events.model.enums.DCSATransportType;
 import org.dcsa.core.events.model.transferobjects.TransportCallTO;
-import org.dcsa.core.events.repository.TransportCallRepository;
 import org.dcsa.core.events.service.OperationsEventService;
+import org.dcsa.core.events.service.TransportCallService;
 import org.dcsa.core.events.service.TransportCallTOService;
 import org.dcsa.core.exception.ConcreteRequestErrorMessageException;
 import org.dcsa.core.util.MappingUtils;
@@ -39,7 +39,7 @@ import java.util.Objects;
 public class TimestampServiceImpl implements TimestampService {
 
     private final OperationsEventService operationsEventService;
-    private final TransportCallRepository transportCallRepository;
+    private final TransportCallService transportCallService;
     private final LocationService locationService;
     private final PartyService partyService;
     private final OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
@@ -71,6 +71,15 @@ public class TimestampServiceImpl implements TimestampService {
                     return Mono.error(ConcreteRequestErrorMessageException.invalidInput("Cannot create location where facility code list provider is present but facility code is missing"));
                 }
                 return Mono.error(ConcreteRequestErrorMessageException.invalidInput("Cannot create location where facility code is present but facility code list provider is missing"));
+            }
+            if (location.getFacilityCodeListProvider() == FacilityCodeListProvider.BIC) {
+              // It is complex enough without having to deal with BIC codes, so exclude BIC as an implementation detail.
+              return Mono.error(ConcreteRequestErrorMessageException.invalidInput("The reference implementation only includes supports SMDG codes for facilities."));
+            }
+            // Ensure timestamp.facilitySMDGCode and location.facilityCode is aligned
+            // The errors for misaligned values are handled below.
+            if (timestamp.getFacilitySMDGCode() == null && location.getFacilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
+              timestamp.setFacilitySMDGCode(location.getFacilityCode());
             }
         }
         if (timestamp.getFacilitySMDGCode() != null) {
@@ -142,6 +151,7 @@ public class TimestampServiceImpl implements TimestampService {
         transportCallTO.setCarrierServiceCode(timestamp.getCarrierServiceCode());
         transportCallTO.setModeOfTransport(timestamp.getModeOfTransport());
         transportCallTO.setLocation(timestamp.getEventLocation());
+        // TODO: Maybe this should be timestamp.getFacilityTypeCode(), though the API does not allow PBPL (et al.)
         transportCallTO.setFacilityTypeCode(FacilityTypeCode.POTE);
 
         // TransportCallTOServiceImpl will create the vessel if it does not exist
@@ -174,9 +184,13 @@ public class TimestampServiceImpl implements TimestampService {
         transportCallTO.setVessel(vessel);
 
         // Note that the facility of the timestamp is *NOT* related to the transport call itself.
-        // Therefore we use a location to store the UNLocationCode
+        // Therefore, we use a location to store the UNLocationCode
         LocationTO transportCallLocation = new LocationTO();
         transportCallLocation.setUnLocationCode(timestamp.getUNLocationCode());
+        if (timestamp.getFacilitySMDGCode() != null) {
+          transportCallLocation.setFacilityCodeListProvider(FacilityCodeListProvider.SMDG);
+          transportCallLocation.setFacilityCode(timestamp.getFacilitySMDGCode());
+        }
         transportCallTO.setLocation(transportCallLocation);
 
         return transportCallTOService.create(transportCallTO);
@@ -184,7 +198,7 @@ public class TimestampServiceImpl implements TimestampService {
 
     private Mono<TransportCall> findTransportCall(Timestamp timestamp) {
         // Caller should have ensured that Mode of Transport is not null at this point.
-        String modeOfTransport = Objects.requireNonNull(timestamp.getModeOfTransport()).name();
+        DCSATransportType modeOfTransport = Objects.requireNonNull(timestamp.getModeOfTransport());
         Integer sequenceNumber = timestamp.getTransportCallSequenceNumber();
         if (timestamp.getExportVoyageNumber() != null ^ timestamp.getImportVoyageNumber() != null) {
             return Mono.error(ConcreteRequestErrorMessageException.invalidInput("exportVoyageNumber and importVoyageNumber must be given together or not at all"));
@@ -203,33 +217,14 @@ public class TimestampServiceImpl implements TimestampService {
         if (timestamp.getExportVoyageNumber() == null) {
             return Mono.error(ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where voyage number (carrierVoyageNumber OR exportVoyageNumber + importVoyageNumber) is missing"));
         }
-        return transportCallRepository.getTransportCall(
-                timestamp.getUNLocationCode(),
-                modeOfTransport,
-                timestamp.getVesselIMONumber(),
-                timestamp.getCarrierServiceCode(),
-                timestamp.getImportVoyageNumber(),
-                timestamp.getExportVoyageNumber(),
-                sequenceNumber
-        ).take(2)
-                .collectList()
-                .flatMap(transportCalls -> {
-                    if (transportCalls.isEmpty()) {
-                        return Mono.empty();
-                    }
-                    if (transportCalls.size() > 1) {
-                        if (timestamp.getCarrierServiceCode() == null) {
-                            if (sequenceNumber == null) {
-                                return Mono.error(ConcreteRequestErrorMessageException.invalidInput("Ambiguous transport call; please define sequence number or/and carrier service code + voyage number"));
-                            }
-                            return Mono.error(ConcreteRequestErrorMessageException.invalidInput("Ambiguous transport call; please define carrier service code and voyage number"));
-                        }
-                        if (sequenceNumber == null) {
-                            return Mono.error(ConcreteRequestErrorMessageException.invalidInput("Ambiguous transport call; please define sequence number"));
-                        }
-                        return Mono.error(new AssertionError("Internal error: Ambitious transport call; the result should be unique but is not"));
-                    }
-                    return Mono.just(transportCalls.get(0));
-                });
+        return transportCallService.findTransportCall(
+          timestamp.getUNLocationCode(),
+          timestamp.getFacilitySMDGCode(),
+          modeOfTransport,
+          timestamp.getVesselIMONumber(),
+          timestamp.getCarrierServiceCode(),
+          timestamp.getImportVoyageNumber(),
+          timestamp.getExportVoyageNumber(),
+          sequenceNumber);
     }
 }
