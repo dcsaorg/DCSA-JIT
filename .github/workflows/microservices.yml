@@ -49,4 +49,4 @@ jobs:
 
     - name: Run Integration Tests
       run: |
-        cd DCSA-EBL && mvn verify -B failsafe:verify -Ddcsa.artifacttype=-SNAPSHOT
+        cd DCSA-JIT && mvn verify -B failsafe:verify -Ddcsa.artifacttype=-SNAPSHOT
