@@ -109,7 +109,7 @@ public class TimestampServiceImpl implements TimestampService {
         operationsEvent.setRemark(timestamp.getRemark());
         operationsEvent.setDelayReasonCode(timestamp.getDelayReasonCode());
         operationsEvent.setEventLocation(timestamp.getEventLocation());
-        operationsEvent.setVesselPosition(timestamp.getVesselPositionAsLocationTO());
+        operationsEvent.setVesselPosition(timestamp.getVesselPosition());
 
         return this.findTransportCall(timestamp)
                 .map(transportCall -> MappingUtils.instanceFrom(transportCall, TransportCallTO::new, AbstractTransportCall.class))
