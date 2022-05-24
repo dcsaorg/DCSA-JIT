@@ -95,6 +95,7 @@ class OperationsEventIT {
 
   @Test
   void testGetAllEventsByUNLocationCode() {
+    System.out.println("Hello, buddy!");
       String str = given()
         .contentType("application/json")
         .queryParam("unLocationCode", "USNYC")
