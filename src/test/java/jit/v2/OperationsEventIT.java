@@ -95,24 +95,10 @@ class OperationsEventIT {
 
   @Test
   void testGetAllEventsByUNLocationCode() {
-    System.out.println("Hello, buddy!");
-      String str = given()
-        .contentType("application/json")
-        .queryParam("unLocationCode", "USNYC")
-        .get("/v1/events")
-        .then().extract().asString();
-    System.out.println(str);
-      str = given()
-        .contentType("application/json")
-        .queryParam("unLocationCode", "SGSIN")
-        .get("/v1/events")
-        .then().extract().asString();
-    System.out.println(str);
-
     BiConsumer<String, Matcher<String>> runner = (s, m) ->
       given()
         .contentType("application/json")
-        .queryParam("unLocationCode", s)
+        .queryParam("UNLocationCode", s)
         .get("/v1/events")
         .then()
         .assertThat()
