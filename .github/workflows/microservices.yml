@@ -46,3 +46,7 @@ jobs:
         audience: localhost
         OAuthTokenUri: https://dcsa.eu.auth0.com/oauth/token
         API_ROOT_URI: http://localhost:9090/v1
+
+    - name: Run Integration Tests
+      run: |
+        cd DCSA-EBL && mvn verify -B failsafe:verify -Ddcsa.artifacttype=-SNAPSHOT
