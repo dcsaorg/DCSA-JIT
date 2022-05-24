@@ -1,11 +1,12 @@
 package org.dcsa.jit.util;
 
-import org.dcsa.core.events.model.*;
+import org.dcsa.core.events.model.Event;
+import org.dcsa.core.events.model.OperationsEvent;
+import org.dcsa.core.events.model.TimestampDefinition;
 import org.dcsa.core.events.util.ExtendedGenericEventRequest;
 import org.dcsa.core.extendedrequest.ExtendedParameters;
 import org.dcsa.core.query.DBEntityAnalysis;
 import org.dcsa.jit.model.OpsEventTimestampDefinition;
-import org.dcsa.skernel.model.Location;
 import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 import org.springframework.data.relational.core.sql.Join;
 
@@ -29,10 +30,6 @@ public class ExtendedOperationsEventRequest extends ExtendedGenericEventRequest 
                 .chainJoin(TimestampDefinition.class)
                 .onFieldEqualsThen("timestampDefinition", "id")
                 .registerQueryFieldFromField("negotiationCycle")
-                .onTable(TransportCall.class)
-                .chainJoin(Location.class)
-                .onFieldEqualsThen("locationID", "id")
-                .registerQueryFieldFromField("unLocationCode")
                 .finishTable();
     }
 }

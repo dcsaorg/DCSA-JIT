@@ -203,9 +203,10 @@ public class TimestampServiceImpl implements TimestampService {
         if (timestamp.getExportVoyageNumber() == null) {
             return Mono.error(ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where voyage number (carrierVoyageNumber OR exportVoyageNumber + importVoyageNumber) is missing"));
         }
-        return transportCallRepository.getTransportCall(
+        return transportCallRepository.findAllTransportCall(
                 timestamp.getUNLocationCode(),
-                modeOfTransport,
+                timestamp.getFacilitySMDGCode(),
+                timestamp.getModeOfTransport(),
                 timestamp.getVesselIMONumber(),
                 timestamp.getCarrierServiceCode(),
                 timestamp.getImportVoyageNumber(),
