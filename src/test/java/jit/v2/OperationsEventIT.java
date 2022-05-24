@@ -3,7 +3,6 @@ package jit.v2;
 import io.restassured.http.ContentType;
 import jit.config.TestConfig;
 import lombok.RequiredArgsConstructor;
-import org.dcsa.core.events.model.enums.DocumentTypeCode;
 import org.dcsa.core.events.model.enums.EventClassifierCode;
 import org.dcsa.core.events.model.enums.EventType;
 import org.dcsa.skernel.model.enums.PartyFunction;
@@ -20,7 +19,6 @@ import java.time.format.DateTimeParseException;
 import java.util.function.BiConsumer;
 
 import static io.restassured.RestAssured.given;
-import static jit.config.TestConfig.jsonSchemaValidator;
 import static org.hamcrest.Matchers.*;
 
 class OperationsEventIT {
@@ -52,64 +50,84 @@ class OperationsEventIT {
   }
 
   @Test
-  void testGetAllEventsByOperationsEventTypeCode() {
+  void testGetAllEventsByExportVoyageNumber() {
     BiConsumer<String, Matcher<String>> runner = (s, m) ->
         given()
         .contentType("application/json")
-        .queryParam("operationsEventTypeCode", s)
+        .queryParam("exportVoyageNumber", s)
         .get("/v1/events")
         .then()
         .assertThat()
         .statusCode(200)
         .contentType(ContentType.JSON)
-        .body("size()", greaterThanOrEqualTo(0))
-        .body("eventType", everyItem(equalTo("SHIPMENT")))
-        .body("eventClassifierCode", everyItem(equalTo("ACT")))
+        .body("size()", equalTo(1))
+        .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
+        .body("eventClassifierCode", everyItem(anyOf(equalTo(EventClassifierCode.EST.toString()), equalTo(EventClassifierCode.ACT.toString()))))
         .body("operationsEventTypeCode", everyItem(m))
-        .body(jsonSchemaValidator("operationsEvent"))
+//        .body(jsonSchemaValidator("operationsEvent"))
     ;
 
-    runner.accept("APPR,ISSU", anyOf(equalTo("APPR"), equalTo("ISSU")));
-    runner.accept("APPR", equalTo("APPR"));
-    runner.accept("ISSU", equalTo("ISSU"));
+    runner.accept("A_carrier_voyage_number", equalTo("ARRI"));
+    runner.accept("TNT1E", equalTo("DEPA"));
   }
 
   @Test
-  void testGetAllEventsByDocumentTypeCodeCode() {
+  void testGetAllEventsByImportVoyageNumber() {
     BiConsumer<String, Matcher<String>> runner = (s, m) ->
       given()
         .contentType("application/json")
-        .queryParam("documentTypeCode", s)
+        .queryParam("importVoyageNumber", s)
         .get("/v1/events")
         .then()
         .assertThat()
         .statusCode(200)
         .contentType(ContentType.JSON)
-        .body("size()", greaterThanOrEqualTo(0))
-        .body("eventType", everyItem(equalTo("SHIPMENT")))
-        .body("eventClassifierCode", everyItem(equalTo("ACT")))
-        .body("documentTypeCode", everyItem(m))
+        .body("size()", equalTo(1))
+        .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
+        .body("eventClassifierCode", everyItem(anyOf(equalTo(EventClassifierCode.EST.toString()), equalTo(EventClassifierCode.ACT.toString()))))
+        .body("operationsEventTypeCode", everyItem(m))
 //        .body(jsonSchemaValidator("operationsEvent"))
       ;
-    runner.accept("SHI,TRD", anyOf(equalTo("SHI"), equalTo("TRD")));
-    runner.accept("SHI", equalTo("SHI"));
-    runner.accept("TRD", equalTo("TRD"));
+
+    runner.accept("A_carrier_voyage_number", equalTo("ARRI"));
+    runner.accept("TNT1E", equalTo("DEPA"));
+  }
+
+  @Test
+  void testGetAllEventsByUNLocationCode() {
+    BiConsumer<String, Matcher<String>> runner = (s, m) ->
+      given()
+        .contentType("application/json")
+        .queryParam("unLocationCode", s)
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(200)
+        .contentType(ContentType.JSON)
+        .body("size()", equalTo(1))
+        .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
+        .body("eventClassifierCode", everyItem(anyOf(equalTo("ACT"), equalTo("EST"))))
+        .body("operationsEventTypeCode", everyItem(m))
+//        .body(jsonSchemaValidator("operationsEvent"))
+      ;
+
+    runner.accept("SGSIN", equalTo("DEPA"));
+    runner.accept("USNYC", equalTo("ARRI"));
   }
 
   @Test
   void testGetAllEventsByCombinedQuery() {
     given()
       .contentType("application/json")
-      // VOID only applies to TRD, so this is guaranteed to give 0 matches.
-      .queryParam("documentTypeCode", "SHI")
-      .queryParam("operationsEventTypeCode", "VOID")
+      .queryParam("exportVoyageNumber", "TNT1E")
+      .queryParam("UNLocationCode", "SGSIN")
       .get("/v1/events")
       .then()
       .assertThat()
       .statusCode(200)
       .contentType(ContentType.JSON)
-      .body("size()", equalTo(0))
-      .body(jsonSchemaValidator("operationsEvent"))
+      .body("size()", equalTo(1))
+//      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -139,7 +157,7 @@ class OperationsEventIT {
   void testGetAllEventsByTransportCallID() {
     given()
       .contentType("application/json")
-      .queryParam("transportCallID", "7f2d833c-2c7f-4fc5-a71a-e510881da64a")
+      .queryParam("transportCallID", "b785317a-2340-4db7-8fb3-c8dfb1edfa60")
       .get("/v1/events")
       .then()
       .assertThat()
@@ -149,18 +167,18 @@ class OperationsEventIT {
       // events.
       .body("size()", greaterThanOrEqualTo(1))
       .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
-      .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.EST.toString())))
+      .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.ACT.toString())))
 //      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
   @Test
-  void testGetAllEventsByCarrierBookingReferenceWithEventCreatedDateTimeRange() {
-    String rangeStart = "2021-01-08T00:00:00Z";
-    String rangeEnd = "2021-01-09T00:00:00Z";
+  void testGetAllEventsByTransportCallIDWithEventCreatedDateTimeRange() {
+    String rangeStart = "2022-05-08T00:00:00Z";
+    String rangeEnd = "2022-05-09T00:00:00Z";
     given()
       .contentType("application/json")
-      .queryParam("transportCallID", "7f2d833c-2c7f-4fc5-a71a-e510881da64a")
+      .queryParam("transportCallID", "b785317a-2340-4db7-8fb3-c8dfb1edfa60")
       .queryParam("eventCreatedDateTime:gte", rangeStart)
       .queryParam("eventCreatedDateTime:lt", rangeEnd)
       .get("/v1/events")
@@ -171,27 +189,24 @@ class OperationsEventIT {
       // The test data includes 3 shipment events for this case. Given the narrow date range, it seems acceptable to
       // validate an exact match.
       .body("size()", equalTo(1))
-      .body("eventType", everyItem(equalTo("SHIPMENT")))
-      .body("eventClassifierCode", everyItem(equalTo("ACT")))
-      .body("documentTypeCode", everyItem(anyOf(equalTo("SHI"), equalTo("TRD"))))
+      .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
+      .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.ACT.toString())))
       .body("eventCreatedDateTime", everyItem(
         asDateTime(
           allOf(
             greaterThanOrEqualTo(ZonedDateTime.parse(rangeStart)),
             lessThan(ZonedDateTime.parse(rangeEnd))
       ))))
-      .body("documentReferences.flatten().findAll { it.documentReferenceType == 'BKG' }.size()", greaterThanOrEqualTo(3))
-      .body("documentReferences.flatten().findAll { it.documentReferenceType == 'BKG' }.documentReferenceValue", everyItem(equalTo("832deb4bd4ea4b728430b857c59bd057")))
-      .body(jsonSchemaValidator("operationsEvent"))
+//      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
   @Test
   void testGetAllEventsByEventCreatedDateTimeRange() {
-    String rangeStart = "2021-01-08T00:00:00Z";
+    String rangeStart = "2022-02-08T00:00:00Z";
     // 10:00-0400 is 14:00 at Z, so the first event for CBR 832deb4bd4ea4b728430b857c59bd057 is included while the
     // latter to are excluded
-    String rangeEnd = "2021-01-08T10:00:00-04:00";
+    String rangeEnd = "2022-05-09T10:00:00-04:00";
     given()
       .contentType("application/json")
       .queryParam("eventCreatedDateTime:gte", rangeStart)
@@ -206,17 +221,14 @@ class OperationsEventIT {
       // when filtering
       .body("size()", equalTo(2))
       .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
-      .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.EST.toString())))
-      .body("documentTypeCode", everyItem(anyOf(equalTo("SHI"), equalTo("TRD"))))
+      .body("eventClassifierCode", everyItem(anyOf(equalTo("ACT"), equalTo("EST"))))
       .body("eventCreatedDateTime", everyItem(
         asDateTime(
           allOf(
             greaterThanOrEqualTo(ZonedDateTime.parse(rangeStart)),
             lessThan(ZonedDateTime.parse(rangeEnd))
       ))))
-      .body("documentReferences.flatten().findAll { it.documentReferenceType == 'BKG' }.size()", greaterThanOrEqualTo(1))
-      .body("documentReferences.flatten().findAll { it.documentReferenceType == 'BKG' }.documentReferenceValue", everyItem(equalTo("832deb4bd4ea4b728430b857c59bd057")))
-      .body(jsonSchemaValidator("operationsEvent"))
+//      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
