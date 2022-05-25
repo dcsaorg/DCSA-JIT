@@ -105,7 +105,7 @@ class OperationsEventIT {
         .assertThat()
         .statusCode(200)
         .contentType(ContentType.JSON)
-        .body("size()", equalTo(1))
+        .body("size()", greaterThanOrEqualTo(1))
         .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
         .body("eventClassifierCode", everyItem(anyOf(equalTo("ACT"), equalTo("EST"))))
         .body("operationsEventTypeCode", everyItem(m))
@@ -113,7 +113,7 @@ class OperationsEventIT {
 //        .body(jsonSchemaValidator("operationsEvent"))
       ;
 
-    runner.accept("SGSIN", equalTo("DEPA"));
+    runner.accept("SGSIN", anyOf(equalTo("DEPA"), equalTo("ARRI")));
     runner.accept("USNYC", equalTo("ARRI"));
   }
 
