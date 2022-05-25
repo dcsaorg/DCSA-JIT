@@ -1,4 +1,4 @@
-package jit.v2;
+package jit.v1;
 
 import io.restassured.http.ContentType;
 import jit.config.TestConfig;
@@ -19,6 +19,7 @@ import java.time.format.DateTimeParseException;
 import java.util.function.BiConsumer;
 
 import static io.restassured.RestAssured.given;
+import static jit.config.TestConfig.EVENTS;
 import static org.hamcrest.Matchers.*;
 
 class OperationsEventIT {
@@ -33,7 +34,7 @@ class OperationsEventIT {
     given()
       .contentType("application/json")
       .queryParam("limit", 1)
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -55,7 +56,7 @@ class OperationsEventIT {
         given()
         .contentType("application/json")
         .queryParam("exportVoyageNumber", s)
-        .get("/v1/events")
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
@@ -77,7 +78,7 @@ class OperationsEventIT {
       given()
         .contentType("application/json")
         .queryParam("importVoyageNumber", s)
-        .get("/v1/events")
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
@@ -99,7 +100,7 @@ class OperationsEventIT {
       given()
         .contentType("application/json")
         .queryParam("unLocationCode", s)
-        .get("/v1/events")
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
@@ -121,7 +122,7 @@ class OperationsEventIT {
       .contentType("application/json")
       .queryParam("exportVoyageNumber", "TNT1E")
       .queryParam("UNLocationCode", "SGSIN")
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -136,7 +137,7 @@ class OperationsEventIT {
     given()
         .contentType("application/json")
         .queryParam("carrierServiceCode", "A_CSC")
-        .get("/v1/events")
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
@@ -158,7 +159,7 @@ class OperationsEventIT {
     given()
       .contentType("application/json")
       .queryParam("transportCallID", "b785317a-2340-4db7-8fb3-c8dfb1edfa60")
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -181,7 +182,7 @@ class OperationsEventIT {
       .queryParam("transportCallID", "b785317a-2340-4db7-8fb3-c8dfb1edfa60")
       .queryParam("eventCreatedDateTime:gte", rangeStart)
       .queryParam("eventCreatedDateTime:lt", rangeEnd)
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -211,7 +212,7 @@ class OperationsEventIT {
       .contentType("application/json")
       .queryParam("eventCreatedDateTime:gte", rangeStart)
       .queryParam("eventCreatedDateTime:lt", rangeEnd)
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)

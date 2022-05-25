@@ -14,7 +14,11 @@ import static com.github.fge.jsonschema.SchemaVersion.DRAFTV4;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 public class TestConfig {
+  // API endpoints
 
+  public static final String EVENT_SUBSCRIPTIONS = "/v1/event-subscriptions";
+  public static final String EVENTS = "/v1/events";
+  public static final String TIMESTAMPS = "/v1/timestamps";
   private TestConfig() {}
 
   public static void init() throws IOException {
