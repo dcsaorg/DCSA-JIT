@@ -20,6 +20,7 @@ import java.util.function.BiConsumer;
 
 import static io.restassured.RestAssured.given;
 import static jit.config.TestConfig.EVENTS;
+import static jit.config.TestConfig.jsonSchemaValidator;
 import static org.hamcrest.Matchers.*;
 
 class OperationsEventIT {
@@ -46,7 +47,7 @@ class OperationsEventIT {
       .body("size()", greaterThanOrEqualTo(0))
       .body("eventType", everyItem(equalTo("OPERATIONS")))
       .body("eventClassifierCode", everyItem(equalTo("ACT")))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -65,7 +66,7 @@ class OperationsEventIT {
         .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
         .body("eventClassifierCode", everyItem(anyOf(equalTo(EventClassifierCode.EST.toString()), equalTo(EventClassifierCode.ACT.toString()))))
         .body("operationsEventTypeCode", everyItem(m))
-//        .body(jsonSchemaValidator("operationsEvent"))
+        .body(jsonSchemaValidator("operationsEvent"))
     ;
 
     runner.accept("A_carrier_voyage_number", equalTo("ARRI"));
@@ -87,7 +88,7 @@ class OperationsEventIT {
         .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
         .body("eventClassifierCode", everyItem(anyOf(equalTo(EventClassifierCode.EST.toString()), equalTo(EventClassifierCode.ACT.toString()))))
         .body("operationsEventTypeCode", everyItem(m))
-//        .body(jsonSchemaValidator("operationsEvent"))
+        .body(jsonSchemaValidator("operationsEvent"))
       ;
 
     runner.accept("A_carrier_voyage_number", equalTo("ARRI"));
@@ -131,7 +132,7 @@ class OperationsEventIT {
       .body("size()", equalTo(1))
       .body("transportCall.exportVoyageNumber", everyItem(equalTo("TNT1E")))
       .body("transportCall.location.UNLocationCode", everyItem(equalTo("SGSIN")))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -153,7 +154,7 @@ class OperationsEventIT {
         .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.EST.toString())))
         .body("publisherRole", everyItem(equalTo(PartyFunction.CA.toString())))
         .body("publisher.partyName", everyItem(equalTo("Asseco Denmark")))
-//        .body(jsonSchemaValidator("operationsEvent"))
+        .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -172,7 +173,7 @@ class OperationsEventIT {
       .body("size()", greaterThanOrEqualTo(1))
       .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
       .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.ACT.toString())))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -201,7 +202,7 @@ class OperationsEventIT {
             greaterThanOrEqualTo(ZonedDateTime.parse(rangeStart)),
             lessThan(ZonedDateTime.parse(rangeEnd))
       ))))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -232,7 +233,7 @@ class OperationsEventIT {
             greaterThanOrEqualTo(ZonedDateTime.parse(rangeStart)),
             lessThan(ZonedDateTime.parse(rangeEnd))
       ))))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
