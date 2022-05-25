@@ -1,4 +1,4 @@
-package jit.v2;
+package jit.v1;
 
 import io.restassured.http.ContentType;
 import jit.config.TestConfig;
@@ -19,6 +19,8 @@ import java.time.format.DateTimeParseException;
 import java.util.function.BiConsumer;
 
 import static io.restassured.RestAssured.given;
+import static jit.config.TestConfig.EVENTS;
+import static jit.config.TestConfig.jsonSchemaValidator;
 import static org.hamcrest.Matchers.*;
 
 class OperationsEventIT {
@@ -33,7 +35,7 @@ class OperationsEventIT {
     given()
       .contentType("application/json")
       .queryParam("limit", 1)
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -45,7 +47,7 @@ class OperationsEventIT {
       .body("size()", greaterThanOrEqualTo(0))
       .body("eventType", everyItem(equalTo("OPERATIONS")))
       .body("eventClassifierCode", everyItem(equalTo("ACT")))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -55,7 +57,7 @@ class OperationsEventIT {
         given()
         .contentType("application/json")
         .queryParam("exportVoyageNumber", s)
-        .get("/v1/events")
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
@@ -64,7 +66,7 @@ class OperationsEventIT {
         .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
         .body("eventClassifierCode", everyItem(anyOf(equalTo(EventClassifierCode.EST.toString()), equalTo(EventClassifierCode.ACT.toString()))))
         .body("operationsEventTypeCode", everyItem(m))
-//        .body(jsonSchemaValidator("operationsEvent"))
+        .body(jsonSchemaValidator("operationsEvent"))
     ;
 
     runner.accept("A_carrier_voyage_number", equalTo("ARRI"));
@@ -77,7 +79,7 @@ class OperationsEventIT {
       given()
         .contentType("application/json")
         .queryParam("importVoyageNumber", s)
-        .get("/v1/events")
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
@@ -86,7 +88,7 @@ class OperationsEventIT {
         .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
         .body("eventClassifierCode", everyItem(anyOf(equalTo(EventClassifierCode.EST.toString()), equalTo(EventClassifierCode.ACT.toString()))))
         .body("operationsEventTypeCode", everyItem(m))
-//        .body(jsonSchemaValidator("operationsEvent"))
+        .body(jsonSchemaValidator("operationsEvent"))
       ;
 
     runner.accept("A_carrier_voyage_number", equalTo("ARRI"));
@@ -98,13 +100,13 @@ class OperationsEventIT {
     BiConsumer<String, Matcher<String>> runner = (s, m) ->
       given()
         .contentType("application/json")
-        .queryParam("UNLocationCode", s)
-        .get("/v1/events")
+        .queryParam("unLocationCode", s)
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
         .contentType(ContentType.JSON)
-        .body("size()", equalTo(1))
+        .body("size()", greaterThanOrEqualTo(1))
         .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
         .body("eventClassifierCode", everyItem(anyOf(equalTo("ACT"), equalTo("EST"))))
         .body("operationsEventTypeCode", everyItem(m))
@@ -112,7 +114,7 @@ class OperationsEventIT {
 //        .body(jsonSchemaValidator("operationsEvent"))
       ;
 
-    runner.accept("SGSIN", equalTo("DEPA"));
+    runner.accept("SGSIN", anyOf(equalTo("DEPA"), equalTo("ARRI")));
     runner.accept("USNYC", equalTo("ARRI"));
   }
 
@@ -122,7 +124,7 @@ class OperationsEventIT {
       .contentType("application/json")
       .queryParam("exportVoyageNumber", "TNT1E")
       .queryParam("UNLocationCode", "SGSIN")
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -130,7 +132,7 @@ class OperationsEventIT {
       .body("size()", equalTo(1))
       .body("transportCall.exportVoyageNumber", everyItem(equalTo("TNT1E")))
       .body("transportCall.location.UNLocationCode", everyItem(equalTo("SGSIN")))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -139,7 +141,7 @@ class OperationsEventIT {
     given()
         .contentType("application/json")
         .queryParam("carrierServiceCode", "A_CSC")
-        .get("/v1/events")
+        .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
@@ -152,7 +154,7 @@ class OperationsEventIT {
         .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.EST.toString())))
         .body("publisherRole", everyItem(equalTo(PartyFunction.CA.toString())))
         .body("publisher.partyName", everyItem(equalTo("Asseco Denmark")))
-//        .body(jsonSchemaValidator("operationsEvent"))
+        .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -161,7 +163,7 @@ class OperationsEventIT {
     given()
       .contentType("application/json")
       .queryParam("transportCallID", "b785317a-2340-4db7-8fb3-c8dfb1edfa60")
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -171,7 +173,7 @@ class OperationsEventIT {
       .body("size()", greaterThanOrEqualTo(1))
       .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
       .body("eventClassifierCode", everyItem(equalTo(EventClassifierCode.ACT.toString())))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -184,7 +186,7 @@ class OperationsEventIT {
       .queryParam("transportCallID", "b785317a-2340-4db7-8fb3-c8dfb1edfa60")
       .queryParam("eventCreatedDateTime:gte", rangeStart)
       .queryParam("eventCreatedDateTime:lt", rangeEnd)
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -200,7 +202,7 @@ class OperationsEventIT {
             greaterThanOrEqualTo(ZonedDateTime.parse(rangeStart)),
             lessThan(ZonedDateTime.parse(rangeEnd))
       ))))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
@@ -214,7 +216,7 @@ class OperationsEventIT {
       .contentType("application/json")
       .queryParam("eventCreatedDateTime:gte", rangeStart)
       .queryParam("eventCreatedDateTime:lt", rangeEnd)
-      .get("/v1/events")
+      .get(EVENTS)
       .then()
       .assertThat()
       .statusCode(200)
@@ -231,7 +233,7 @@ class OperationsEventIT {
             greaterThanOrEqualTo(ZonedDateTime.parse(rangeStart)),
             lessThan(ZonedDateTime.parse(rangeEnd))
       ))))
-//      .body(jsonSchemaValidator("operationsEvent"))
+      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
 
