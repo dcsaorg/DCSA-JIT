@@ -108,6 +108,7 @@ class OperationsEventIT {
         .body("eventType", everyItem(equalTo(EventType.OPERATIONS.toString())))
         .body("eventClassifierCode", everyItem(anyOf(equalTo("ACT"), equalTo("EST"))))
         .body("operationsEventTypeCode", everyItem(m))
+        .body("transportCall.location.UNLocationCode", everyItem(anyOf(equalTo("SGSIN"),equalTo("USNYC"))))
 //        .body(jsonSchemaValidator("operationsEvent"))
       ;
 
@@ -127,6 +128,8 @@ class OperationsEventIT {
       .statusCode(200)
       .contentType(ContentType.JSON)
       .body("size()", equalTo(1))
+      .body("transportCall.exportVoyageNumber", everyItem(equalTo("TNT1E")))
+      .body("transportCall.location.UNLocationCode", everyItem(equalTo("SGSIN")))
 //      .body(jsonSchemaValidator("operationsEvent"))
     ;
   }
