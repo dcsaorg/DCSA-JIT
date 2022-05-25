@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -343,6 +344,27 @@ public class PostTimestampsIT {
         .body(
             "errors.collect { it.message }",
             Matchers.hasItem(Matchers.containsString("Ambiguous transport call")));
+  }
+
+  // Testing with mandatory field Publisher with only identifyingCodes
+  @Test
+  public void testMandatoryPublisherFieldWithOnlyIdentifyingCodes() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP);
+
+    map.remove("publisher");
+    Map<String, List<Map<String, String>>> identifyingCodes =
+        Map.of(
+            "identifyingCodes",
+            List.of(Map.of("codeListResponsibleAgencyCode", "306", "partyCode", "MSK")));
+    map.put("publisher", identifyingCodes);
+
+    given()
+        .contentType("application/json")
+        .body(map)
+        .post(TIMESTAMPS)
+        .then()
+        .assertThat()
+        .statusCode(204);
   }
 
   // Testing with mandatory fields - Except PublisherField field
