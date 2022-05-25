@@ -1,79 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.dcsa</groupId>
-        <artifactId>dcsa-bom</artifactId>
-        <version>1.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <artifactId>dcsa_jit</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>DCSA-jit</name>
-    <description>Just In Time Port Call Optimization</description>
+				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.dcsa</groupId>
+		<artifactId>dcsa-bom</artifactId>
+		<version>1.1-SNAPSHOT</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<artifactId>dcsa_jit</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>DCSA-jit</name>
+	<description>Just In Time Port Call Optimization</description>
 
-    <properties>
-        <!-- Define DCSA-Event-Core version -->
-        <dcsa.events.version>0.0.61</dcsa.events.version>
-        <dcsa.event.tag/>
-        <dcsa.artifacttype>-SNAPSHOT</dcsa.artifacttype>
-        <event-core.version>${dcsa.events.version}${dcsa.event.tag}${dcsa.artifacttype}</event-core.version>
-        <!-- End: Define DCSA-Event-Core version -->
+	<properties>
+		<!-- Define DCSA-Event-Core version -->
+		<dcsa.events.version>0.0.61</dcsa.events.version>
+		<dcsa.event.tag/>
+		<dcsa.artifacttype>-SNAPSHOT</dcsa.artifacttype>
+		<event-core.version>${dcsa.events.version}${dcsa.event.tag}${dcsa.artifacttype}</event-core.version>
+		<!-- End: Define DCSA-Event-Core version -->
 
-        <!-- Re-Define DCSA-Core version -->
-        <dcsa.core.tag/>
-        <dcsa.core.version>0.8.33</dcsa.core.version>
-        <core.version>${dcsa.core.version}${dcsa.core.tag}${dcsa.artifacttype}</core.version>
-        <!-- End: Re-Define DCSA-Core version -->
+		<!-- Re-Define DCSA-Core version -->
+		<dcsa.core.tag/>
+		<dcsa.core.version>0.8.33</dcsa.core.version>
+		<core.version>${dcsa.core.version}${dcsa.core.tag}${dcsa.artifacttype}</core.version>
+		<!-- End: Re-Define DCSA-Core version -->
 
-        <!-- Define Shared Kernel version -->
-        <dcsa.shared-kernel.version>0.0.3</dcsa.shared-kernel.version>
-        <dcsa.shared-kernel.tag/>
-        <dcsa.shared-kernel.artifacttype>-SNAPSHOT</dcsa.shared-kernel.artifacttype>
-        <shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.shared-kernel.artifacttype}</shared-kernel.version>
-        <!-- End: Define Shared kernel version -->
-    </properties>
+		<!-- Define Shared Kernel version -->
+		<dcsa.shared-kernel.version>0.0.3</dcsa.shared-kernel.version>
+		<dcsa.shared-kernel.tag/>
+		<dcsa.shared-kernel.artifacttype>-SNAPSHOT</dcsa.shared-kernel.artifacttype>
+		<shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.shared-kernel.artifacttype}
+		</shared-kernel.version>
+		<!-- End: Define Shared kernel version -->
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.dcsa</groupId>
-            <artifactId>dcsa_event_core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.dcsa</groupId>
-            <artifactId>dcsa_core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.dcsa</groupId>
-            <artifactId>shared_kernel</artifactId>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.dcsa</groupId>
+			<artifactId>dcsa_event_core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dcsa</groupId>
+			<artifactId>dcsa_core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dcsa</groupId>
+			<artifactId>shared_kernel</artifactId>
+		</dependency>
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub dcsaorg Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/dcsaorg/DCSA-Core</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>github</id>
+			<name>GitHub dcsaorg Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/dcsaorg/DCSA-Core</url>
+		</repository>
+	</repositories>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/dcsaorg/DCSA-JIT</url>
-        </repository>
-    </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub OWNER Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/dcsaorg/DCSA-JIT</url>
+		</repository>
+	</distributionManagement>
 
 </project>

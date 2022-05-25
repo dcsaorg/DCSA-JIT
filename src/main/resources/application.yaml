@@ -59,6 +59,8 @@ dcsa:
     transport-event-map-references-and-document-references: false
   securityConfig:
     receiveNotificationEndpoint: "/unofficial/notification-endpoints"
+  specification:
+    version: 1.0.0
 
 server:
   port: 9090
