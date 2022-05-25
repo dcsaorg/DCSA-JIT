@@ -30,22 +30,22 @@ jobs:
     - name: Build and run the microservices
       run: cd DCSA-JIT && docker-compose -f docker-compose.yml up -d -V
 
-    - name: Checkout dcsaorg/DCSA-API-Validator
-      uses: actions/checkout@v2
-      with:
-        repository: dcsaorg/DCSA-API-Validator
-        ref: update-jit-tests
-        token: ${{ secrets.REPO_ACCESS_PAT }}
-        path: DCSA-API-Validator
+    # - name: Checkout dcsaorg/DCSA-API-Validator
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: dcsaorg/DCSA-API-Validator
+    #     ref: update-jit-tests
+    #     token: ${{ secrets.REPO_ACCESS_PAT }}
+    #     path: DCSA-API-Validator
 
-    - name: Run the API validator on JIT V1
-      run: cd DCSA-API-Validator && mvn -B -Dtest.suite=JITV1.xml test || (echo "==== JIT logs ====" ; docker logs dcsa-jit_dcsa-jit_1; exit 1)
-      env:
-        client_secret: ${{ secrets.AUTH0_DCSA_CLIENT_SECRET }}
-        client_id: 1qEYXCbxWvjeYS8VVm1BfnfZrP3TY9n8
-        audience: localhost
-        OAuthTokenUri: https://dcsa.eu.auth0.com/oauth/token
-        API_ROOT_URI: http://localhost:9090/v1
+    # - name: Run the API validator on JIT V1
+    #   run: cd DCSA-API-Validator && mvn -B -Dtest.suite=JITV1.xml test || (echo "==== JIT logs ====" ; docker logs dcsa-jit_dcsa-jit_1; exit 1)
+    #   env:
+    #     client_secret: ${{ secrets.AUTH0_DCSA_CLIENT_SECRET }}
+    #     client_id: 1qEYXCbxWvjeYS8VVm1BfnfZrP3TY9n8
+    #     audience: localhost
+    #     OAuthTokenUri: https://dcsa.eu.auth0.com/oauth/token
+    #     API_ROOT_URI: http://localhost:9090/v1
 
     - name: Run Integration Tests
       run: |
