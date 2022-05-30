@@ -8,10 +8,11 @@
 		<version>1.1-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<artifactId>dcsa_jit</artifactId>
+	<groupId>org.dcsa.jit</groupId>
+	<artifactId>dcsa-jit-parent</artifactId>
 	<version>${revision}${sha1}${changelist}</version>
-	<packaging>jar</packaging>
-	<name>DCSA-jit</name>
+	<packaging>pom</packaging>
+	<name>DCSA-JIT</name>
 	<description>Just In Time Port Call Optimization</description>
 
 	<properties>
@@ -41,60 +42,60 @@
 		<!-- End: Define Shared kernel version -->
 	</properties>
 
+	<modules>
+		<module>jit-transfer-obj</module>
+		<module>jit-persistence</module>
+		<module>jit-service</module>
+		<module>jit-integration-tests</module>
+	</modules>
+
 	<dependencies>
 		<dependency>
-			<groupId>org.dcsa</groupId>
-			<artifactId>dcsa_event_core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.dcsa</groupId>
-			<artifactId>dcsa_core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.dcsa</groupId>
-			<artifactId>shared_kernel</artifactId>
-		</dependency>
-		<!-- test dependencies -->
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>json-path</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured-all</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>json-schema-validator</artifactId>
-			<scope>test</scope>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.dcsa.jit</groupId>
+				<artifactId>dcsa-jit-transfer-obj</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dcsa.jit</groupId>
+				<artifactId>dcsa-jit-persistence</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<repositories>
 		<repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo1.maven.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
 			<id>github</id>
-			<name>GitHub dcsaorg Apache Maven Packages</name>
+			<name>GitHub DCSA Backend</name>
 			<url>https://maven.pkg.github.com/dcsaorg/DCSA-Core</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -102,8 +103,20 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub OWNER Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/dcsaorg/DCSA-JIT</url>
+			<url>https://maven.pkg.github.com/dcsaorg/DCSA-OVS</url>
 		</repository>
 	</distributionManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
