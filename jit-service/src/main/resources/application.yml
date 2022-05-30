@@ -29,7 +29,7 @@ spring:
 
 server:
   port: 9090
-  servlet.context-path: /v3
+  servlet.context-path: /v1
   error:
     include-binding-errors: on_param
     include-message: always
