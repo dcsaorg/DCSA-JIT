@@ -59,6 +59,11 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency><!-- TODO: Move this to super-pom -->
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.2</version>
+			</dependency>
 			<dependency>
 				<groupId>org.dcsa.jit</groupId>
 				<artifactId>dcsa-jit-transfer-obj</artifactId>

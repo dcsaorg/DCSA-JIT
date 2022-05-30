@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>org.dcsa.jit</groupId>
 		<artifactId>dcsa-jit-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}${sha1}${changelist}</version>
 	</parent>
 
 	<name>DCSA JIT - Transfer Objects</name>
 	<groupId>org.dcsa.jit</groupId>
 	<artifactId>dcsa-jit-transfer-obj</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}${sha1}${changelist}</version>
 	<packaging>jar</packaging>
 
 	<description>DCSA JIT - Transfer Objects</description>

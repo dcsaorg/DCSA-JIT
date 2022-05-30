@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>org.dcsa.jit</groupId>
 		<artifactId>dcsa-jit-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}${sha1}${changelist}</version>
 	</parent>
 
 	<name>DCSA JIT - Integration Tests</name>
 	<groupId>org.dcsa.jit</groupId>
 	<artifactId>dcsa-jit-integration-tests</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}${sha1}${changelist}</version>
 	<packaging>jar</packaging>
 
 	<description>DCSA JIT - Integration Tests</description>
@@ -47,11 +47,6 @@
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>json-schema-validator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
