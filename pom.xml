@@ -9,12 +9,17 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>dcsa_jit</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}${sha1}${changelist}</version>
 	<packaging>jar</packaging>
 	<name>DCSA-jit</name>
 	<description>Just In Time Port Call Optimization</description>
 
 	<properties>
+		<!-- Define DCSA-JIT version -->
+		<revision>1.1.0</revision>
+		<sha1/>
+		<changelist>-SNAPSHOT</changelist>
+		<!-- End: Define DCSA-JIT version -->
 		<!-- Define DCSA-Event-Core version -->
 		<dcsa.events.version>0.0.61</dcsa.events.version>
 		<dcsa.event.tag/>
@@ -31,8 +36,7 @@
 		<!-- Define Shared Kernel version -->
 		<dcsa.shared-kernel.version>0.0.3</dcsa.shared-kernel.version>
 		<dcsa.shared-kernel.tag/>
-		<dcsa.shared-kernel.artifacttype>-SNAPSHOT</dcsa.shared-kernel.artifacttype>
-		<shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.shared-kernel.artifacttype}
+		<shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.artifacttype}
 		</shared-kernel.version>
 		<!-- End: Define Shared kernel version -->
 	</properties>
