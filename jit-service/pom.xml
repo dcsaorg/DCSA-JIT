@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.dcsa.jit</groupId>
+		<artifactId>dcsa-jit-parent</artifactId>
+		<version>${revision}${sha1}${changelist}</version>
+	</parent>
+
+	<name>DCSA JIT - Service</name>
+	<groupId>org.dcsa.jit</groupId>
+	<artifactId>dcsa-jit-service</artifactId>
+	<version>${revision}${sha1}${changelist}</version>
+	<packaging>jar</packaging>
+
+	<description>DCSA JIT - Service</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.dcsa.jit</groupId>
+			<artifactId>dcsa-jit-transfer-obj</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dcsa.jit</groupId>
+			<artifactId>dcsa-jit-persistence</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+					<profiles>
+						<profile>dev</profile>
+					</profiles>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.dcsa.jit</groupId>
+									<artifactId>dcsa-jit-service</artifactId>
+									<version>${project.version}</version>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<destFileName>dcsa-jit-service.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
