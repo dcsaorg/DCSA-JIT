@@ -59,7 +59,7 @@ public class OperationsEvent {
   private OperationsEventTypeCode operationsEventTypeCode;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "event_location", nullable = false)
+  @JoinColumn(name = "event_location")
   private Location location;
 
   @ManyToOne(fetch = FetchType.LAZY)
