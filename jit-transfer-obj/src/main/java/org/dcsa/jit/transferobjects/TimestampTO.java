@@ -12,14 +12,22 @@ import java.time.OffsetDateTime;
 
 public record TimestampTO(
   @NotNull Party publisher,
-  @NotNull String publisherRole,
+//  @NotNull PublisherRole publisherRole,
   @NotNull @ValidVesselIMONumber String vesselIMONumber,
   @NotNull @Size(max = 5) @JsonProperty("UNLocationCode") String unLocationCode,
   FacilityTypeCode facilityTypeCode,
   String eventClassifierCode,
   String operationsEventTypeCode,
   LocationTO eventLocation,
+  LocationTO vesselPosition,
+//  ModeOfTransport modeOfTransport,
+//  PortCallServiceTypeCode portCallServiceTypeCode,
+//  PortCallPhaseTypeCode portCallPhaseTypeCode,
   @NotNull OffsetDateTime eventDateTime,
+  @Size(max = 50) String exportVoyageNumber,
+  @Size(max = 50) String importVoyageNumber,
+  @NotNull @Size(max = 5) String carrierServiceCode,
+  Integer transportCallSequenceNumber,
   String remark,
   String delayReasonCode
 ) {
