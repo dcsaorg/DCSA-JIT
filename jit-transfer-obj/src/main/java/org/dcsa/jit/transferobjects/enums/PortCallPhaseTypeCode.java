@@ -1,4 +1,4 @@
-package org.dcsa.jit.enums;
+package org.dcsa.jit.transferobjects.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
