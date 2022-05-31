@@ -35,10 +35,10 @@
 		<!-- End: Re-Define DCSA-Core version -->
 
 		<!-- Define Shared Kernel version -->
-		<dcsa.shared-kernel.version>0.0.3</dcsa.shared-kernel.version>
+		<dcsa.shared-kernel.version>0.1.0</dcsa.shared-kernel.version>
 		<dcsa.shared-kernel.tag/>
-		<shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.artifacttype}
-		</shared-kernel.version>
+		<dcsa.shared-kernel.artifacttype>-SNAPSHOT</dcsa.shared-kernel.artifacttype>
+		<shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.shared-kernel.artifacttype}</shared-kernel.version>
 		<!-- End: Define Shared kernel version -->
 	</properties>
 
@@ -73,6 +73,13 @@
 				<groupId>org.dcsa.jit</groupId>
 				<artifactId>dcsa-jit-persistence</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dcsa.shared-kernel</groupId>
+				<artifactId>dcsa-shared-kernel-parent</artifactId>
+				<version>${shared-kernel.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
