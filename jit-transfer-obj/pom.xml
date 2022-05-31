@@ -24,6 +24,18 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.dcsa.shared-kernel</groupId>
+			<artifactId>dcsa-shared-kernel-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dcsa.shared-kernel</groupId>
+			<artifactId>dcsa-shared-kernel-infrastructure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dcsa.jit</groupId>
+			<artifactId>dcsa-jit-persistence</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
