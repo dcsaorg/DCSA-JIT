@@ -9,11 +9,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.UUID;
 
@@ -23,20 +20,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @Setter(AccessLevel.PRIVATE)
 @Entity
-@Table(name = "voyage")
-public class Voyage {
+@Table(name = "carrier")
+public class Carrier {
   @Id
   @GeneratedValue
   @Column(name = "id", nullable = false)
   private UUID id;
 
-  @Column(name = "carrier_voyage_number", length = 50, nullable = false)
-  private String carrierVoyageNumber;
+  @Column(name = "carrier_name", length = 100)
+  private String name;
 
-  @Column(name = "universal_voyage_reference", length = 5)
-  private String universalVoyageReference;
+  @Column(name = "smdg_code", length = 3)
+  private String smdgCode;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "service_id")
-  private Service service;
+  @Column(name = "nmfta_code", length = 4)
+  private String nmftaCode;
 }
