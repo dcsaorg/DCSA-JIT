@@ -1,12 +1,9 @@
 package org.dcsa.jit.transferobjects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-import org.dcsa.skernel.domain.persistence.entity.Address;
-import org.dcsa.skernel.domain.persistence.entity.enums.FacilityCodeListProvider;
+import lombok.Builder;
 
-import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.UUID;
 
 public record PartyTO(
@@ -15,8 +12,8 @@ public record PartyTO(
   @Size(max = 20) String taxReference1,
   @Size(max = 20) String taxReference2,
   @Size(max = 500) String publicKey,
-  Address address
-//  List<IdentifyingCode> identifyingCodes;
+  AddressTO address,
+  List<IdentifyingCodeTO> identifyingCodes
 ) {
   @Builder // workaround for intellij issue
   public PartyTO { }

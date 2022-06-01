@@ -2,11 +2,7 @@ package org.dcsa.jit.transferobjects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
-import org.dcsa.jit.transferobjects.enums.PortCallPhaseTypeCode;
-import org.dcsa.jit.transferobjects.enums.PortCallServiceTypeCode;
-import org.dcsa.jit.transferobjects.enums.PublisherRole;
-import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
+import org.dcsa.jit.transferobjects.enums.*;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 
 import javax.validation.constraints.NotNull;
