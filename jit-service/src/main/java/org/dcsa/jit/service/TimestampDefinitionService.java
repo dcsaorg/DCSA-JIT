@@ -6,20 +6,23 @@ import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PartyFunction;
 import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
+import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 @RequiredArgsConstructor
 public class TimestampDefinitionService {
 
-  /** Helper for {@link #arePublisherRolesInterchangeable(PartyFunction, PartyFunction)} */
-  private static final Map<PartyFunction, PartyFunction> NORMALIZED_PARTY_FUNCTION_MAP =
+  /** Helper for {@link #arePublisherRolesInterchangeable(PublisherRole, PublisherRole)} */
+  private static final Map<PublisherRole, PublisherRole> NORMALIZED_PARTY_FUNCTION_MAP =
       Map.of(
-          PartyFunction.AG, PartyFunction.CA,
-          PartyFunction.VSL, PartyFunction.CA);
+        PublisherRole.AG, PublisherRole.CA,
+        PublisherRole.VSL, PublisherRole.CA);
 
   private final TimestampDefinitionRepository timestampDefinitionRepository;
 
@@ -81,9 +84,9 @@ public class TimestampDefinitionService {
    * @return true if the two party functions are either identical or both of them are one of CA, AG
    *     or VSL.
    */
-  private static boolean arePublisherRolesInterchangeable(PartyFunction lhs, PartyFunction rhs) {
-    PartyFunction lhsNormalized = NORMALIZED_PARTY_FUNCTION_MAP.getOrDefault(lhs, lhs);
-    PartyFunction rhsNormalized = NORMALIZED_PARTY_FUNCTION_MAP.getOrDefault(rhs, rhs);
+  private static boolean arePublisherRolesInterchangeable(PublisherRole lhs, PublisherRole rhs) {
+    PublisherRole lhsNormalized = NORMALIZED_PARTY_FUNCTION_MAP.getOrDefault(lhs, lhs);
+    PublisherRole rhsNormalized = NORMALIZED_PARTY_FUNCTION_MAP.getOrDefault(rhs, rhs);
     return lhsNormalized == rhsNormalized;
   }
 }

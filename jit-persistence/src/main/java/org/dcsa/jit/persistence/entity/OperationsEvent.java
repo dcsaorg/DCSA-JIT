@@ -50,7 +50,7 @@ public class OperationsEvent {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "publisher_role", nullable = false)
-  private PartyFunction publisherRole;
+  private PublisherRole publisherRole;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "operations_event_type_code", nullable = false)

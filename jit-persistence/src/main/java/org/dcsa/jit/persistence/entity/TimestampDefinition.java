@@ -24,11 +24,11 @@ public class TimestampDefinition {
 
     @Column(name="publisher_role")
     @Enumerated(EnumType.STRING)
-    private PartyFunction publisherRole;
+    private PublisherRole publisherRole;
 
     @Column(name="primary_receiver")
     @Enumerated(EnumType.STRING)
-    private PartyFunction primaryReceiver;
+    private PublisherRole primaryReceiver;
 
     @Column(name="event_classifier_code")
     private EventClassifierCode eventClassifierCode;
