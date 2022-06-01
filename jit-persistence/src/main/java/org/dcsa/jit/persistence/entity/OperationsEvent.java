@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PublisherRole;
+import org.dcsa.jit.persistence.entity.enums.*;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 
 import javax.persistence.Column;
@@ -52,7 +50,7 @@ public class OperationsEvent {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "publisher_role", nullable = false)
-  private PublisherRole publisherRole;
+  private PartyFunction publisherRole;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "operations_event_type_code", nullable = false)
@@ -82,5 +80,9 @@ public class OperationsEvent {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "port_call_phase_type_code")
-  private PortCallServiceTypeCode portCallPhaseTypeCode;
+  private PortCallPhaseTypeCode portCallPhaseTypeCode;
+
+  @Column(name="facility_type_code")
+  @Enumerated(EnumType.STRING)
+  private FacilityTypeCode facilityTypeCode;
 }
