@@ -8,9 +8,10 @@ import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 public record TransportCallTO(
-  @NotNull @Size(max = 100) String transportCallID,
+  @NotNull @Size(max = 100) UUID transportCallID,
   @Size(max = 5) String carrierServiceCode,
   @Size(max = 50) String exportVoyageNumber,
   @Size(max = 50) String importVoyageNumber,

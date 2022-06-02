@@ -13,7 +13,7 @@ public enum DCSATransportType {
   ;
 
   @Getter
-  private final int code;
+  private final Integer code;
 
   @Getter
   private final String name;

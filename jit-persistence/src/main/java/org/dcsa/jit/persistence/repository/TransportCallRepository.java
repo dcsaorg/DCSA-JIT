@@ -1,9 +1,9 @@
 package org.dcsa.jit.persistence.repository;
 
 import org.dcsa.jit.persistence.entity.TransportCall;
-import org.dcsa.jit.persistence.entity.enums.DCSATransportType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,13 +20,21 @@ public interface TransportCallRepository extends JpaRepository<TransportCall, UU
     " WHERE vessel.vessel_imo_number = :vesselIMONumber" +
     "   AND mode_of_transport.dcsa_transport_type = :modeOfTransport" +
     "   AND location.un_location_code = :UNLocationCode" +
-    "   -- If the client provided a facility, then the TC only matches if it has that facility." +
-    "   -- On the other hand, if the client did not provide a facility code, then the TC cannot have one either." +
-    "   AND ((:facilitySMDGCode IS NULL AND facility.id IS NULL) OR (facility.facility_smdg_code = :facilitySMDGCode))" +
+    "   AND ((:facilitySMDGCode1 IS NULL AND facility.id IS NULL) OR (facility.facility_smdg_code = :facilitySMDGCode2))" +
     "   AND import_voyage.carrier_voyage_number = :importVoyageNumber" +
     "   AND export_voyage.carrier_voyage_number = :exportVoyageNumber" +
     "   AND service.carrier_service_code = :carrierServiceCode" +
     "   AND (:transportCallSequenceNumber IS NULL OR transport_call.transport_call_sequence_number = :transportCallSequenceNumber)" +
     " LIMIT 2", nativeQuery = true)
-  List<TransportCall> findAllTransportCall(String UNLocationCode, String facilitySMDGCode, DCSATransportType modeOfTransport, String vesselIMONumber, String carrierServiceCode, String importVoyageNumber, String exportVoyageNumber, Integer transportCallSequenceNumber);
+  List<TransportCall> findAllTransportCall(
+    @Param("UNLocationCode") String UNLocationCode,
+    @Param("facilitySMDGCode1") String facilitySMDGCode1,
+    @Param("facilitySMDGCode2") String facilitySMDGCode2, // facilitySMDGCode1 and facilitySMDGCode2 should be the same - this is a workaround for JPA native queries
+    @Param("modeOfTransport") String modeOfTransport,
+    @Param("vesselIMONumber") String vesselIMONumber,
+    @Param("carrierServiceCode") String carrierServiceCode,
+    @Param("importVoyageNumber") String importVoyageNumber,
+    @Param("exportVoyageNumber") String exportVoyageNumber,
+    @Param("transportCallSequenceNumber") Integer transportCallSequenceNumber
+  );
 }

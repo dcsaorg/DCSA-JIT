@@ -30,6 +30,6 @@ public record TimestampTO(
   String remark,
   String delayReasonCode
 ) {
-  @Builder // workaround for intellij issue
+  @Builder(toBuilder = true) // workaround for intellij issue
   public TimestampTO {}
 }

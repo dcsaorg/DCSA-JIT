@@ -9,7 +9,9 @@ import lombok.Setter;
 import org.dcsa.jit.persistence.entity.enums.PortCallStatusCode;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
+import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -41,29 +43,30 @@ public class TransportCall {
   @Column(name = "transport_call_sequence_number")
   private Integer sequenceNumber;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "facility_id")
   private Facility facility;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "facility_type_code", length = 4)
-  private String facilityTypeCode;
+  private FacilityTypeCode facilityTypeCode;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "location_id")
   private Location location;
 
   @Column(name = "mode_of_transport_code", length = 3)
   private String modeOfTransportCode;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "vessel_id")
   private Vessel vessel;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "import_voyage_id")
   private Voyage importVoyage;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "export_voyage_id")
   private Voyage exportVoyage;
 
