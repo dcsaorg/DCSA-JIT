@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.dcsa.jit.persistence.entity.enums.*;
 import org.dcsa.skernel.domain.persistence.entity.Location;
+import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
