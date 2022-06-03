@@ -11,6 +11,7 @@ import org.dcsa.jit.persistence.repository.FacilityRepository;
 import org.dcsa.jit.persistence.repository.LocationRepository;
 import org.dcsa.jit.persistence.repository.ServiceRepository;
 import org.dcsa.jit.persistence.repository.TransportCallRepository;
+import org.dcsa.jit.persistence.repository.VesselRepository;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
@@ -22,46 +23,39 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransportCallService {
-  private final TransportCallRepository repository;
+  private final TransportCallRepository transportCallRepository;
   private final LocationRepository locationRepository;
   private final FacilityRepository facilityRepository;
+  private final VesselRepository vesselRepository;
   private final ServiceRepository serviceRepository;
   private final EnumMappers enumMappers;
-  private final LocationMapper locationMapper;
 
   @Transactional
-  public TransportCall ensureExists(TimestampTO timestampTO) {
-    validateTimestampTO(timestampTO);
+  public TransportCall ensureVesselExists(TimestampTO timestampTO) {
+    if (timestampTO.modeOfTransport() == null) {
+      throw ConcreteRequestErrorMessageException.invalidInput("modeOfTransport must be given");
+    }
+
+    if ((timestampTO.exportVoyageNumber() != null || timestampTO.importVoyageNumber() != null || timestampTO.carrierServiceCode() != null)
+      && (timestampTO.exportVoyageNumber() == null || timestampTO.importVoyageNumber() == null || timestampTO.carrierServiceCode() == null)) {
+      throw ConcreteRequestErrorMessageException.invalidInput(
+        "exportVoyageNumber, importVoyageNumber and carrierServiceCode must be given together or not at all"
+      );
+    }
+
     return findTransportCall(timestampTO)
       .orElseGet(() -> createTransportCall(timestampTO));
   }
 
-  private void validateTimestampTO(TimestampTO timestampTO) {
-    if (timestampTO.modeOfTransport() == null) {
-      throw ConcreteRequestErrorMessageException.invalidInput("modeOfTransport must be given");
-    }
-    if (timestampTO.exportVoyageNumber() != null ^ timestampTO.importVoyageNumber() != null) {
-      throw ConcreteRequestErrorMessageException.invalidInput("exportVoyageNumber and importVoyageNumber must be given together or not at all");
-    }
-    if (timestampTO.carrierServiceCode() == null) {
-      throw ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where service code is missing");
-    }
-    if (timestampTO.exportVoyageNumber() == null) {
-      throw ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where voyage number (carrierVoyageNumber OR exportVoyageNumber + importVoyageNumber) is missing");
-    }
-  }
-
   private Optional<TransportCall> findTransportCall(TimestampTO timestampTO) {
-    List<TransportCall> transportCalls = repository.findAllTransportCall(
+    List<TransportCall> transportCalls = transportCallRepository.findAllTransportCall(
       timestampTO.unLocationCode(),
-      null, null, // Where do we get
+      timestampTO.facilitySMDGCode(), timestampTO.facilitySMDGCode(),
       timestampTO.modeOfTransport().name(),
       timestampTO.vesselIMONumber(),
       timestampTO.carrierServiceCode(),
@@ -89,34 +83,56 @@ public class TransportCallService {
   }
 
   private TransportCall createTransportCall(TimestampTO timestampTO) {
-    Facility facility = null; // saveIf(timestampTO.unLocationCode(), () -> Facility.builder().unLocationCode(timestampTO.unLocationCode()).build(), facilityRepository::save);
-    Location location = saveIf(timestampTO.unLocationCode(), () -> Location.builder().id(UUID.randomUUID().toString()).unLocationCode(timestampTO.unLocationCode()).build(), locationRepository::save);
-    org.dcsa.jit.persistence.entity.Service service = saveIf(timestampTO.exportVoyageNumber(), () -> org.dcsa.jit.persistence.entity.Service.builder().carrierServiceCode(timestampTO.carrierServiceCode()).build(), serviceRepository::save);
+    if (timestampTO.carrierServiceCode() == null) {
+      throw ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where service code is missing");
+    }
+    if (timestampTO.exportVoyageNumber() == null) {
+      throw ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where voyage number (carrierVoyageNumber OR exportVoyageNumber + importVoyageNumber) is missing");
+    }
+
+    Location location = locationRepository.save(
+      Location.builder()
+        .id(UUID.randomUUID().toString())
+        .unLocationCode(timestampTO.unLocationCode())
+        .facility(findFacility(timestampTO))
+        .build()
+    );
+    org.dcsa.jit.persistence.entity.Service service = serviceRepository.save(
+      org.dcsa.jit.persistence.entity.Service.builder()
+        .carrierServiceCode(timestampTO.carrierServiceCode())
+        .build()
+    );
 
     TransportCall entityToSave = TransportCall.builder()
-      .reference(UUID.randomUUID().toString()) // TODO where is this supposed to come from
+      .reference(UUID.randomUUID().toString())
       .sequenceNumber(Objects.requireNonNullElse(timestampTO.transportCallSequenceNumber(), 1))
-      .facility(facility)
+      .facility(null) // Go through location to find facility
       .facilityTypeCode(enumMappers.facilityTypeCodeToDao(timestampTO.facilityTypeCode()))
       .location(location)
       .modeOfTransportCode(enumMappers.modeOfTransportToDao(timestampTO.modeOfTransport()).getCode().toString())
-      .vessel(timestampTO.vesselIMONumber() != null ? Vessel.builder().imoNumber(timestampTO.vesselIMONumber()).isDummy(false).build() : null)
-      .importVoyage(timestampTO.importVoyageNumber() != null ? Voyage.builder().carrierVoyageNumber(timestampTO.importVoyageNumber()).build() : null)
-      .exportVoyage(timestampTO.exportVoyageNumber() !=null ? Voyage.builder().carrierVoyageNumber(timestampTO.exportVoyageNumber()).service(service).build() : null)
+      .vessel(ensureVesselExists(timestampTO.vesselIMONumber()))
+      .importVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.importVoyageNumber()).service(service).build())
+      .exportVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.exportVoyageNumber()).service(service).build())
       .portCallStatusCode(null)
       .build();
 
-    return repository.save(entityToSave);
+    return transportCallRepository.save(entityToSave);
   }
 
-  private <I,T> T saveIf(I identifier, Supplier<T> supplier, Function<T, T> saver) {
-    if (identifier != null) {
-      T entity = supplier.get();
-      log.info("Attempting to save {}", entity);
-      entity = saver.apply(entity);
-      log.info("Saved {}", entity);
-      return entity;
+  private Facility findFacility(TimestampTO timestampTO) {
+    if (timestampTO.facilitySMDGCode() != null) {
+      return facilityRepository.findByUnLocationCodeAndSmdgCode(timestampTO.unLocationCode(), timestampTO.facilitySMDGCode()).orElse(null);
     }
     return null;
+  }
+
+  private Vessel ensureVesselExists(String imoNumber) {
+    return vesselRepository.findByImoNumber(imoNumber)
+      .orElseGet(() -> vesselRepository.save(
+        Vessel.builder()
+          .imoNumber(imoNumber)
+          .isDummy(false)
+          .build()
+      ));
   }
 }

@@ -43,6 +43,7 @@ public class TransportCall {
   @Column(name = "transport_call_sequence_number")
   private Integer sequenceNumber;
 
+  @Deprecated
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "facility_id")
   private Facility facility;

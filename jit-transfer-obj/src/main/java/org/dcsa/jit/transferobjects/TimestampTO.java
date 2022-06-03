@@ -14,6 +14,7 @@ public record TimestampTO(
   @NotNull PublisherRole publisherRole,
   @NotNull @ValidVesselIMONumber String vesselIMONumber,
   @NotNull @Size(max = 5) @JsonProperty("UNLocationCode") String unLocationCode,
+  String facilitySMDGCode,
   FacilityTypeCode facilityTypeCode,
   String eventClassifierCode,
   String operationsEventTypeCode,
