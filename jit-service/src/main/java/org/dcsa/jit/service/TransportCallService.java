@@ -55,7 +55,7 @@ public class TransportCallService {
   private Optional<TransportCall> findTransportCall(TimestampTO timestampTO) {
     List<TransportCall> transportCalls = transportCallRepository.findAllTransportCall(
       timestampTO.unLocationCode(),
-      timestampTO.facilitySMDGCode(), timestampTO.facilitySMDGCode(),
+      timestampTO.facilitySMDGCode(),
       timestampTO.modeOfTransport().name(),
       timestampTO.vesselIMONumber(),
       timestampTO.carrierServiceCode(),
