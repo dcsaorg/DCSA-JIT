@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
@@ -28,8 +29,9 @@ import java.util.UUID;
 public class Party {
   @Id
   @GeneratedValue
+  @Size(max = 100)
   @Column(name = "id", nullable = false)
-  private UUID id;
+  private String id;
 
   @Column(name = "party_name", length = 100)
   private String name;
