@@ -17,7 +17,7 @@ public interface TimestampDefinitionRepository
 
   List<TimestampDefinition>
       findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
-          String eventClassifierCode,
+          EventClassifierCode eventClassifierCode,
           OperationsEventTypeCode operationsEventTypeCode,
           PortCallPhaseTypeCode portCallPhaseTypeCode,
           PortCallServiceTypeCode portCallServiceTypeCode,
@@ -25,5 +25,9 @@ public interface TimestampDefinitionRepository
 
   @Query(value="INSERT INTO ops_event_timestamp_definition (event_id, timestamp_definition) VALUES (:eventID, :timestampDefinitionID)", nativeQuery = true)
   void markOperationsEventAsTimestamp(UUID eventID, String timestampDefinitionID);
+
+ // @Modifying
+ // @Query("UPDATE ops_event_timestamp_definition SET payload_id = :payloadID WHERE event_id = :eventID")
+ // void linkPayload(UUID eventID, UUID payloadID);
 }
 
