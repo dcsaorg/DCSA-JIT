@@ -34,7 +34,4 @@ public class UnLocation {
   @Column(name="country_code")
   private String countryCode;
 
-  public Long getId() {
-    return id;
-  }
 }
