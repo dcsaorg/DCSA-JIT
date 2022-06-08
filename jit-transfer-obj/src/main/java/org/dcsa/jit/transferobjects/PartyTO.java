@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record PartyTO(
-  UUID id,
+  @Size(max = 100) String id,
   @Size(max = 100) String name,
   @Size(max = 20) String taxReference1,
   @Size(max = 20) String taxReference2,

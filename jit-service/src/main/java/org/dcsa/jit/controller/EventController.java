@@ -3,6 +3,7 @@ package org.dcsa.jit.controller;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.service.OperationsEventService;
+import org.dcsa.jit.transferobjects.OperationsEventTO;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,7 @@ public class EventController {
 
   @GetMapping(path = "/events")
   @ResponseStatus(HttpStatus.OK)
-  public List<OperationsEvent> findAll(
+  public List<OperationsEventTO> findAll(
       // transportCallReference
       @Size(max = 100) @RequestParam(required = false) String transportCallID,
       @ValidVesselIMONumber(allowNull = true) @RequestParam(required = false)
