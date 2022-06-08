@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter(AccessLevel.PRIVATE)
@@ -26,7 +26,7 @@ public class OperationsEvent {
   private UUID id;
 
   @Column(name = "event_classifier_code", length = 3, nullable = false)
-  private String classifierCode;
+  private EventClassifierCode classifierCode;
 
   @Column(name = "event_created_date_time", nullable = false)
   private OffsetDateTime createdDateTime;
@@ -70,9 +70,11 @@ public class OperationsEvent {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "port_call_phase_type_code")
+  @Setter
   private PortCallPhaseTypeCode portCallPhaseTypeCode;
 
   @Column(name = "facility_type_code")
   @Enumerated(EnumType.STRING)
   private FacilityTypeCode facilityTypeCode;
+
 }

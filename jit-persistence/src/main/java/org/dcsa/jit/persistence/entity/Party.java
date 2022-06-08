@@ -1,11 +1,6 @@
 package org.dcsa.jit.persistence.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.dcsa.skernel.domain.persistence.entity.Address;
 
 import javax.persistence.Column;
@@ -26,6 +21,7 @@ import javax.persistence.Table;
 public class Party {
   @Id
   @Column(name = "id", length = 100, nullable = false)
+  @Getter
   private String id;
 
   @Column(name = "party_name", length = 100)
