@@ -13,8 +13,14 @@ public record LocationTO(
   @Size(max = 5) @JsonProperty("UNLocationCode") String unLocationCode,
   @Size(max = 6) String facilityCode,
   FacilityCodeListProvider facilityCodeListProvider,
-  AddressTO address
+  AddressTO addressTO,
+  String id
+  // Use Facility (and not FacilityTO) to avoid infinite recursion with FacilityTO and because we do not need a
+  // full FacilityTO object.
+ // private FacilityTO facility;
 ) {
-  @Builder // workaround for intellij issue
+  @Builder(toBuilder = true) // workaround for intellij issue
   public LocationTO { }
+
+
 }

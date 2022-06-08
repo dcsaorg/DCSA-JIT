@@ -11,6 +11,9 @@ public record IdentifyingCodeTO(
   @NotNull @Size(max = 100) String partyCode,
   @Size(max = 100) String codeListName
 ) {
-  @Builder // workaround for intellij issue
+  @Builder(toBuilder = true) // workaround for intellij issue
   public IdentifyingCodeTO { }
+
+
+
 }
