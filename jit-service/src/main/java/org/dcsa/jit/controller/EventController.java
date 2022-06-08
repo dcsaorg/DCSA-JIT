@@ -3,6 +3,7 @@ package org.dcsa.jit.controller;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.service.OperationsEventService;
+import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class EventController {
   @ResponseStatus(HttpStatus.OK)
   public List<OperationsEvent> findAll(
       @Size(max = 100) @RequestParam(required = false) String transportCallID,
-      @Size(max = 7) @RequestParam(required = false) String vesselIMONumber,
+      @Size(max = 7) @ValidVesselIMONumber(allowNull = true) @RequestParam(required = false) String vesselIMONumber,
       @Deprecated @Size(max = 50) @RequestParam(required = false) String carrierVoyageNumber,
       @Size(max = 50) @RequestParam(required = false) String exportVoyageNumber,
       @Size(max = 5) @RequestParam(required = false) String carrierServiceCode,
