@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PartyFunction;
 import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;

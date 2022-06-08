@@ -31,7 +31,7 @@ public class TransportCallService {
   private final EnumMappers enumMappers;
 
   @Transactional
-  public TransportCall ensureVesselExists(TimestampTO timestampTO) {
+  public TransportCall ensureTransportCallExists(TimestampTO timestampTO) {
     if (timestampTO.modeOfTransport() == null) {
       throw ConcreteRequestErrorMessageException.invalidInput("modeOfTransport must be given");
     }
