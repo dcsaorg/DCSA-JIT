@@ -24,6 +24,7 @@ public class EventController {
   @GetMapping(path = "/events")
   @ResponseStatus(HttpStatus.OK)
   public List<OperationsEvent> findAll(
+      // transportCallReference
       @Size(max = 100) @RequestParam(required = false) String transportCallID,
       @ValidVesselIMONumber(allowNull = true) @RequestParam(required = false)
           String vesselIMONumber,
@@ -32,11 +33,28 @@ public class EventController {
       @Size(max = 5) @RequestParam(required = false) String carrierServiceCode,
       @Size(max = 5) @RequestParam(value = "UNLocationCode", required = false)
           String unLocationCode,
+      @Size(max = 5) @RequestParam(required = false) String facilitySMDGCode,
       @Size(max = 5) @RequestParam(required = false) String operationsEventTypeCode,
       @RequestParam(required = false) String eventCreatedDateTime,
+      @RequestParam(required = false) String sort,
       @RequestParam(required = false) Integer limit,
       @RequestParam(required = false) String cursor,
       @RequestParam(value = "API-Version", required = false) String apiVersion) {
-    return eventService.findAll();
+    return eventService.findAll(
+        OperationsEventService.OperationsEventFilters.builder()
+            .transportCallID(transportCallID)
+            .vesselIMONumber(vesselIMONumber)
+            .carrierVoyageNumber(carrierVoyageNumber)
+            .exportVoyageNumber(exportVoyageNumber)
+            .carrierServiceCode(carrierServiceCode)
+            .unLocationCode(unLocationCode)
+            .facilitySMDGCode(facilitySMDGCode)
+            .operationsEventTypeCode(operationsEventTypeCode)
+            .eventCreatedDateTime(eventCreatedDateTime)
+            .sort(sort)
+            .limit(limit)
+            .cursor(cursor)
+            .apiVersion(apiVersion)
+            .build());
   }
 }
