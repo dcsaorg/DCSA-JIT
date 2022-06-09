@@ -1,25 +1,14 @@
 package org.dcsa.jit.persistence.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.dcsa.jit.persistence.entity.enums.*;
+import lombok.*;
+import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
+import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
+import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
+import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -83,7 +72,7 @@ public class OperationsEvent {
   @Column(name = "port_call_phase_type_code")
   private PortCallPhaseTypeCode portCallPhaseTypeCode;
 
-  @Column(name="facility_type_code")
+  @Column(name = "facility_type_code")
   @Enumerated(EnumType.STRING)
   private FacilityTypeCode facilityTypeCode;
 }
