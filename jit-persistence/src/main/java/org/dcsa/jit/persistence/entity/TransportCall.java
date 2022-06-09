@@ -49,7 +49,7 @@ public class TransportCall {
   private Facility facility;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "facility_type_code", length = 4)
+  @Column(name = "facility_type_code", length = 4, columnDefinition = "bpchar") // "bpchar" here is not a typing error
   private FacilityTypeCode facilityTypeCode;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -72,6 +72,6 @@ public class TransportCall {
   private Voyage exportVoyage;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "port_call_status_code", length = 4)
+  @Column(name = "port_call_status_code", length = 4, columnDefinition = "bpchar") // "bpchar" here is not a typing error
   private PortCallStatusCode portCallStatusCode;
 }

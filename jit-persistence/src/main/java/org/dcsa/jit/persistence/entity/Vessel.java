@@ -36,7 +36,7 @@ public class Vessel {
   @Column(name = "vessel_name", length = 35)
   private String name;
 
-  @Column(name = "vessel_flag", length = 2)
+  @Column(name = "vessel_flag", length = 2, columnDefinition = "bpchar") // "bpchar" here is not a typing error)
   private String flag;
 
   @Column(name = "vessel_call_sign", length = 18)

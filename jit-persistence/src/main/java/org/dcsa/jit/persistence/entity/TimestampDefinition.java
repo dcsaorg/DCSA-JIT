@@ -45,9 +45,11 @@ public class TimestampDefinition {
     private PublisherRole primaryReceiver;
 
     @Column(name="event_classifier_code")
+    @Enumerated(EnumType.STRING)
     private EventClassifierCode eventClassifierCode;
 
     @Column(name="operations_event_type_code")
+    @Enumerated(EnumType.STRING)
     private OperationsEventTypeCode operationsEventTypeCode;
 
     @Column(name="port_call_phase_type_code")
