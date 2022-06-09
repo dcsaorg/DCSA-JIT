@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 public record TransportCallTO(
-  @NotNull @Size(max = 100) UUID transportCallID,
+  @NotNull @Size(max = 100) String transportCallReference,
   @Size(max = 5) String carrierServiceCode,
   @Size(max = 50) String exportVoyageNumber,
   @Size(max = 50) String importVoyageNumber,

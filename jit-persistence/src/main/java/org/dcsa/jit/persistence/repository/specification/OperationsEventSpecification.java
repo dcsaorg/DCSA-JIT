@@ -38,6 +38,8 @@ public class OperationsEventSpecification {
   public static Specification<OperationsEvent> withFilters(final OperationsEventFilters filters) {
     return (root, query, builder) -> {
       Join<OperationsEvent, TransportCall> operationsEventTransportCallJoin = root.join("transportCall", JoinType.LEFT);
+      Join<TransportCall, Voyage> transportCallImportVoyageJoin = operationsEventTransportCallJoin.join("importVoyage", JoinType.LEFT);
+      Join<TransportCall, Voyage> transportCallExportVoyageJoin = operationsEventTransportCallJoin.join("exportVoyage", JoinType.LEFT);
       Join<TransportCall, Vessel> transportCallVesselJoin = operationsEventTransportCallJoin.join("vessel", JoinType.LEFT);
       Join<TransportCall, Location> transportCallLocationJoin = operationsEventTransportCallJoin.join("location", JoinType.LEFT);
       Join<Location, Facility> locationFacilityJoin = transportCallLocationJoin.join("facility", JoinType.LEFT);
@@ -45,12 +47,12 @@ public class OperationsEventSpecification {
       List<Predicate> predicates = new ArrayList<>();
 
       if (null != filters.transportCallID) {
-        Predicate predicate = builder.equal(root.get("transportCallID"), filters.transportCallID);
+        Predicate predicate = builder.equal(operationsEventTransportCallJoin.get("reference"), filters.transportCallID);
         predicates.add(predicate);
       }
 
       if (null != filters.vesselIMONumber) {
-        Predicate predicate = builder.equal(transportCallVesselJoin.get("vesselIMONumber"), filters.vesselIMONumber);
+        Predicate predicate = builder.equal(transportCallVesselJoin.get("imoNumber"), filters.vesselIMONumber);
         predicates.add(predicate);
       }
 
@@ -60,7 +62,7 @@ public class OperationsEventSpecification {
       }
 
       if (null != filters.exportVoyageNumber) {
-        Predicate predicate = builder.equal(operationsEventTransportCallJoin.get("exportVoyageNumber"), filters.exportVoyageNumber);
+        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get("carrierVoyageNumber"), filters.exportVoyageNumber);
         predicates.add(predicate);
       }
 
