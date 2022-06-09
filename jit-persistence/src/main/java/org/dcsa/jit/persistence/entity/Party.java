@@ -29,8 +29,7 @@ import java.util.UUID;
 public class Party {
   @Id
   @GeneratedValue
-  @Size(max = 100)
-  @Column(name = "id", nullable = false)
+  @Column(name = "id", length = 100, nullable = false)
   private String id;
 
   @Column(name = "party_name", length = 100)
