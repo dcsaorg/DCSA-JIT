@@ -40,8 +40,8 @@ public class Service {
   @Column(name = "carrier_service_name", length = 50)
   private String carrierServiceName;
 
-  @Column(name = "tradelane_id")
-  private UUID tradelaneId;
+  @Column(name = "tradelane_id", length = 8)
+  private String tradelaneId;
 
   @Column(name = "universal_service_reference", length = 8)
   private String universalServiceReference;
