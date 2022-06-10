@@ -11,13 +11,10 @@ import org.dcsa.skernel.domain.persistence.entity.Address;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -28,9 +25,7 @@ import java.util.UUID;
 @Table(name = "party")
 public class Party {
   @Id
-  @GeneratedValue
-  @Size(max = 100)
-  @Column(name = "id", nullable = false)
+  @Column(name = "id", length = 100, nullable = false)
   private String id;
 
   @Column(name = "party_name", length = 100)
