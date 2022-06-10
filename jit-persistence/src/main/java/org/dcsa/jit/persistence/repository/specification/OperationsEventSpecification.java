@@ -38,7 +38,6 @@ public class OperationsEventSpecification {
   public static Specification<OperationsEvent> withFilters(final OperationsEventFilters filters) {
     return (root, query, builder) -> {
       Join<OperationsEvent, TransportCall> operationsEventTransportCallJoin = root.join("transportCall", JoinType.LEFT);
-      Join<TransportCall, Voyage> transportCallImportVoyageJoin = operationsEventTransportCallJoin.join("importVoyage", JoinType.LEFT);
       Join<TransportCall, Voyage> transportCallExportVoyageJoin = operationsEventTransportCallJoin.join("exportVoyage", JoinType.LEFT);
       Join<TransportCall, Vessel> transportCallVesselJoin = operationsEventTransportCallJoin.join("vessel", JoinType.LEFT);
       Join<TransportCall, Location> transportCallLocationJoin = operationsEventTransportCallJoin.join("location", JoinType.LEFT);
@@ -57,11 +56,11 @@ public class OperationsEventSpecification {
       }
 
       if (null != filters.carrierVoyageNumber) {
-        Predicate predicate = builder.equal(operationsEventTransportCallJoin.get("carrierVoyageNumber"), filters.carrierVoyageNumber);
+        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get("carrierVoyageNumber"), filters.carrierVoyageNumber);
         predicates.add(predicate);
       }
 
-      if (null != filters.exportVoyageNumber) {
+      if (null != filters.exportVoyageNumber ) {
         Predicate predicate = builder.equal(transportCallExportVoyageJoin.get("carrierVoyageNumber"), filters.exportVoyageNumber);
         predicates.add(predicate);
       }

@@ -8,6 +8,7 @@ import org.dcsa.skernel.infrastructure.http.queryparams.DCSAQueryParameterParser
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,7 @@ public class EventController {
 
   private final DCSAQueryParameterParser queryParameterParser;
 
+  @Transactional
   @GetMapping(path = "/events")
   @ResponseStatus(HttpStatus.OK)
   public List<OperationsEventTO> findAll(
