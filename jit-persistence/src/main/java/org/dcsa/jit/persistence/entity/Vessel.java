@@ -36,7 +36,7 @@ public class Vessel {
   @Column(name = "vessel_name", length = 35)
   private String name;
 
-  @Column(name = "vessel_flag", length = 2)
+  @Column(name = "vessel_flag", length = 2, columnDefinition = "bpchar") // "bpchar" here is not a typing error)
   private String flag;
 
   @Column(name = "vessel_call_sign", length = 18)
@@ -49,10 +49,10 @@ public class Vessel {
   @Column(name = "is_dummy")
   private Boolean isDummy;
 
-  @Column(name = "length")
+  @Column(name = "length", columnDefinition = "numeric")
   private Float length;
 
-  @Column(name = "width")
+  @Column(name = "width", columnDefinition = "numeric")
   private Float width;
 
   @Column(name = "dimension_unit", length = 3)
