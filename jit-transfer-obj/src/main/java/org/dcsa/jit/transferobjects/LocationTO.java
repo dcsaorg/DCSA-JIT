@@ -13,7 +13,7 @@ public record LocationTO(
   @Size(max = 5) @JsonProperty("UNLocationCode") String unLocationCode,
   @Size(max = 6) String facilityCode,
   FacilityCodeListProvider facilityCodeListProvider,
-  AddressTO addressTO,
+  AddressTO address,
   String id
   // Use Facility (and not FacilityTO) to avoid infinite recursion with FacilityTO and because we do not need a
   // full FacilityTO object.

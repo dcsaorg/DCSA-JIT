@@ -7,10 +7,9 @@ import org.dcsa.jit.transferobjects.enums.DCSAResponsibleAgencyCode;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public record PartyTO(
-  @Size(max = 100) String name,
+  @Size(max = 100) String partyName,
   @Size(max = 20) String taxReference1,
   @Size(max = 20) String taxReference2,
   @Size(max = 500) String publicKey,

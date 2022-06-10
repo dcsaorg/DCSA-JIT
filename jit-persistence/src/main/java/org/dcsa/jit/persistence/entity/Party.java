@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter(AccessLevel.PRIVATE)
@@ -21,7 +21,6 @@ import javax.persistence.Table;
 public class Party {
   @Id
   @Column(name = "id", length = 100, nullable = false)
-  @Getter
   private String id;
 
   @Column(name = "party_name", length = 100)

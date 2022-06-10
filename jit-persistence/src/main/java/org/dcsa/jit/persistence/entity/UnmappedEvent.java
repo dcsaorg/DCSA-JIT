@@ -15,7 +15,6 @@ import java.util.UUID;
 @Table(name = "unmapped_event_queue")
 public class UnmappedEvent implements Persistable {
   @Id
-  @GeneratedValue
   @Column(name = "event_id", nullable = false)
   private UUID eventID;
 
