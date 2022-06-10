@@ -14,7 +14,7 @@ import static org.dcsa.jit.transferobjects.enums.PortCallPhaseTypeCode.*;
 @Getter
 public enum PortCallServiceTypeCode {
   PILO("Pilotage",null,EnumSet.of(REQ, PLN, ACT), EnumSet.of(INBD, OUTB), "Pilotage"),
-  /* Timestamp name not confirmed (not mentioned in JIT 1.1) */
+  /* Timestamp partyName not confirmed (not mentioned in JIT 1.1) */
   MOOR("Mooring",null,Set.of(), Set.of(), "Mooring"),
   CRGO("Cargo operations",BRTH, EnumSet.allOf(EventClassifierCode.class), EnumSet.of(INBD, ALGS), "Cargo Ops"),
   TOWG("Towage",null, EnumSet.of(REQ, PLN, ACT), EnumSet.of(INBD, OUTB), "Towage"),

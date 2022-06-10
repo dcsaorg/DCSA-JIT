@@ -1,31 +1,35 @@
 package org.dcsa.jit.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
+import org.dcsa.jit.persistence.entity.Party;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.UnmappedEvent;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
-import org.dcsa.jit.persistence.repository.OperationsEventRepository;
-import org.dcsa.jit.persistence.repository.UnLocationRepository;
-import org.dcsa.jit.persistence.repository.UnmappedEventRepository;
+import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.jit.transferobjects.enums.PortCallServiceTypeCode;
+import org.dcsa.skernel.domain.persistence.entity.Address;
+import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TimestampService {
@@ -37,99 +41,125 @@ public class TimestampService {
   private final LocationMapper locationMapper;
   private final TimestampDefinitionService timestampDefinitionService;
   private final UnLocationRepository unLocationRepository;
+  private final LocationRepository locationRepository;
   private final UnmappedEventRepository unmappedEventRepository;
+  private final PartyRepository partyRepository;
+  private final AddressRepository addressRepository;
 
   @Transactional
   public void create(TimestampTO timestamp, byte[] originalPayload) {
+    TimestampTO.TimestampTOBuilder timestampTOBuilder = timestamp.toBuilder();
+    LocationTO locationTO = timestamp.eventLocation();
     if (timestamp.modeOfTransport() == null) {
       // JIT IFS says that Mode Of Transport must be omitted for some timestamps and must be VESSEL
       // for others.
       // Because the distinction is not visible after the timestamp has been created, so we cannot
       // rely on it
       // in general either way.
-      timestamp.toBuilder().modeOfTransport(ModeOfTransport.VESSEL).build();
+      timestampTOBuilder = timestampTOBuilder.modeOfTransport(ModeOfTransport.VESSEL);
     }
     if (!timestamp.modeOfTransport().equals(ModeOfTransport.VESSEL)) {
       throw ConcreteRequestErrorMessageException.invalidInput(
-          "modeOfTransport must be blank or \"VESSEL\"");
+        "modeOfTransport must be blank or \"VESSEL\"");
     }
 
-    LocationTO location = timestamp.eventLocation();
-    if (location != null) {
-      if (location.unLocationCode() != null
-          && !location.unLocationCode().equals(timestamp.unLocationCode())) {
+    if (locationTO != null) {
+      if (locationTO.unLocationCode() != null &&
+        !locationTO.unLocationCode().equals(timestamp.unLocationCode())) {
         throw ConcreteRequestErrorMessageException.invalidInput(
-            "Conflicting UNLocationCode between the timestamp and the event location");
+          "Conflicting UNLocationCode between the timestamp and the event location");
       }
-      if (location.facilityCode() == null ^ location.facilityCodeListProvider() == null) {
-        if (location.facilityCode() == null) {
+
+      if (locationTO.facilityCode() == null ^ locationTO.facilityCodeListProvider() == null) {
+        if (locationTO.facilityCode() == null) {
           throw ConcreteRequestErrorMessageException.invalidInput(
-              "Cannot create location where facility code list provider is present but facility code is missing");
+            "Cannot create location where facility code list provider is present but facility code is missing");
         }
         throw ConcreteRequestErrorMessageException.invalidInput(
-            "Cannot create location where facility code is present but facility code list provider is missing");
+          "Cannot create location where facility code is present but facility code list provider is missing");
       }
-      if (location.facilityCodeListProvider() == FacilityCodeListProvider.BIC) {
+
+      if (locationTO.facilityCodeListProvider() == FacilityCodeListProvider.BIC) {
         // It is complex enough without having to deal with BIC codes, so exclude BIC as an
         // implementation detail.
         throw ConcreteRequestErrorMessageException.invalidInput(
-            "The reference implementation only includes supports SMDG codes for facilities.");
+          "The reference implementation only includes supports SMDG codes for facilities.");
       }
       // Ensure timestamp.facilitySMDGCode and location.facilityCode is aligned
       // The errors for misaligned values are handled below.
-      if (timestamp.facilitySMDGCode() == null
-          && location.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
-        timestamp.toBuilder().facilitySMDGCode(location.facilityCode()).build();
+      if (timestamp.facilitySMDGCode() == null &&
+        locationTO.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
+        timestampTOBuilder = timestampTOBuilder.facilitySMDGCode(locationTO.facilityCode());
       }
     }
     if (timestamp.facilitySMDGCode() != null) {
-      if (location == null) {
-        location = LocationTO.builder().build();
-        timestamp.toBuilder().eventLocation(location).build();
+      if (locationTO == null) {
+        locationTO = LocationTO.builder().build();
+
       }
       // We need the UNLocode to resolve the facility.
-      location.toBuilder().unLocationCode(timestamp.unLocationCode()).build();
-      if (location.facilityCodeListProvider() != null
-          && location.facilityCodeListProvider() != FacilityCodeListProvider.SMDG) {
+      locationTO = locationTO.toBuilder().unLocationCode(timestamp.unLocationCode()).build();
+      if (locationTO.facilityCodeListProvider() != null &&
+        locationTO.facilityCodeListProvider() != FacilityCodeListProvider.SMDG) {
         throw ConcreteRequestErrorMessageException.invalidInput(
-            "Conflicting facilityCodeListProvider definition (got a facilitySMDGCode but location had a facility with provider: "
-                + location.facilityCodeListProvider()
-                + ")");
+          "Conflicting facilityCodeListProvider definition (got a facilitySMDGCode but location had a facility with provider: " +
+            locationTO.facilityCodeListProvider() +
+            ")");
       }
-      if (location.facilityCode() != null
-          && !location.facilityCode().equals(timestamp.facilitySMDGCode())) {
+      if (locationTO.facilityCode() != null &&
+        !locationTO.facilityCode().equals(timestamp.facilitySMDGCode())) {
         throw ConcreteRequestErrorMessageException.invalidInput(
-            "Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)");
+          "Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)");
       }
-      location.toBuilder()
-          .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
-          .facilityCode(timestamp.facilitySMDGCode())
-          .build();
+      locationTO = locationTO.toBuilder()
+        .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
+        .facilityCode(timestamp.facilitySMDGCode())
+        .build();
+      timestampTOBuilder = timestampTOBuilder.eventLocation(locationTO);
     }
+
+    timestamp = timestampTOBuilder.build();
 
     this.ensureValidUnLocationCode(Objects.requireNonNull(timestamp.eventLocation()).unLocationCode());
     this.ensureValidUnLocationCode(timestamp.unLocationCode());
 
     TransportCall tc = transportCallService.ensureTransportCallExists(timestamp);
 
+    Party party = partyMapper.toDao(timestamp.publisher());
+    Location location = locationMapper.toDao(timestamp.eventLocation());
+    Address partyAddress = addressRepository.save(party.getAddress());
+    Address locationAddress = addressRepository.save(location.getAddress());
+    location = locationRepository.save(location.toBuilder().id(UUID.randomUUID().toString()).address(locationAddress).build());
+    party = party.toBuilder().id(UUID.randomUUID().toString()).address(partyAddress).build();
+    party = partyRepository.save(party); // persist party entity
+
+    // TODO DDT-10xx: work around to avoid TransientPropertyValueException on vesselPosition -> Address
+    Location vesselPos = locationMapper.toDao(timestamp.vesselPosition());
+    Address vesselAddress = addressRepository.save(new Address());
+    vesselPos = vesselPos.toBuilder().address(vesselAddress).id(UUID.randomUUID().toString()).build();
+    vesselPos = locationRepository.save(vesselPos);
+
+
+
     OperationsEvent operationsEvent =
-        OperationsEvent.builder()
-            .classifierCode(enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
-            .dateTime(timestamp.eventDateTime())
-            .operationsEventTypeCode(
-                enumMappers.operationsEventTypeCodeFromDao(timestamp.operationsEventTypeCode()))
-            .portCallPhaseTypeCode(
-                enumMappers.portCallPhaseTypeCodeCodetoDao(timestamp.portCallPhaseTypeCode()))
-            .portCallServiceTypeCode(
-                enumMappers.portCallServiceTypeCodeToDao(timestamp.portCallServiceTypeCode()))
-            .publisherRole(enumMappers.publisherRoleToDao(timestamp.publisherRole()))
-            .facilityTypeCode(enumMappers.facilityTypeCodeToDao(timestamp.facilityTypeCode()))
-            .remark(timestamp.remark())
-            .location(locationMapper.toDao(timestamp.eventLocation()))
-            .vesselPosition(locationMapper.toDao(timestamp.vesselPosition()))
-            .publisher(partyMapper.toDao(timestamp.publisher()))
-            .transportCall(tc)
-            .build();
+      OperationsEvent.builder()
+        .createdDateTime(timestamp.eventDateTime())
+        .classifierCode(enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
+        .dateTime(timestamp.eventDateTime())
+        .operationsEventTypeCode(
+          enumMappers.operationsEventTypeCodeFromDao(timestamp.operationsEventTypeCode()))
+        .portCallPhaseTypeCode(
+          enumMappers.portCallPhaseTypeCodeCodetoDao(timestamp.portCallPhaseTypeCode()))
+        .portCallServiceTypeCode(
+          enumMappers.portCallServiceTypeCodeToDao(timestamp.portCallServiceTypeCode()))
+        .publisherRole(enumMappers.publisherRoleToDao(timestamp.publisherRole()))
+        .facilityTypeCode(enumMappers.facilityTypeCodeToDao(timestamp.facilityTypeCode()))
+        .remark(timestamp.remark())
+        .location(location)
+        .vesselPosition(vesselPos)
+        .publisher(party)
+        .transportCall(tc)
+        .build();
 
     create(operationsEvent);
   }
@@ -138,23 +168,23 @@ public class TimestampService {
 
     try {
       this.ensurePhaseTypeIsDefined(
-          operationsEvent,
-          enumMappers.portCallServiceTypeCodeFromDao(operationsEvent.getPortCallServiceTypeCode()));
+        operationsEvent,
+        enumMappers.portCallServiceTypeCodeFromDao(operationsEvent.getPortCallServiceTypeCode()));
     } catch (IllegalStateException e) {
       throw ConcreteRequestErrorMessageException.invalidInput(
-          "Cannot derive portCallPhaseTypeCode automatically from this timestamp. Please define it explicitly");
+        "Cannot derive portCallPhaseTypeCode automatically from this timestamp. Please define it explicitly");
     }
 
+    operationsEvent = operationsEventRepository.save(operationsEvent);
     timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
 
-    operationsEventRepository.save(operationsEvent);
 
     UnmappedEvent unmappedEvent =
-        UnmappedEvent.builder()
-            .eventID(operationsEvent.getId())
-            .enqueuedAtDateTime(operationsEvent.getDateTime())
-            .newRecord(true)
-            .build();
+      UnmappedEvent.builder()
+        .eventID(operationsEvent.getId())
+        .enqueuedAtDateTime(operationsEvent.getDateTime())
+        .newRecord(true)
+        .build();
     unmappedEventRepository.save(unmappedEvent);
   }
 
@@ -165,10 +195,10 @@ public class TimestampService {
     }
     if (oe.getPortCallServiceTypeCode() != null) {
 
-      Set<PortCallPhaseTypeCode> validPhases =
-          pp.getValidPhases().stream()
-              .map(enumMappers::portCallPhaseTypeCodeCodetoDao)
-              .collect(Collectors.toSet());
+      Set < PortCallPhaseTypeCode > validPhases =
+        pp.getValidPhases().stream()
+          .map(enumMappers::portCallPhaseTypeCodeCodetoDao)
+          .collect(Collectors.toSet());
       if (validPhases.size() == 1) {
         PortCallPhaseTypeCode portCallPhaseTypeCode = validPhases.iterator().next();
         oe.setPortCallPhaseTypeCode(portCallPhaseTypeCode);
@@ -190,7 +220,7 @@ public class TimestampService {
               oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.ALGS);
             }
           }
-        }
+                }
         case PBPL -> oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.INBD);
       }
     }
@@ -202,9 +232,9 @@ public class TimestampService {
   private void ensureValidUnLocationCode(String unLocationCode) {
     if (unLocationCode != null && unLocationRepository.findById(unLocationCode).isEmpty()) {
       throw ConcreteRequestErrorMessageException.invalidParameter(
-          "UNLocation with UNLocationCode "
-              + unLocationCode
-              + " not part of reference implementation data set");
+        "UNLocation with UNLocationCode " +
+          unLocationCode +
+          " not part of reference implementation data set");
     }
   }
 }

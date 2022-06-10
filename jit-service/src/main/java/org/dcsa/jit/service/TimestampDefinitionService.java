@@ -2,13 +2,16 @@ package org.dcsa.jit.service;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
+import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
+import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -20,11 +23,13 @@ public class TimestampDefinitionService {
   /** Helper for {@link #arePublisherRolesInterchangeable(PublisherRole, PublisherRole)} */
   private static final Map<PublisherRole, PublisherRole> NORMALIZED_PARTY_FUNCTION_MAP =
       Map.of(
-        PublisherRole.AG, PublisherRole.CA,
-        PublisherRole.VSL, PublisherRole.CA);
+          PublisherRole.AG, PublisherRole.CA,
+          PublisherRole.VSL, PublisherRole.CA);
 
   private final TimestampDefinitionRepository timestampDefinitionRepository;
+  private final OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
 
+  @Transactional
   public void markOperationsEventAsTimestamp(OperationsEvent operationsEvent) {
     List<TimestampDefinition> timestampDefinitionList =
         timestampDefinitionRepository
@@ -46,9 +51,12 @@ public class TimestampDefinitionService {
       throw ConcreteRequestErrorMessageException.internalServerError(
           "There should exactly one timestamp matching this input but we got two!");
     }
-
-    timestampDefinitionRepository.markOperationsEventAsTimestamp(
-        operationsEvent.getId(), timestampDefinitionList.get(0).getId());
+    OpsEventTimestampDefinition ops =
+        OpsEventTimestampDefinition.builder()
+            .eventID(operationsEvent.getId())
+            .timestampDefinitionID(timestampDefinitionList.get(0).getId())
+            .build();
+    opsEventTimestampDefinitionRepository.save(ops);
   }
 
   /**

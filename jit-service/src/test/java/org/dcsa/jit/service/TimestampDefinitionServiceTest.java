@@ -1,9 +1,11 @@
 package org.dcsa.jit.service;
 
 import org.dcsa.jit.persistence.entity.OperationsEvent;
+import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
+import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
 import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
@@ -26,6 +28,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class TimestampDefinitionServiceTest {
   @Mock TimestampDefinitionRepository timestampDefinitionRepository;
+  @Mock
+  OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
   @InjectMocks TimestampDefinitionService timestampDefinitionService;
   TimestampDefinition timestampDefinition;
 
@@ -59,15 +63,15 @@ public class TimestampDefinitionServiceTest {
                 any(), any(), any(), any(), any()))
         .thenReturn(List.of(timestampDefinition));
 
-    ArgumentCaptor<String> argumentCaptorTimestampDefinitionId =
-        ArgumentCaptor.forClass(String.class);
+    ArgumentCaptor<OpsEventTimestampDefinition> argumentCaptorTimestampDefinition =
+        ArgumentCaptor.forClass(OpsEventTimestampDefinition.class);
     assertDoesNotThrow(
         () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
 
-    verify(timestampDefinitionRepository, times(1))
-        .markOperationsEventAsTimestamp(any(), argumentCaptorTimestampDefinitionId.capture());
+    verify(opsEventTimestampDefinitionRepository, times(1))
+      .save(argumentCaptorTimestampDefinition.capture());
 
-    assertEquals(timestampDefinition.getId(), argumentCaptorTimestampDefinitionId.getValue());
+    assertEquals(timestampDefinition.getId(), argumentCaptorTimestampDefinition.getValue().getTimestampDefinitionID());
   }
 
   @Test
