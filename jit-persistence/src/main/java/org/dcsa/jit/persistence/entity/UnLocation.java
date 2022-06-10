@@ -18,20 +18,16 @@ import javax.validation.constraints.Size;
 public class UnLocation {
 
   @Id
-  @Size(max = 5)
-  @Column(name="un_location_code")
+  @Column(name="un_location_code", length = 5, columnDefinition = "bpchar") // "bpchar" here is not a typing error
   private String unLocationCode;
 
-  @Size(max = 100)
-  @Column(name="un_location_name")
+  @Column(name="un_location_name", length = 100)
   private String unLocationName;
 
-  @Size(max = 3)
-  @Column(name="location_code")
+  @Column(name="location_code", columnDefinition = "bpchar")
   private String locationCode;
 
-  @Size(max = 2)
-  @Column(name="country_code")
+  @Column(name="country_code", columnDefinition = "bpchar") // "bpchar" here is not a typing error
   private String countryCode;
 
 }
