@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
@@ -45,10 +46,11 @@ public class EventController {
       @Size(max = 5) @RequestParam(required = false) String facilitySMDGCode,
       @Size(max = 5) @RequestParam(required = false) String operationsEventTypeCode,
       @RequestParam(required = false) String sort,
-      @RequestParam(required = false) Integer limit,
+      @RequestParam(required = false, defaultValue = "100") Integer limit,
       @RequestParam(required = false) String cursor,
       @RequestParam(value = "API-Version", required = false) String apiVersion,
-      @RequestParam Map<String, String> queryParams) {
+      @RequestParam Map<String, String> queryParams,
+      HttpServletRequest request) {
 
     List<ParsedQueryParameter<OffsetDateTime>> parsedQueryParams = queryParameterParser.parseCustomQueryParameter(
       queryParams,
@@ -56,7 +58,7 @@ public class EventController {
       OffsetDateTime::parse
     );
 
-    return eventService.findAll(
+    return eventService.findAll(request,
         OperationsEventService.OperationsEventFilters.builder()
             .transportCallID(transportCallID)
             .vesselIMONumber(vesselIMONumber)
