@@ -49,10 +49,10 @@ public class Vessel {
   @Column(name = "is_dummy")
   private Boolean isDummy;
 
-  @Column(name = "length")
+  @Column(name = "length", columnDefinition = "numeric")
   private Float length;
 
-  @Column(name = "width")
+  @Column(name = "width", columnDefinition = "numeric")
   private Float width;
 
   @Column(name = "dimension_unit", length = 3)
