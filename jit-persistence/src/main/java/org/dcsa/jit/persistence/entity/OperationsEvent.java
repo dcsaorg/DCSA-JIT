@@ -1,10 +1,7 @@
 package org.dcsa.jit.persistence.entity;
 
 import lombok.*;
-import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PublisherRole;
+import org.dcsa.jit.persistence.entity.enums.*;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 
@@ -25,6 +22,7 @@ public class OperationsEvent {
   @Column(name = "event_id", nullable = false)
   private UUID id;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "event_classifier_code", length = 3, nullable = false)
   private EventClassifierCode classifierCode;
 

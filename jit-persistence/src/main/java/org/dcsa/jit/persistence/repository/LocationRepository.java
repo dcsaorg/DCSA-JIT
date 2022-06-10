@@ -7,7 +7,4 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LocationRepository extends JpaRepository<Location, String> {
-  Optional<Location> findBy(Location location);
-
-}
+public interface LocationRepository extends JpaRepository<Location, String> {}
