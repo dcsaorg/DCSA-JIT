@@ -28,11 +28,9 @@ class OperationsEventControllerTest {
   @Autowired MockMvc mockMvc;
 
   @MockBean OperationsEventService operationsEventService;
-
-  // Don't understand why these are necessary (not used in /events)
   @MockBean TimestampDefinitionService timestampDefinitionService;
-  @MockBean TimestampDefinitionRepository timestampDefinitionRepository;
 
+  @MockBean TimestampDefinitionRepository timestampDefinitionRepository;
   @MockBean TransportCallRepository transportCallRepository;
   @MockBean LocationRepository locationRepository;
   @MockBean FacilityRepository facilityRepository;
