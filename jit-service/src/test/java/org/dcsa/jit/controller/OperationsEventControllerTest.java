@@ -40,7 +40,7 @@ class OperationsEventControllerTest {
   @Test
   @DisplayName("GET operations event should return 200 for given basic valid call")
   void testGetOperationsEventReturns200ForGivenBasicCall() throws Exception {
-    when(operationsEventService.findAll(any(), any())).thenReturn(Collections.emptyList());
+    when(operationsEventService.findAll(any(), any(), any())).thenReturn(Collections.emptyList());
     this.mockMvc
         .perform(get("/events").accept(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())

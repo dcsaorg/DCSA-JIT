@@ -6,7 +6,11 @@ import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.DCSAQueryParameterParser;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
+import org.dcsa.skernel.infrastructure.pagination.Cursor;
+import org.dcsa.skernel.infrastructure.pagination.CursorDefaults;
+import org.dcsa.skernel.infrastructure.pagination.Paginator;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
@@ -31,6 +36,8 @@ public class EventController {
 
   private final DCSAQueryParameterParser queryParameterParser;
 
+  private final Paginator paginator;
+
   @Transactional
   @GetMapping(path = "/events")
   @ResponseStatus(HttpStatus.OK)
@@ -42,7 +49,8 @@ public class EventController {
       @Deprecated @Size(max = 50) @RequestParam(required = false) String carrierVoyageNumber,
       @Size(max = 50) @RequestParam(required = false) String exportVoyageNumber,
       @Size(max = 5) @RequestParam(required = false) String carrierServiceCode,
-      @Size(max = 5) @RequestParam(value = "UNLocationCode", required = false) String unLocationCode,
+      @Size(max = 5) @RequestParam(value = "UNLocationCode", required = false)
+          String unLocationCode,
       @Size(max = 5) @RequestParam(required = false) String facilitySMDGCode,
       @Size(max = 5) @RequestParam(required = false) String operationsEventTypeCode,
       @RequestParam(required = false) String sort,
@@ -50,16 +58,14 @@ public class EventController {
       @RequestParam(required = false) String cursor,
       @RequestParam(value = "API-Version", required = false) String apiVersion,
       @RequestParam Map<String, String> queryParams,
-      HttpServletRequest request) {
+      HttpServletRequest request,
+      HttpServletResponse response) {
 
-    List<ParsedQueryParameter<OffsetDateTime>> parsedQueryParams = queryParameterParser.parseCustomQueryParameter(
-      queryParams,
-      "eventCreatedDateTime",
-      OffsetDateTime::parse
-    );
+    List<ParsedQueryParameter<OffsetDateTime>> parsedQueryParams =
+        queryParameterParser.parseCustomQueryParameter(
+            queryParams, "eventCreatedDateTime", OffsetDateTime::parse);
 
-    return eventService.findAll(request,
-        OperationsEventService.OperationsEventFilters.builder()
+    return eventService.findAll(request, response, OperationsEventService.OperationsEventFilters.builder()
             .transportCallID(transportCallID)
             .vesselIMONumber(vesselIMONumber)
             .carrierVoyageNumber(carrierVoyageNumber)
