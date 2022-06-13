@@ -16,7 +16,7 @@ public class OperationsEventIT {
   }
 
   @Test
-  public void testWithoutQueryParameters() {
+  public void testOperationsEventWithoutQueryParameters() {
     given()
         .contentType(ContentType.JSON)
         .get("/v1/events")
@@ -24,11 +24,44 @@ public class OperationsEventIT {
         .assertThat()
         .statusCode(HttpStatus.SC_OK)
         .contentType(ContentType.JSON)
-        .body("size()", greaterThan(0));
+        .body("size()", greaterThan(0))
+        .body("eventCreatedDateTime", everyItem(notNullValue()))
+        .body("eventType", everyItem(notNullValue()))
+        .body("eventClassifierCode", everyItem(notNullValue()))
+        .body("eventDateTime", everyItem(notNullValue()))
+        .body("operationsEventTypeCode", everyItem(notNullValue()))
+        .body("publisher", everyItem(notNullValue()))
+        .body("publisherRole", everyItem(notNullValue()));
   }
 
   @Test
-  public void testWithTransportCallIdQueryParameter() {
+  public void testOperationsEventWithLimit1() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("limit", 1)
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("size()", equalTo(1));
+  }
+
+  @Test
+  public void testOperationsEventWithLimit5() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("limit", 5)
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("size()", equalTo(5));
+  }
+
+  @Test
+  public void testOperationsEventWithTransportCallIdQueryParameter() {
     given()
         .contentType(ContentType.JSON)
         .queryParam("transportCallID", "TC-REF-08_03-A")
@@ -39,11 +72,18 @@ public class OperationsEventIT {
         .contentType(ContentType.JSON)
         .body("size()", equalTo(1))
         .body("publisher", notNullValue())
-        .body("transportCall", notNullValue());
+        .body("publisher.name", everyItem(equalTo("Asseco Denmark")))
+        .body("publisher.taxReference1", everyItem(equalTo("CVR-25645774")))
+        .body("publisher.address", notNullValue())
+        .body("transportCall", notNullValue())
+        .body("transportCall.transportCallReference", everyItem(equalTo("TC-REF-08_03-A")))
+        .body("transportCall.UNLocationCode", everyItem(equalTo("USNYC")))
+        .body("transportCall.location", notNullValue())
+        .body("transportCall.vessel.vesselIMONumber", everyItem(equalTo("9811000")));
   }
 
   @Test
-  public void testWithUnLocationCodeQueryParameter() {
+  public void testWithUnLocationCodeQueryParameter1() {
     given()
         .contentType(ContentType.JSON)
         .queryParam("UNLocationCode", "USNYC")
@@ -54,5 +94,110 @@ public class OperationsEventIT {
         .contentType(ContentType.JSON)
         .body("size()", greaterThan(0))
         .body("transportCall.location.UNLocationCode", everyItem(equalTo("USNYC")));
+  }
+
+  @Test
+  public void testWithUnLocationCodeQueryParameter2() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("UNLocationCode", "SGSIN")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("size()", greaterThan(0))
+        .body("transportCall.location.UNLocationCode", everyItem(equalTo("SGSIN")));
+  }
+
+  @Test
+  public void testWithVeselImoNumberQueryParameter() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("vesselIMONumber", "9811000")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("size()", equalTo(2))
+        .body("transportCall.vessel.vesselIMONumber", everyItem(equalTo("9811000")));
+  }
+
+  @Test
+  public void testWithOperationsEventTypeCodeQueryParameter1() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("operationsEventTypeCode", "ARRI")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("operationsEventTypeCode", everyItem(equalTo("ARRI")));
+  }
+
+  @Test
+  public void testWithOperationsEventTypeCodeQueryParameter2() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("operationsEventTypeCode", "DEPA")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("operationsEventTypeCode", everyItem(equalTo("DEPA")));
+  }
+
+  @Test
+  public void testWithCarrierVoyageNumberQueryParameter() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("carrierVoyageNumber", "2103S")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("transportCall.exportVoyageNumber", everyItem(equalTo("2103S")));
+  }
+
+  @Test
+  public void testWithExportVoyageNumberQueryParameter() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("exportVoyageNumber", "TNT1E")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("transportCall.exportVoyageNumber", everyItem(equalTo("TNT1E")));
+  }
+
+  @Test
+  public void testWithCarrierServiceCodeQueryParameter1() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("carrierServiceCode", "TNT1")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("transportCall.carrierServiceCode", everyItem(equalTo("TNT1")));
+  }
+  @Test
+  public void testWithCarrierServiceCodeQueryParameter2() {
+    given()
+        .contentType(ContentType.JSON)
+        .queryParam("carrierServiceCode", "FE1")
+        .get("/v1/events")
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(ContentType.JSON)
+        .body("transportCall.carrierServiceCode", everyItem(equalTo("FE1")));
   }
 }

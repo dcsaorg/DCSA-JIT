@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.dcsa.jit.persistence.entity.*;
+import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
+import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
@@ -39,6 +41,7 @@ public class OperationsEventSpecification {
     return (root, query, builder) -> {
       Join<OperationsEvent, TransportCall> operationsEventTransportCallJoin = root.join("transportCall", JoinType.LEFT);
       Join<TransportCall, Voyage> transportCallExportVoyageJoin = operationsEventTransportCallJoin.join("exportVoyage", JoinType.LEFT);
+      Join<Voyage, Service> voyageServiceJoin = transportCallExportVoyageJoin.join("service", JoinType.LEFT);
       Join<TransportCall, Vessel> transportCallVesselJoin = operationsEventTransportCallJoin.join("vessel", JoinType.LEFT);
       Join<TransportCall, Location> transportCallLocationJoin = operationsEventTransportCallJoin.join("location", JoinType.LEFT);
       Join<Location, Facility> locationFacilityJoin = transportCallLocationJoin.join("facility", JoinType.LEFT);
@@ -66,7 +69,7 @@ public class OperationsEventSpecification {
       }
 
       if (null != filters.carrierServiceCode) {
-        Predicate predicate = builder.equal(operationsEventTransportCallJoin.get("carrierServiceCode"), filters.carrierServiceCode);
+        Predicate predicate = builder.equal(voyageServiceJoin.get("carrierServiceCode"), filters.carrierServiceCode);
         predicates.add(predicate);
       }
 
@@ -86,7 +89,7 @@ public class OperationsEventSpecification {
       }
 
       if (null != filters.operationsEventTypeCode) {
-        Predicate predicate = builder.equal(root.get("operationsEventTypeCode"), filters.operationsEventTypeCode);
+        Predicate predicate = builder.equal(root.get("operationsEventTypeCode"), OperationsEventTypeCode.valueOf(filters.operationsEventTypeCode));
         predicates.add(predicate);
       }
 

@@ -10,5 +10,7 @@ import org.mapstruct.Mapping;
     uses = {TransportCallMapper.class})
 public interface OperationsEventMapper {
   @Mapping(target = "eventCreatedDateTime", source = "createdDateTime")
+  @Mapping(target = "eventClassifierCode", source = "classifierCode")
+  @Mapping(target = "eventDateTime", source = "dateTime")
   OperationsEventTO toTO(OperationsEvent operationsEvent);
 }

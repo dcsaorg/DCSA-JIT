@@ -75,6 +75,7 @@ public class OperationsEventService {
             c.toPageRequest())
         .stream()
         .map(operationsEventMapper::toTO)
+        .map(operationsEventTO -> operationsEventTO.toBuilder().eventType("OPERATIONS").build())
         .toList();
   }
 }

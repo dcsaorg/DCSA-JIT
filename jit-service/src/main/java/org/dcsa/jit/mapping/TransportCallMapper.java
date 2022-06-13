@@ -17,6 +17,7 @@ public interface TransportCallMapper {
         @Mapping(target = "exportVoyageNumber", source = "exportVoyage.carrierVoyageNumber"),
         @Mapping(target = "transportCallSequenceNumber", source = "sequenceNumber"),
         @Mapping(target = "unLocationCode", source = "location.unLocationCode"),
+        @Mapping(target = "carrierServiceCode", source = "exportVoyage.service.carrierServiceCode"),
       })
   TransportCallTO toTO(TransportCall transportCall);
 }
