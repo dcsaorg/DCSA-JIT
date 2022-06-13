@@ -48,16 +48,16 @@ public class OperationsEventIT {
   }
 
   @Test
-  public void testOperationsEventWithLimit5() {
+  public void testOperationsEventWithLimit2() {
     given()
         .contentType(ContentType.JSON)
-        .queryParam("limit", 5)
+        .queryParam("limit", 2)
         .get("/v1/events")
         .then()
         .assertThat()
         .statusCode(HttpStatus.SC_OK)
         .contentType(ContentType.JSON)
-        .body("size()", equalTo(5));
+        .body("size()", equalTo(2));
   }
 
   @Test
