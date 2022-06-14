@@ -72,9 +72,6 @@ public class OperationsEventIT {
         .contentType(ContentType.JSON)
         .body("size()", equalTo(1))
         .body("publisher", notNullValue())
-        .body("publisher.name", everyItem(equalTo("Asseco Denmark")))
-        .body("publisher.taxReference1", everyItem(equalTo("CVR-25645774")))
-        .body("publisher.address", notNullValue())
         .body("transportCall", notNullValue())
         .body("transportCall.transportCallReference", everyItem(equalTo("TC-REF-08_03-A")))
         .body("transportCall.UNLocationCode", everyItem(equalTo("USNYC")))
@@ -120,7 +117,7 @@ public class OperationsEventIT {
         .assertThat()
         .statusCode(HttpStatus.SC_OK)
         .contentType(ContentType.JSON)
-        .body("size()", equalTo(2))
+        .body("size()", greaterThanOrEqualTo(2))
         .body("transportCall.vessel.vesselIMONumber", everyItem(equalTo("9811000")));
   }
 

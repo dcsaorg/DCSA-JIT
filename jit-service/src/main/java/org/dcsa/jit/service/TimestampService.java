@@ -48,7 +48,7 @@ public class TimestampService {
   private final AddressRepository addressRepository;
 
   @Transactional
-  public void create(TimestampTO timestamp, byte[] originalPayload) {
+  public void create(TimestampTO timestamp) {
     TimestampTO.TimestampTOBuilder timestampTOBuilder = timestamp.toBuilder();
     LocationTO locationTO = timestamp.eventLocation();
     if (timestamp.modeOfTransport() == null) {

@@ -19,15 +19,11 @@ import java.util.List;
 public class TimestampController {
 
   private final TimestampService timestampService;
-  private final ObjectMapper objectMapper;
 
   @PostMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public List<TimestampTO> create(@Valid @RequestBody TimestampTO timestamp) throws Exception {
-    // TODO: inverse the mapping so we store the original json payload.
-    byte[] timestampPayload = objectMapper.writeValueAsBytes(timestamp);
+  public void create(@Valid @RequestBody TimestampTO timestamp) {
     timestamp.publisher().adjustIdentifyingCodesIfNmftaIsPresent();
-    timestampService.create(timestamp, timestampPayload);
-    return Collections.emptyList();
+    timestampService.create(timestamp);
   }
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "unmapped_event_queue")
-public class UnmappedEvent implements Persistable {
+public class UnmappedEvent implements Persistable<UUID> {
   @Id
   @Column(name = "event_id", nullable = false)
   private UUID eventID;
@@ -24,12 +24,12 @@ public class UnmappedEvent implements Persistable {
   private OffsetDateTime enqueuedAtDateTime;
 
   @Override
-  public Object getId() {
-    return null;
+  public UUID getId() {
+    return eventID;
   }
 
   @Override
   public boolean isNew() {
-    return newRecord;
+    return eventID == null || newRecord;
   }
 }

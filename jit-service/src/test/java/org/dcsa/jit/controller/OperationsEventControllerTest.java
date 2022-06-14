@@ -33,10 +33,15 @@ class OperationsEventControllerTest {
 
   @MockBean TimestampDefinitionRepository timestampDefinitionRepository;
   @MockBean TransportCallRepository transportCallRepository;
+  @MockBean AddressRepository addressRepository;
+  @MockBean PartyRepository partyRepository;
   @MockBean LocationRepository locationRepository;
   @MockBean FacilityRepository facilityRepository;
   @MockBean VesselRepository vesselRepository;
   @MockBean ServiceRepository serviceRepository;
+  @MockBean OperationsEventRepository operationsEventRepository;
+  @MockBean UnLocationRepository unLocationRepository;
+  @MockBean UnmappedEventRepository unmappedEventRepository;
 
   @Test
   @DisplayName("GET operations event should return 200 for given basic valid call")
