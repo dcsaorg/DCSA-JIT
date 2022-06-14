@@ -61,8 +61,7 @@ public class OperationsEventService {
         paginator.parseRequest(
             request,
             new CursorDefaults(
-                requestFilters.limit,
-                new Cursor.SortBy(Sort.Direction.DESC, "createdDateTime")));
+                requestFilters.limit, new Cursor.SortBy(Sort.Direction.DESC, "createdDateTime")));
 
     Page<OperationsEvent> splat =
         operationsEventRepository.findAll(
@@ -82,6 +81,9 @@ public class OperationsEventService {
 
     paginator.setPageHeaders(request, response, cursor, splat.getTotalPages());
 
-    return splat.stream().map(operationsEventMapper::toTO).toList();
+    return splat.stream()
+        .map(operationsEventMapper::toTO)
+        .map(operationsEventTO -> operationsEventTO.toBuilder().eventType("OPERATIONS").build())
+        .toList();
   }
 }

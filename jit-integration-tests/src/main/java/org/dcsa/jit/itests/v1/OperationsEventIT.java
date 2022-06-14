@@ -26,7 +26,7 @@ public class OperationsEventIT {
         .contentType(ContentType.JSON)
         .body("size()", greaterThan(0))
         .body("eventCreatedDateTime", everyItem(notNullValue()))
-        .body("eventType", everyItem(notNullValue()))
+        .body("eventType", everyItem(equalTo("OPERATIONS")))
         .body("eventClassifierCode", everyItem(notNullValue()))
         .body("eventDateTime", everyItem(notNullValue()))
         .body("operationsEventTypeCode", everyItem(notNullValue()))
