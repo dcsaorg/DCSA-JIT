@@ -1,7 +1,6 @@
 package org.dcsa.jit.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
 import org.dcsa.jit.transferobjects.ResultTO;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 

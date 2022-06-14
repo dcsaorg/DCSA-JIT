@@ -11,14 +11,9 @@ import org.dcsa.jit.transferobjects.OperationsEventTO;
 import org.dcsa.jit.transferobjects.ResultTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.dcsa.skernel.infrastructure.pagination.Cursor;
-import org.dcsa.skernel.infrastructure.pagination.CursorDefaults;
-import org.dcsa.skernel.infrastructure.pagination.Paginator;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.OffsetDateTime;
 import java.util.List;
 
