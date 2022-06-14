@@ -3,6 +3,7 @@ package org.dcsa.jit.controller;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.service.TimestampDefinitionService;
+import org.dcsa.jit.transferobjects.ResultTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,9 @@ class OperationsEventControllerTest {
   @Test
   @DisplayName("GET operations event should return 200 for given basic valid call")
   void testGetOperationsEventReturns200ForGivenBasicCall() throws Exception {
-    when(operationsEventService.findAll(any(), any(), any())).thenReturn(Collections.emptyList());
+    when(operationsEventService.findAll(any(), any()))
+        .thenReturn(
+            ResultTO.builder().operationsEventTOs(Collections.emptyList()).totalPages(0).build());
     this.mockMvc
         .perform(get("/events").accept(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())
@@ -66,7 +69,8 @@ class OperationsEventControllerTest {
         .andExpect(jsonPath("$.requestUri").value("/events"))
         .andExpect(jsonPath("$.errors[0].reason").value("invalidInput"))
         .andExpect(
-            jsonPath("$.errors[0].message").value(containsString("size must be between 0 and 100")));
+            jsonPath("$.errors[0].message")
+                .value(containsString("size must be between 0 and 100")));
   }
 
   @Test
@@ -84,7 +88,8 @@ class OperationsEventControllerTest {
         .andExpect(jsonPath("$.requestUri").value("/events"))
         .andExpect(jsonPath("$.errors[0].reason").value("invalidInput"))
         .andExpect(
-            jsonPath("$.errors[0].message").value(containsString("must be a valid Vessel IMO Number")));
+            jsonPath("$.errors[0].message")
+                .value(containsString("must be a valid Vessel IMO Number")));
   }
 
   @Test
@@ -109,8 +114,7 @@ class OperationsEventControllerTest {
   @Test
   @DisplayName(
       "GET operations event should return 400 for invalid universalServiceReference request param length")
-  void testGetServiceSchedulerReturns400ForInvalidExportVoyageNumberLength()
-      throws Exception {
+  void testGetServiceSchedulerReturns400ForInvalidExportVoyageNumberLength() throws Exception {
     this.mockMvc
         .perform(
             get("/events")
@@ -182,8 +186,7 @@ class OperationsEventControllerTest {
   }
 
   @Test
-  @DisplayName(
-      "GET operations event should return 400 for invalid vesselName request param length")
+  @DisplayName("GET operations event should return 400 for invalid vesselName request param length")
   void testGetServiceSchedulerReturns400ForOperationsEventTypeCodeLength() throws Exception {
 
     this.mockMvc

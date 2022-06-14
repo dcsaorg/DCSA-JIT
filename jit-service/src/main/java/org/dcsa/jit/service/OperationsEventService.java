@@ -8,6 +8,7 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.repository.OperationsEventRepository;
 import org.dcsa.jit.persistence.repository.specification.OperationsEventSpecification;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
+import org.dcsa.jit.transferobjects.ResultTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.dcsa.skernel.infrastructure.pagination.Cursor;
 import org.dcsa.skernel.infrastructure.pagination.CursorDefaults;
@@ -32,8 +33,6 @@ public class OperationsEventService {
 
   private final OperationsEventMapper operationsEventMapper;
 
-  private final Paginator paginator;
-
   @Builder
   public static class OperationsEventFilters {
     String transportCallID;
@@ -47,20 +46,10 @@ public class OperationsEventService {
     List<ParsedQueryParameter<OffsetDateTime>> eventCreatedDateTime;
     String sort;
     Integer limit;
-    String cursor;
     String apiVersion;
   }
 
-  public List<OperationsEventTO> findAll(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      final OperationsEventFilters requestFilters) {
-
-    Cursor cursor =
-        paginator.parseRequest(
-            request,
-            new CursorDefaults(
-                requestFilters.limit, new Cursor.SortBy(Sort.Direction.DESC, "createdDateTime")));
+  public ResultTO findAll(final OperationsEventFilters requestFilters, Cursor cursor) {
 
     Page<OperationsEvent> pages =
         operationsEventRepository.findAll(
@@ -78,11 +67,12 @@ public class OperationsEventService {
                     .build()),
             cursor.toPageRequest());
 
-    paginator.setPageHeaders(request, response, cursor, pages.getTotalPages());
+    List<OperationsEventTO> result =
+        pages.stream()
+            .map(operationsEventMapper::toTO)
+            .map(operationsEventTO -> operationsEventTO.toBuilder().eventType("OPERATIONS").build())
+            .toList();
 
-    return pages.stream()
-        .map(operationsEventMapper::toTO)
-        .map(operationsEventTO -> operationsEventTO.toBuilder().eventType("OPERATIONS").build())
-        .toList();
+    return ResultTO.builder().operationsEventTOs(result).totalPages(pages.getTotalPages()).build();
   }
 }

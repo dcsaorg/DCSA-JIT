@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
+import org.dcsa.jit.transferobjects.ResultTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.DCSAQueryParameterParser;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.dcsa.skernel.infrastructure.pagination.Cursor;
@@ -65,7 +66,8 @@ public class EventController {
         queryParameterParser.parseCustomQueryParameter(
             queryParams, "eventCreatedDateTime", OffsetDateTime::parse);
 
-    return eventService.findAll(request, response, OperationsEventService.OperationsEventFilters.builder()
+    OperationsEventService.OperationsEventFilters requestFilters =
+        OperationsEventService.OperationsEventFilters.builder()
             .transportCallID(transportCallID)
             .vesselIMONumber(vesselIMONumber)
             .carrierVoyageNumber(carrierVoyageNumber)
@@ -77,8 +79,16 @@ public class EventController {
             .eventCreatedDateTime(parsedQueryParams)
             .sort(sort)
             .limit(limit)
-            .cursor(cursor)
             .apiVersion(apiVersion)
-            .build());
+            .build();
+
+    Cursor c =
+        paginator.parseRequest(
+            request,
+            new CursorDefaults(limit, new Cursor.SortBy(Sort.Direction.DESC, "createdDateTime")));
+
+    ResultTO result = eventService.findAll(requestFilters, c);
+    paginator.setPageHeaders(request, response, c, result.totalPages());
+    return result.operationsEventTOs();
   }
 }
