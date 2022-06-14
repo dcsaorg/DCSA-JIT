@@ -14,11 +14,11 @@ import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
+import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.jit.transferobjects.enums.PortCallServiceTypeCode;
-import org.dcsa.skernel.domain.persistence.entity.Address;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -85,7 +86,7 @@ public class TimestampService {
         throw ConcreteRequestErrorMessageException.invalidInput(
           "The reference implementation only includes supports SMDG codes for facilities.");
       }
-      // Ensure timestamp.facilitySMDGCode and location.facilityCode is aligned
+      // Ensure timestamp.facilitySMDGCode is set if location.facilityCode is also set
       // The errors for misaligned values are handled below.
       if (timestamp.facilitySMDGCode() == null &&
         locationTO.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
@@ -95,10 +96,7 @@ public class TimestampService {
     if (timestamp.facilitySMDGCode() != null) {
       if (locationTO == null) {
         locationTO = LocationTO.builder().build();
-
       }
-      // We need the UNLocode to resolve the facility.
-      locationTO = locationTO.toBuilder().unLocationCode(timestamp.unLocationCode()).build();
       if (locationTO.facilityCodeListProvider() != null &&
         locationTO.facilityCodeListProvider() != FacilityCodeListProvider.SMDG) {
         throw ConcreteRequestErrorMessageException.invalidInput(
@@ -112,6 +110,8 @@ public class TimestampService {
           "Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)");
       }
       locationTO = locationTO.toBuilder()
+        .unLocationCode(timestamp.unLocationCode())
+        // We need the UNLocode to resolve the facility.
         .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
         .facilityCode(timestamp.facilitySMDGCode())
         .build();
@@ -125,20 +125,11 @@ public class TimestampService {
 
     TransportCall tc = transportCallService.ensureTransportCallExists(timestamp);
 
-    Party party = partyMapper.toDao(timestamp.publisher());
-    Location location = locationMapper.toDao(timestamp.eventLocation());
-    Address partyAddress = addressRepository.save(party.getAddress());
-    Address locationAddress = addressRepository.save(location.getAddress());
-    location = locationRepository.save(location.toBuilder().id(UUID.randomUUID().toString()).address(locationAddress).build());
-    party = party.toBuilder().id(UUID.randomUUID().toString()).address(partyAddress).build();
-    party = partyRepository.save(party); // persist party entity
-
-    // TODO DDT-10xx: work around to avoid TransientPropertyValueException on vesselPosition -> Address
-    Location vesselPos = locationMapper.toDao(timestamp.vesselPosition());
-    Address vesselAddress = addressRepository.save(new Address());
-    vesselPos = vesselPos.toBuilder().address(vesselAddress).id(UUID.randomUUID().toString()).build();
-    vesselPos = locationRepository.save(vesselPos);
-
+    // Manually handle some entities because JPA cannot do it for us (might be easier if
+    // everything used UUID as PK or other IDs that JPA knows how to handle out of the box)
+    Location location = saveLocationIfNotNull(timestamp.eventLocation());
+    Location vesselPos = saveLocationIfNotNull(timestamp.vesselPosition());
+    Party party = savePublisher(timestamp.publisher());
 
 
     OperationsEvent operationsEvent =
@@ -162,6 +153,41 @@ public class TimestampService {
         .build();
 
     create(operationsEvent);
+  }
+
+  private Party savePublisher(PartyTO partyTO) {
+    // While the method does support partyTO being null, we do not advertise it as
+    // the publisher is not null according to the swagger spec.  Calling it "IfNotNull"
+    // would send mixed signals.
+    return saveIfNotNull(partyTO, pTO -> {
+      Party party = partyMapper.toDao(pTO);
+      return partyRepository.save(
+        party.toBuilder()
+          .id(UUID.randomUUID().toString())
+          .address(saveIfNotNull(party.getAddress(), addressRepository::save))
+          .build()
+      );
+    });
+
+  }
+
+  private Location saveLocationIfNotNull(LocationTO locationTO) {
+    return saveIfNotNull(locationTO, lTO -> {
+      Location l = locationMapper.toDao(lTO);
+      return locationRepository.save(
+        l.toBuilder()
+          .id(UUID.randomUUID().toString())
+          .address(saveIfNotNull(l.getAddress(), addressRepository::save))
+          .build()
+      );
+    });
+  }
+
+  private static <T, D> D saveIfNotNull(T entity, Function<T, D> saver) {
+    if (entity != null) {
+      return saver.apply(entity);
+    }
+    return null;
   }
 
   public void create(OperationsEvent operationsEvent) {
