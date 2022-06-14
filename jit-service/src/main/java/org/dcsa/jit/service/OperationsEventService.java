@@ -1,6 +1,5 @@
 package org.dcsa.jit.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
