@@ -25,6 +25,6 @@ public record OperationsEventTO(
   TransportCallTO transportCall,
   LocationTO vesselPosition
 ) {
-    @Builder // workaround for intellij issue
+    @Builder(toBuilder = true) // workaround for intellij issue
   public OperationsEventTO { }
 }
