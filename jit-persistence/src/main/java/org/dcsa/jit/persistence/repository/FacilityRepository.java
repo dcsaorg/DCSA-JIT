@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface FacilityRepository extends JpaRepository<Facility, UUID> {
-  Optional<Facility> findByUnLocationCodeAndSmdgCode(String unLocationCode, String smdgCode);
+  Optional<Facility> findByUNLocationCodeAndFacilitySMDGCode(String unLocationCode, String smdgCode);
 }

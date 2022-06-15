@@ -34,7 +34,7 @@ public class TimestampDefinitionService {
     List<TimestampDefinition> timestampDefinitionList =
         timestampDefinitionRepository
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
-                operationsEvent.getClassifierCode(),
+                operationsEvent.getEventClassifierCode(),
                 operationsEvent.getOperationsEventTypeCode(),
                 operationsEvent.getPortCallPhaseTypeCode(),
                 operationsEvent.getPortCallServiceTypeCode(),
@@ -53,7 +53,7 @@ public class TimestampDefinitionService {
     }
     OpsEventTimestampDefinition ops =
         OpsEventTimestampDefinition.builder()
-            .eventID(operationsEvent.getId())
+            .eventID(operationsEvent.getEventID())
             .timestampDefinitionID(timestampDefinitionList.get(0).getId())
             .build();
     opsEventTimestampDefinitionRepository.save(ops);

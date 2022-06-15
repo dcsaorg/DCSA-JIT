@@ -3,11 +3,11 @@ package org.dcsa.jit.controller;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
-import org.dcsa.jit.transferobjects.ResultTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.DCSAQueryParameterParser;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.dcsa.skernel.infrastructure.pagination.Cursor;
 import org.dcsa.skernel.infrastructure.pagination.CursorDefaults;
+import org.dcsa.skernel.infrastructure.pagination.PagedResult;
 import org.dcsa.skernel.infrastructure.pagination.Paginator;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 import org.springframework.data.domain.Sort;
@@ -83,10 +83,10 @@ public class EventController {
     Cursor c =
         paginator.parseRequest(
             request,
-            new CursorDefaults(limit, new Cursor.SortBy(Sort.Direction.DESC, "createdDateTime")));
+            new CursorDefaults(limit, new Cursor.SortBy(Sort.Direction.DESC, "eventCreatedDateTime")));
 
-    ResultTO result = eventService.findAll(requestFilters, c);
-    paginator.setPageHeaders(request, response, c, result.totalPages());
-    return result.operationsEventTOs();
+    PagedResult<OperationsEventTO> result = eventService.findAll(requestFilters, c);
+    paginator.setPageHeaders(request, response, c, result);
+    return result.content();
   }
 }

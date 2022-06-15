@@ -16,7 +16,7 @@ public record TransportCallTO(
   @Size(max = 50) String exportVoyageNumber,
   @Size(max = 50) String importVoyageNumber,
   Integer transportCallSequenceNumber,
-  @Size(max = 5) @JsonProperty("UNLocationCode") String unLocationCode,
+  @Size(max = 5) String UNLocationCode,
   @Size(max = 6) String facilityCode,
   FacilityCodeListProvider facilityCodeListProvider,
   FacilityTypeCode facilityTypeCode,

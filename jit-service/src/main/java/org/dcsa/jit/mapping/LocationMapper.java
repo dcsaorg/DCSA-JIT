@@ -7,12 +7,9 @@ import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AddressMapper.class)
 public interface LocationMapper {
   Location toDao(LocationTO locationTO);
-  @Mapping(
-    source = "location.unLocationCode",
-    target = "unLocationCode"
-  )
+  @Mapping(source = "location.UNLocationCode", target = "UNLocationCode")
   LocationTO locationToDTO(Location location, Address address, Facility facility);
 }

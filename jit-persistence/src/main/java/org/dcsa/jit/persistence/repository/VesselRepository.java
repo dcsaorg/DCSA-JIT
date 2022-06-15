@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface VesselRepository extends JpaRepository<Vessel, UUID> {
   // TODO when valid_until is implemented use custom query to only look up validUntil == null
-  Optional<Vessel> findByImoNumber(String imoNumber);
+  Optional<Vessel> findByVesselIMONumber(String imoNumber);
 }

@@ -49,12 +49,12 @@ public class OperationsEventSpecification {
       List<Predicate> predicates = new ArrayList<>();
 
       if (null != filters.transportCallID) {
-        Predicate predicate = builder.equal(operationsEventTransportCallJoin.get("reference"), filters.transportCallID);
+        Predicate predicate = builder.equal(operationsEventTransportCallJoin.get("transportCallReference"), filters.transportCallID);
         predicates.add(predicate);
       }
 
       if (null != filters.vesselIMONumber) {
-        Predicate predicate = builder.equal(transportCallVesselJoin.get("imoNumber"), filters.vesselIMONumber);
+        Predicate predicate = builder.equal(transportCallVesselJoin.get("vesselIMONumber"), filters.vesselIMONumber);
         predicates.add(predicate);
       }
 
@@ -74,7 +74,7 @@ public class OperationsEventSpecification {
       }
 
       if (null != filters.unLocationCode) {
-        Predicate predicate = builder.equal(transportCallLocationJoin.get("unLocationCode"), filters.unLocationCode);
+        Predicate predicate = builder.equal(transportCallLocationJoin.get("UNLocationCode"), filters.unLocationCode);
         predicates.add(predicate);
       }
 
@@ -96,11 +96,11 @@ public class OperationsEventSpecification {
       if (null != filters.eventCreatedDateTime && !filters.eventCreatedDateTime.isEmpty()) {
         for (ParsedQueryParameter<OffsetDateTime> param : filters.eventCreatedDateTime) {
           Predicate predicate = switch (param.comparisonType()) {
-            case EQ -> builder.equal(root.get("createdDateTime"), param.value());
-            case LT -> builder.lessThan(root.get("createdDateTime"), param.value());
-            case LTE -> builder.lessThanOrEqualTo(root.get("createdDateTime"), param.value());
-            case GT -> builder.greaterThan(root.get("createdDateTime"), param.value());
-            case GTE -> builder.greaterThanOrEqualTo(root.get("createdDateTime"), param.value());
+            case EQ -> builder.equal(root.get("eventCreatedDateTime"), param.value());
+            case LT -> builder.lessThan(root.get("eventCreatedDateTime"), param.value());
+            case LTE -> builder.lessThanOrEqualTo(root.get("eventCreatedDateTime"), param.value());
+            case GT -> builder.greaterThan(root.get("eventCreatedDateTime"), param.value());
+            case GTE -> builder.greaterThanOrEqualTo(root.get("eventCreatedDateTime"), param.value());
           };
           predicates.add(predicate);
         }

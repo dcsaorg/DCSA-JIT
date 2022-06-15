@@ -7,9 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface VesselMapper {
-  @Mapping(target = "vesselIMONumber", source = "imoNumber")
-  @Mapping(target = "vesselName", source = "name")
-  @Mapping(target = "vesselFlag", source = "flag")
-  @Mapping(target = "vesselCallSignNumber", source = "callSign")
+  // FIXME @Mapping(target = "vesselOperatorCarrierCode", source = "vesselOperatorCarrier.") // smdgCode or nmftaCode
   VesselTO toTo(Vessel vessel);
 }

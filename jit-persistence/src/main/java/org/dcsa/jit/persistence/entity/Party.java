@@ -24,7 +24,7 @@ public class Party {
   private String id;
 
   @Column(name = "party_name", length = 100)
-  private String name;
+  private String partyName;
 
   @Column(name = "tax_reference_1", length = 20)
   private String taxReference1;

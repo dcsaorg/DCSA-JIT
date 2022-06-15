@@ -38,10 +38,10 @@ public class TransportCall {
   private UUID id;
 
   @Column(name = "transport_call_reference", length = 100, nullable = false)
-  private String reference;
+  private String transportCallReference;
 
   @Column(name = "transport_call_sequence_number")
-  private Integer sequenceNumber;
+  private Integer transportCallSequenceNumber;
 
   @Deprecated
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
