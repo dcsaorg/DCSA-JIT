@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(
     componentModel = "spring",
-    uses = {TransportCallMapper.class})
+    uses = {TransportCallMapper.class, PartyMapper.class})
 public interface OperationsEventMapper {
   @Mapping(target = "eventCreatedDateTime", source = "createdDateTime")
   @Mapping(target = "eventClassifierCode", source = "classifierCode")
