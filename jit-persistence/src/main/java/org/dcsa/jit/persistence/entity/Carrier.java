@@ -28,7 +28,7 @@ public class Carrier {
   private UUID id;
 
   @Column(name = "carrier_name", length = 100)
-  private String name;
+  private String carrierName;
 
   @Column(name = "smdg_code", length = 3)
   private String smdgCode;

@@ -3,7 +3,7 @@ package org.dcsa.jit.controller;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.service.TimestampDefinitionService;
-import org.dcsa.jit.transferobjects.ResultTO;
+import org.dcsa.skernel.infrastructure.pagination.PagedResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ class OperationsEventControllerTest {
   void testGetOperationsEventReturns200ForGivenBasicCall() throws Exception {
     when(operationsEventService.findAll(any(), any()))
         .thenReturn(
-            ResultTO.builder().operationsEventTOs(Collections.emptyList()).totalPages(0).build());
+            new PagedResult<>(0, Collections.emptyList()));
     this.mockMvc
         .perform(get("/events").accept(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())

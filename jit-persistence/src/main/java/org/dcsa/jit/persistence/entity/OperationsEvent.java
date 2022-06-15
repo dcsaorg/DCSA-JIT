@@ -20,17 +20,17 @@ public class OperationsEvent {
   @Id
   @GeneratedValue
   @Column(name = "event_id", nullable = false)
-  private UUID id;
+  private UUID eventID;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "event_classifier_code", length = 3, nullable = false)
-  private EventClassifierCode classifierCode;
+  private EventClassifierCode eventClassifierCode;
 
   @Column(name = "event_created_date_time", nullable = false)
-  private OffsetDateTime createdDateTime;
+  private OffsetDateTime eventCreatedDateTime;
 
   @Column(name = "event_date_time", nullable = false)
-  private OffsetDateTime dateTime;
+  private OffsetDateTime eventDateTime;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "publisher", nullable = false)
@@ -46,7 +46,7 @@ public class OperationsEvent {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "event_location")
-  private Location location;
+  private Location eventLocation;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "transport_call_id", nullable = false)

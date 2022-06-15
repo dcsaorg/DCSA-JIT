@@ -8,9 +8,9 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.repository.OperationsEventRepository;
 import org.dcsa.jit.persistence.repository.specification.OperationsEventSpecification;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
-import org.dcsa.jit.transferobjects.ResultTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.dcsa.skernel.infrastructure.pagination.Cursor;
+import org.dcsa.skernel.infrastructure.pagination.PagedResult;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +44,9 @@ public class OperationsEventService {
     String apiVersion;
   }
 
-  public ResultTO findAll(final OperationsEventFilters requestFilters, Cursor cursor) {
+  public PagedResult<OperationsEventTO> findAll(final OperationsEventFilters requestFilters, Cursor cursor) {
 
-    Page<OperationsEvent> pages =
+    return new PagedResult<>(
         operationsEventRepository.findAll(
             withFilters(
                 OperationsEventSpecification.OperationsEventFilters.builder()
@@ -60,14 +60,12 @@ public class OperationsEventService {
                     .operationsEventTypeCode(requestFilters.operationsEventTypeCode)
                     .eventCreatedDateTime(requestFilters.eventCreatedDateTime)
                     .build()),
-            cursor.toPageRequest());
+            cursor.toPageRequest()),
+        this::mapOperationsEvent);
+  }
 
-    List<OperationsEventTO> result =
-        pages.stream()
-            .map(operationsEventMapper::toTO)
-            .map(operationsEventTO -> operationsEventTO.toBuilder().eventType("OPERATIONS").build())
-            .toList();
-
-    return ResultTO.builder().operationsEventTOs(result).totalPages(pages.getTotalPages()).build();
+  private OperationsEventTO mapOperationsEvent(OperationsEvent event) {
+    return operationsEventMapper.toTO(event)
+      .toBuilder().eventType("OPERATIONS").build();
   }
 }

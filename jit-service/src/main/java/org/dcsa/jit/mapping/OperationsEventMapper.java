@@ -13,8 +13,5 @@ import org.mapstruct.Mapping;
       AddressMapper.class
     })
 public interface OperationsEventMapper {
-  @Mapping(target = "eventCreatedDateTime", source = "createdDateTime")
-  @Mapping(target = "eventClassifierCode", source = "classifierCode")
-  @Mapping(target = "eventDateTime", source = "dateTime")
   OperationsEventTO toTO(OperationsEvent operationsEvent);
 }

@@ -65,8 +65,8 @@ public class TimestampService {
     }
 
     if (locationTO != null) {
-      if (locationTO.unLocationCode() != null &&
-        !locationTO.unLocationCode().equals(timestamp.unLocationCode())) {
+      if (locationTO.UNLocationCode() != null &&
+        !locationTO.UNLocationCode().equals(timestamp.UNLocationCode())) {
         throw ConcreteRequestErrorMessageException.invalidInput(
           "Conflicting UNLocationCode between the timestamp and the event location");
       }
@@ -110,7 +110,7 @@ public class TimestampService {
           "Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)");
       }
       locationTO = locationTO.toBuilder()
-        .unLocationCode(timestamp.unLocationCode())
+        .UNLocationCode(timestamp.UNLocationCode())
         // We need the UNLocode to resolve the facility.
         .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
         .facilityCode(timestamp.facilitySMDGCode())
@@ -120,8 +120,8 @@ public class TimestampService {
 
     timestamp = timestampTOBuilder.build();
 
-    this.ensureValidUnLocationCode(Objects.requireNonNull(timestamp.eventLocation()).unLocationCode());
-    this.ensureValidUnLocationCode(timestamp.unLocationCode());
+    this.ensureValidUnLocationCode(Objects.requireNonNull(timestamp.eventLocation()).UNLocationCode());
+    this.ensureValidUnLocationCode(timestamp.UNLocationCode());
 
     TransportCall tc = transportCallService.ensureTransportCallExists(timestamp);
 
@@ -134,9 +134,9 @@ public class TimestampService {
 
     OperationsEvent operationsEvent =
       OperationsEvent.builder()
-        .createdDateTime(timestamp.eventDateTime())
-        .classifierCode(enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
-        .dateTime(timestamp.eventDateTime())
+        .eventCreatedDateTime(timestamp.eventDateTime())
+        .eventClassifierCode(enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
+        .eventDateTime(timestamp.eventDateTime())
         .operationsEventTypeCode(
           enumMappers.operationsEventTypeCodeFromDao(timestamp.operationsEventTypeCode()))
         .portCallPhaseTypeCode(
@@ -146,7 +146,7 @@ public class TimestampService {
         .publisherRole(enumMappers.publisherRoleToDao(timestamp.publisherRole()))
         .facilityTypeCode(enumMappers.facilityTypeCodeToDao(timestamp.facilityTypeCode()))
         .remark(timestamp.remark())
-        .location(location)
+        .eventLocation(location)
         .vesselPosition(vesselPos)
         .publisher(party)
         .transportCall(tc)
@@ -207,8 +207,8 @@ public class TimestampService {
 
     UnmappedEvent unmappedEvent =
       UnmappedEvent.builder()
-        .eventID(operationsEvent.getId())
-        .enqueuedAtDateTime(operationsEvent.getDateTime())
+        .eventID(operationsEvent.getEventID())
+        .enqueuedAtDateTime(operationsEvent.getEventDateTime())
         .newRecord(true)
         .build();
     unmappedEventRepository.save(unmappedEvent);
@@ -233,14 +233,14 @@ public class TimestampService {
       switch (oe.getFacilityTypeCode()) {
         case BRTH -> {
           if (oe.getOperationsEventTypeCode() == OperationsEventTypeCode.ARRI) {
-            if (oe.getClassifierCode() == EventClassifierCode.ACT) {
+            if (oe.getEventClassifierCode() == EventClassifierCode.ACT) {
               oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.ALGS);
             } else {
               oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.INBD);
             }
           }
           if (oe.getOperationsEventTypeCode() == OperationsEventTypeCode.DEPA) {
-            if (oe.getClassifierCode() == EventClassifierCode.ACT) {
+            if (oe.getEventClassifierCode() == EventClassifierCode.ACT) {
               oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.OUTB);
             } else {
               oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.ALGS);

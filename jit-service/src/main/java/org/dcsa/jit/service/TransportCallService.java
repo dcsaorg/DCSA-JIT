@@ -49,7 +49,7 @@ public class TransportCallService {
 
   private Optional<TransportCall> findTransportCall(TimestampTO timestampTO) {
     List<TransportCall> transportCalls = transportCallRepository.findAllTransportCall(
-      timestampTO.unLocationCode(),
+      timestampTO.UNLocationCode(),
       timestampTO.facilitySMDGCode(),
       timestampTO.modeOfTransport().name(),
       timestampTO.vesselIMONumber(),
@@ -88,7 +88,7 @@ public class TransportCallService {
     Location location = locationRepository.save(
       Location.builder()
         .id(UUID.randomUUID().toString())
-        .unLocationCode(timestampTO.unLocationCode())
+        .UNLocationCode(timestampTO.UNLocationCode())
         .facility(findFacility(timestampTO))
         .build()
     );
@@ -99,8 +99,8 @@ public class TransportCallService {
     );
 
     TransportCall entityToSave = TransportCall.builder()
-      .reference(UUID.randomUUID().toString())
-      .sequenceNumber(Objects.requireNonNullElse(timestampTO.transportCallSequenceNumber(), 1))
+      .transportCallReference(UUID.randomUUID().toString())
+      .transportCallSequenceNumber(Objects.requireNonNullElse(timestampTO.transportCallSequenceNumber(), 1))
       .facility(null) // Go through location to find facility
       .facilityTypeCode(enumMappers.facilityTypeCodeToDao(timestampTO.facilityTypeCode()))
       .location(location)
@@ -116,16 +116,16 @@ public class TransportCallService {
 
   private Facility findFacility(TimestampTO timestampTO) {
     if (timestampTO.facilitySMDGCode() != null) {
-      return facilityRepository.findByUnLocationCodeAndSmdgCode(timestampTO.unLocationCode(), timestampTO.facilitySMDGCode()).orElse(null);
+      return facilityRepository.findByUNLocationCodeAndFacilitySMDGCode(timestampTO.UNLocationCode(), timestampTO.facilitySMDGCode()).orElse(null);
     }
     return null;
   }
 
   private Vessel ensureVesselExists(String imoNumber) {
-    return vesselRepository.findByImoNumber(imoNumber)
+    return vesselRepository.findByVesselIMONumber(imoNumber)
       .orElseGet(() -> vesselRepository.save(
         Vessel.builder()
-          .imoNumber(imoNumber)
+          .vesselIMONumber(imoNumber)
           .isDummy(false)
           .build()
       ));

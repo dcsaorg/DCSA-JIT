@@ -31,20 +31,20 @@ public class Vessel {
   private UUID id;
 
   @Column(name = "vessel_imo_number", length = 7, unique = true)
-  private String imoNumber;
+  private String vesselIMONumber;
 
   @Column(name = "vessel_name", length = 35)
-  private String name;
+  private String vesselName;
 
   @Column(name = "vessel_flag", length = 2, columnDefinition = "bpchar") // "bpchar" here is not a typing error)
-  private String flag;
+  private String vesselFlag;
 
   @Column(name = "vessel_call_sign", length = 18)
-  private String callSign;
+  private String vesselCallSignNumber;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "vessel_operator_carrier_id")
-  private Carrier operatorCarrier;
+  private Carrier vesselOperatorCarrier;
 
   @Column(name = "is_dummy")
   private Boolean isDummy;
