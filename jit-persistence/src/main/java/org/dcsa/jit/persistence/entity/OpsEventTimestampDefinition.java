@@ -13,10 +13,20 @@ import java.util.UUID;
 @Entity
 @Table(name = "ops_event_timestamp_definition")
 public class OpsEventTimestampDefinition {
+
   @Id
-  @Column(name = "event_id", nullable = false)
   private UUID eventID;
 
-  @Column(name = "timestamp_definition", nullable = false)
-  private String timestampDefinitionID;
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "event_id", nullable = false)
+  @MapsId
+  OperationsEvent operationsEvent;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "timestamp_definition", nullable = false)
+  TimestampDefinition timestampDefinition;
+
+  // Declare it so there are no surprises, but we do not need it.
+  @Column(name = "payload_id")
+  private UUID payloadID;
 }

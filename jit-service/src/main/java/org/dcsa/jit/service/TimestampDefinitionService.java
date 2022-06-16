@@ -54,7 +54,8 @@ public class TimestampDefinitionService {
     OpsEventTimestampDefinition ops =
         OpsEventTimestampDefinition.builder()
             .eventID(operationsEvent.getEventID())
-            .timestampDefinitionID(timestampDefinitionList.get(0).getId())
+            .operationsEvent(operationsEvent)
+            .timestampDefinition(timestampDefinitionList.get(0))
             .build();
     opsEventTimestampDefinitionRepository.save(ops);
   }
