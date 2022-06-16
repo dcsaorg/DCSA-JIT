@@ -13,7 +13,10 @@ import java.util.UUID;
 @Entity
 @Table(name = "ops_event_timestamp_definition")
 public class OpsEventTimestampDefinition {
+
   @Id
+  private UUID eventID;
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "event_id", nullable = false)
   @MapsId
