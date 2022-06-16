@@ -8,5 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface VesselMapper {
   // FIXME @Mapping(target = "vesselOperatorCarrierCode", source = "vesselOperatorCarrier.") // smdgCode or nmftaCode
-  VesselTO toTo(Vessel vessel);
+  VesselTO toTO(Vessel vessel);
+
+  @Mapping(target = "isDummy", source = "isDummy", defaultValue = "false")
+  Vessel toEntity(VesselTO vesselTO);
 }
