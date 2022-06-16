@@ -1,24 +1,12 @@
 package org.dcsa.jit.persistence.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter(AccessLevel.PRIVATE)
@@ -36,7 +24,10 @@ public class Vessel {
   @Column(name = "vessel_name", length = 35)
   private String vesselName;
 
-  @Column(name = "vessel_flag", length = 2, columnDefinition = "bpchar") // "bpchar" here is not a typing error)
+  @Column(
+      name = "vessel_flag",
+      length = 2,
+      columnDefinition = "bpchar") // "bpchar" here is not a typing error)
   private String vesselFlag;
 
   @Column(name = "vessel_call_sign", length = 18)

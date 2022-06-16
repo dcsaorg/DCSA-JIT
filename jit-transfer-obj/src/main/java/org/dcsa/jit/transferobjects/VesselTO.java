@@ -13,7 +13,11 @@ public record VesselTO(
   @Size(max = 2) String vesselFlag,
   @Size(max = 10) String vesselCallSignNumber,
   @Size(max = 10) String vesselOperatorCarrierCode,
-  CarrierCodeListProvider vesselOperatorCarrierCodeListProvider
+  CarrierCodeListProvider vesselOperatorCarrierCodeListProvider,
+  Boolean isDummy,
+  Float length,
+  Float width,
+  @Size(max = 3) String dimensionUnit
   ){
   @Builder(toBuilder = true) // workaround for intellij issue
   public VesselTO {}
