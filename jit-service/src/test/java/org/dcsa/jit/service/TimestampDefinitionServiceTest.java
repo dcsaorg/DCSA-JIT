@@ -71,7 +71,7 @@ public class TimestampDefinitionServiceTest {
     verify(opsEventTimestampDefinitionRepository, times(1))
       .save(argumentCaptorTimestampDefinition.capture());
 
-    assertEquals(timestampDefinition.getId(), argumentCaptorTimestampDefinition.getValue().getTimestampDefinitionID());
+    assertEquals(timestampDefinition.getId(), argumentCaptorTimestampDefinition.getValue().getTimestampDefinition().getId());
   }
 
   @Test
