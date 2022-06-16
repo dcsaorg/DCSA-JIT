@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +19,13 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "vessel")
-public class Vessel {
+public class Vessel implements Persistable<UUID> {
   @Id
   @GeneratedValue
   @Column(name = "id", nullable = false)
@@ -57,4 +58,9 @@ public class Vessel {
 
   @Column(name = "dimension_unit", length = 3)
   private String dimensionUnit;
+
+  @Override
+  public boolean isNew() {
+    return this.id == null;
+  }
 }

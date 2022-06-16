@@ -10,6 +10,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = AddressMapper.class)
 public interface LocationMapper {
   Location toDao(LocationTO locationTO);
-  @Mapping(source = "location.UNLocationCode", target = "UNLocationCode")
+  @Mapping(source = "location.unLocationCode", target = "UNLocationCode")
   LocationTO locationToDTO(Location location, Address address, Facility facility);
 }
