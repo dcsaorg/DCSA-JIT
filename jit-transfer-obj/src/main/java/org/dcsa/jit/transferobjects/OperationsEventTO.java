@@ -17,6 +17,7 @@ public record OperationsEventTO(
   @NotNull OperationsEventTypeCode operationsEventTypeCode,
   @NotNull PartyTO publisher,
   @NotNull PublisherRole publisherRole,
+  FacilityTypeCode facilityTypeCode,
   LocationTO eventLocation,
   PortCallServiceTypeCode portCallServiceTypeCode,
   PortCallPhaseTypeCode portCallPhaseTypeCode,

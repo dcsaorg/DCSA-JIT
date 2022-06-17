@@ -1,6 +1,7 @@
 package org.dcsa.jit.persistence.entity;
 
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ops_event_timestamp_definition")
-public class OpsEventTimestampDefinition {
+public class OpsEventTimestampDefinition implements Persistable<UUID> {
 
   @Id
   private UUID eventID;
@@ -29,4 +30,16 @@ public class OpsEventTimestampDefinition {
   // Declare it so there are no surprises, but we do not need it.
   @Column(name = "payload_id")
   private UUID payloadID;
+
+  private transient boolean newRecord;
+
+  @Override
+  public UUID getId() {
+    return this.eventID;
+  }
+
+  @Override
+  public boolean isNew() {
+    return this.newRecord || this.getId() == null;
+  }
 }
