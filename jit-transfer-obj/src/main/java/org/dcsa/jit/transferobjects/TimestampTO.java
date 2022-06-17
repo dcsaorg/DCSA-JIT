@@ -14,7 +14,7 @@ public record TimestampTO(
   @NotNull PublisherRole publisherRole,
   @NotNull @ValidVesselIMONumber String vesselIMONumber,
   @NotNull @Size(max = 5) String UNLocationCode,
-  String facilitySMDGCode,
+  @Size(max = 6) String facilitySMDGCode,
   FacilityTypeCode facilityTypeCode,
   EventClassifierCode eventClassifierCode,
   OperationsEventTypeCode operationsEventTypeCode,
