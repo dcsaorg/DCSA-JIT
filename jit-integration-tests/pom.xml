@@ -48,6 +48,14 @@
 			<groupId>io.rest-assured</groupId>
 			<artifactId>json-schema-validator</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dcsa.jit</groupId>
+			<artifactId>dcsa-jit-transfer-obj</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
