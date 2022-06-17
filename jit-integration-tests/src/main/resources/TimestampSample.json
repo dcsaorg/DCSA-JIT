@@ -9,14 +9,14 @@
       "street": "Kronprincessegade",
       "streetNumber": "54",
       "floor": "5. sal",
-      "postCode": "1306",
+      "postalCode": "1306",
       "city": "København",
       "stateRegion": "N/A",
       "country": "Denmark"
     },
     "identifyingCodes": [
       {
-        "codeListResponsibleAgencyCode": "306",
+        "DCSAResponsibleAgencyCode": "SMDG",
         "partyCode": "MSK"
       }
     ],
@@ -39,7 +39,7 @@
       "street": "Kronprincessegade",
       "streetNumber": "54",
       "floor": "5. sal",
-      "postCode": "1306",
+      "postalCode": "1306",
       "city": "København",
       "stateRegion": "N/A",
       "country": "Denmark"
@@ -52,7 +52,8 @@
   "modeOfTransport": "VESSEL",
   "portCallServiceTypeCode": null,
   "eventDateTime": "2019-11-12T07:41:00+08:30",
-  "carrierVoyageNumber": "2103S",
+  "exportVoyageNumber": "2103S",
+  "importVoyageNumber": "2103S",
   "carrierServiceCode": "FE1",
   "transportCallSequenceNumber": 2,
   "remark": "Port closed due to strike",
