@@ -56,6 +56,7 @@ public class TimestampDefinitionService {
             .eventID(operationsEvent.getEventID())
             .operationsEvent(operationsEvent)
             .timestampDefinition(timestampDefinitionList.get(0))
+            .newRecord(true)
             .build();
     opsEventTimestampDefinitionRepository.save(ops);
   }
