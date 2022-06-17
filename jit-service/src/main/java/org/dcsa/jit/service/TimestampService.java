@@ -51,6 +51,7 @@ public class TimestampService {
   public void create(TimestampTO timestamp) {
     TimestampTO.TimestampTOBuilder timestampTOBuilder = timestamp.toBuilder();
     LocationTO locationTO = timestamp.eventLocation();
+    String facilitySMDGCode = timestamp.facilitySMDGCode();
     if (timestamp.modeOfTransport() == null) {
       // JIT IFS says that Mode Of Transport must be omitted for some timestamps and must be VESSEL
       // for others.
@@ -58,8 +59,7 @@ public class TimestampService {
       // rely on it
       // in general either way.
       timestampTOBuilder = timestampTOBuilder.modeOfTransport(ModeOfTransport.VESSEL);
-    }
-    if (!timestamp.modeOfTransport().equals(ModeOfTransport.VESSEL)) {
+    } else if (!timestamp.modeOfTransport().equals(ModeOfTransport.VESSEL)){
       throw ConcreteRequestErrorMessageException.invalidInput(
         "modeOfTransport must be blank or \"VESSEL\"");
     }
@@ -91,9 +91,10 @@ public class TimestampService {
       if (timestamp.facilitySMDGCode() == null &&
         locationTO.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
         timestampTOBuilder = timestampTOBuilder.facilitySMDGCode(locationTO.facilityCode());
+        facilitySMDGCode = locationTO.facilityCode();
       }
     }
-    if (timestamp.facilitySMDGCode() != null) {
+    if (facilitySMDGCode != null) {
       if (locationTO == null) {
         locationTO = LocationTO.builder().build();
       }
@@ -105,7 +106,7 @@ public class TimestampService {
             ")");
       }
       if (locationTO.facilityCode() != null &&
-        !locationTO.facilityCode().equals(timestamp.facilitySMDGCode())) {
+        !locationTO.facilityCode().equals(facilitySMDGCode)) {
         throw ConcreteRequestErrorMessageException.invalidInput(
           "Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)");
       }
@@ -113,14 +114,13 @@ public class TimestampService {
         .UNLocationCode(timestamp.UNLocationCode())
         // We need the UNLocode to resolve the facility.
         .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
-        .facilityCode(timestamp.facilitySMDGCode())
+        .facilityCode(facilitySMDGCode)
         .build();
-      timestampTOBuilder = timestampTOBuilder.eventLocation(locationTO);
     }
-
+    timestampTOBuilder = timestampTOBuilder.eventLocation(locationTO);
     timestamp = timestampTOBuilder.build();
 
-    this.ensureValidUnLocationCode(Objects.requireNonNull(timestamp.eventLocation()).UNLocationCode());
+    this.ensureValidUnLocationCode((timestamp.eventLocation()) == null? null: timestamp.eventLocation().UNLocationCode());
     this.ensureValidUnLocationCode(timestamp.UNLocationCode());
 
     TransportCall tc = transportCallService.ensureTransportCallExists(timestamp);
