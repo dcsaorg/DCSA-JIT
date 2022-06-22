@@ -7,8 +7,8 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import static org.dcsa.jit.transferobjects.enums.EventClassifierCode.*;
-import static org.dcsa.jit.transferobjects.enums.FacilityTypeCode.BRTH;
 import static org.dcsa.jit.transferobjects.enums.PortCallPhaseTypeCode.*;
+import static org.dcsa.jit.transferobjects.enums.FacilityTypeCodeOPR.BRTH;
 
 @AllArgsConstructor
 @Getter
@@ -28,7 +28,7 @@ public enum PortCallServiceTypeCode {
 
   private final String name;
   @Getter
-  private final FacilityTypeCode expectedFacilityTypeCode;
+  private final FacilityTypeCodeOPR expectedFacilityTypeCode;
   @Getter
   private final Set<EventClassifierCode> validEventClassifiers;
   @Getter

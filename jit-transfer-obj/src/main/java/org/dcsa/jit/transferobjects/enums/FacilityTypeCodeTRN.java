@@ -1,6 +1,6 @@
 package org.dcsa.jit.transferobjects.enums;
 
-public enum FacilityTypeCode {
+public enum FacilityTypeCodeTRN {
   BOCR,
   CLOC,
   COFS,
@@ -9,6 +9,5 @@ public enum FacilityTypeCode {
   DEPO,
   INTE,
   POTE,
-  PBPL,
-  BRTH,
+  RAMP,
 }

@@ -144,7 +144,7 @@ public class TimestampService {
         .portCallServiceTypeCode(
           enumMappers.portCallServiceTypeCodeToDao(timestamp.portCallServiceTypeCode()))
         .publisherRole(enumMappers.publisherRoleToDao(timestamp.publisherRole()))
-        .facilityTypeCode(enumMappers.facilityTypeCodeToDao(timestamp.facilityTypeCode()))
+        .facilityTypeCode(enumMappers.facilityTypeCodeOPRToDao(timestamp.facilityTypeCode()))
         .remark(timestamp.remark())
         .eventLocation(location)
         .vesselPosition(vesselPos)

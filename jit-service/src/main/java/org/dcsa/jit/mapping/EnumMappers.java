@@ -8,25 +8,33 @@ import org.mapstruct.Mapper;
 public interface EnumMappers {
   DCSATransportType modeOfTransportToDao(ModeOfTransport mode);
 
-  org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode facilityTypeCodeToDao(
-      FacilityTypeCode code);
-    org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode operationsEventTypeCodeFromDao(OperationsEventTypeCode code);
+  org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeOPR facilityTypeCodeOPRToDao(
+      FacilityTypeCodeOPR code);
 
-  PortCallPhaseTypeCode portCallPhaseTypeCodeCodeFromDao(org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode code);
+  org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN facilityTypeCodeToDao(
+      FacilityTypeCodeTRN code);
 
-  org.dcsa.skernel.domain.persistence.entity.enums.FacilityCodeListProvider facilityCodeListProviderToDao(
-    FacilityCodeListProvider code);
+  org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode operationsEventTypeCodeFromDao(
+      OperationsEventTypeCode code);
 
-  org.dcsa.jit.persistence.entity.enums.EventClassifierCode eventClassifierCodetoDao(EventClassifierCode eventClassifierCode);
+  PortCallPhaseTypeCode portCallPhaseTypeCodeCodeFromDao(
+      org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode code);
 
-  org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode portCallPhaseTypeCodeCodetoDao(PortCallPhaseTypeCode portCallServiceTypeCode);
+  org.dcsa.skernel.domain.persistence.entity.enums.FacilityCodeListProvider
+      facilityCodeListProviderToDao(FacilityCodeListProvider code);
+
+  org.dcsa.jit.persistence.entity.enums.EventClassifierCode eventClassifierCodetoDao(
+      EventClassifierCode eventClassifierCode);
+
+  org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode portCallPhaseTypeCodeCodetoDao(
+      PortCallPhaseTypeCode portCallServiceTypeCode);
 
   PortCallServiceTypeCode portCallServiceTypeCodeFromDao(
       org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode portCallServiceTypeCode);
 
   org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode portCallServiceTypeCodeToDao(
-    PortCallServiceTypeCode portCallServiceTypeCode);
+      PortCallServiceTypeCode portCallServiceTypeCode);
 
   org.dcsa.jit.persistence.entity.enums.PublisherRole publisherRoleToDao(
-    PublisherRole publisherRole);
+      PublisherRole publisherRole);
 }

@@ -3,7 +3,6 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.*;
 import org.dcsa.skernel.domain.persistence.entity.Location;
-import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -73,6 +72,6 @@ public class OperationsEvent {
 
   @Column(name = "facility_type_code")
   @Enumerated(EnumType.STRING)
-  private FacilityTypeCode facilityTypeCode;
+  private FacilityTypeCodeOPR facilityTypeCode;
 
 }

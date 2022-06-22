@@ -6,6 +6,7 @@ import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.Vessel;
 import org.dcsa.jit.persistence.entity.Voyage;
+import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
@@ -101,8 +102,8 @@ public class TransportCallService {
     TransportCall entityToSave = TransportCall.builder()
       .transportCallReference(UUID.randomUUID().toString())
       .transportCallSequenceNumber(Objects.requireNonNullElse(timestampTO.transportCallSequenceNumber(), 1))
-      .facility(null) // Go through location to find facility
-      .facilityTypeCode(enumMappers.facilityTypeCodeToDao(timestampTO.facilityTypeCode()))
+      .facility(null) // Go through location to find facility,
+      .facilityTypeCode(FacilityTypeCodeTRN.POTE) // TODO: this is set as default for now.
       .location(location)
       .modeOfTransportCode(enumMappers.modeOfTransportToDao(timestampTO.modeOfTransport()).getCode().toString())
       .vessel(ensureVesselExists(timestampTO.vesselIMONumber()))
