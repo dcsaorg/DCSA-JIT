@@ -1,24 +1,9 @@
 package org.dcsa.jit.persistence.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
-import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PublisherRole;
-import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
+import lombok.*;
+import org.dcsa.jit.persistence.entity.enums.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Builder
@@ -61,7 +46,7 @@ public class TimestampDefinition {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "facility_type_code", length = 4)
-  private FacilityTypeCode facilityTypeCode;
+  private FacilityTypeCodeOPR facilityTypeCode;
 
   @Column(name = "is_berth_location_needed", nullable = false)
   private Boolean isBerthLocationNeeded;

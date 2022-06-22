@@ -4,10 +4,10 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
+import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeOPR;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
-import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ public class TimestampDefinitionServiceTest {
         TimestampDefinition.builder()
             .id("randomID")
             .eventClassifierCode(EventClassifierCode.ACT)
-            .facilityTypeCode(FacilityTypeCode.BOCR)
+            .facilityTypeCode(FacilityTypeCodeOPR.BRTH)
             .isTerminalNeeded(false)
             .acceptTimestampDefinition(String.valueOf(true))
             .isBerthLocationNeeded(false)

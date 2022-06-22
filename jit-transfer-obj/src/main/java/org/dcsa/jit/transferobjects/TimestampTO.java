@@ -1,6 +1,5 @@
 package org.dcsa.jit.transferobjects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import org.dcsa.jit.transferobjects.enums.*;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
@@ -15,7 +14,7 @@ public record TimestampTO(
   @NotNull @ValidVesselIMONumber String vesselIMONumber,
   @NotNull @Size(max = 5) String UNLocationCode,
   @Size(max = 6) String facilitySMDGCode,
-  FacilityTypeCode facilityTypeCode,
+  FacilityTypeCodeOPR facilityTypeCode,
   EventClassifierCode eventClassifierCode,
   OperationsEventTypeCode operationsEventTypeCode,
   LocationTO eventLocation,
