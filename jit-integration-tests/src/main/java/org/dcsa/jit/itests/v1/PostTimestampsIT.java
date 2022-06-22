@@ -107,7 +107,6 @@ public class PostTimestampsIT {
   }
 
   // Testing with mandatory fields + EventLocation field
-  @Disabled("Ambitious; no unique transport call results")
   @Test
   public void testEventLocationField() {
     Map<String, Object> map = jsonToMap(VALID_TIMESTAMP);
@@ -285,7 +284,6 @@ public class PostTimestampsIT {
   }
 
   // Testing with mandatory fields + OPTIONAL transportCallSequenceNumber field
-  @Disabled("Ambitious; no unique transport call results")
   @Test
   public void testTransportCallSequenceNumberField() {
 
@@ -294,7 +292,7 @@ public class PostTimestampsIT {
     map.remove("modeOfTransport");
     map.remove("eventLocation");
     map.remove("modeOfTransport");
-    // map.remove("portCallServiceTypeCode");
+    map.remove("portCallServiceTypeCode");
 
     given()
         .contentType("application/json")
