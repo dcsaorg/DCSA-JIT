@@ -337,11 +337,11 @@
       "transportCall": {
         "required": [
           "modeOfTransport",
-          "transportCallID"
+          "transportCallReference"
         ],
         "type": "object",
         "properties": {
-          "transportCallID": {
+          "transportCallReference": {
             "maxLength": 100,
             "type": "string",
             "description": "The unique identifier for a transport call"
