@@ -85,7 +85,7 @@ public class OperationsEventIT {
         .assertThat()
         .statusCode(HttpStatus.SC_OK)
         .contentType(ContentType.JSON)
-        .body("size()", equalTo(1))
+        .body("size()", greaterThanOrEqualTo(1))
         .body("publisher", notNullValue())
         .body("transportCall", notNullValue())
         .body("transportCall.transportCallReference", everyItem(equalTo("TC-REF-08_03-A")))
@@ -236,34 +236,37 @@ public class OperationsEventIT {
                 .assertThat()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("size()", equalTo(1))
+                .body("size()", greaterThanOrEqualTo(1))
                 .body(
                     "eventClassifierCode",
                     everyItem(
                         anyOf(
                             equalTo(EventClassifierCode.EST.toString()),
-                            equalTo(EventClassifierCode.ACT.toString()))))
+                            equalTo(EventClassifierCode.ACT.toString()),
+                            equalTo(EventClassifierCode.PLN.toString()),
+                            equalTo(EventClassifierCode.REQ.toString()))))
                 .body("operationsEventTypeCode", everyItem(m))
                 .body(jsonSchemaValidator("operationsEvent"));
 
-    runner.accept("A_carrier_voyage_number", equalTo("ARRI"));
-    runner.accept("TNT1E", equalTo("DEPA"));
+    runner.accept(
+        "A_carrier_voyage_number", anyOf(equalTo("ARRI"), equalTo("DEPA"), (equalTo("STRT"))));
+    runner.accept("2107E", equalTo("ARRI"));
   }
 
   @Test
   void testGetAllEventsByCombinedQuery() {
     given()
         .contentType("application/json")
-        .queryParam("exportVoyageNumber", "TNT1E")
-        .queryParam("UNLocationCode", "SGSIN")
+        .queryParam("exportVoyageNumber", "A_carrier_voyage_number")
+        .queryParam("UNLocationCode", "USNYC")
         .get(EVENTS)
         .then()
         .assertThat()
         .statusCode(200)
         .contentType(ContentType.JSON)
-        .body("size()", equalTo(1))
-        .body("transportCall.exportVoyageNumber", everyItem(equalTo("TNT1E")))
-        .body("transportCall.location.UNLocationCode", everyItem(equalTo("SGSIN")))
+        .body("size()", greaterThanOrEqualTo(1))
+        .body("transportCall.exportVoyageNumber", everyItem(equalTo("A_carrier_voyage_number")))
+        .body("transportCall.location.UNLocationCode", everyItem(equalTo("USNYC")))
         .body(jsonSchemaValidator("operationsEvent"));
   }
 
@@ -343,7 +346,6 @@ public class OperationsEventIT {
         .header("Next-Page", matchesRegex("^https?://.*/v1/events\\?cursor=[a-zA-Z\\d=]*$"))
         .body("size()", greaterThanOrEqualTo(0))
         .body("eventType", everyItem(equalTo("OPERATIONS")))
-        .body("eventClassifierCode", everyItem(equalTo("ACT")))
         .body(jsonSchemaValidator("operationsEvent"));
   }
 
