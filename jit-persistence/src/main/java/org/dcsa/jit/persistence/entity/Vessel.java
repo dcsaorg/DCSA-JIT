@@ -1,6 +1,7 @@
 package org.dcsa.jit.persistence.entity;
 
 import lombok.*;
+import org.dcsa.skernel.domain.persistence.entity.Carrier;
 
 import javax.persistence.*;
 import java.util.UUID;
