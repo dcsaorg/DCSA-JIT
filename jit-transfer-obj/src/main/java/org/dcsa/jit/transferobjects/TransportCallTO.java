@@ -23,6 +23,6 @@ public record TransportCallTO(
   LocationTO location,
   VesselTO vessel
 ) {
-  @Builder // workaround for intellij issue
+  @Builder(toBuilder = true) // workaround for intellij issue
   public TransportCallTO {}
 }

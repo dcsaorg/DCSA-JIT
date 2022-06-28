@@ -12,8 +12,9 @@ public class TransportCallMapperTest {
       // Special mappings
       "importVoyageNumber", "exportVoyageNumber", "UNLocationCode", "carrierServiceCode",
       "modeOfTransport", "modeOfTransportCode", "importVoyage", "exportVoyage", "id", "facility",
+      "facilityCode", "facilityCodeListProvider",
       // Currently not mapped
-      "facilityCode", "facilityCodeListProvider", "otherFacility", "portCallStatusCode"
+      "otherFacility", "portCallStatusCode"
       );
   }
 }
