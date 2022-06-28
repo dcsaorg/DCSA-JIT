@@ -33,7 +33,7 @@ import java.util.UUID;
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "transport_call")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED) // for UI-Support
 public class TransportCall {
   @Id
   @GeneratedValue
