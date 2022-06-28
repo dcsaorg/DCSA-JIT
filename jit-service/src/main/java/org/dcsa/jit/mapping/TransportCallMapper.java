@@ -5,7 +5,6 @@ import org.dcsa.jit.persistence.entity.enums.DCSATransportType;
 import org.dcsa.jit.transferobjects.TransportCallTO;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
-import org.mapstruct.EnumMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
