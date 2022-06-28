@@ -62,8 +62,9 @@ public class TimestampDefinitionService {
     opsEventTimestampDefinitionRepository.save(ops);
   }
 
-  public PortCallPhaseTypeCode findPhaseTypeCodeFromOperationsEvent(
+  public PortCallPhaseTypeCode findPhaseTypeCodeFromOperationsEventForJit1_0(
       OperationsEvent operationsEvent) {
+
     List<TimestampDefinition> jit1_0 =
         timestampDefinitionRepository
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
@@ -76,11 +77,11 @@ public class TimestampDefinitionService {
     String errorMessage =
         "EventClassifierCode: "
             + operationsEvent.getEventClassifierCode()
-            + "OperationsEventTypeCode: "
+            + ", OperationsEventTypeCode: "
             + operationsEvent.getOperationsEventTypeCode()
-            + "PortCallServiceTypeCode: "
+            + ", PortCallServiceTypeCode: "
             + operationsEvent.getPortCallServiceTypeCode()
-            + "FacilityTypeCode: "
+            + ", FacilityTypeCode: "
             + operationsEvent.getFacilityTypeCode();
 
     if (jit1_0.isEmpty()) {

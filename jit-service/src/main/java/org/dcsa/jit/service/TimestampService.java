@@ -46,11 +46,10 @@ public class TimestampService {
     LocationTO locationTO = timestamp.eventLocation();
     String facilitySMDGCode = timestamp.facilitySMDGCode();
     if (timestamp.modeOfTransport() == null) {
-      // JIT IFS says that Mode Of Transport must be omitted for some timestamps and must be VESSEL
-      // for others.
+      // JIT IFS says that Mode Of Transport must be omitted for some timestamps
+      // and must be VESSEL for others.
       // Because the distinction is not visible after the timestamp has been created, so we cannot
-      // rely on it
-      // in general either way.
+      // rely on it in general either way.
       timestampTOBuilder = timestampTOBuilder.modeOfTransport(ModeOfTransport.VESSEL);
     } else if (!timestamp.modeOfTransport().equals(ModeOfTransport.VESSEL)){
       throw ConcreteRequestErrorMessageException.invalidInput(
@@ -105,7 +104,7 @@ public class TimestampService {
       }
       locationTO = locationTO.toBuilder()
         .UNLocationCode(timestamp.UNLocationCode())
-        // We need the UNLocode to resolve the facility.
+        // We need the UNLocationCode to resolve the facility.
         .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
         .facilityCode(facilitySMDGCode)
         .build();
@@ -205,7 +204,11 @@ public class TimestampService {
 
   private void ensurePhaseTypeIsDefined(OperationsEvent oe) {
     if (oe.getPortCallPhaseTypeCode() != null) return;
-    oe.setPortCallPhaseTypeCode(timestampDefinitionService.findPhaseTypeCodeFromOperationsEvent(oe));
+
+    // PhaseTypeCode is not defined in JIT 1.0, so to ensure
+    // compatibility we try to find the correct phase type
+    // based on fields corresponding to JIT 1.0 use-cases.
+    oe.setPortCallPhaseTypeCode(timestampDefinitionService.findPhaseTypeCodeFromOperationsEventForJit1_0(oe));
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {
