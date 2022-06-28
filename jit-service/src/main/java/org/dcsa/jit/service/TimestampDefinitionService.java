@@ -5,6 +5,7 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
+import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
@@ -59,6 +60,42 @@ public class TimestampDefinitionService {
             .newRecord(true)
             .build();
     opsEventTimestampDefinitionRepository.save(ops);
+  }
+
+  public PortCallPhaseTypeCode findPhaseTypeCodeFromOperationsEvent(
+      OperationsEvent operationsEvent) {
+    List<TimestampDefinition> jit1_0 =
+        timestampDefinitionRepository
+            .findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
+                operationsEvent.getEventClassifierCode(),
+                operationsEvent.getOperationsEventTypeCode(),
+                "jit1_0",
+                operationsEvent.getPortCallServiceTypeCode(),
+                operationsEvent.getFacilityTypeCode());
+
+    String errorMessage =
+        "EventClassifierCode: "
+            + operationsEvent.getEventClassifierCode()
+            + "OperationsEventTypeCode: "
+            + operationsEvent.getOperationsEventTypeCode()
+            + "PortCallServiceTypeCode: "
+            + operationsEvent.getPortCallServiceTypeCode()
+            + "FacilityTypeCode: "
+            + operationsEvent.getFacilityTypeCode();
+
+    if (jit1_0.isEmpty()) {
+      throw ConcreteRequestErrorMessageException.internalServerError(
+          "Could not find any JIT 1.0 timestamp definitions according to the given fields: "
+              + errorMessage);
+    }
+
+    if (jit1_0.size() > 1) {
+      throw ConcreteRequestErrorMessageException.internalServerError(
+          "More than one JIT 1.0 timestamp definitions found according to the given fields: "
+              + errorMessage);
+    }
+
+    return jit1_0.stream().findFirst().get().getPortCallPhaseTypeCode();
   }
 
   /**

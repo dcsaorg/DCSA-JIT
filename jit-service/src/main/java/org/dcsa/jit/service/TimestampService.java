@@ -9,26 +9,19 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.Party;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.UnmappedEvent;
-import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
-import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
-import org.dcsa.jit.transferobjects.enums.PortCallServiceTypeCode;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -193,9 +186,7 @@ public class TimestampService {
   public void create(OperationsEvent operationsEvent) {
 
     try {
-      this.ensurePhaseTypeIsDefined(
-        operationsEvent,
-        enumMappers.portCallServiceTypeCodeFromDao(operationsEvent.getPortCallServiceTypeCode()));
+      this.ensurePhaseTypeIsDefined(operationsEvent);
     } catch (IllegalStateException e) {
       throw ConcreteRequestErrorMessageException.invalidInput(
         "Cannot derive portCallPhaseTypeCode automatically from this timestamp. Please define it explicitly");
@@ -203,7 +194,6 @@ public class TimestampService {
 
     operationsEvent = operationsEventRepository.save(operationsEvent);
     timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
-
 
     UnmappedEvent unmappedEvent =
       UnmappedEvent.builder()
@@ -214,45 +204,9 @@ public class TimestampService {
     unmappedEventRepository.save(unmappedEvent);
   }
 
-  // TODO: REFACTOR AND MOVE TO oeTO (SUBTASK
-  private void ensurePhaseTypeIsDefined(OperationsEvent oe, PortCallServiceTypeCode pp) {
-    if (oe.getPortCallPhaseTypeCode() != null) {
-      return;
-    }
-    if (oe.getPortCallServiceTypeCode() != null) {
-
-      Set < PortCallPhaseTypeCode > validPhases =
-        pp.getValidPhases().stream()
-          .map(enumMappers::portCallPhaseTypeCodeCodetoDao)
-          .collect(Collectors.toSet());
-      if (validPhases.size() == 1) {
-        PortCallPhaseTypeCode portCallPhaseTypeCode = validPhases.iterator().next();
-        oe.setPortCallPhaseTypeCode(portCallPhaseTypeCode);
-      }
-    } else if (oe.getFacilityTypeCode() != null) {
-      switch (oe.getFacilityTypeCode()) {
-        case BRTH -> {
-          if (oe.getOperationsEventTypeCode() == OperationsEventTypeCode.ARRI) {
-            if (oe.getEventClassifierCode() == EventClassifierCode.ACT) {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.ALGS);
-            } else {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.INBD);
-            }
-          }
-          if (oe.getOperationsEventTypeCode() == OperationsEventTypeCode.DEPA) {
-            if (oe.getEventClassifierCode() == EventClassifierCode.ACT) {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.OUTB);
-            } else {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.ALGS);
-            }
-          }
-                }
-        case PBPL -> oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.INBD);
-      }
-    }
-    if (oe.getPortCallPhaseTypeCode() == null) {
-      throw new IllegalStateException("Ambiguous timestamp");
-    }
+  private void ensurePhaseTypeIsDefined(OperationsEvent oe) {
+    if (oe.getPortCallPhaseTypeCode() != null) return;
+    oe.setPortCallPhaseTypeCode(timestampDefinitionService.findPhaseTypeCodeFromOperationsEvent(oe));
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {

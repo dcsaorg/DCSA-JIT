@@ -19,5 +19,13 @@ public interface TimestampDefinitionRepository
           PortCallPhaseTypeCode portCallPhaseTypeCode,
           PortCallServiceTypeCode portCallServiceTypeCode,
           FacilityTypeCodeOPR facilityTypeCode);
+
+  List<TimestampDefinition>
+      findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
+          EventClassifierCode eventClassifierCode,
+          OperationsEventTypeCode operationsEventTypeCode,
+          String providedInStandard,
+          PortCallServiceTypeCode portCallServiceTypeCode,
+          FacilityTypeCodeOPR facilityTypeCode);
 }
 
