@@ -503,42 +503,6 @@ public class PostTimestampsIT {
         .statusCode(400);
   }
 
-  // Testing with mandatory fields - Except FacilityTypeCode field
-  // Should fail as FacilityTypeCode is mandatory
-  @Test
-  public void testMandatoryFacilityTypeCodeFieldFalseFormat() {
-    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP);
-
-    map.remove("facilityTypeCode");
-    given()
-        .contentType("application/json")
-        .body(map)
-        .post(TIMESTAMPS)
-        .then()
-        .assertThat()
-        .statusCode(400);
-
-    // wrong format -> ENUM
-    map.put("facilityTypeCode", "abcdfght");
-    given()
-        .contentType("application/json")
-        .body(map)
-        .post(TIMESTAMPS)
-        .then()
-        .assertThat()
-        .statusCode(400);
-
-    // Empty value
-    map.put("facilityTypeCode", ""); // Empty
-    given()
-        .contentType("application/json")
-        .body(map)
-        .post(TIMESTAMPS)
-        .then()
-        .assertThat()
-        .statusCode(400);
-  }
-
   // Testing with mandatory fields - Except EventClassifierCode field
   // Should fail as EventClassifierCode is mandatory
   @Test
