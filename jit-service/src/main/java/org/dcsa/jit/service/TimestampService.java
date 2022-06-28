@@ -127,7 +127,6 @@ public class TimestampService {
 
     OperationsEvent operationsEvent =
       OperationsEvent.builder()
-        .eventCreatedDateTime(timestamp.eventDateTime())
         .eventClassifierCode(enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
         .eventDateTime(timestamp.eventDateTime())
         .operationsEventTypeCode(

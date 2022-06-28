@@ -3,6 +3,8 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.*;
 import org.dcsa.skernel.domain.persistence.entity.Location;
+import org.hibernate.annotations.GenerationTime;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -25,6 +27,8 @@ public class OperationsEvent {
   @Column(name = "event_classifier_code", length = 3, nullable = false)
   private EventClassifierCode eventClassifierCode;
 
+  @CreatedDate
+  @org.hibernate.annotations.Generated(value = GenerationTime.INSERT)
   @Column(name = "event_created_date_time", nullable = false)
   private OffsetDateTime eventCreatedDateTime;
 

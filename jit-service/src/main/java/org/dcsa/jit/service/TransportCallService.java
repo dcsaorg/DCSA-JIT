@@ -27,8 +27,8 @@ public class TransportCallService {
   private final TransportCallRepository transportCallRepository;
   private final LocationRepository locationRepository;
   private final FacilityRepository facilityRepository;
-  private final VesselRepository vesselRepository;
-  private final ServiceRepository serviceRepository;
+  private final VesselService vesselService;
+  private final ServiceService serviceService;
   private final EnumMappers enumMappers;
 
   @Transactional
@@ -93,11 +93,8 @@ public class TransportCallService {
         .facility(findFacility(timestampTO))
         .build()
     );
-    org.dcsa.jit.persistence.entity.Service service = serviceRepository.save(
-      org.dcsa.jit.persistence.entity.Service.builder()
-        .carrierServiceCode(timestampTO.carrierServiceCode())
-        .build()
-    );
+    org.dcsa.jit.persistence.entity.Service service =
+      serviceService.ensureServiceExistsByCarrierServiceCode(timestampTO.carrierServiceCode());
 
     TransportCall entityToSave = TransportCall.builder()
       .transportCallReference(UUID.randomUUID().toString())
@@ -106,7 +103,7 @@ public class TransportCallService {
       .facilityTypeCode(FacilityTypeCodeTRN.POTE) // TODO: this is set as default for now.
       .location(location)
       .modeOfTransportCode(enumMappers.modeOfTransportToDao(timestampTO.modeOfTransport()).getCode().toString())
-      .vessel(ensureVesselExists(timestampTO.vesselIMONumber()))
+      .vessel(vesselService.ensureVesselExistsByImoNumber(timestampTO.vesselIMONumber()))
       .importVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.importVoyageNumber()).service(service).build())
       .exportVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.exportVoyageNumber()).service(service).build())
       .portCallStatusCode(null)
@@ -120,15 +117,5 @@ public class TransportCallService {
       return facilityRepository.findByUNLocationCodeAndFacilitySMDGCode(timestampTO.UNLocationCode(), timestampTO.facilitySMDGCode()).orElse(null);
     }
     return null;
-  }
-
-  private Vessel ensureVesselExists(String imoNumber) {
-    return vesselRepository.findByVesselIMONumber(imoNumber)
-      .orElseGet(() -> vesselRepository.save(
-        Vessel.builder()
-          .vesselIMONumber(imoNumber)
-          .isDummy(false)
-          .build()
-      ));
   }
 }

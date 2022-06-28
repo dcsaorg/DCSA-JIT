@@ -14,7 +14,10 @@ public enum PublisherRole {
   TWG("Towage provider"),
   LSH("Lashing provider"),
   BUK("Bunkering service provider"),
-  TR("Terminal")
+  TR("Terminal"),
+  SLU("Sludge service provider"),
+  SVP("Other service provider"),
+  MOR("Moording service provider")
   ;
 
   @Getter
