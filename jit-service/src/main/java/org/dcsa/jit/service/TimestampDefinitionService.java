@@ -84,10 +84,29 @@ public class TimestampDefinitionService {
             + ", FacilityTypeCode: "
             + operationsEvent.getFacilityTypeCode();
 
+    // Not found in Jit 1.0, trying Jit 1.1 instead
     if (jit1_0.isEmpty()) {
-      throw ConcreteRequestErrorMessageException.internalServerError(
-          "Could not find any JIT 1.0 timestamp definitions according to the given fields: "
-              + errorMessage);
+      List<TimestampDefinition> jit1_1 =
+          timestampDefinitionRepository
+              .findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
+                  operationsEvent.getEventClassifierCode(),
+                  operationsEvent.getOperationsEventTypeCode(),
+                  "jit1_1",
+                  operationsEvent.getPortCallServiceTypeCode(),
+                  operationsEvent.getFacilityTypeCode());
+
+      if (jit1_1.size() > 1) {
+        throw ConcreteRequestErrorMessageException.internalServerError(
+            "More than one JIT 1.1 timestamp definitions found according to the given fields: "
+                + errorMessage);
+      }
+
+      if (jit1_1.isEmpty()) {
+        throw ConcreteRequestErrorMessageException.internalServerError(
+            "No JIT 1.1 timestamp definitions found according to the given fields: "
+                + errorMessage);
+      }
+      return jit1_1.stream().findFirst().get().getPortCallPhaseTypeCode();
     }
 
     if (jit1_0.size() > 1) {
