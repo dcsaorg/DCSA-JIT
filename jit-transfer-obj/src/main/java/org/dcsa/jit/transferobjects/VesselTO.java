@@ -18,7 +18,7 @@ public record VesselTO(
   Boolean isDummy,
   Float length,
   Float width,
-  VesselTypeCode vesselTypeCode,
+  VesselTypeCode type,
   @Size(max = 3) String dimensionUnit
 ){
   @Builder(toBuilder = true) // workaround for intellij issue
