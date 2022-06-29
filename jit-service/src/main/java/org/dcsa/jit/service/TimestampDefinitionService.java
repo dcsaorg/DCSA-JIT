@@ -86,6 +86,7 @@ public class TimestampDefinitionService {
 
     // Not found in Jit 1.0, trying Jit 1.1 instead
     if (jit1_0.isEmpty()) {
+
       List<TimestampDefinition> jit1_1 =
           timestampDefinitionRepository
               .findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
@@ -96,6 +97,12 @@ public class TimestampDefinitionService {
                   operationsEvent.getFacilityTypeCode());
 
       if (jit1_1.size() > 1) {
+        // If all PortCallPhaseTypeCodes are the same we can just return the first
+        if (jit1_1.stream()
+            .allMatch(
+                x -> jit1_1.get(0).getPortCallPhaseTypeCode() == x.getPortCallPhaseTypeCode())) {
+          return jit1_1.get(0).getPortCallPhaseTypeCode();
+        }
         throw ConcreteRequestErrorMessageException.internalServerError(
             "More than one JIT 1.1 timestamp definitions found according to the given fields: "
                 + errorMessage);
