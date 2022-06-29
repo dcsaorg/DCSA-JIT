@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -99,29 +96,6 @@ public class TimestampDefinitionService {
     }
 
     return jit1_0.stream().findFirst().get().getPortCallPhaseTypeCode();
-  }
-
-  public PortCallPhaseTypeCode findOmittedPhaseTypeCodeFromOperationsEventForJit1_1(
-      OperationsEvent operationsEvent) {
-
-    // JIT 1.1 use-cases with omitted port call phase type code
-    List<String> phaseTypeCodeOmitted = IntStream.range(5, 13).boxed().map(i -> "UC" + i).toList();
-    List<TimestampDefinition> timestampDefinitionList =
-        timestampDefinitionRepository.findAllById(phaseTypeCodeOmitted);
-    Stream<TimestampDefinition> match =
-        timestampDefinitionList.stream()
-            .filter(
-                x ->
-                    x.getEventClassifierCode() == operationsEvent.getEventClassifierCode()
-                        && x.getOperationsEventTypeCode()
-                            == operationsEvent.getOperationsEventTypeCode()
-                        && x.getPortCallServiceTypeCode()
-                            == operationsEvent.getPortCallServiceTypeCode()
-                        && x.getFacilityTypeCode() == operationsEvent.getFacilityTypeCode());
-    if (match.findFirst().isPresent()) {
-      return match.findFirst().get().getPortCallPhaseTypeCode();
-    }
-    return null;
   }
 
   /**

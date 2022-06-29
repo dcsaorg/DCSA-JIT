@@ -212,11 +212,6 @@ public class TimestampService {
       oe.setPortCallPhaseTypeCode(phaseTypeCode);
       return;
     }
-    phaseTypeCode = timestampDefinitionService.findOmittedPhaseTypeCodeFromOperationsEventForJit1_1(oe);
-    if (phaseTypeCode != null) {
-      oe.setPortCallPhaseTypeCode(phaseTypeCode);
-      return;
-    }
     throw ConcreteRequestErrorMessageException.invalidParameter(
         "PortCallPhaseTypeCode cannot be omitted!");
   }
