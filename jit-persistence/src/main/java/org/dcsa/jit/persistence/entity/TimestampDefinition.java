@@ -49,7 +49,7 @@ public class TimestampDefinition {
   private FacilityTypeCodeOPR facilityTypeCode;
 
   @Column(name = "port_call_phase", length = 4)
-  private String portCallPhase;
+  private String portCallPart;
 
   @Column(name = "is_berth_location_needed", nullable = false)
   private Boolean isBerthLocationNeeded;
