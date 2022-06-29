@@ -1,9 +1,7 @@
 package org.dcsa.jit.transferobjects.enums;
 
-import lombok.*;
-
-import javax.persistence.*;
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
@@ -16,7 +14,10 @@ public enum PublisherRole {
   TR("Terminal"),
   TWG("Experimental: Towage serice provider"),
   LSH("Experimental: Lashing serice provider"),
-  BUK("Experimental: Bunker serice provider");
+  BUK("Experimental: Bunker serice provider"),
+  SLU("Sludge service provider"),
+  SVP("Other service provider"),
+  MOR("Moording service provider");
 
   private final String value;
 }

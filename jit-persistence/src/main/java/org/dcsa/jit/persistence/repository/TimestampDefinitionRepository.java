@@ -2,7 +2,6 @@ package org.dcsa.jit.persistence.repository;
 
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.*;
-import org.dcsa.skernel.domain.persistence.entity.enums.FacilityTypeCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +16,14 @@ public interface TimestampDefinitionRepository
           EventClassifierCode eventClassifierCode,
           OperationsEventTypeCode operationsEventTypeCode,
           PortCallPhaseTypeCode portCallPhaseTypeCode,
+          PortCallServiceTypeCode portCallServiceTypeCode,
+          FacilityTypeCodeOPR facilityTypeCode);
+
+  List<TimestampDefinition>
+      findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
+          EventClassifierCode eventClassifierCode,
+          OperationsEventTypeCode operationsEventTypeCode,
+          String providedInStandard,
           PortCallServiceTypeCode portCallServiceTypeCode,
           FacilityTypeCodeOPR facilityTypeCode);
 }

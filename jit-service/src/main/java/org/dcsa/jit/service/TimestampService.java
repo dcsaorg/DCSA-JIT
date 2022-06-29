@@ -9,8 +9,6 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.Party;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.UnmappedEvent;
-import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
-import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
@@ -18,17 +16,13 @@ import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
-import org.dcsa.jit.transferobjects.enums.PortCallServiceTypeCode;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -53,11 +47,10 @@ public class TimestampService {
     LocationTO locationTO = timestamp.eventLocation();
     String facilitySMDGCode = timestamp.facilitySMDGCode();
     if (timestamp.modeOfTransport() == null) {
-      // JIT IFS says that Mode Of Transport must be omitted for some timestamps and must be VESSEL
-      // for others.
+      // JIT IFS says that Mode Of Transport must be omitted for some timestamps
+      // and must be VESSEL for others.
       // Because the distinction is not visible after the timestamp has been created, so we cannot
-      // rely on it
-      // in general either way.
+      // rely on it in general either way.
       timestampTOBuilder = timestampTOBuilder.modeOfTransport(ModeOfTransport.VESSEL);
     } else if (!timestamp.modeOfTransport().equals(ModeOfTransport.VESSEL)){
       throw ConcreteRequestErrorMessageException.invalidInput(
@@ -112,7 +105,7 @@ public class TimestampService {
       }
       locationTO = locationTO.toBuilder()
         .UNLocationCode(timestamp.UNLocationCode())
-        // We need the UNLocode to resolve the facility.
+        // We need the UNLocationCode to resolve the facility.
         .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
         .facilityCode(facilitySMDGCode)
         .build();
@@ -134,7 +127,6 @@ public class TimestampService {
 
     OperationsEvent operationsEvent =
       OperationsEvent.builder()
-        .eventCreatedDateTime(timestamp.eventDateTime())
         .eventClassifierCode(enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
         .eventDateTime(timestamp.eventDateTime())
         .operationsEventTypeCode(
@@ -193,9 +185,7 @@ public class TimestampService {
   public void create(OperationsEvent operationsEvent) {
 
     try {
-      this.ensurePhaseTypeIsDefined(
-        operationsEvent,
-        enumMappers.portCallServiceTypeCodeFromDao(operationsEvent.getPortCallServiceTypeCode()));
+      this.ensurePhaseTypeIsDefined(operationsEvent);
     } catch (IllegalStateException e) {
       throw ConcreteRequestErrorMessageException.invalidInput(
         "Cannot derive portCallPhaseTypeCode automatically from this timestamp. Please define it explicitly");
@@ -203,7 +193,6 @@ public class TimestampService {
 
     operationsEvent = operationsEventRepository.save(operationsEvent);
     timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
-
 
     UnmappedEvent unmappedEvent =
       UnmappedEvent.builder()
@@ -214,45 +203,17 @@ public class TimestampService {
     unmappedEventRepository.save(unmappedEvent);
   }
 
-  // TODO: REFACTOR AND MOVE TO oeTO (SUBTASK
-  private void ensurePhaseTypeIsDefined(OperationsEvent oe, PortCallServiceTypeCode pp) {
-    if (oe.getPortCallPhaseTypeCode() != null) {
+  private void ensurePhaseTypeIsDefined(OperationsEvent oe) {
+    if (oe.getPortCallPhaseTypeCode() != null) return;
+
+    PortCallPhaseTypeCode phaseTypeCode =
+        timestampDefinitionService.findPhaseTypeCodeFromOperationsEventForJit1_0(oe);
+    if (phaseTypeCode != null) {
+      oe.setPortCallPhaseTypeCode(phaseTypeCode);
       return;
     }
-    if (oe.getPortCallServiceTypeCode() != null) {
-
-      Set < PortCallPhaseTypeCode > validPhases =
-        pp.getValidPhases().stream()
-          .map(enumMappers::portCallPhaseTypeCodeCodetoDao)
-          .collect(Collectors.toSet());
-      if (validPhases.size() == 1) {
-        PortCallPhaseTypeCode portCallPhaseTypeCode = validPhases.iterator().next();
-        oe.setPortCallPhaseTypeCode(portCallPhaseTypeCode);
-      }
-    } else if (oe.getFacilityTypeCode() != null) {
-      switch (oe.getFacilityTypeCode()) {
-        case BRTH -> {
-          if (oe.getOperationsEventTypeCode() == OperationsEventTypeCode.ARRI) {
-            if (oe.getEventClassifierCode() == EventClassifierCode.ACT) {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.ALGS);
-            } else {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.INBD);
-            }
-          }
-          if (oe.getOperationsEventTypeCode() == OperationsEventTypeCode.DEPA) {
-            if (oe.getEventClassifierCode() == EventClassifierCode.ACT) {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.OUTB);
-            } else {
-              oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.ALGS);
-            }
-          }
-                }
-        case PBPL -> oe.setPortCallPhaseTypeCode(PortCallPhaseTypeCode.INBD);
-      }
-    }
-    if (oe.getPortCallPhaseTypeCode() == null) {
-      throw new IllegalStateException("Ambiguous timestamp");
-    }
+    throw ConcreteRequestErrorMessageException.invalidParameter(
+        "PortCallPhaseTypeCode cannot be omitted!");
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {
