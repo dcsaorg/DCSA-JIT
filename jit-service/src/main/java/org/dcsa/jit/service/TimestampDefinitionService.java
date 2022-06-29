@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -74,55 +77,49 @@ public class TimestampDefinitionService {
                 operationsEvent.getPortCallServiceTypeCode(),
                 operationsEvent.getFacilityTypeCode());
 
-    String errorMessage =
-        "EventClassifierCode: "
-            + operationsEvent.getEventClassifierCode()
-            + ", OperationsEventTypeCode: "
-            + operationsEvent.getOperationsEventTypeCode()
-            + ", PortCallServiceTypeCode: "
-            + operationsEvent.getPortCallServiceTypeCode()
-            + ", FacilityTypeCode: "
-            + operationsEvent.getFacilityTypeCode();
-
-    // Not found in Jit 1.0, trying Jit 1.1 instead
+    // PortCallPhaseTypeCode not part of JIT 1.0
     if (jit1_0.isEmpty()) {
-
-      List<TimestampDefinition> jit1_1 =
-          timestampDefinitionRepository
-              .findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
-                  operationsEvent.getEventClassifierCode(),
-                  operationsEvent.getOperationsEventTypeCode(),
-                  "jit1_1",
-                  operationsEvent.getPortCallServiceTypeCode(),
-                  operationsEvent.getFacilityTypeCode());
-
-      if (jit1_1.size() > 1) {
-        // If all PortCallPhaseTypeCodes are the same we can just return the first
-        if (jit1_1.stream()
-            .allMatch(
-                x -> jit1_1.get(0).getPortCallPhaseTypeCode() == x.getPortCallPhaseTypeCode())) {
-          return jit1_1.get(0).getPortCallPhaseTypeCode();
-        }
-        throw ConcreteRequestErrorMessageException.internalServerError(
-            "More than one JIT 1.1 timestamp definitions found according to the given fields: "
-                + errorMessage);
-      }
-
-      if (jit1_1.isEmpty()) {
-        throw ConcreteRequestErrorMessageException.internalServerError(
-            "No JIT 1.1 timestamp definitions found according to the given fields: "
-                + errorMessage);
-      }
-      return jit1_1.stream().findFirst().get().getPortCallPhaseTypeCode();
+      return null;
     }
 
     if (jit1_0.size() > 1) {
+      String errorMessage =
+          "EventClassifierCode: "
+              + operationsEvent.getEventClassifierCode()
+              + ", OperationsEventTypeCode: "
+              + operationsEvent.getOperationsEventTypeCode()
+              + ", PortCallServiceTypeCode: "
+              + operationsEvent.getPortCallServiceTypeCode()
+              + ", FacilityTypeCode: "
+              + operationsEvent.getFacilityTypeCode();
+
       throw ConcreteRequestErrorMessageException.internalServerError(
           "More than one JIT 1.0 timestamp definitions found according to the given fields: "
               + errorMessage);
     }
 
     return jit1_0.stream().findFirst().get().getPortCallPhaseTypeCode();
+  }
+
+  public PortCallPhaseTypeCode findOmittedPhaseTypeCodeFromOperationsEventForJit1_1(
+      OperationsEvent operationsEvent) {
+
+    // JIT 1.1 use-cases with omitted port call phase type code
+    List<String> phaseTypeCodeOmitted = IntStream.range(5, 13).boxed().map(i -> "UC" + i).toList();
+    List<TimestampDefinition> timestampDefinitionList =
+        timestampDefinitionRepository.findAllById(phaseTypeCodeOmitted);
+    Stream<TimestampDefinition> match =
+        timestampDefinitionList.stream()
+            .filter(
+                x ->
+                    x.getEventClassifierCode() == operationsEvent.getEventClassifierCode()
+                        && x.getOperationsEventTypeCode()
+                            == operationsEvent.getOperationsEventTypeCode()
+                        && x.getFacilityTypeCode() == operationsEvent.getFacilityTypeCode());
+    if (match.findFirst().isPresent()) {
+      return match.findFirst().get().getPortCallPhaseTypeCode();
+    }
+    return null;
   }
 
   /**

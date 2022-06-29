@@ -9,6 +9,7 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.Party;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.UnmappedEvent;
+import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
@@ -205,10 +206,19 @@ public class TimestampService {
   private void ensurePhaseTypeIsDefined(OperationsEvent oe) {
     if (oe.getPortCallPhaseTypeCode() != null) return;
 
-    // PhaseTypeCode is not defined in JIT 1.0, so to ensure
-    // compatibility we try to find the correct phase type
-    // based on fields corresponding to JIT 1.0 use-cases.
-    oe.setPortCallPhaseTypeCode(timestampDefinitionService.findPhaseTypeCodeFromOperationsEventForJit1_0(oe));
+    PortCallPhaseTypeCode phaseTypeCode =
+        timestampDefinitionService.findPhaseTypeCodeFromOperationsEventForJit1_0(oe);
+    if (phaseTypeCode != null) {
+      oe.setPortCallPhaseTypeCode(phaseTypeCode);
+      return;
+    }
+    phaseTypeCode = timestampDefinitionService.findOmittedPhaseTypeCodeFromOperationsEventForJit1_1(oe);
+    if (phaseTypeCode != null) {
+      oe.setPortCallPhaseTypeCode(phaseTypeCode);
+      return;
+    }
+    throw ConcreteRequestErrorMessageException.invalidParameter(
+        "PortCallPhaseTypeCode cannot be omitted!");
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {
