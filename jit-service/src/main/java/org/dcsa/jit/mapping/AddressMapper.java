@@ -8,8 +8,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AddressMapper {
 
-  @Mapping(source = "postCode", target = "postalCode")
+  @Mapping(target = "postalCode", source = "postCode")
   Address toDao(AddressTO addressTO);
+
   @Mapping(target = "postCode", source = "postalCode")
   AddressTO toDTO(Address address);
 }
