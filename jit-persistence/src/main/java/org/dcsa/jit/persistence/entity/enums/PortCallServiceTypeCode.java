@@ -11,12 +11,16 @@ public enum PortCallServiceTypeCode {
   CRGO("Cargo operations"),
   TOWG("Towage"),
   BUNK("Bunkering"),
-  WSDP("Waste disposal"),
   LASH("Lashing"),
   SAFE("Safety"),
   FAST("Fast"),
-  GWAY("Gangway")
-  ;
+  GWAY("Gangway"),
+  ANCO ("Anchorage operations"),
+  SLUG ("Sludge"),
+  SHPW ("Shore Power"),
+  LCRO ("Loading cargo operations"),
+  DCRO ("Discharge cargo operations"),
+  VRDY("Vessel ready");
 
   @Getter
   private final String name;
