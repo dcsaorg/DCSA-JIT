@@ -115,6 +115,8 @@ public class TimestampDefinitionService {
                     x.getEventClassifierCode() == operationsEvent.getEventClassifierCode()
                         && x.getOperationsEventTypeCode()
                             == operationsEvent.getOperationsEventTypeCode()
+                        && x.getPortCallServiceTypeCode()
+                            == operationsEvent.getPortCallServiceTypeCode()
                         && x.getFacilityTypeCode() == operationsEvent.getFacilityTypeCode());
     if (match.findFirst().isPresent()) {
       return match.findFirst().get().getPortCallPhaseTypeCode();
