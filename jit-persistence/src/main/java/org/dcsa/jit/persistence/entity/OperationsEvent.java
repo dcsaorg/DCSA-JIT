@@ -63,7 +63,7 @@ public class OperationsEvent {
   private String delayReasonCode;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "vessel_position")
+  @JoinColumn(name = "position")
   private Location vesselPosition;
 
   @Column(name = "remark", length = 100)

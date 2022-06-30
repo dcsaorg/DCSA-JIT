@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public enum VesselTypeCode {
+public enum VesselType {
   GCGO("General cargo"),
   CONT("Container"),
   RORO("RoRo"),
