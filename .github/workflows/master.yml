@@ -51,9 +51,10 @@ jobs:
 
           echo "Final status is '$status'"
           if [[ "$status" != "UP" ]]; then
-            curl -v http://localhost:9090/v1/actuator/health
-            docker ps
-            docker logs dcsa-jit_dcsa-jit_1
+            curl -v http://localhost:9090/v1/actuator/health || :
+            docker ps || :
+            docker logs dcsa-jit_dcsa-jit_1 || :
+            exit 1
           fi
 
           echo "::set-output name=STATUS::$status"
