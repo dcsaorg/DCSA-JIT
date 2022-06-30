@@ -43,6 +43,21 @@ public class PostTimestampsIT {
         .statusCode(204);
   }
 
+  // Testing with all fields provided in VALID_TIMESTAMP variable
+  @Test
+  public void testTimestampNoVesselObject() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP);
+    map.remove("vessel");
+    given()
+        .contentType("application/json")
+        .header("testname", "testTimestampRequiredParameters")
+        .body(map)
+        .post(TIMESTAMPS)
+        .then()
+        .assertThat()
+        .statusCode(204);
+  }
+
   // Testing with no fields / Empty body
   // Should fail as nothing is provided
   @Test
