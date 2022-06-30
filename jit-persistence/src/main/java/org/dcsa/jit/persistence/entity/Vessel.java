@@ -1,6 +1,7 @@
 package org.dcsa.jit.persistence.entity;
 
 import lombok.*;
+import org.dcsa.jit.persistence.entity.enums.VesselType;
 import org.dcsa.skernel.domain.persistence.entity.Carrier;
 
 import javax.persistence.*;
@@ -46,6 +47,10 @@ public class Vessel {
 
   @Column(name = "width", columnDefinition = "numeric")
   private Float width;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "type")
+  private VesselType type;
 
   @Column(name = "dimension_unit", length = 3)
   private String dimensionUnit;

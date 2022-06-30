@@ -28,7 +28,8 @@ public record TimestampTO(
   @NotNull @Size(max = 5) String carrierServiceCode,
   Integer transportCallSequenceNumber,
   String remark,
-  String delayReasonCode
+  String delayReasonCode,
+  VesselTO vessel
 ) {
   @Builder(toBuilder = true) // workaround for intellij issue
   public TimestampTO {}
