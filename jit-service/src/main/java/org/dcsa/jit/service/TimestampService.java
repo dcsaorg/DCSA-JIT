@@ -127,7 +127,7 @@ public class TimestampService {
     Location location = saveLocationIfNotNull(timestamp.eventLocation());
     Location vesselPos = saveLocationIfNotNull(timestamp.vesselPosition());
     Party party = savePublisher(timestamp.publisher());
-    saveVessel(timestamp.vessel());
+    saveVesselIfNotNull(timestamp.vessel());
 
     OperationsEvent operationsEvent =
         OperationsEvent.builder()
@@ -152,14 +152,17 @@ public class TimestampService {
     create(operationsEvent);
   }
 
-  private Vessel saveVessel(VesselTO vesselTO) {
-    Optional<Vessel> optionalVessel = vesselRepository.findByVesselIMONumber(vesselTO.vesselIMONumber());
-    return optionalVessel.orElseGet(() -> saveIfNotNull(
+  private Vessel saveVesselIfNotNull(VesselTO vesselTO) {
+    return saveIfNotNull(
       vesselTO,
       vTO -> {
+        Optional<Vessel> optionalVessel = vesselRepository.findByVesselIMONumber(vesselTO.vesselIMONumber());
+        if (optionalVessel.isPresent()) {
+          return optionalVessel.get();
+        }
         Vessel vessel = vesselMapper.toEntity(vTO);
         return vesselRepository.save(vessel);
-      }));
+      });
   }
 
   private Party savePublisher(PartyTO partyTO) {
