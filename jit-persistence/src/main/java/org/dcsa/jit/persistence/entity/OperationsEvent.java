@@ -78,4 +78,9 @@ public class OperationsEvent {
   @Enumerated(EnumType.STRING)
   private FacilityTypeCodeOPR facilityTypeCode;
 
+  @Column(name = "vessel_draft")
+  private Integer vesselDraft;
+
+  @Column(name = "miles_remaining_to_destination")
+  private Integer milesRemainingToDestination;
 }

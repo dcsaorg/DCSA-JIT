@@ -19,7 +19,8 @@ public record VesselTO(
   Float length,
   Float width,
   VesselType type,
-  @Size(max = 3) String dimensionUnit
+  @Size(max = 3) String dimensionUnit,
+  Integer vesselDraft
 ){
   @Builder(toBuilder = true) // workaround for intellij issue
   public VesselTO {}

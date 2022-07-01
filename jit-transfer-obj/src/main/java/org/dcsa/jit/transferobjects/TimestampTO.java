@@ -29,8 +29,9 @@ public record TimestampTO(
   Integer transportCallSequenceNumber,
   String remark,
   String delayReasonCode,
-  VesselTO vessel
-) {
+  VesselTO vessel,
+  Integer milesRemainingToDestination
+  ) {
   @Builder(toBuilder = true) // workaround for intellij issue
   public TimestampTO {}
 }
