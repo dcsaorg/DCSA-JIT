@@ -292,18 +292,26 @@
       },
       "portCallServiceTypeCode": {
         "type": "string",
-        "description": "The type of the service provided in the port call\n- PILO (Pilotage)\n- MOOR (Mooring)\n- CRGO (Cargo operations)\n- TOWG (Towage)\n- BUNK (Bunkering)\n- WSDP (Waste disposal)\n- LASH (Lashing)\n- SAFE (Safety)\n- FAST (All Fast)\n- GWAY (Gangway down and secure)\n\nMore details can be found on <a href=\"https://github.com/dcsaorg/DCSA-Information-Model/blob/master/datamodel/referencedata.d/portcallservicetypecodes.csv\">GitHub</a>\n",
+        "description": "The type of the service provided in the port call\n- PILO (Pilotage)\n- MOOR (Mooring)\n- CRGO (Cargo operations)\n- TOWG (Towage)\n- BUNK (Bunkering)\n- LASH (Lashing)\n- SAFE (Safety)\n- FAST (All Fast)\n- GWAY (Gangway down and secure)\n\nMore details can be found on <a href=\"https://github.com/dcsaorg/DCSA-Information-Model/blob/master/datamodel/referencedata.d/portcallservicetypecodes.csv\">GitHub</a>\n",
         "enum": [
           "PILO",
           "MOOR",
           "CRGO",
           "TOWG",
           "BUNK",
-          "WSDP",
           "LASH",
           "SAFE",
           "FAST",
-          "GWAY"
+          "GWAY",
+          "ANCO",
+          "SLUG",
+          "CONV",
+          "ICEN",
+          "ESCO",
+          "SHPW",
+          "LCRO",
+          "DCRO",
+          "VRDY"
         ]
       },
       "portCallPhaseTypeCode": {
