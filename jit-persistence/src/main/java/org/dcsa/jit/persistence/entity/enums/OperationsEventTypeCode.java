@@ -9,7 +9,11 @@ public enum OperationsEventTypeCode {
   ARRI("Arrived"),
   DEPA("Departed"),
   STRT("Started"),
-  CMPL("Completed")
+  CMPL("Completed"),
+
+  CANC("Cancelled"),
+
+  OMIT("Omitted")
   ;
 
   @Getter

@@ -9,6 +9,12 @@ public enum OperationsEventTypeCode {
   STRT("Started"),
   CMPL("Completed"),
   ARRI("Arrived"),
-  DEPA("Departed");
+  DEPA("Departed"),
+
+  CANC("Cancelled"),
+
+  OMIT("Omitted")
+
+  ;
   private final String value;
 }

@@ -52,7 +52,9 @@
           "STRT",
           "CMPL",
           "ARRI",
-          "DEPA"
+          "DEPA",
+          "CANC",
+          "OMIT"
         ]
       },
       "publisher": {
