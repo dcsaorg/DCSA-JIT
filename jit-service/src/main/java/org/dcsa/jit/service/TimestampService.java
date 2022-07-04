@@ -53,7 +53,7 @@ public class TimestampService {
       // and must be VESSEL for others.
       // Because the distinction is not visible after the timestamp has been created, so we cannot
       // rely on it in general either way.
-      timestampTOBuilder = timestampTOBuilder.modeOfTransport(ModeOfTransport.VESSEL);
+      timestampTOBuilder.modeOfTransport(ModeOfTransport.VESSEL);
     } else if (!timestamp.modeOfTransport().equals(ModeOfTransport.VESSEL)) {
       throw ConcreteRequestErrorMessageException.invalidInput(
           "modeOfTransport must be blank or \"VESSEL\"");
@@ -85,7 +85,7 @@ public class TimestampService {
       // The errors for misaligned values are handled below.
       if (timestamp.facilitySMDGCode() == null
           && locationTO.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
-        timestampTOBuilder = timestampTOBuilder.facilitySMDGCode(locationTO.facilityCode());
+        timestampTOBuilder.facilitySMDGCode(locationTO.facilityCode());
         facilitySMDGCode = locationTO.facilityCode();
       }
     }
@@ -113,7 +113,7 @@ public class TimestampService {
               .facilityCode(facilitySMDGCode)
               .build();
     }
-    timestampTOBuilder = timestampTOBuilder.eventLocation(locationTO);
+    timestampTOBuilder.eventLocation(locationTO);
     timestamp = timestampTOBuilder.build();
 
     this.ensureValidUnLocationCode(
@@ -147,6 +147,8 @@ public class TimestampService {
             .vesselPosition(vesselPos)
             .publisher(party)
             .transportCall(tc)
+            .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().vesselDraft() : null)
+            .milesRemainingToDestination(timestamp.milesRemainingToDestination())
             .build();
 
     create(operationsEvent);

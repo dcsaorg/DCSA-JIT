@@ -9,6 +9,9 @@ public class VesselMappingTest {
   @Test
   public void testTargetFieldsPresentInSrc() {
     FieldValidator.assertTargetFieldsPresentInSrc(Vessel.class, VesselTO.class,
+      // special mappings
+      "vesselDraft",
+      // Unmapped
       "vesselOperatorCarrierCodeListProvider", "vesselOperatorCarrierCode");
   }
 }
