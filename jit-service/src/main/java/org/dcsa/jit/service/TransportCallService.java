@@ -33,15 +33,12 @@ public class TransportCallService {
 
   @Transactional
   public TransportCall ensureTransportCallExists(TimestampTO timestampTO) {
-    if (timestampTO.modeOfTransport() == null) {
-      throw ConcreteRequestErrorMessageException.invalidInput("modeOfTransport must be given");
-    }
 
-    if ((timestampTO.exportVoyageNumber() != null || timestampTO.importVoyageNumber() != null || timestampTO.carrierServiceCode() != null)
-      && (timestampTO.exportVoyageNumber() == null || timestampTO.importVoyageNumber() == null || timestampTO.carrierServiceCode() == null)) {
+    if ((timestampTO.importVoyageNumber() != null && timestampTO.exportVoyageNumber() != null)
+      == (timestampTO.carrierVoyageNumber() != null)) {
       throw ConcreteRequestErrorMessageException.invalidInput(
-        "exportVoyageNumber, importVoyageNumber and carrierServiceCode must be given together or not at all"
-      );
+        "Cannot create timestamp where both voyage numbers carrierVoyageNumber AND (exportVoyageNumber + importVoyageNumber) " +
+          "is missing or provided together");
     }
 
     return findTransportCall(timestampTO)
@@ -79,12 +76,6 @@ public class TransportCallService {
   }
 
   private TransportCall createTransportCall(TimestampTO timestampTO) {
-    if (timestampTO.carrierServiceCode() == null) {
-      throw ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where service code is missing");
-    }
-    if (timestampTO.exportVoyageNumber() == null) {
-      throw ConcreteRequestErrorMessageException.invalidInput("Cannot create timestamp where voyage number (carrierVoyageNumber OR exportVoyageNumber + importVoyageNumber) is missing");
-    }
 
     Location location = locationRepository.save(
       Location.builder()

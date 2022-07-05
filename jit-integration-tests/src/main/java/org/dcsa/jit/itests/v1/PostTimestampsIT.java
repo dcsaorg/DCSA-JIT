@@ -641,4 +641,33 @@ public class PostTimestampsIT {
         .assertThat()
         .statusCode(400);
   }
+
+  // Test XOR Logic for the ImportVoyageNumber & ExportVoyageNumber & carrierVoyageNumber fields
+  // should fail when all 3 are present or absent
+  @Test
+  public void testXorLogicForVoyageNumberFields() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP);
+
+    // ImportVoyageNumber & ExportVoyageNumber already exist in valid timestamp
+    map.put("carrierVoyageNumber", "sdf"); // add to test XOR logic
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // remove all three voyage numbers
+    map.remove("carrierVoyageNumber");
+    map.remove("exportVoyageNumber");
+    map.remove("importVoyageNumber");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+  }
 }
