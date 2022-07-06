@@ -645,11 +645,11 @@ public class PostTimestampsIT {
   // Test XOR Logic for the ImportVoyageNumber & ExportVoyageNumber & carrierVoyageNumber fields
   // should fail when all 3 are present or absent
   @Test
-  public void testXorLogicForVoyageNumberFields() {
+  public void testLogicForVoyageNumberFields() {
     Map<String, Object> map = jsonToMap(VALID_TIMESTAMP);
 
-    // ImportVoyageNumber & ExportVoyageNumber already exist in valid timestamp
-    map.put("carrierVoyageNumber", "sdf"); // add to test XOR logic
+    // add to test that when carrierVoyageNumber != (exportVoyageNumber || importVoyageNumber)
+    map.put("carrierVoyageNumber", "sdf");
     given()
       .contentType("application/json")
       .body(map)
@@ -658,10 +658,8 @@ public class PostTimestampsIT {
       .assertThat()
       .statusCode(400);
 
-    // remove all three voyage numbers
-    map.remove("carrierVoyageNumber");
+    // remove exportVoyageNumber to test that when(exportVoyageNumber & importVoyageNumber) are not given together.
     map.remove("exportVoyageNumber");
-    map.remove("importVoyageNumber");
     given()
       .contentType("application/json")
       .body(map)
@@ -669,5 +667,16 @@ public class PostTimestampsIT {
       .then()
       .assertThat()
       .statusCode(400);
+
+    // Here we remove importVoyageNumber as well, thus we have a valid timestamp
+    map.remove("importVoyageNumber");
+    map.put("carrierVoyageNumber", "2103S"); // valid carrierVoyageNumber value
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
   }
 }
