@@ -96,7 +96,7 @@ public class OperationsEventIT {
   }
 
   @Test
-  public void testWithUnLocationCodeQueryParameter1() {
+  public void testWithUnLocationCodeQueryParameter() {
     given()
         .contentType(ContentType.JSON)
         .queryParam("UNLocationCode", "USNYC")
@@ -107,21 +107,6 @@ public class OperationsEventIT {
         .contentType(ContentType.JSON)
         .body("size()", greaterThan(0))
         .body("transportCall.location.UNLocationCode", everyItem(equalTo("USNYC")))
-        .body(jsonSchemaValidator("operationsEvent"));
-  }
-
-  @Test
-  public void testWithUnLocationCodeQueryParameter2() {
-    given()
-        .contentType(ContentType.JSON)
-        .queryParam("UNLocationCode", "SGSIN")
-        .get("/v1/events")
-        .then()
-        .assertThat()
-        .statusCode(HttpStatus.SC_OK)
-        .contentType(ContentType.JSON)
-        .body("size()", greaterThan(0))
-        .body("transportCall.location.UNLocationCode", everyItem(equalTo("SGSIN")))
         .body(jsonSchemaValidator("operationsEvent"));
   }
 
