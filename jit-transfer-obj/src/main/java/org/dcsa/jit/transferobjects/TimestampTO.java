@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 public record TimestampTO(
   @NotNull PartyTO publisher,
   @NotNull PublisherRole publisherRole,
-  @NotNull @ValidVesselIMONumber String vesselIMONumber,
+  @ValidVesselIMONumber String vesselIMONumber,
   @NotNull @Size(max = 5) String UNLocationCode,
   @Size(max = 6) String facilitySMDGCode,
   FacilityTypeCodeOPR facilityTypeCode,
@@ -25,6 +25,7 @@ public record TimestampTO(
   @NotNull OffsetDateTime eventDateTime,
   @Size(max = 50) String exportVoyageNumber,
   @Size(max = 50) String importVoyageNumber,
+  @Size(max = 50) String carrierVoyageNumber,
   @NotNull @Size(max = 5) String carrierServiceCode,
   Integer transportCallSequenceNumber,
   String remark,
