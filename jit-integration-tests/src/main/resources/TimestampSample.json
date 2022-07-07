@@ -1,49 +1,24 @@
 {
   "publisher": {
-    "partyName": "Asseco Denmark",
-    "taxReference1": "CVR-25645774",
-    "taxReference2": "CVR-25645774",
-    "publicKey": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW",
-    "address": {
-      "name": "Henrik",
-      "street": "Kronprincessegade",
-      "streetNumber": "54",
-      "floor": "5. sal",
-      "postCode": "1306",
-      "city": "København",
-      "stateRegion": "N/A",
-      "country": "Denmark"
-    },
+    "partyName": "Maersk",
     "identifyingCodes": [
       {
         "DCSAResponsibleAgencyCode": "SMDG",
-        "partyCode": "MSK"
+        "partyCode": "MSK",
+        "codeListName": "LCL"
       }
-    ],
-    "nmftaCode" : "CSK"
+    ]
   },
   "publisherRole": "CA",
   "vesselIMONumber": "9321483",
-  "UNLocationCode": "SGSIN",
-  "facilitySMDGCode": "PSABT",
+  "UNLocationCode": "DEHAM",
   "facilityTypeCode": "BRTH",
   "eventClassifierCode": "EST",
   "operationsEventTypeCode": "ARRI",
   "eventLocation": {
-    "locationName": "Eiffel Tower",
-    "latitude": "48.8585500",
-    "longitude": "2.294492036",
-    "UNLocationCode": "SGSIN",
-    "address": {
-      "name": "Henrik",
-      "street": "Kronprincessegade",
-      "streetNumber": "54",
-      "floor": "5. sal",
-      "postCode": "1306",
-      "city": "København",
-      "stateRegion": "N/A",
-      "country": "Denmark"
-    }
+    "UNLocationCode": "DEHAM",
+    "facilityCode": "EGH",
+    "facilityCodeListProvider": "SMDG"
   },
   "vesselPosition": {
     "latitude": "48.8585500",
@@ -51,22 +26,11 @@
   },
   "modeOfTransport": "VESSEL",
   "portCallServiceTypeCode": null,
+  "portCallPhaseTypeCode": null,
   "eventDateTime": "2019-11-12T07:41:00+08:30",
-  "exportVoyageNumber": "2103S",
-  "importVoyageNumber": "2103S",
   "carrierVoyageNumber": "2103S",
+  "exportVoyageNumber": "2103S",
+  "importVoyageNumber": "2103N",
   "carrierServiceCode": "FE1",
-  "transportCallSequenceNumber": 2,
-  "remark": "Port closed due to strike",
-  "delayReasonCode": "WEA",
-  "vessel": {
-    "vesselIMONumber": "2345678",
-    "vesselName": "Ever Given",
-    "vesselFlag": "PA",
-    "vesselCallSignNumber": "H3RC",
-    "isDummy": false,
-    "length": "12.2",
-    "width": "14.6",
-    "type": "GCGO"
-  }
+  "transportCallSequenceNumber": 2
 }
