@@ -25,7 +25,7 @@ public record TimestampTO(
   @NotNull OffsetDateTime eventDateTime,
   @Size(max = 50) String exportVoyageNumber,
   @Size(max = 50) String importVoyageNumber,
-  @Size(max = 50) String carrierVoyageNumber,
+  @NotNull @Size(max = 50) String carrierVoyageNumber,
   @NotNull @Size(max = 5) String carrierServiceCode,
   Integer transportCallSequenceNumber,
   String remark,

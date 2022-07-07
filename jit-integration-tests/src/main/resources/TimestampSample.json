@@ -28,6 +28,7 @@
   "portCallServiceTypeCode": null,
   "portCallPhaseTypeCode": null,
   "eventDateTime": "2019-11-12T07:41:00+08:30",
+  "carrierVoyageNumber": "2103S",
   "exportVoyageNumber": "2103S",
   "importVoyageNumber": "2103N",
   "carrierServiceCode": "FE1",
