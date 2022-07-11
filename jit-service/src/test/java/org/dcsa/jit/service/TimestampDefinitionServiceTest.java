@@ -50,7 +50,6 @@ public class TimestampDefinitionServiceTest {
             .isBerthLocationNeeded(false)
             .isPBPLocationNeeded(false)
             .isVesselPositionNeeded(false)
-            .negotiationCycle(String.valueOf(1))
             .operationsEventTypeCode(OperationsEventTypeCode.ARRI)
             .build();
   }
@@ -87,7 +86,7 @@ public class TimestampDefinitionServiceTest {
             ConcreteRequestErrorMessageException.class,
             () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
     assertTrue(
-        exception.getMessage().contains("Cannot determine timestamp type for provided timestamp"));
+        exception.getMessage().contains("Cannot determine JIT timestamp type for provided timestamp!"));
   }
 
   @Test
@@ -106,6 +105,6 @@ public class TimestampDefinitionServiceTest {
     assertTrue(
         exception
             .getMessage()
-            .contains("There should exactly one timestamp matching this input but we got two"));
+            .contains("There should be exactly one timestamp! More than one JIT timestamp type found for the given fields: "));
   }
 }

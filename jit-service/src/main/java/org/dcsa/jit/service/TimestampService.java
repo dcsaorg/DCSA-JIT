@@ -205,13 +205,6 @@ public class TimestampService {
 
   public void create(OperationsEvent operationsEvent) {
 
-    try {
-      this.ensurePhaseTypeIsDefined(operationsEvent);
-    } catch (IllegalStateException e) {
-      throw ConcreteRequestErrorMessageException.invalidInput(
-          "Cannot derive portCallPhaseTypeCode automatically from this timestamp. Please define it explicitly");
-    }
-
     operationsEvent = operationsEventRepository.save(operationsEvent);
     timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
 
@@ -222,19 +215,6 @@ public class TimestampService {
             .newRecord(true)
             .build();
     unmappedEventRepository.save(unmappedEvent);
-  }
-
-  private void ensurePhaseTypeIsDefined(OperationsEvent oe) {
-    if (oe.getPortCallPhaseTypeCode() != null) return;
-
-    PortCallPhaseTypeCode phaseTypeCode =
-        timestampDefinitionService.findPhaseTypeCodeFromOperationsEventForJit1_0(oe);
-    if (phaseTypeCode != null) {
-      oe.setPortCallPhaseTypeCode(phaseTypeCode);
-      return;
-    }
-    throw ConcreteRequestErrorMessageException.invalidParameter(
-        "PortCallPhaseTypeCode cannot be omitted!");
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {
