@@ -3,6 +3,7 @@ package org.dcsa.jit.service;
 import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
+import org.dcsa.jit.persistence.entity.PublisherPattern;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
@@ -44,14 +45,42 @@ public class TimestampDefinitionService {
             .filter(definition -> isCorrectTimestampsForEvent(definition, operationsEvent))
             .toList();
 
+
+
     if (timestampDefinitionList.isEmpty()) {
+      String errorMessage =
+        "EventClassifierCode: "
+          + operationsEvent.getEventClassifierCode()
+          + ", OperationsEventTypeCode: "
+          + operationsEvent.getOperationsEventTypeCode()
+          + ", PortCallPhaseTypeCode: "
+          + operationsEvent.getPortCallPhaseTypeCode()
+          + ", PortCallServiceTypeCode: "
+          + operationsEvent.getPortCallServiceTypeCode()
+          + ", FacilityTypeCode: "
+          + operationsEvent.getFacilityTypeCode();
       throw ConcreteRequestErrorMessageException.invalidInput(
-          "Cannot determine timestamp type for provided timestamp - please verify publisherRole, eventClassifierCode, facilityTypeCode, portCallPhaseTypeCode, and portCallServiceTypeCode");
+          "Cannot determine JIT timestamp type for provided timestamp! No JIT timestamp type found for the given fields: "
+            + errorMessage);
     }
     if (timestampDefinitionList.size() >= 2) {
-      throw ConcreteRequestErrorMessageException.internalServerError(
-          "There should exactly one timestamp matching this input but we got two!");
+        String errorMessage =
+          "EventClassifierCode: "
+            + operationsEvent.getEventClassifierCode()
+            + ", OperationsEventTypeCode: "
+            + operationsEvent.getOperationsEventTypeCode()
+            + ", PortCallPhaseTypeCode: "
+            + operationsEvent.getPortCallPhaseTypeCode()
+            + ", PortCallServiceTypeCode: "
+            + operationsEvent.getPortCallServiceTypeCode()
+            + ", FacilityTypeCode: "
+            + operationsEvent.getFacilityTypeCode();
+
+        throw ConcreteRequestErrorMessageException.internalServerError(
+          "There should be exactly one timestamp! More than one JIT timestamp type found for the given fields: "
+            + errorMessage);
     }
+
     OpsEventTimestampDefinition ops =
         OpsEventTimestampDefinition.builder()
             .eventID(operationsEvent.getEventID())
@@ -60,42 +89,6 @@ public class TimestampDefinitionService {
             .newRecord(true)
             .build();
     opsEventTimestampDefinitionRepository.save(ops);
-  }
-
-  public PortCallPhaseTypeCode findPhaseTypeCodeFromOperationsEventForJit1_0(
-      OperationsEvent operationsEvent) {
-
-    List<TimestampDefinition> jit1_0 =
-        timestampDefinitionRepository
-            .findByEventClassifierCodeAndOperationsEventTypeCodeAndProvidedInStandardAndPortCallServiceTypeCodeAndFacilityTypeCode(
-                operationsEvent.getEventClassifierCode(),
-                operationsEvent.getOperationsEventTypeCode(),
-                "jit1_0",
-                operationsEvent.getPortCallServiceTypeCode(),
-                operationsEvent.getFacilityTypeCode());
-
-    // PortCallPhaseTypeCode not part of JIT 1.0
-    if (jit1_0.isEmpty()) {
-      return null;
-    }
-
-    if (jit1_0.size() > 1) {
-      String errorMessage =
-          "EventClassifierCode: "
-              + operationsEvent.getEventClassifierCode()
-              + ", OperationsEventTypeCode: "
-              + operationsEvent.getOperationsEventTypeCode()
-              + ", PortCallServiceTypeCode: "
-              + operationsEvent.getPortCallServiceTypeCode()
-              + ", FacilityTypeCode: "
-              + operationsEvent.getFacilityTypeCode();
-
-      throw ConcreteRequestErrorMessageException.internalServerError(
-          "More than one JIT 1.0 timestamp definitions found according to the given fields: "
-              + errorMessage);
-    }
-
-    return jit1_0.stream().findFirst().get().getPortCallPhaseTypeCode();
   }
 
   /**
@@ -115,8 +108,9 @@ public class TimestampDefinitionService {
     // - they are the only ones that are "SAFE" + "DEPA"
     if (operationsEvent.getPortCallServiceTypeCode() == PortCallServiceTypeCode.SAFE
         && operationsEvent.getOperationsEventTypeCode() == OperationsEventTypeCode.DEPA) {
+      PublisherPattern pattern = definition.getPublisherPattern().iterator().next();
       return arePublisherRolesInterchangeable(
-          definition.getPublisherRole(), operationsEvent.getPublisherRole());
+        pattern.getPublisherRole(), operationsEvent.getPublisherRole());
     }
     return true;
   }

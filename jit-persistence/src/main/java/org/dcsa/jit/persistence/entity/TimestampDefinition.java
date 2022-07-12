@@ -4,6 +4,8 @@ import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.*;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -14,19 +16,11 @@ import javax.persistence.*;
 @Table(name = "timestamp_definition")
 public class TimestampDefinition {
   @Id
-  @Column(name = "id", nullable = false)
+  @Column(name = "timestamp_id", nullable = false)
   private String id;
 
   @Column(name = "timestamp_type_name", nullable = false, unique = true)
   private String timestampTypeName;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "publisher_role", length = 3, nullable = false)
-  private PublisherRole publisherRole;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "primary_receiver", length = 3, nullable = false)
-  private PublisherRole primaryReceiver;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "event_classifier_code", length = 3, nullable = false)
@@ -57,13 +51,16 @@ public class TimestampDefinition {
   @Column(name = "is_pbp_location_needed", nullable = false)
   private Boolean isPBPLocationNeeded;
 
+  @Column(name = "is_anchorage_location_needed", nullable = false)
+  private Boolean isAnchorageLocationNeeded;
+
   @Column(name = "is_terminal_needed", nullable = false)
   private Boolean isTerminalNeeded;
 
   @Column(name = "is_vessel_position_needed", nullable = false)
   private Boolean isVesselPositionNeeded;
 
-  @Column(name = "negotiation_cycle", nullable = false)
+  @Transient // TODO: FIX ME (Timestamp Definition should include this) -- abf@asseco.dk
   private String negotiationCycle;
 
   @Column(name = "provided_in_standard", nullable = false)
@@ -74,4 +71,16 @@ public class TimestampDefinition {
 
   @Column(name = "reject_timestamp_definition", nullable = false)
   private String rejectTimestampDefinition;
+
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @OneToMany
+  @JoinTable
+    (
+      name="timestamp_definition_publisher_pattern",
+      joinColumns={ @JoinColumn(name="timestamp_id", referencedColumnName="timestamp_id") },
+      inverseJoinColumns={ @JoinColumn(name="pattern_id", referencedColumnName="pattern_id", unique=true) }
+    )
+  private Set<PublisherPattern> publisherPattern = new LinkedHashSet<>();
+
 }
