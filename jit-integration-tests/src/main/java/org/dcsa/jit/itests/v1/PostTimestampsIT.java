@@ -17,7 +17,8 @@ import static org.dcsa.jit.itests.config.TestUtil.*;
  * Tests related to the POST /Timestamps endpoint
  * NOTE:  VALID_TIMESTAMP_1_0 & VALID_TIMESTAMP_1_1 target the timestamp definition ETA-BERTH
  * Additionally, we test aggressively for latest timestamp version
- * & test for backwards compatibility by posting an earlier valid timestamp with all optional fields given.
+ * & testing for backwards compatibility is done by posting an earlier valid timestamp with all optional fields given.
+ * Finally, custom tests raised in specific tickets are included (with their ticket number)
  * */
 public class PostTimestampsIT {
 
@@ -722,6 +723,76 @@ public class PostTimestampsIT {
     // Here we remove importVoyageNumber as well, thus we have a valid timestamp
     map.remove("importVoyageNumber");
     map.put("carrierVoyageNumber", "2103S"); // valid carrierVoyageNumber value
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+  }
+
+  /* This test addresses a scenario raised in ticket DDT-1005
+   * Timestamp definition -> ETS-Cargo Ops (<implicit>)
+   * test uses JIT 1.0 timestamp spec
+   */
+  @Test
+  public void testJIT1dot0TimestampTimestampTypeIsETSCARGO() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_0);
+
+
+    Map<String, Object> partyNameAndIdentifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of("DCSAResponsibleAgencyCode", "SMDG",
+          "partyCode", "MSK",
+          "codeListName", "LCL"
+        )),
+        "partyName", "ETS-Cargo Ops (<implicit>)"   // We set party name as Timestamp definition
+        // To allow for easier look up of posted Timestamp/operationsEvent
+      );
+    map.put("publisher", partyNameAndIdentifyingCodes);
+    // below aligns fields to the timestamp definition
+    map.put("facilityTypeCode", "BRTH");
+    map.put("eventClassifierCode", "EST");
+    map.put("operationsEventTypeCode", "STRT");
+    map.put("portCallServiceTypeCode", "CRGO");
+
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+  }
+
+  /* This test addresses a scenario raised in ticket DDT-1005
+   * Timestamp definition -> ATS-Pilotage (<implicit>)
+   * test uses JIT 1.0 timestamp spec
+   */
+  @Test
+  public void testJIT1dot0TimestampTimestampDefinitionIsATSPILO() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_0);
+
+    Map<String, Object> partyNameAndIdentifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of("DCSAResponsibleAgencyCode", "SMDG",
+          "partyCode", "MSK",
+          "codeListName", "LCL"
+        )),
+        "partyName", "ATS-Pilotage (<implicit>)"   // We set party name as Timestamp definition
+        // To allow for easier look up of posted Timestamp/operationsEvent
+      );
+    map.put("publisher", partyNameAndIdentifyingCodes);
+    // below aligns fields to the timestamp definition
+    map.put("facilityTypeCode", "BRTH");
+    map.put("eventClassifierCode", "ACT");
+    map.put("operationsEventTypeCode", "STRT");
+    map.put("portCallServiceTypeCode", "PILO");
+
     given()
       .contentType("application/json")
       .body(map)
