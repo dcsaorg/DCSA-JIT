@@ -21,7 +21,8 @@ public record TransportCallTO(
   @Size(max = 50) String otherFacility,
   @NotNull ModeOfTransport modeOfTransport,
   LocationTO location,
-  VesselTO vessel
+  VesselTO vessel,
+  @Size(max = 50) String portVisitReference
 ) {
   @Builder(toBuilder = true) // workaround for intellij issue
   public TransportCallTO {}

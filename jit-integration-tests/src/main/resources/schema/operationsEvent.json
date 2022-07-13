@@ -356,6 +356,11 @@
             "type": "string",
             "description": "The unique identifier for a transport call"
           },
+          "portVisitReference": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "The unique reference that can be used to link different transportCallReferences to the same port visit. The reference is provided by the port to uniquely identify a port call."
+          },
           "carrierServiceCode": {
             "maxLength": 5,
             "type": "string",

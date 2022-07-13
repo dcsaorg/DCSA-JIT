@@ -28,6 +28,7 @@ public interface TransportCallRepository extends JpaRepository<TransportCall, UU
          AND (:exportVoyageNumber IS NULL OR export_voyage.carrier_voyage_number = :exportVoyageNumber)
          AND service.carrier_service_code = :carrierServiceCode
          AND (:transportCallSequenceNumber IS NULL OR transport_call.transport_call_sequence_number = :transportCallSequenceNumber)
+         AND (:portVisitReference IS NULL OR transport_call.port_visit_reference = :portVisitReference)
        LIMIT 2
      """, nativeQuery = true)
   List<TransportCall> findAllTransportCall(
@@ -38,6 +39,7 @@ public interface TransportCallRepository extends JpaRepository<TransportCall, UU
     @Param("carrierServiceCode") String carrierServiceCode,
     @Param("importVoyageNumber") String importVoyageNumber,
     @Param("exportVoyageNumber") String exportVoyageNumber,
-    @Param("transportCallSequenceNumber") Integer transportCallSequenceNumber
+    @Param("transportCallSequenceNumber") Integer transportCallSequenceNumber,
+    @Param("portVisitReference") String portVisitReference
   );
 }

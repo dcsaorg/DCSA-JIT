@@ -79,7 +79,7 @@ public class TimestampService {
         // It is complex enough without having to deal with BIC codes, so exclude BIC as an
         // implementation detail.
         throw ConcreteRequestErrorMessageException.invalidInput(
-            "The reference implementation only includes supports SMDG codes for facilities.");
+            "The reference implementation only supports SMDG codes for facilities.");
       }
       // Ensure timestamp.facilitySMDGCode is set if location.facilityCode is also set
       // The errors for misaligned values are handled below.
