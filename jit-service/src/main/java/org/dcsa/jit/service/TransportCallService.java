@@ -75,7 +75,8 @@ public class TransportCallService {
       timestampTO.carrierServiceCode(),
       timestampTO.importVoyageNumber(),
       timestampTO.exportVoyageNumber(),
-      timestampTO.transportCallSequenceNumber()
+      timestampTO.transportCallSequenceNumber(),
+      timestampTO.portVisitReference()
     );
 
     if (transportCalls.isEmpty()) {
@@ -119,6 +120,7 @@ public class TransportCallService {
       .importVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.importVoyageNumber()).service(service).build())
       .exportVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.exportVoyageNumber()).service(service).build())
       .portCallStatusCode(null)
+      .portVisitReference(timestampTO.portVisitReference())
       .build();
 
     return transportCallRepository.save(entityToSave);
