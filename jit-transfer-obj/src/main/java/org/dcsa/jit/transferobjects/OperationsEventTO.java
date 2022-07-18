@@ -3,7 +3,6 @@ package org.dcsa.jit.transferobjects;
 import lombok.Builder;
 import org.dcsa.jit.transferobjects.enums.*;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
@@ -27,6 +26,7 @@ public record OperationsEventTO(
   TransportCallTO transportCall,
   LocationTO vesselPosition,
   Integer vesselDraft,
+  DimensionUnit vesselDraftUnit,
   Integer milesRemainingToDestination
 ) {
     @Builder(toBuilder = true) // workaround for intellij issue

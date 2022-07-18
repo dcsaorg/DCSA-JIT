@@ -81,6 +81,11 @@ public class OperationsEvent {
   @Column(name = "vessel_draft")
   private Integer vesselDraft;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "vessel_draft_unit")
+  @Setter
+  private DimensionUnit vesselDraftUnit;
+
   @Column(name = "miles_remaining_to_destination")
   private Integer milesRemainingToDestination;
 }
