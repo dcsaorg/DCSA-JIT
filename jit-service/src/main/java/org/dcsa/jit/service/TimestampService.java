@@ -7,7 +7,6 @@ import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.mapping.VesselMapper;
 import org.dcsa.jit.persistence.entity.*;
-import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
@@ -148,7 +147,8 @@ public class TimestampService {
             .publisher(party)
             .transportCall(tc)
             .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().vesselDraft() : null)
-            .milesRemainingToDestination(timestamp.milesRemainingToDestination())
+            .vesselDraftUnit(timestamp.vessel() != null ? enumMappers.dimensionUnitToDao(timestamp.vessel().dimensionUnit()) : null)
+            .milesToDestinationPort(timestamp.milesToDestinationPort())
             .build();
 
     create(operationsEvent);

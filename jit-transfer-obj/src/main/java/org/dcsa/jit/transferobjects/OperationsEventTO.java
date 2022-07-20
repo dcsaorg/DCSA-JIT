@@ -25,9 +25,9 @@ public record OperationsEventTO(
   String remark,
   TransportCallTO transportCall,
   LocationTO vesselPosition,
-  Integer vesselDraft,
+  Float vesselDraft,
   DimensionUnit vesselDraftUnit,
-  Integer milesRemainingToDestination
+  Float milesToDestinationPort
 ) {
     @Builder(toBuilder = true) // workaround for intellij issue
   public OperationsEventTO { }

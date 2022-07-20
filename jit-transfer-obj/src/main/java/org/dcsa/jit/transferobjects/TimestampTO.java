@@ -31,7 +31,7 @@ public record TimestampTO(
   String remark,
   String delayReasonCode,
   VesselTO vessel,
-  Integer milesRemainingToDestination,
+  Float milesToDestinationPort,
   @Size(max = 50) String portVisitReference
 ) {
   @Builder(toBuilder = true) // workaround for intellij issue

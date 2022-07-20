@@ -2,6 +2,7 @@ package org.dcsa.jit.transferobjects;
 
 import lombok.Builder;
 import org.dcsa.jit.transferobjects.enums.CarrierCodeListProvider;
+import org.dcsa.jit.transferobjects.enums.DimensionUnit;
 import org.dcsa.jit.transferobjects.enums.VesselType;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 
@@ -19,8 +20,8 @@ public record VesselTO(
   Float length,
   Float width,
   VesselType type,
-  @Size(max = 3) String dimensionUnit,
-  Integer vesselDraft
+  @Size(max = 3) DimensionUnit dimensionUnit,
+  Float vesselDraft
 ){
   @Builder(toBuilder = true) // workaround for intellij issue
   public VesselTO {}

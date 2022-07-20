@@ -577,6 +577,18 @@
             "description": "Geographic coordinate that specifies the eastÔÇôwest position of a point on the Earth&apos;s surface."
           }
         }
+      },
+      "dimensionUnit": {
+        "type": "string",
+        "description": "The actual draft of the vessel.\n\nIf the draft is specified in feet (FOT) then the decimal part should be concidered as a fraction of a foot and not as a number of inches. E.g. 120.5 feet means 120 and a half foot (which would be 120'6",
+        "enum": [
+          "FOT",
+          "MTR"
+        ]
+      },
+      "milesToDestinationPort": {
+        "type": "integer",
+        "description": "Remaining distance reported by the vessel to the next destination port in nautical miles"
       }
     }
   },

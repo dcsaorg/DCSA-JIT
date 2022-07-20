@@ -3,6 +3,7 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.*;
 import org.dcsa.skernel.domain.persistence.entity.Location;
+import org.dcsa.skernel.domain.persistence.entity.enums.DimensionUnit;
 import org.hibernate.annotations.GenerationTime;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -79,7 +80,7 @@ public class OperationsEvent {
   private FacilityTypeCodeOPR facilityTypeCode;
 
   @Column(name = "vessel_draft")
-  private Integer vesselDraft;
+  private Float vesselDraft;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "vessel_draft_unit")
@@ -87,5 +88,5 @@ public class OperationsEvent {
   private DimensionUnit vesselDraftUnit;
 
   @Column(name = "miles_remaining_to_destination")
-  private Integer milesRemainingToDestination;
+  private Float milesToDestinationPort;
 }
