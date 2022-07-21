@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Test;
 public class OperationsEventMapperTest {
   @Test
   public void testFieldsAreEqual() {
-    FieldValidator.assertFieldsAreEqual(OperationsEvent.class, OperationsEventTO.class,
-      // Unmapped fields
-      "eventType", "facilityTypeCode");
+    FieldValidator.assertFieldsAreEqual(
+        OperationsEvent.class,
+        OperationsEventTO.class,
+        // Unmapped fields
+        "milesToDestinationPort",
+        "eventType",
+        "facilityTypeCode");
   }
 }

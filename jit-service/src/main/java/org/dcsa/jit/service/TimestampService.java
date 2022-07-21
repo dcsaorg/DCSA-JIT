@@ -7,12 +7,11 @@ import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.mapping.VesselMapper;
 import org.dcsa.jit.persistence.entity.*;
-import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
-import org.dcsa.jit.transferobjects.VesselTO;
+import org.dcsa.jit.transferobjects.TimestampVesselTO;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.domain.persistence.entity.Location;
@@ -127,7 +126,7 @@ public class TimestampService {
     Location location = saveLocationIfNotNull(timestamp.eventLocation());
     Location vesselPos = saveLocationIfNotNull(timestamp.vesselPosition());
     Party party = savePublisher(timestamp.publisher());
-    saveVesselIfNotNull(timestamp.vessel());
+    Vessel vessel = saveVesselIfNotNull(timestamp.vessel());
 
     OperationsEvent operationsEvent =
         OperationsEvent.builder()
@@ -147,14 +146,14 @@ public class TimestampService {
             .vesselPosition(vesselPos)
             .publisher(party)
             .transportCall(tc)
-            .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().vesselDraft() : null)
-            .milesRemainingToDestination(timestamp.milesRemainingToDestination())
+            .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().draft() : null)
+            .milesRemainingToDestination(timestamp.milesToDestinationPort())
             .build();
 
     create(operationsEvent);
   }
 
-  private Vessel saveVesselIfNotNull(VesselTO vesselTO) {
+  private Vessel saveVesselIfNotNull(TimestampVesselTO vesselTO) {
     return saveIfNotNull(
       vesselTO,
       vTO -> {
