@@ -18,9 +18,7 @@ public interface VesselMapper {
   Vessel toEntity(VesselTO vesselTO);
 
   @Mappings(value = {
-    @Mapping(target = "name", source = "name"),
     @Mapping(target = "length", source = "lengthOverall"),
-    @Mapping(target = "width", source = "width"),
     @Mapping(target = "callSignNumber", source = "callSign"),
     @Mapping(target = "isDummy", constant = "false")
   })

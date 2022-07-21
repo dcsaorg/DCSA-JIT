@@ -14,7 +14,7 @@ public class VesselMappingTest {
       "vesselCallSignNumber",
       "vesselFlag",
       "vesselName",
-
+      // Unmapped
       "vesselOperatorCarrierCodeListProvider", "vesselOperatorCarrierCode");
   }
 }
