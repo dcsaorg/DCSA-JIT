@@ -3,6 +3,7 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.VesselType;
 import org.dcsa.skernel.domain.persistence.entity.Carrier;
+import org.dcsa.skernel.domain.persistence.entity.enums.DimensionUnit;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -24,16 +25,16 @@ public class Vessel {
   private String vesselIMONumber;
 
   @Column(name = "vessel_name", length = 35)
-  private String vesselName;
+  private String name;
 
   @Column(
       name = "vessel_flag",
       length = 2,
       columnDefinition = "bpchar") // "bpchar" here is not a typing error)
-  private String vesselFlag;
+  private String flag;
 
   @Column(name = "vessel_call_sign", length = 18)
-  private String vesselCallSignNumber;
+  private String callSignNumber;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "vessel_operator_carrier_id")
@@ -52,6 +53,7 @@ public class Vessel {
   @Column(name = "type")
   private VesselType type;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "dimension_unit", length = 3)
-  private String dimensionUnit;
+  private DimensionUnit dimensionUnit;
 }

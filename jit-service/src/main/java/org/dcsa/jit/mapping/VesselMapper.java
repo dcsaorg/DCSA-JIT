@@ -18,17 +18,15 @@ public interface VesselMapper {
   Vessel toEntity(VesselTO vesselTO);
 
   @Mappings(value = {
-    @Mapping(target = "vesselName", source = "name"),
     @Mapping(target = "length", source = "lengthOverall"),
-    @Mapping(target = "width", source = "width"),
-    @Mapping(target = "vesselCallSignNumber", source = "callSign"),
+    @Mapping(target = "callSignNumber", source = "callSign"),
     @Mapping(target = "isDummy", constant = "false")
   })
   Vessel toEntity(TimestampVesselTO vesselTO);
-  
+
   @AfterMapping
   default void mapVesselOperatorCarrier(
-      Vessel vessel, @MappingTarget VesselTO.VesselTOBuilder vesselTOBuilder) {
+    Vessel vessel, @MappingTarget VesselTO.VesselTOBuilder vesselTOBuilder) {
     String nMFTACode = vessel.getVesselOperatorCarrier().getNmftaCode();
     String sMDGCode = vessel.getVesselOperatorCarrier().getSmdgCode();
     if (nMFTACode != null) {

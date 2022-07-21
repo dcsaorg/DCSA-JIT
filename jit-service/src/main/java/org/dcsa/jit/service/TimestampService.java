@@ -147,6 +147,7 @@ public class TimestampService {
             .publisher(party)
             .transportCall(tc)
             .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().draft() : null)
+            .vesselDraftUnit(timestamp.vessel() != null ? enumMappers.dimensionUnitToDao(timestamp.vessel().dimensionUnit()) : null)
             .milesRemainingToDestination(timestamp.milesToDestinationPort())
             .build();
 
