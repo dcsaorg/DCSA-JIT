@@ -88,5 +88,6 @@ public class OperationsEvent {
   private DimensionUnit vesselDraftUnit;
 
   @Column(name = "miles_remaining_to_destination")
-  private Float milesToDestinationPort;
+  private Float milesRemainingToDestination;
+
 }

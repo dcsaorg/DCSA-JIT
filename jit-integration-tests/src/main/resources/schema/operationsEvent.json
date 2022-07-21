@@ -587,7 +587,7 @@
         ]
       },
       "milesToDestinationPort": {
-        "type": "integer",
+        "type": "number",
         "description": "Remaining distance reported by the vessel to the next destination port in nautical miles"
       }
     }

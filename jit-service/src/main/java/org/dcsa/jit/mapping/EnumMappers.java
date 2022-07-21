@@ -39,5 +39,5 @@ public interface EnumMappers {
       PublisherRole publisherRole);
 
   org.dcsa.skernel.domain.persistence.entity.enums.DimensionUnit dimensionUnitToDao(
-     DimensionUnit publisherRole);
+     DimensionUnit dimensionUnit);
 }

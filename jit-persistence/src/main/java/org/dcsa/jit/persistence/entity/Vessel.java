@@ -53,6 +53,7 @@ public class Vessel {
   @Column(name = "type")
   private VesselType type;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "dimension_unit", length = 3)
   private DimensionUnit dimensionUnit;
 }

@@ -27,7 +27,8 @@ public record OperationsEventTO(
   LocationTO vesselPosition,
   Float vesselDraft,
   DimensionUnit vesselDraftUnit,
-  Float milesToDestinationPort
+  @Deprecated Float milesRemainingToDestination, // Deprecated in JIT 1.2
+  Float milesToDestinationPort // same as milesRemainingToDestination however we return both as we cannot distinguish between the versions
 ) {
     @Builder(toBuilder = true) // workaround for intellij issue
   public OperationsEventTO { }

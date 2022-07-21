@@ -11,7 +11,10 @@ public class VesselMappingTest {
     FieldValidator.assertTargetFieldsPresentInSrc(Vessel.class, VesselTO.class,
       // special mappings
       "vesselDraft",
-      // Unmapped
+      "vesselCallSignNumber",
+      "vesselFlag",
+      "vesselName",
+
       "vesselOperatorCarrierCodeListProvider", "vesselOperatorCarrierCode");
   }
 }
