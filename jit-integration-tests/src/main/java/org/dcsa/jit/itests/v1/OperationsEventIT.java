@@ -163,7 +163,7 @@ public class OperationsEventIT {
         .assertThat()
         .statusCode(HttpStatus.SC_OK)
         .contentType(ContentType.JSON)
-        .body("transportCall.exportVoyageNumber", everyItem(equalTo("A_carrier_voyage_number")))
+        .body("transportCall.carrierExportVoyageNumber", everyItem(equalTo("A_carrier_voyage_number")))
         .body(jsonSchemaValidator("operationsEvent"));
   }
 
@@ -171,13 +171,13 @@ public class OperationsEventIT {
   public void testWithExportVoyageNumberQueryParameter() {
     given()
         .contentType(ContentType.JSON)
-        .queryParam("exportVoyageNumber", "TNT1E")
+        .queryParam("carrierExportVoyageNumber", "TNT1E")
         .get("/v1/events")
         .then()
         .assertThat()
         .statusCode(HttpStatus.SC_OK)
         .contentType(ContentType.JSON)
-        .body("transportCall.exportVoyageNumber", everyItem(equalTo("TNT1E")))
+        .body("transportCall.carrierExportVoyageNumber", everyItem(equalTo("TNT1E")))
         .body(jsonSchemaValidator("operationsEvent"));
   }
 
@@ -215,7 +215,7 @@ public class OperationsEventIT {
         (s, m) ->
             given()
                 .contentType("application/json")
-                .queryParam("exportVoyageNumber", s)
+                .queryParam("carrierExportVoyageNumber", s)
                 .get(EVENTS)
                 .then()
                 .assertThat()
@@ -242,7 +242,7 @@ public class OperationsEventIT {
   void testGetAllEventsByCombinedQuery() {
     given()
         .contentType("application/json")
-        .queryParam("exportVoyageNumber", "A_carrier_voyage_number")
+        .queryParam("carrierExportVoyageNumber", "A_carrier_voyage_number")
         .queryParam("UNLocationCode", "USNYC")
         .get(EVENTS)
         .then()
@@ -250,7 +250,7 @@ public class OperationsEventIT {
         .statusCode(200)
         .contentType(ContentType.JSON)
         .body("size()", greaterThanOrEqualTo(1))
-        .body("transportCall.exportVoyageNumber", everyItem(equalTo("A_carrier_voyage_number")))
+        .body("transportCall.carrierExportVoyageNumber", everyItem(equalTo("A_carrier_voyage_number")))
         .body("transportCall.location.UNLocationCode", everyItem(equalTo("USNYC")))
         .body(jsonSchemaValidator("operationsEvent"));
   }

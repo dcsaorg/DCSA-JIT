@@ -18,8 +18,8 @@ import java.util.Arrays;
 public abstract class TransportCallMapper {
   @Mappings(
       value = {
-        @Mapping(target = "importVoyageNumber", source = "importVoyage.carrierVoyageNumber"),
-        @Mapping(target = "exportVoyageNumber", source = "exportVoyage.carrierVoyageNumber"),
+        @Mapping(target = "carrierImportVoyageNumber", source = "importVoyage.carrierVoyageNumber"),
+        @Mapping(target = "carrierExportVoyageNumber", source = "exportVoyage.carrierVoyageNumber"),
         @Mapping(target = "UNLocationCode", source = "location.UNLocationCode"),
         @Mapping(target = "carrierServiceCode", source = "exportVoyage.service.carrierServiceCode"),
         @Mapping(target = "modeOfTransport", source = "modeOfTransportCode"),

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
@@ -15,9 +14,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +25,7 @@ public class OperationsEventSpecification {
     String transportCallID;
     String vesselIMONumber;
     String carrierVoyageNumber;
-    String exportVoyageNumber;
+    String carrierExportVoyageNumber;
     String carrierServiceCode;
     String unLocationCode;
     String facilitySMDGCode;
@@ -63,8 +59,8 @@ public class OperationsEventSpecification {
         predicates.add(predicate);
       }
 
-      if (null != filters.exportVoyageNumber ) {
-        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get("carrierVoyageNumber"), filters.exportVoyageNumber);
+      if (null != filters.carrierExportVoyageNumber) {
+        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get("carrierVoyageNumber"), filters.carrierExportVoyageNumber);
         predicates.add(predicate);
       }
 

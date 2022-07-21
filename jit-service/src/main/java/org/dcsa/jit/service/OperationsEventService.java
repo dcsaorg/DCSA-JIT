@@ -11,7 +11,6 @@ import org.dcsa.jit.transferobjects.OperationsEventTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.dcsa.skernel.infrastructure.pagination.Cursor;
 import org.dcsa.skernel.infrastructure.pagination.PagedResult;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -33,7 +32,7 @@ public class OperationsEventService {
     String transportCallID;
     String vesselIMONumber;
     String carrierVoyageNumber;
-    String exportVoyageNumber;
+    String carrierExportVoyageNumber;
     String carrierServiceCode;
     String unLocationCode;
     String facilitySMDGCode;
@@ -53,7 +52,7 @@ public class OperationsEventService {
                     .transportCallID(requestFilters.transportCallID)
                     .vesselIMONumber(requestFilters.vesselIMONumber)
                     .carrierVoyageNumber(requestFilters.carrierVoyageNumber)
-                    .exportVoyageNumber(requestFilters.exportVoyageNumber)
+                    .carrierExportVoyageNumber(requestFilters.carrierExportVoyageNumber)
                     .carrierServiceCode(requestFilters.carrierServiceCode)
                     .unLocationCode(requestFilters.unLocationCode)
                     .facilitySMDGCode(requestFilters.facilitySMDGCode)
