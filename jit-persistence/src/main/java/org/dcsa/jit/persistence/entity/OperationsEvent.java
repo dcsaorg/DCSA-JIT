@@ -3,6 +3,7 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.*;
 import org.dcsa.skernel.domain.persistence.entity.Location;
+import org.dcsa.skernel.domain.persistence.entity.enums.DimensionUnit;
 import org.hibernate.annotations.GenerationTime;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -88,4 +89,5 @@ public class OperationsEvent {
 
   @Column(name = "miles_remaining_to_destination")
   private Float milesRemainingToDestination;
+
 }
