@@ -11,6 +11,7 @@ import org.dcsa.jit.transferobjects.enums.PortCallServiceTypeCode;
 import org.dcsa.jit.transferobjects.enums.PublisherRole;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
@@ -39,7 +40,7 @@ public record TimestampTO(
   Integer transportCallSequenceNumber,
   String remark,
   String delayReasonCode,
-  TimestampVesselTO vessel,
+  @Valid TimestampVesselTO vessel,
   @JsonAlias({"milesRemainingToDestination", "milesToDestinationPort"})
   Float milesToDestinationPort,
   @Size(max = 50) String portVisitReference
