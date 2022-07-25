@@ -371,6 +371,16 @@
             "type": "string",
             "description": "The vessel operator-specific identifier of the Voyage."
           },
+          "exportVoyageNumber": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "The vessel operator-specific identifier of the export Voyage."
+          },
+          "importVoyageNumber": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "The vessel operator-specific identifier of the import Voyage."
+          },
           "carrierExportVoyageNumber": {
             "maxLength": 50,
             "type": "string",

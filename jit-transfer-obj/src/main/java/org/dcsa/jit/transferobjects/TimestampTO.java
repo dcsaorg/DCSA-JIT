@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 public record TimestampTO(
   @NotNull PartyTO publisher,
   @NotNull PublisherRole publisherRole,
-  @Deprecated @ValidVesselIMONumber String vesselIMONumber, // Deprecated in JIT 1.2
+  @Deprecated @NotNull @ValidVesselIMONumber String vesselIMONumber, // Deprecated in JIT 1.2
   @NotNull @Size(max = 5) String UNLocationCode,
   @Deprecated @Size(max = 6) String facilitySMDGCode, // Deprecated in JIT 1.2
   FacilityTypeCodeOPR facilityTypeCode,
@@ -32,7 +32,7 @@ public record TimestampTO(
   @NotNull OffsetDateTime eventDateTime,
   @Deprecated @Size(max = 50) String exportVoyageNumber, // Deprecated in JIT 1.2
   @Deprecated @Size(max = 50) String importVoyageNumber, // Deprecated in JIT 1.2
-  @Deprecated @Size(max = 50) String carrierVoyageNumber, // Deprecated in JIT 1.2 & hence removed NotNull constraint
+  @Deprecated @NotNull @Size(max = 50) String carrierVoyageNumber, // Deprecated in JIT 1.2
   @Size(max = 50) String carrierExportVoyageNumber,
   @Size(max = 50) String carrierImportVoyageNumber,
   @NotNull @Size(max = 5) String carrierServiceCode,

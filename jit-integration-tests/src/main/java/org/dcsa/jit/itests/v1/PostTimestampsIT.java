@@ -723,8 +723,44 @@ public class PostTimestampsIT {
   // Test Logic for the ImportVoyageNumber & ExportVoyageNumber & carrierVoyageNumber fields
   // should fail when all 3 are present or absent
   @Test
-  public void testLogicForVoyageNumberFields() {
+  public void testLogicForVoyageNumberFields11() {
     Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
+
+    // add to test that when carrierVoyageNumber != (exportVoyageNumber || importVoyageNumber)
+    map.put("carrierVoyageNumber", "sdf");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // remove exportVoyageNumber to test that when(exportVoyageNumber & importVoyageNumber) are not given together.
+    map.remove("exportVoyageNumber");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // Here we remove importVoyageNumber as well, thus we have a valid timestamp
+    map.remove("importVoyageNumber");
+    map.put("carrierVoyageNumber", "2103S"); // valid carrierVoyageNumber value
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+  }
+
+  @Test
+  public void testLogicForVoyageNumberFields12() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_2);
 
     // add to test that when carrierVoyageNumber != (carrierExportVoyageNumber || carrierImportVoyageNumber)
     map.put("carrierVoyageNumber", "sdf");
@@ -756,6 +792,22 @@ public class PostTimestampsIT {
       .then()
       .assertThat()
       .statusCode(204);
+  }
+
+  /* If the case when vessel.vesselIMONumber is different than vesselIMONumber.
+   */
+  @Test
+  public void testLogicForVesselIMONumber() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_2);
+
+    ((Map<String,String>) map.get("vessel")).put("vesselIMONumber", "sdf");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
   }
 
   /* This test addresses a scenario raised in ticket DDT-1005

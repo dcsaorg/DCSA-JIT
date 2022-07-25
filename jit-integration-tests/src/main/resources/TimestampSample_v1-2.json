@@ -23,10 +23,12 @@
     ],
     "nmftaCode" : "CSK"
   },
+  "vessel": {
+    "vesselIMONumber": "9321483"
+  },
   "publisherRole": "CA",
   "vesselIMONumber": "9321483",
   "UNLocationCode": "SGSIN",
-  "facilitySMDGCode": "PSABT",
   "facilityTypeCode": "BRTH",
   "eventClassifierCode": "EST",
   "operationsEventTypeCode": "ARRI",
@@ -52,7 +54,6 @@
     "latitude": "48.8585500",
     "longitude": "2.294492036"
   },
-  "modeOfTransport": "VESSEL",
   "portCallServiceTypeCode": null,
   "portCallPhaseTypeCode": "INBD",
   "eventDateTime": "2019-11-12T07:41:00+08:30",
