@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 public record TimestampTO(
   @NotNull PartyTO publisher,
   @NotNull PublisherRole publisherRole,
-  @Deprecated @NotNull @ValidVesselIMONumber String vesselIMONumber, // Deprecated in JIT 1.2
+  @Deprecated @ValidVesselIMONumber String vesselIMONumber, // Deprecated in JIT 1.2
   @NotNull @Size(max = 5) String UNLocationCode,
   @Deprecated @Size(max = 6) String facilitySMDGCode, // Deprecated in JIT 1.2
   FacilityTypeCodeOPR facilityTypeCode,
