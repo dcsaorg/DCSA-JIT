@@ -12,6 +12,12 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface VesselMapper {
+  @Mappings(value = {
+    @Mapping( target = "vesselName", source = "name"),
+    @Mapping(target = "vesselFlag", source = "flag"),
+    @Mapping(target = "vesselCallSignNumber", source = "callSignNumber"),
+    @Mapping(target = "isDummy", constant = "false")
+  })
   VesselTO toTO(Vessel vessel);
 
   @Mapping(target = "isDummy", source = "isDummy", defaultValue = "false")
@@ -27,6 +33,7 @@ public interface VesselMapper {
   @AfterMapping
   default void mapVesselOperatorCarrier(
     Vessel vessel, @MappingTarget VesselTO.VesselTOBuilder vesselTOBuilder) {
+    if(vessel.getVesselOperatorCarrier() == null) return;
     String nMFTACode = vessel.getVesselOperatorCarrier().getNmftaCode();
     String sMDGCode = vessel.getVesselOperatorCarrier().getSmdgCode();
     if (nMFTACode != null) {
