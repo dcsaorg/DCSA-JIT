@@ -10,7 +10,8 @@ public class TransportCallMapperTest {
   public void test() {
     FieldValidator.assertFieldsAreEqual(TransportCall.class, TransportCallTO.class,
       // Special mappings
-      "importVoyageNumber", "exportVoyageNumber", "UNLocationCode", "carrierServiceCode",
+      "carrierImportVoyageNumber", "carrierExportVoyageNumber", "importVoyageNumber", "exportVoyageNumber",
+      "UNLocationCode", "carrierServiceCode",
       "modeOfTransport", "modeOfTransportCode", "importVoyage", "exportVoyage", "id", "facility",
       "facilityCode", "facilityCodeListProvider",
       // Currently not mapped

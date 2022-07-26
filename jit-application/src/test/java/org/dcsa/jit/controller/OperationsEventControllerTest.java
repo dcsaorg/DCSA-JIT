@@ -124,7 +124,7 @@ class OperationsEventControllerTest {
         .perform(
             get("/events")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param("exportVoyageNumber", "x".repeat(51)))
+                .param("carrierExportVoyageNumber", "x".repeat(51)))
         .andDo(print())
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.httpMethod").value("GET"))

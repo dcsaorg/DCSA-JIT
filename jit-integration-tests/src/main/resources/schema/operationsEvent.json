@@ -381,6 +381,16 @@
             "type": "string",
             "description": "The vessel operator-specific identifier of the import Voyage."
           },
+          "carrierExportVoyageNumber": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "The vessel operator-specific identifier of the export Voyage."
+          },
+          "carrierImportVoyageNumber": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "The vessel operator-specific identifier of the import Voyage."
+          },
           "transportCallSequenceNumber": {
             "type": "integer",
             "description": "Transport operator&apos;s key that uniquely identifies each individual call. This key is essential to distinguish between two separate calls at the same location within one voyage."

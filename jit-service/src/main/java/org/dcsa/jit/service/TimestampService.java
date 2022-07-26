@@ -112,6 +112,12 @@ public class TimestampService {
               .facilityCode(facilitySMDGCode)
               .build();
     }
+    if (timestamp.vessel() != null && timestamp.vessel().vesselIMONumber() != null
+      && !timestamp.vesselIMONumber().equals(timestamp.vessel().vesselIMONumber())) {
+      throw ConcreteRequestErrorMessageException.invalidInput(
+        "Conflicting vesselIMONumber (vesselIMONumber and vessel.vesselIMONumber must be the same)");
+    }
+
     timestampTOBuilder.eventLocation(locationTO);
     timestamp = timestampTOBuilder.build();
 

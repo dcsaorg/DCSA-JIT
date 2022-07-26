@@ -13,6 +13,8 @@ public record TransportCallTO(
   @Size(max = 5) String carrierServiceCode,
   @Deprecated @Size(max = 50) String exportVoyageNumber, // Deprecated in JIT 1.2
   @Deprecated @Size(max = 50) String importVoyageNumber, // Deprecated in JIT 1.2
+  @Size(max = 50) String carrierExportVoyageNumber,
+  @Size(max = 50) String carrierImportVoyageNumber,
   Integer transportCallSequenceNumber,
   @Deprecated @Size(max = 5) String UNLocationCode, // Deprecated in JIT 1.2
   @Deprecated @Size(max = 6) String facilityCode, // Deprecated in JIT 1.2

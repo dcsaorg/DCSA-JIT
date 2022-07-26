@@ -24,8 +24,8 @@ public interface TransportCallRepository extends JpaRepository<TransportCall, UU
          AND mode_of_transport.dcsa_transport_type = :modeOfTransport
          AND location.un_location_code = :UNLocationCode
          AND ((:facilitySMDGCode IS NULL AND facility.id IS NULL) OR (facility.facility_smdg_code = :facilitySMDGCode))
-         AND (:importVoyageNumber IS NULL OR import_voyage.carrier_voyage_number = :importVoyageNumber)
-         AND (:exportVoyageNumber IS NULL OR export_voyage.carrier_voyage_number = :exportVoyageNumber)
+         AND (:carrierImportVoyageNumber IS NULL OR import_voyage.carrier_voyage_number = :carrierImportVoyageNumber)
+         AND (:carrierExportVoyageNumber IS NULL OR export_voyage.carrier_voyage_number = :carrierExportVoyageNumber)
          AND service.carrier_service_code = :carrierServiceCode
          AND (:transportCallSequenceNumber IS NULL OR transport_call.transport_call_sequence_number = :transportCallSequenceNumber)
          AND (:portVisitReference IS NULL OR transport_call.port_visit_reference = :portVisitReference)
@@ -37,8 +37,8 @@ public interface TransportCallRepository extends JpaRepository<TransportCall, UU
     @Param("modeOfTransport") String modeOfTransport,
     @Param("vesselIMONumber") String vesselIMONumber,
     @Param("carrierServiceCode") String carrierServiceCode,
-    @Param("importVoyageNumber") String importVoyageNumber,
-    @Param("exportVoyageNumber") String exportVoyageNumber,
+    @Param("carrierImportVoyageNumber") String carrierImportVoyageNumber,
+    @Param("carrierExportVoyageNumber") String carrierExportVoyageNumber,
     @Param("transportCallSequenceNumber") Integer transportCallSequenceNumber,
     @Param("portVisitReference") String portVisitReference
   );

@@ -22,15 +22,28 @@ import static org.dcsa.jit.itests.config.TestUtil.*;
  * */
 public class PostTimestampsIT {
 
+  public static final String VALID_TIMESTAMP_1_2 =
+    loadFileAsString("TimestampSample_v1-2.json");
   public static final String VALID_TIMESTAMP_1_1 =
-      loadFileAsString(
-          "TimestampSample_v1-1.json");
+      loadFileAsString("TimestampSample_v1-1.json");
   public static final String VALID_TIMESTAMP_1_0 =
-    loadFileAsString(
-      "TimestampSample_v1-0.json");
+    loadFileAsString("TimestampSample_v1-0.json");
+
   @BeforeAll
   static void configs() {
     RestAssuredConfigurator.initialize();
+  }
+
+  @Test
+  public void testTimestampAllParametersv1dot2() {
+    given()
+      .contentType("application/json")
+      .header("testname", "testTimestampRequiredParameters")
+      .body(VALID_TIMESTAMP_1_2)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
   }
 
   // Testing with all fields provided in VALID_TIMESTAMP_1_0 variable
@@ -58,6 +71,19 @@ public class PostTimestampsIT {
         .assertThat()
         .statusCode(204);
   }
+
+  @Test
+  public void testInvalidTimestampMixJit11vsJit12() {
+    given()
+      .contentType("application/json")
+      .header("testname", "testTimestampRequiredParameters")
+      .body(loadFileAsString("InvalidTimestampSample_mix_v12x11.json"))
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+  }
+
 
   // This test addresses concerns raised in ticket DDT-1052
   @Test
@@ -697,7 +723,7 @@ public class PostTimestampsIT {
   // Test Logic for the ImportVoyageNumber & ExportVoyageNumber & carrierVoyageNumber fields
   // should fail when all 3 are present or absent
   @Test
-  public void testLogicForVoyageNumberFields() {
+  public void testLogicForVoyageNumberFields11() {
     Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
 
     // add to test that when carrierVoyageNumber != (exportVoyageNumber || importVoyageNumber)
@@ -730,6 +756,58 @@ public class PostTimestampsIT {
       .then()
       .assertThat()
       .statusCode(204);
+  }
+
+  @Test
+  public void testLogicForVoyageNumberFields12() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_2);
+
+    // add to test that when carrierVoyageNumber != (carrierExportVoyageNumber || carrierImportVoyageNumber)
+    map.put("carrierVoyageNumber", "sdf");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // remove carrierExportVoyageNumber to test that when(carrierExportVoyageNumber & carrierImportVoyageNumber) are not given together.
+    map.remove("carrierExportVoyageNumber");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // Here we remove carrierImportVoyageNumber as well, thus we have a valid timestamp
+    map.remove("carrierImportVoyageNumber");
+    map.put("carrierVoyageNumber", "2103S"); // valid carrierVoyageNumber value
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+  }
+
+  /* If the case when vessel.vesselIMONumber is different than vesselIMONumber.
+   */
+  @Test
+  public void testLogicForVesselIMONumber() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_2);
+
+    ((Map<String,String>) map.get("vessel")).put("vesselIMONumber", "sdf");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
   }
 
   /* This test addresses a scenario raised in ticket DDT-1005
