@@ -32,8 +32,10 @@ public interface VesselMapper {
 
   @AfterMapping
   default void mapVesselOperatorCarrier(
-    Vessel vessel, @MappingTarget VesselTO.VesselTOBuilder vesselTOBuilder) {
-    if(vessel.getVesselOperatorCarrier() == null) return;
+      Vessel vessel, @MappingTarget VesselTO.VesselTOBuilder vesselTOBuilder) {
+    if (vessel.getVesselOperatorCarrier() == null) {
+      return;
+    }
     String nMFTACode = vessel.getVesselOperatorCarrier().getNmftaCode();
     String sMDGCode = vessel.getVesselOperatorCarrier().getSmdgCode();
     if (nMFTACode != null) {
