@@ -60,7 +60,7 @@ public class TimestampDefinition {
   @Column(name = "is_vessel_position_needed", nullable = false)
   private Boolean isVesselPositionNeeded;
 
-  @Transient // TODO: FIX ME (Timestamp Definition should include this) -- abf@asseco.dk
+  @Column(name = "negotiation_cycle", length = 50)
   private String negotiationCycle;
 
   @Column(name = "provided_in_standard", nullable = false)
