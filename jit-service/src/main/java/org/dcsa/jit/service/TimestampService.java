@@ -183,7 +183,6 @@ public class TimestampService {
           Party party = partyMapper.toDao(pTO);
           return partyRepository.save(
               party.toBuilder()
-                  .id(UUID.randomUUID().toString())
                   .address(saveIfNotNull(party.getAddress(), addressRepository::save))
                   .build());
         });
@@ -196,7 +195,6 @@ public class TimestampService {
           Location l = locationMapper.toDao(lTO);
           return locationRepository.save(
               l.toBuilder()
-                  .id(UUID.randomUUID().toString())
                   .address(saveIfNotNull(l.getAddress(), addressRepository::save))
                   .build());
         });

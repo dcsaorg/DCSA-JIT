@@ -114,7 +114,6 @@ public class TransportCallService {
 
     Location location = locationRepository.save(
       Location.builder()
-        .id(UUID.randomUUID().toString())
         .UNLocationCode(timestampTO.UNLocationCode())
         .facility(findFacility(timestampTO))
         .build()
