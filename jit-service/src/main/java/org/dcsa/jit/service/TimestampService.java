@@ -14,6 +14,7 @@ import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.jit.transferobjects.TimestampVesselTO;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
+import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class TimestampService {
   private final UnmappedEventRepository unmappedEventRepository;
   private final PartyRepository partyRepository;
   private final AddressRepository addressRepository;
+  private final FacilityRepository facilityRepository;
 
   @Transactional
   public void create(TimestampTO timestamp) {
@@ -115,7 +117,7 @@ public class TimestampService {
     if (timestamp.vessel() != null && timestamp.vessel().vesselIMONumber() != null
       && !timestamp.vesselIMONumber().equals(timestamp.vessel().vesselIMONumber())) {
       throw ConcreteRequestErrorMessageException.invalidInput(
-        "Conflicting vesselIMONumber (vesselIMONumber and vessel.vesselIMONumber must be the same)");
+          "Conflicting vesselIMONumber (vesselIMONumber and vessel.vesselIMONumber must be the same)");
     }
 
     timestampTOBuilder.eventLocation(locationTO);
@@ -195,6 +197,7 @@ public class TimestampService {
           Location l = locationMapper.toDao(lTO);
           return locationRepository.save(
               l.toBuilder()
+                  .facility(ensureValidFacilityCode(locationTO))
                   .address(saveIfNotNull(l.getAddress(), addressRepository::save))
                   .build());
         });
@@ -228,5 +231,21 @@ public class TimestampService {
               + unLocationCode
               + " not part of reference implementation data set");
     }
+  }
+
+  private Facility ensureValidFacilityCode(LocationTO locationTO) {
+    if (locationTO.UNLocationCode() != null && locationTO.facilityCode() != null) {
+      return facilityRepository
+        .findByUNLocationCodeAndFacilitySMDGCode(
+          locationTO.UNLocationCode(), locationTO.facilityCode())
+        .orElseThrow(
+          () ->
+            ConcreteRequestErrorMessageException.invalidParameter(
+              "UNLocation with UNLocationCode "
+                + locationTO.UNLocationCode()
+                + " does not have a facility with facilityCode "
+                + locationTO.facilityCode()));
+    }
+    return null;
   }
 }
