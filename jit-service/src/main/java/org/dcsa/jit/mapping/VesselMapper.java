@@ -38,12 +38,12 @@ public interface VesselMapper {
     }
     String nMFTACode = vessel.getVesselOperatorCarrier().getNmftaCode();
     String sMDGCode = vessel.getVesselOperatorCarrier().getSmdgCode();
-    if (nMFTACode != null) {
-      vesselTOBuilder.vesselOperatorCarrierCodeListProvider(CarrierCodeListProvider.NMFTA);
-      vesselTOBuilder.vesselOperatorCarrierCode(vessel.getVesselOperatorCarrier().getNmftaCode());
-    } else if (sMDGCode != null) {
+    if (sMDGCode != null) {
       vesselTOBuilder.vesselOperatorCarrierCodeListProvider(CarrierCodeListProvider.SMDG);
-      vesselTOBuilder.vesselOperatorCarrierCode(vessel.getVesselOperatorCarrier().getSmdgCode());
+      vesselTOBuilder.vesselOperatorCarrierCode(sMDGCode);
+    } else if (nMFTACode != null) {
+      vesselTOBuilder.vesselOperatorCarrierCodeListProvider(CarrierCodeListProvider.NMFTA);
+      vesselTOBuilder.vesselOperatorCarrierCode(nMFTACode);
     }
   }
 }

@@ -10,7 +10,8 @@ import org.mapstruct.Mapping;
     uses = {
       TransportCallMapper.class,
       PartyMapper.class,
-      AddressMapper.class
+      AddressMapper.class,
+      LocationMapper.class
     })
 public interface OperationsEventMapper {
   @Mapping(target = "milesRemainingToDestination", source = "milesRemainingToDestination")
