@@ -12,7 +12,6 @@ import org.mapstruct.Mappings;
 
 import java.util.Arrays;
 
-// FIXME LocationMapper isn't being used properly since it requires more than just Location
 @Mapper(componentModel = "spring", uses = {VesselMapper.class, LocationMapper.class, EnumMappers.class})
 @DecoratedWith(TransportCallMapperDecorator.class)
 public abstract class TransportCallMapper {
@@ -22,6 +21,7 @@ public abstract class TransportCallMapper {
         @Mapping(target = "carrierExportVoyageNumber", source = "exportVoyage.carrierVoyageNumber"),
         @Mapping(target = "importVoyageNumber", source = "importVoyage.carrierVoyageNumber"),
         @Mapping(target = "exportVoyageNumber", source = "exportVoyage.carrierVoyageNumber"),
+        @Mapping(target = "location", source = "location",  qualifiedByName = "mappingFacilityLocationTO"),
         @Mapping(target = "UNLocationCode", source = "location.UNLocationCode"),
         @Mapping(target = "carrierServiceCode", source = "exportVoyage.service.carrierServiceCode"),
         @Mapping(target = "modeOfTransport", source = "modeOfTransportCode"),
