@@ -5,13 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
-import org.dcsa.jit.mapping.VesselMapper;
-import org.dcsa.jit.persistence.entity.*;
+import org.dcsa.jit.persistence.entity.OperationsEvent;
+import org.dcsa.jit.persistence.entity.Party;
+import org.dcsa.jit.persistence.entity.TransportCall;
+import org.dcsa.jit.persistence.entity.UnmappedEvent;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
-import org.dcsa.jit.transferobjects.TimestampVesselTO;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 @Slf4j
@@ -31,9 +31,7 @@ public class TimestampService {
 
   private final EnumMappers enumMappers;
   private final PartyMapper partyMapper;
-  private final VesselMapper vesselMapper;
   private final TransportCallService transportCallService;
-  private final VesselRepository vesselRepository;
   private final OperationsEventRepository operationsEventRepository;
   private final LocationMapper locationMapper;
   private final TimestampDefinitionService timestampDefinitionService;
@@ -127,14 +125,13 @@ public class TimestampService {
         (timestamp.eventLocation()) == null ? null : timestamp.eventLocation().UNLocationCode());
     this.ensureValidUnLocationCode(timestamp.UNLocationCode());
 
-    TransportCall tc = transportCallService.ensureTransportCallExists(timestamp);
-
     // Manually handle some entities because JPA cannot do it for us (might be easier if
     // everything used UUID as PK or other IDs that JPA knows how to handle out of the box)
     Location location = saveLocationIfNotNull(timestamp.eventLocation());
     Location vesselPos = saveLocationIfNotNull(timestamp.vesselPosition());
     Party party = savePublisher(timestamp.publisher());
-    Vessel vessel = saveVesselIfNotNull(timestamp.vessel());
+
+    TransportCall tc = transportCallService.ensureTransportCallExists(timestamp,location);
 
     OperationsEvent operationsEvent =
         OperationsEvent.builder()
@@ -162,18 +159,6 @@ public class TimestampService {
     create(operationsEvent);
   }
 
-  private Vessel saveVesselIfNotNull(TimestampVesselTO vesselTO) {
-    return saveIfNotNull(
-      vesselTO,
-      vTO -> {
-        Optional<Vessel> optionalVessel = vesselRepository.findByVesselIMONumber(vesselTO.vesselIMONumber());
-        if (optionalVessel.isPresent()) {
-          return optionalVessel.get();
-        }
-        Vessel vessel = vesselMapper.toEntity(vTO);
-        return vesselRepository.save(vessel);
-      });
-  }
 
   private Party savePublisher(PartyTO partyTO) {
     // While the method does support partyTO being null, we do not advertise it as
@@ -234,17 +219,26 @@ public class TimestampService {
   }
 
   private Facility ensureValidFacilityCode(LocationTO locationTO) {
-    if (locationTO.UNLocationCode() != null && locationTO.facilityCode() != null) {
-      return facilityRepository
-        .findByUNLocationCodeAndFacilitySMDGCode(
-          locationTO.UNLocationCode(), locationTO.facilityCode())
-        .orElseThrow(
+    if (locationTO.UNLocationCode() != null
+        && locationTO.facilityCode() != null
+        && locationTO.facilityCodeListProvider() != null) {
+      Optional<Facility> facilityCode = Optional.empty();
+      if (locationTO.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
+        facilityCode =
+            facilityRepository.findByUNLocationCodeAndFacilitySMDGCode(
+                locationTO.UNLocationCode(), locationTO.facilityCode());
+      } else if (locationTO.facilityCodeListProvider() == FacilityCodeListProvider.BIC) {
+        facilityCode =
+            facilityRepository.findByUNLocationCodeAndFacilityBICCode(
+                locationTO.UNLocationCode(), locationTO.facilityCode());
+      }
+      return facilityCode.orElseThrow(
           () ->
-            ConcreteRequestErrorMessageException.invalidParameter(
-              "UNLocation with UNLocationCode "
-                + locationTO.UNLocationCode()
-                + " does not have a facility with facilityCode "
-                + locationTO.facilityCode()));
+              ConcreteRequestErrorMessageException.invalidParameter(
+                  "UNLocation with UNLocationCode "
+                      + locationTO.UNLocationCode()
+                      + " does not have a facility with facilityCode "
+                      + locationTO.facilityCode()));
     }
     return null;
   }

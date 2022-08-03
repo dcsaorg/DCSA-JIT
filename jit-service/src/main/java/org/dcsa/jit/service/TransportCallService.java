@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.persistence.entity.TransportCall;
+import org.dcsa.jit.persistence.entity.Vessel;
 import org.dcsa.jit.persistence.entity.Voyage;
 import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN;
-import org.dcsa.jit.persistence.repository.FacilityRepository;
-import org.dcsa.jit.persistence.repository.LocationRepository;
 import org.dcsa.jit.persistence.repository.TransportCallRepository;
 import org.dcsa.jit.transferobjects.TimestampTO;
-import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
@@ -26,14 +24,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TransportCallService {
   private final TransportCallRepository transportCallRepository;
-  private final LocationRepository locationRepository;
-  private final FacilityRepository facilityRepository;
   private final VesselService vesselService;
   private final ServiceService serviceService;
   private final EnumMappers enumMappers;
 
   @Transactional
-  public TransportCall ensureTransportCallExists(TimestampTO timestampTO) {
+  public TransportCall ensureTransportCallExists(TimestampTO timestampTO, Location location) {
     // Backwards compatibility with JIT 1.1
     if (timestampTO.importVoyageNumber() != null || timestampTO.exportVoyageNumber() != null) {
       if (timestampTO.carrierImportVoyageNumber() != null || timestampTO.carrierExportVoyageNumber() != null) {
@@ -74,15 +70,17 @@ public class TransportCallService {
               .build();
     }
 
+    Vessel vessel =  vesselService.ensureVesselExistsByImoNumber(timestampTO.vesselIMONumber());
+
     TimestampTO resolvedTimestampTO = timestampTO;
     return findTransportCall(timestampTO)
-      .orElseGet(() -> createTransportCall(resolvedTimestampTO));
+      .orElseGet(() -> createTransportCall(resolvedTimestampTO,vessel, location));
   }
 
   private Optional<TransportCall> findTransportCall(TimestampTO timestampTO) {
     List<TransportCall> transportCalls = transportCallRepository.findAllTransportCall(
       timestampTO.UNLocationCode(),
-      timestampTO.facilitySMDGCode(),
+      timestampTO.facilitySMDGCode(),  // TODO: SHOULD ALSO BE ABLE TO FIND USING BIC CODES
       timestampTO.modeOfTransport().name(),
       timestampTO.vesselIMONumber(),
       timestampTO.carrierServiceCode(),
@@ -110,14 +108,8 @@ public class TransportCallService {
     }
   }
 
-  private TransportCall createTransportCall(TimestampTO timestampTO) {
+  private TransportCall createTransportCall(TimestampTO timestampTO, Vessel vessel, Location location) {
 
-    Location location = locationRepository.save(
-      Location.builder()
-        .UNLocationCode(timestampTO.UNLocationCode())
-        .facility(findFacility(timestampTO))
-        .build()
-    );
     org.dcsa.jit.persistence.entity.Service service =
       serviceService.ensureServiceExistsByCarrierServiceCode(timestampTO.carrierServiceCode());
 
@@ -128,7 +120,7 @@ public class TransportCallService {
       .facilityTypeCode(FacilityTypeCodeTRN.POTE) // TODO: this is set as default for now.
       .location(location)
       .modeOfTransportCode(enumMappers.modeOfTransportToDao(timestampTO.modeOfTransport()).getCode().toString())
-      .vessel(vesselService.ensureVesselExistsByImoNumber(timestampTO.vesselIMONumber()))
+      .vessel(vessel)
       .importVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.carrierImportVoyageNumber()).service(service).build())
       .exportVoyage(Voyage.builder().carrierVoyageNumber(timestampTO.carrierExportVoyageNumber()).service(service).build())
       .portCallStatusCode(null)
@@ -136,12 +128,5 @@ public class TransportCallService {
       .build();
 
     return transportCallRepository.save(entityToSave);
-  }
-
-  private Facility findFacility(TimestampTO timestampTO) {
-    if (timestampTO.facilitySMDGCode() != null) {
-      return facilityRepository.findByUNLocationCodeAndFacilitySMDGCode(timestampTO.UNLocationCode(), timestampTO.facilitySMDGCode()).orElse(null);
-    }
-    return null;
   }
 }
