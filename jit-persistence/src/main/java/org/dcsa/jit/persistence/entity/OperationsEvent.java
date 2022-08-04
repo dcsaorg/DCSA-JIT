@@ -37,7 +37,7 @@ public class OperationsEvent {
   private OffsetDateTime eventDateTime;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "publisher", nullable = false)
+  @JoinColumn(name = "publisher_id", nullable = false)
   private Party publisher;
 
   @Enumerated(EnumType.STRING)
@@ -49,7 +49,7 @@ public class OperationsEvent {
   private OperationsEventTypeCode operationsEventTypeCode;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "event_location")
+  @JoinColumn(name = "event_location_id")
   private Location eventLocation;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -60,11 +60,11 @@ public class OperationsEvent {
   @Column(name = "port_call_service_type_code")
   private PortCallServiceTypeCode portCallServiceTypeCode;
 
-  @Column(name = "delay_reason_code", length = 4)
+  @Column(name = "delay_reason_code", length = 3)
   private String delayReasonCode;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "vessel_position")
+  @JoinColumn(name = "vessel_position_id")
   private Location vesselPosition;
 
   @Column(name = "remark", length = 100)
