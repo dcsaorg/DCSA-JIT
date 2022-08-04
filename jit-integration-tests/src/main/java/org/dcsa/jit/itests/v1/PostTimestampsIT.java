@@ -721,7 +721,7 @@ public class PostTimestampsIT {
   }
 
   // Test Logic for the ImportVoyageNumber & ExportVoyageNumber & carrierVoyageNumber fields
-  // should fail when all 3 are present or absent
+  // should fail when all 3 are absent
   @Test
   public void testLogicForVoyageNumberFields11() {
     Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
@@ -785,6 +785,45 @@ public class PostTimestampsIT {
     // Here we remove carrierImportVoyageNumber as well, thus we have a valid timestamp
     map.remove("carrierImportVoyageNumber");
     map.put("carrierVoyageNumber", "2103S"); // valid carrierVoyageNumber value
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+  }
+
+  // Test for all voyage number 1.0 & 1.1 & 1.2
+  @Test
+  public void testLogicForAllVoyageNumberUpTo12() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_2);
+
+    // This means that all voyage numbers are included
+    map.put("exportVoyageNumber", "2103S");
+    map.put("importVoyageNumber", "12");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+    // remove carrierExportVoyageNumber & carrierImportVoyageNumber to test JIT 1.1 timestamps
+    map.remove("carrierExportVoyageNumber");
+    map.remove("carrierImportVoyageNumber");
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+    //  remove exportVoyageNumber & importVoyageNumber to test JIT 1.0 timestamps
+    map.remove("exportVoyageNumber");
+    map.remove("importVoyageNumber");
     given()
       .contentType("application/json")
       .body(map)

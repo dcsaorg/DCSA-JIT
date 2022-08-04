@@ -30,11 +30,38 @@ public class TransportCallService {
 
   @Transactional
   public TransportCall ensureTransportCallExists(TimestampTO timestampTO, Location location) {
-    // Backwards compatibility with JIT 1.1
-    if (timestampTO.importVoyageNumber() != null || timestampTO.exportVoyageNumber() != null) {
-      if (timestampTO.carrierImportVoyageNumber() != null || timestampTO.carrierExportVoyageNumber() != null) {
+
+    if (timestampTO.carrierImportVoyageNumber() != null || timestampTO.carrierExportVoyageNumber() != null) {
+      if (timestampTO.carrierImportVoyageNumber() == null || timestampTO.carrierExportVoyageNumber() == null) {
         throw ConcreteRequestErrorMessageException.invalidInput(
-          "Cannot mix carrierExportVoyageNumber/carrierImportVoyageNumber (jit 1.2) and importVoyageNumber/exportVoyageNumber (jit 1.1) naming");
+          "Both voyages carrierExportVoyageNumber + carrierImportVoyageNumber should either be provided together or not at all");
+      }
+      if (!(timestampTO.carrierImportVoyageNumber().equals(timestampTO.carrierVoyageNumber())
+        || timestampTO.carrierExportVoyageNumber().equals(timestampTO.carrierVoyageNumber()))) {
+        throw ConcreteRequestErrorMessageException.invalidInput(
+          "When carrierExportVoyageNumber & carrierImportVoyageNumber is given, then one of them has to equal the carrierVoyageNumber."
+            + " Please verify the values");
+      }
+      // Put values into the correct place for rest of the code
+      timestampTO = timestampTO.toBuilder()
+        .carrierImportVoyageNumber(timestampTO.carrierImportVoyageNumber())
+        .carrierExportVoyageNumber(timestampTO.carrierExportVoyageNumber())
+        .importVoyageNumber(null)
+        .exportVoyageNumber(null)
+        .build();
+    }
+
+    // Backwards compatibility with JIT 1.1 only when JIT 1.2 values are not provided
+    if (timestampTO.importVoyageNumber() != null || timestampTO.exportVoyageNumber() != null && timestampTO.carrierExportVoyageNumber() == null) {
+      if (timestampTO.importVoyageNumber() == null || timestampTO.exportVoyageNumber() == null) {
+        throw ConcreteRequestErrorMessageException.invalidInput(
+          "Both voyages exportVoyageNumber + importVoyageNumber should either be provided together or not at all");
+      }
+      if (!(timestampTO.importVoyageNumber().equals(timestampTO.carrierVoyageNumber())
+        || timestampTO.exportVoyageNumber().equals(timestampTO.carrierVoyageNumber()))) {
+        throw ConcreteRequestErrorMessageException.invalidInput(
+          "When exportVoyageNumber & importVoyageNumber is given, then one of them has to equal the carrierVoyageNumber."
+            + " Please verify the values");
       }
       // Put values into the correct place for rest of the code
       timestampTO = timestampTO.toBuilder()
@@ -45,24 +72,12 @@ public class TransportCallService {
         .build();
     }
 
-    if (timestampTO.carrierImportVoyageNumber() != null || timestampTO.carrierExportVoyageNumber() != null) {
-      if (timestampTO.carrierImportVoyageNumber() == null || timestampTO.carrierExportVoyageNumber() == null) {
-        throw ConcreteRequestErrorMessageException.invalidInput(
-            "Both voyage carrierExportVoyageNumber + carrierImportVoyageNumber should either be provided together or not at all");
-      }
-      if (!(timestampTO.carrierImportVoyageNumber().equals(timestampTO.carrierVoyageNumber())
-          || timestampTO.carrierExportVoyageNumber().equals(timestampTO.carrierVoyageNumber()))) {
-        throw ConcreteRequestErrorMessageException.invalidInput(
-            "When carrierImportVoyageNumber & carrierExportVoyageNumber is given, then one of them has to equal the carrierVoyageNumber."
-                + " Please verify the values");
-      }
-    }
-
-    // Backwards compatibility with JIT 1.1
+    // Backwards compatibility with JIT 1.0
     // if both carrierExportVoyageNumber & carrierImportVoyageNumber are not given
-    // then we set them based on carrierVoyageNumber
-    // This is done to persist Voyage as carrierVoyageNumber is mandatory (Line 120)
-    if (timestampTO.carrierImportVoyageNumber() == null) {
+    // AND exportVoyageNumber & importVoyageNumber are not given
+    // then we set carrierExportVoyageNumber & carrierImportVoyageNumber based on carrierVoyageNumber
+    // This is done to persist importVoyage & exportVoyage on a TC (below)
+    if (timestampTO.carrierImportVoyageNumber() == null && timestampTO.importVoyageNumber() == null) {
       timestampTO =
           timestampTO.toBuilder()
               .carrierExportVoyageNumber(timestampTO.carrierVoyageNumber())
