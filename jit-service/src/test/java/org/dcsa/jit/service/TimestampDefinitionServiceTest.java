@@ -47,9 +47,6 @@ public class TimestampDefinitionServiceTest {
             .facilityTypeCode(FacilityTypeCodeOPR.BRTH)
             .isTerminalNeeded(false)
             .acceptTimestampDefinition(String.valueOf(true))
-            .isBerthLocationNeeded(false)
-            .isPBPLocationNeeded(false)
-            .isVesselPositionNeeded(false)
             .operationsEventTypeCode(OperationsEventTypeCode.ARRI)
             .build();
   }

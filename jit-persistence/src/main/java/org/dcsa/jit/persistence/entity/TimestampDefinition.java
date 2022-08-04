@@ -45,20 +45,8 @@ public class TimestampDefinition {
   @Column(name = "port_call_phase", length = 4)
   private String portCallPart;
 
-  @Column(name = "is_berth_location_needed", nullable = false)
-  private Boolean isBerthLocationNeeded;
-
-  @Column(name = "is_pbp_location_needed", nullable = false)
-  private Boolean isPBPLocationNeeded;
-
-  @Column(name = "is_anchorage_location_needed", nullable = false)
-  private Boolean isAnchorageLocationNeeded;
-
   @Column(name = "is_terminal_needed", nullable = false)
   private Boolean isTerminalNeeded;
-
-  @Column(name = "is_vessel_position_needed", nullable = false)
-  private Boolean isVesselPositionNeeded;
 
   @Column(name = "negotiation_cycle", length = 50)
   private String negotiationCycle;
