@@ -866,7 +866,7 @@ public class PostTimestampsIT {
       );
     map.put("publisher", partyNameAndIdentifyingCodes);
     // below aligns fields to the timestamp definition
-    map.put("facilityTypeCode", "BRTH");
+    map.put("facilityTypeCode", "PBPL");
     map.put("eventClassifierCode", "ACT");
     map.put("operationsEventTypeCode", "STRT");
     map.put("portCallServiceTypeCode", "PILO");
