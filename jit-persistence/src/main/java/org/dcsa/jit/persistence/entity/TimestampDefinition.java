@@ -45,11 +45,22 @@ public class TimestampDefinition {
   @Column(name = "port_call_phase", length = 4)
   private String portCallPart;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "event_location_requirement", nullable = false)
+  private LocationRequirement eventLocationRequirement;
+
   @Column(name = "is_terminal_needed", nullable = false)
   private Boolean isTerminalNeeded;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "vessel_position_requirement", nullable = false)
+  private LocationRequirement vesselPositionRequirement;
+
   @Column(name = "negotiation_cycle", length = 50)
   private String negotiationCycle;
+
+  @Column(name = "is_miles_to_destination_relevant", nullable = false)
+  private Boolean isMilesToDestinationRelevant;
 
   @Column(name = "provided_in_standard", nullable = false)
   private String providedInStandard;

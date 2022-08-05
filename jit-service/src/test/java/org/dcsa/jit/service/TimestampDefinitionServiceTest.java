@@ -5,6 +5,7 @@ import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
 import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeOPR;
+import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
@@ -48,6 +49,8 @@ public class TimestampDefinitionServiceTest {
             .isTerminalNeeded(false)
             .acceptTimestampDefinition(String.valueOf(true))
             .operationsEventTypeCode(OperationsEventTypeCode.ARRI)
+            .eventLocationRequirement(LocationRequirement.OPTIONAL)
+            .vesselPositionRequirement(LocationRequirement.OPTIONAL)
             .build();
   }
 
