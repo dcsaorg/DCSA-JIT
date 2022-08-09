@@ -154,6 +154,7 @@ public class TimestampService {
             .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().draft() : null)
             .vesselDraftUnit(timestamp.vessel() != null ? enumMappers.dimensionUnitToDao(timestamp.vessel().dimensionUnit()) : null)
             .milesRemainingToDestination(timestamp.milesToDestinationPort())
+            .delayReasonCode(timestamp.delayReasonCode())
             .build();
 
     create(operationsEvent);
