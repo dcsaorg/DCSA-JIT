@@ -2,14 +2,13 @@ package org.dcsa.jit.service;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
-import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
+import org.dcsa.jit.persistence.entity.TimestampInfo;
 import org.dcsa.jit.persistence.entity.PublisherPattern;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.entity.enums.PortCallPhaseTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
-import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
+import org.dcsa.jit.persistence.repository.TimestampInfoRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class TimestampDefinitionService {
           PublisherRole.VSL, PublisherRole.CA);
 
   private final TimestampDefinitionRepository timestampDefinitionRepository;
-  private final OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
+  private final TimestampInfoRepository timestampInfoRepository;
 
   @Transactional
   public void markOperationsEventAsTimestamp(OperationsEvent operationsEvent) {
@@ -81,14 +80,14 @@ public class TimestampDefinitionService {
             + errorMessage);
     }
 
-    OpsEventTimestampDefinition ops =
-        OpsEventTimestampDefinition.builder()
+    TimestampInfo ops =
+        TimestampInfo.builder()
             .eventID(operationsEvent.getEventID())
             .operationsEvent(operationsEvent)
             .timestampDefinition(timestampDefinitionList.get(0))
             .newRecord(true)
             .build();
-    opsEventTimestampDefinitionRepository.save(ops);
+    timestampInfoRepository.save(ops);
   }
 
   /**
