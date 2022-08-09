@@ -39,7 +39,7 @@ public record TimestampTO(
   @NotNull @Size(max = 5) String carrierServiceCode,
   Integer transportCallSequenceNumber,
   String remark,
-  String delayReasonCode,
+  @Size(max = 3) String delayReasonCode,
   @Valid TimestampVesselTO vessel,
   @JsonAlias({"milesRemainingToDestination", "milesToDestinationPort"})
   Float milesToDestinationPort,
