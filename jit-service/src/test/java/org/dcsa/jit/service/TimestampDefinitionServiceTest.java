@@ -1,13 +1,13 @@
 package org.dcsa.jit.service;
 
 import org.dcsa.jit.persistence.entity.OperationsEvent;
-import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
+import org.dcsa.jit.persistence.entity.TimestampInfo;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
 import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeOPR;
 import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
+import org.dcsa.jit.persistence.repository.TimestampInfoRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 public class TimestampDefinitionServiceTest {
   @Mock TimestampDefinitionRepository timestampDefinitionRepository;
   @Mock
-  OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
+  TimestampInfoRepository timestampInfoRepository;
   @InjectMocks TimestampDefinitionService timestampDefinitionService;
   TimestampDefinition timestampDefinition;
 
@@ -62,12 +62,12 @@ public class TimestampDefinitionServiceTest {
                 any(), any(), any(), any(), any()))
         .thenReturn(List.of(timestampDefinition));
 
-    ArgumentCaptor<OpsEventTimestampDefinition> argumentCaptorTimestampDefinition =
-        ArgumentCaptor.forClass(OpsEventTimestampDefinition.class);
+    ArgumentCaptor<TimestampInfo> argumentCaptorTimestampDefinition =
+        ArgumentCaptor.forClass(TimestampInfo.class);
     assertDoesNotThrow(
         () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
 
-    verify(opsEventTimestampDefinitionRepository, times(1))
+    verify(timestampInfoRepository, times(1))
       .save(argumentCaptorTimestampDefinition.capture());
 
     assertEquals(timestampDefinition.getId(), argumentCaptorTimestampDefinition.getValue().getTimestampDefinition().getId());
