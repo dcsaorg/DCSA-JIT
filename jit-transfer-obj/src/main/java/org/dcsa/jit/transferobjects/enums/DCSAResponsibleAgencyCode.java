@@ -22,7 +22,9 @@ public enum DCSAResponsibleAgencyCode {
   EXIS ("","399"),
   FMC ("Federal Maritime Commission",""),
   CBSA ("Canada Border Services Agency",""),
-  ZZZ ("Mutually defined", "zzz");
+  ZZZ ("Mutually defined", "zzz"),
+  LEI("Legal Entity Identifier", ""),
+  DID("Decentralized Identifier", "");
   private final String value;
   private final String legacyAgencyCode;
 
