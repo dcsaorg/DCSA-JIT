@@ -19,6 +19,8 @@ public class Service {
   @Column(name = "id", nullable = false)
   private UUID id;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "carrier_id")
   private Carrier carrier;

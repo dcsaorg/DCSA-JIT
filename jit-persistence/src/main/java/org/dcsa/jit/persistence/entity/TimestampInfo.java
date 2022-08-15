@@ -76,6 +76,8 @@ public class TimestampInfo implements Persistable<UUID> {
   @JoinColumn(name = "event_id", insertable = false, updatable = false)
   UnmappedEvent unmappedEvent;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @OneToMany
   @JoinColumn(name = "event_id", insertable = false, updatable = false)
   List<PendingEvent> pendingEvents;

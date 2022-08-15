@@ -38,6 +38,8 @@ public class Party {
   @Column(name = "public_key", length = 100)
   private String publicKey;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "address_id")
   private Address address;
