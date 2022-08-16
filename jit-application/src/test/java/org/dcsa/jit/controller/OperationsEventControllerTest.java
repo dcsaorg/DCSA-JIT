@@ -4,6 +4,7 @@ import datafactories.OperationsEventTODataFactory;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.service.TimestampDefinitionService;
+import org.dcsa.jit.service.TimestampRoutingService;
 import org.dcsa.skernel.infrastructure.pagination.PagedResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ class OperationsEventControllerTest {
 
   @MockBean OperationsEventService operationsEventService;
   @MockBean TimestampDefinitionService timestampDefinitionService;
+  @MockBean TimestampRoutingService timestampRoutingService;
 
   @MockBean TimestampDefinitionRepository timestampDefinitionRepository;
   @MockBean TransportCallRepository transportCallRepository;

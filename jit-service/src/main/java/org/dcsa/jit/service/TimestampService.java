@@ -6,6 +6,7 @@ import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
+import org.dcsa.jit.persistence.entity.OutboxMessage;
 import org.dcsa.jit.persistence.entity.Party;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.UnmappedEvent;
@@ -41,6 +42,13 @@ public class TimestampService {
   private final PartyRepository partyRepository;
   private final AddressRepository addressRepository;
   private final FacilityRepository facilityRepository;
+  private final TimestampRoutingService timestampRoutingService;
+
+  @Transactional
+  public void createAndRouteMessage(TimestampTO timestamp) {
+    create(timestamp);
+    timestampRoutingService.routeMessage(timestamp);
+  }
 
   @Transactional
   public void create(TimestampTO timestamp) {
