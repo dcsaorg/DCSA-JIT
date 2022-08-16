@@ -1,5 +1,6 @@
 package org.dcsa.jit.controller;
 
+import datafactories.OperationsEventTODataFactory;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.service.TimestampDefinitionService;
@@ -12,8 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Collections;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,16 +48,12 @@ class OperationsEventControllerTest {
   @DisplayName("GET operations event should return 200 for given basic valid call")
   void testGetOperationsEventReturns200ForGivenBasicCall() throws Exception {
     when(operationsEventService.findAll(any(), any()))
-        .thenReturn(
-            new PagedResult<>(0, Collections.emptyList()));
+        .thenReturn(new PagedResult<>(0, OperationsEventTODataFactory.operationsEventTOList()));
     this.mockMvc
         .perform(get("/events").accept(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())
         .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString()
-        .equals("[]");
+        .andExpect(jsonPath("$.[0].eventType").value("OPERATIONS"));
   }
 
   @Test
