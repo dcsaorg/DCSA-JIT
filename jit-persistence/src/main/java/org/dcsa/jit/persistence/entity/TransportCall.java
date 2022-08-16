@@ -4,8 +4,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN;
 import org.dcsa.jit.persistence.entity.enums.PortCallStatusCode;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
@@ -46,11 +48,15 @@ public class TransportCall {
   @Column(name = "transport_call_sequence_number")
   private Integer transportCallSequenceNumber;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @Deprecated
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "facility_id")
   private Facility facility;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @Enumerated(EnumType.STRING)
   @Column(name = "facility_type_code", length = 4, columnDefinition = "bpchar") // "bpchar" here is not a typing error
   private FacilityTypeCodeTRN facilityTypeCode;
@@ -62,14 +68,20 @@ public class TransportCall {
   @Column(name = "mode_of_transport_code", length = 3)
   private String modeOfTransportCode;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "vessel_id")
   private Vessel vessel;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "import_voyage_id")
   private Voyage importVoyage;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "export_voyage_id")
   private Voyage exportVoyage;

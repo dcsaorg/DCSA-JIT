@@ -36,6 +36,8 @@ public class OperationsEvent {
   @Column(name = "event_date_time", nullable = false)
   private OffsetDateTime eventDateTime;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "publisher_id", nullable = false)
   private Party publisher;
@@ -48,10 +50,14 @@ public class OperationsEvent {
   @Column(name = "operations_event_type_code", nullable = false)
   private OperationsEventTypeCode operationsEventTypeCode;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "event_location_id")
   private Location eventLocation;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "transport_call_id", nullable = false)
   private TransportCall transportCall;
@@ -63,6 +69,8 @@ public class OperationsEvent {
   @Column(name = "delay_reason_code", length = 3)
   private String delayReasonCode;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "vessel_position_id")
   private Location vesselPosition;
