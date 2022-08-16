@@ -2,15 +2,10 @@ package org.dcsa.jit.service;
 
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.TimestampInfo;
-import org.dcsa.jit.persistence.entity.TimestampDefinition;
-import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
-import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeOPR;
-import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
-import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
-import org.dcsa.jit.persistence.repository.TimestampInfoRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
+import org.dcsa.jit.persistence.repository.TimestampInfoRepository;
+import org.dcsa.jit.service.datafactories.TimestampDefinitionDataFactory;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,32 +22,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TimestampDefinitionServiceTest {
+class TimestampDefinitionServiceTest {
   @Mock TimestampDefinitionRepository timestampDefinitionRepository;
-  @Mock
-  TimestampInfoRepository timestampInfoRepository;
+  @Mock TimestampInfoRepository timestampInfoRepository;
   @InjectMocks TimestampDefinitionService timestampDefinitionService;
-  TimestampDefinition timestampDefinition;
-
-  @BeforeEach
-  void init() {
-    initEntities();
-  }
-
-  private void initEntities() {
-
-    timestampDefinition =
-        TimestampDefinition.builder()
-            .id("randomID")
-            .eventClassifierCode(EventClassifierCode.ACT)
-            .facilityTypeCode(FacilityTypeCodeOPR.BRTH)
-            .isTerminalNeeded(false)
-            .acceptTimestampDefinition(String.valueOf(true))
-            .operationsEventTypeCode(OperationsEventTypeCode.ARRI)
-            .eventLocationRequirement(LocationRequirement.OPTIONAL)
-            .vesselPositionRequirement(LocationRequirement.OPTIONAL)
-            .build();
-  }
 
   @Test
   @DisplayName("Test MarkOperationsEventAsTimestamp foe a valid found timestampDefinition.")
@@ -60,17 +33,18 @@ public class TimestampDefinitionServiceTest {
     when(timestampDefinitionRepository
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
                 any(), any(), any(), any(), any()))
-        .thenReturn(List.of(timestampDefinition));
+        .thenReturn(List.of(TimestampDefinitionDataFactory.timestampDefinition()));
 
     ArgumentCaptor<TimestampInfo> argumentCaptorTimestampDefinition =
         ArgumentCaptor.forClass(TimestampInfo.class);
     assertDoesNotThrow(
         () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
 
-    verify(timestampInfoRepository, times(1))
-      .save(argumentCaptorTimestampDefinition.capture());
+    verify(timestampInfoRepository, times(1)).save(argumentCaptorTimestampDefinition.capture());
 
-    assertEquals(timestampDefinition.getId(), argumentCaptorTimestampDefinition.getValue().getTimestampDefinition().getId());
+    assertEquals(
+        TimestampDefinitionDataFactory.timestampDefinition().getId(),
+        argumentCaptorTimestampDefinition.getValue().getTimestampDefinition().getId());
   }
 
   @Test
@@ -86,7 +60,9 @@ public class TimestampDefinitionServiceTest {
             ConcreteRequestErrorMessageException.class,
             () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
     assertTrue(
-        exception.getMessage().contains("Cannot determine JIT timestamp type for provided timestamp!"));
+        exception
+            .getMessage()
+            .contains("Cannot determine JIT timestamp type for provided timestamp!"));
   }
 
   @Test
@@ -96,7 +72,7 @@ public class TimestampDefinitionServiceTest {
     when(timestampDefinitionRepository
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
                 any(), any(), any(), any(), any()))
-        .thenReturn(List.of(timestampDefinition, timestampDefinition));
+        .thenReturn(List.of(TimestampDefinitionDataFactory.timestampDefinition(), TimestampDefinitionDataFactory.timestampDefinition()));
 
     Throwable exception =
         assertThrows(
@@ -105,6 +81,7 @@ public class TimestampDefinitionServiceTest {
     assertTrue(
         exception
             .getMessage()
-            .contains("There should be exactly one timestamp! More than one JIT timestamp type found for the given fields: "));
+            .contains(
+                "There should be exactly one timestamp! More than one JIT timestamp type found for the given fields: "));
   }
 }
