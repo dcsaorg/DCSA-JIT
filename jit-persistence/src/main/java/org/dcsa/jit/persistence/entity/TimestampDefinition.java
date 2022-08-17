@@ -2,8 +2,6 @@ package org.dcsa.jit.persistence.entity;
 
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.*;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -62,7 +60,6 @@ public class TimestampDefinition {
   @Column(name = "vessel_position_requirement", nullable = false)
   private LocationRequirement vesselPositionRequirement;
 
-  @NotFound(action = NotFoundAction.IGNORE)
   @OneToOne
   @JoinColumn(name = "negotiation_cycle")
   private NegotiationCycle negotiationCycle;
