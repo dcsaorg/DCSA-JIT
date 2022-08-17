@@ -3,15 +3,16 @@ package org.dcsa.jit.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.mapping.EnumMappers;
+import org.dcsa.jit.persistence.entity.Service;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.Vessel;
 import org.dcsa.jit.persistence.entity.Voyage;
 import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN;
 import org.dcsa.jit.persistence.repository.TransportCallRepository;
 import org.dcsa.jit.transferobjects.TimestampTO;
+import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class TransportCallService {
   private final TransportCallRepository transportCallRepository;
@@ -89,17 +90,43 @@ public class TransportCallService {
       timestampTO.transportCallSequenceNumber(),
       timestampTO.portVisitReference()
     );
+    return checkForAmbiguity(transportCalls, timestampTO.carrierServiceCode(), timestampTO.transportCallSequenceNumber());
+  }
 
+  private Optional<TransportCall> findPortVisit(TransportCall transportCall) {
+    // ENSURE THIS METHOD IS ALIGNED WITH ensureTransportCallIsLinkedToPortVisit
+    // (which creates the actual portVisit variant)
+    String carrierServiceCode = Optional.ofNullable(transportCall.getExportVoyage().getService())
+      .map(Service::getCarrierServiceCode)
+      .orElse(null);
+    List<TransportCall> transportCalls = transportCallRepository.findAllTransportCall(
+      transportCall.getLocation().getUNLocationCode(),
+      null,  // We select the variant without a facility as the port visit.
+      ModeOfTransport.VESSEL.name(),  // This should come from the transport call, but since JIT only works on vessels
+                                      // we can simplify a lot by hard coding it (TC has it in the internal format, the
+                                      // query expects the enum variant).
+      transportCall.getVessel().getVesselIMONumber(),
+      carrierServiceCode,
+      transportCall.getImportVoyage().getCarrierVoyageNumber(),
+      transportCall.getExportVoyage().getCarrierVoyageNumber(),
+      transportCall.getTransportCallSequenceNumber(),
+      transportCall.getPortVisitReference()
+    );
+
+    return checkForAmbiguity(transportCalls, carrierServiceCode, transportCall.getTransportCallSequenceNumber());
+  }
+
+  private Optional<TransportCall> checkForAmbiguity(List<TransportCall> transportCalls, String carrierServiceCode, Integer transportCallSequenceNumber) {
     if (transportCalls.isEmpty()) {
       return Optional.empty();
     }
     if (transportCalls.size() > 1) {
-      if (timestampTO.carrierServiceCode() == null) {
-        throw timestampTO.transportCallSequenceNumber() == null
+      if (carrierServiceCode == null) {
+        throw transportCallSequenceNumber == null
           ? ConcreteRequestErrorMessageException.invalidInput("Ambiguous transport call; please define sequence number or/and carrier service code + voyage number")
           : ConcreteRequestErrorMessageException.invalidInput("Ambiguous transport call; please define carrier service code and voyage number");
       } else {
-        throw timestampTO.transportCallSequenceNumber() == null
+        throw transportCallSequenceNumber == null
           ? ConcreteRequestErrorMessageException.invalidInput("Ambiguous transport call; please define sequence number")
           : ConcreteRequestErrorMessageException.internalServerError("Internal error: Ambitious transport call; the result should be unique but is not");
       }
@@ -108,9 +135,31 @@ public class TransportCallService {
     }
   }
 
+  private void ensureTransportCallIsLinkedToPortVisit(TransportCall transportCall) {
+    UUID portVisitID;
+    Optional<TransportCall> portVisit = findPortVisit(transportCall);
+    if (portVisit.isPresent()) {
+      portVisitID = portVisit.get().getId();
+    } else {
+      TransportCall newPortVisit = transportCall.toBuilder()
+        .id(null)
+        .location(Location.builder()
+          .UNLocationCode(transportCall.getLocation().getUNLocationCode())
+          .build())
+        .build();
+
+      transportCallRepository.save(newPortVisit);
+      portVisitID = newPortVisit.getId();
+      // Create the self-link immediately - makes it easier to reason about what happens.
+      // Also, we rely on the self link for the "jit_port_visit" VIEW in the database.
+      transportCallRepository.linkPortVisitWithTransportCall(portVisitID, portVisitID);
+    }
+    transportCallRepository.linkPortVisitWithTransportCall(portVisitID, transportCall.getId());
+  }
+
   private TransportCall createTransportCall(TimestampTO timestampTO, Vessel vessel, Location location) {
 
-    org.dcsa.jit.persistence.entity.Service service =
+    Service service =
       serviceService.ensureServiceExistsByCarrierServiceCode(timestampTO.carrierServiceCode());
 
       TransportCall entityToSave = TransportCall.builder()
@@ -127,6 +176,12 @@ public class TransportCallService {
       .portVisitReference(timestampTO.portVisitReference())
       .build();
 
-    return transportCallRepository.save(entityToSave);
+    return this.create(entityToSave);
+  }
+
+  public TransportCall create(TransportCall transportCall) {
+    TransportCall savedTransportCall = transportCallRepository.save(transportCall);
+    ensureTransportCallIsLinkedToPortVisit(savedTransportCall);
+    return savedTransportCall;
   }
 }

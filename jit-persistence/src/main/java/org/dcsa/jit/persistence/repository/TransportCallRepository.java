@@ -2,6 +2,7 @@ package org.dcsa.jit.persistence.repository;
 
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,8 +12,10 @@ import java.util.UUID;
 
 @Repository
 public interface TransportCallRepository extends JpaRepository<TransportCall, UUID> {
+
+  // The "null AS port_visit_id" is because JPA *insists* on doing OneToOne's eagerly and assumes the column is present
   @Query(value = """
-     SELECT transport_call.* FROM transport_call
+     SELECT transport_call.*, null AS port_visit_id FROM transport_call
        JOIN mode_of_transport ON (mode_of_transport.mode_of_transport_code = transport_call.mode_of_transport_code)
        LEFT JOIN voyage import_voyage ON (transport_call.import_voyage_id = import_voyage.id)
        LEFT JOIN voyage export_voyage ON (transport_call.export_voyage_id = export_voyage.id)
@@ -42,4 +45,8 @@ public interface TransportCallRepository extends JpaRepository<TransportCall, UU
     @Param("transportCallSequenceNumber") Integer transportCallSequenceNumber,
     @Param("portVisitReference") String portVisitReference
   );
+
+  @Modifying
+  @Query(value = "INSERT INTO transport_call_jit_port_visit (port_visit_id, transport_call_id) VALUES (:portVisitID, :transportCallID)", nativeQuery = true)
+  void linkPortVisitWithTransportCall(UUID portVisitID, UUID transportCallID);
 }
