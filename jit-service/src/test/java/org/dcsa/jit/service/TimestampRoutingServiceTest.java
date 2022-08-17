@@ -43,7 +43,7 @@ public class TimestampRoutingServiceTest {
     TimestampTO timestamp = TimestampTO.builder()
       .vessel(TimestampVesselTO.builder().vesselIMONumber("stuff").build())
       .build();
-    when(messageRoutingRuleRepository.findByVesselIMONumber(anyString())).thenReturn(Collections.emptyList());
+    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(anyString())).thenReturn(Collections.emptyList());
 
     // Execute
     timestampRoutingService.routeMessage(timestamp);
@@ -61,7 +61,7 @@ public class TimestampRoutingServiceTest {
       .vessel(TimestampVesselTO.builder().vesselIMONumber("stuff").build())
       .build();
     MessageRoutingRule messageRoutingRule = MessageRoutingRule.builder().id(UUID.randomUUID()).build();
-    when(messageRoutingRuleRepository.findByVesselIMONumber(anyString())).thenReturn(List.of(messageRoutingRule));
+    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(anyString())).thenReturn(List.of(messageRoutingRule));
     when(objectMapper.writeValueAsString(any(TimestampTO.class))).thenReturn("serialized timestamp");
 
     // Execute
@@ -92,7 +92,7 @@ public class TimestampRoutingServiceTest {
       MessageRoutingRule.builder().id(UUID.randomUUID()).build(),
       MessageRoutingRule.builder().id(UUID.randomUUID()).build()
     );
-    when(messageRoutingRuleRepository.findByVesselIMONumber(anyString())).thenReturn(messageRoutingRules);
+    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(anyString())).thenReturn(messageRoutingRules);
 
     // Execute
     timestampRoutingService.routeMessage(timestamp);

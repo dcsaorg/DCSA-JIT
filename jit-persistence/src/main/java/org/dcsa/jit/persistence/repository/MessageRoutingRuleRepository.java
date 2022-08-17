@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 public interface MessageRoutingRuleRepository extends JpaRepository<MessageRoutingRule, UUID> {
   @Query("FROM MessageRoutingRule WHERE vesselIMONumber = :vesselIMONumber OR vesselIMONumber IS NULL")
-  List<MessageRoutingRule> findByVesselIMONumber(String vesselIMONumber);
+  List<MessageRoutingRule> findRulesMatchingVesselIMONumber(String vesselIMONumber);
 }

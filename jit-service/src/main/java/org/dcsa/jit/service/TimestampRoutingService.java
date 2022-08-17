@@ -32,7 +32,7 @@ public class TimestampRoutingService {
       vesselIMONumber = timestamp.vesselIMONumber(); // pre jit 1.2
     }
 
-    List<MessageRoutingRule> messageRoutingRules = messageRoutingRuleRepository.findByVesselIMONumber(vesselIMONumber);
+    List<MessageRoutingRule> messageRoutingRules = messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(vesselIMONumber);
     if (!messageRoutingRules.isEmpty()) {
       String payload = objectMapper.writeValueAsString(timestamp);
       List<OutboxMessage> outboxMessages = messageRoutingRules.stream()
