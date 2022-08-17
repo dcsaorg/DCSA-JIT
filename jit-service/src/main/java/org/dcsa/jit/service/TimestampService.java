@@ -111,6 +111,12 @@ public class TimestampService {
               .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
               .facilityCode(facilitySMDGCode)
               .build();
+    } else if (locationTO == null) {
+      // Implementation detail: We *always* ensure that the TC has a location (so we can always rely on the
+      // location.UNLocationCode)
+      locationTO = LocationTO.builder()
+        .UNLocationCode(timestamp.UNLocationCode())
+        .build();
     }
     if (timestamp.vessel() != null && timestamp.vessel().vesselIMONumber() != null
       && !timestamp.vesselIMONumber().equals(timestamp.vessel().vesselIMONumber())) {

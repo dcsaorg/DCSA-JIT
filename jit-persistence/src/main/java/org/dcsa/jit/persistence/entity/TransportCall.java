@@ -1,35 +1,16 @@
 package org.dcsa.jit.persistence.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN;
 import org.dcsa.jit.persistence.entity.enums.PortCallStatusCode;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter(AccessLevel.PRIVATE)
@@ -92,4 +73,14 @@ public class TransportCall {
 
   @Column(name="port_visit_reference", length=50)
   private String portVisitReference;
+
+  // Added only for supporting TimestampInfoService/TimestampInfoController's "portVisitID" query param.
+  @OneToOne
+  @JoinTable(
+    name = "transport_call_jit_port_visit",
+    joinColumns = @JoinColumn(name = "transport_call_id")
+    // Inverse is not possible
+    // inverseJoinColumns = @JoinColumn(name = "port_visit_id")
+  )
+  private TransportCall portVisit;
 }

@@ -15,7 +15,9 @@ public class TransportCallMapperTest {
       "modeOfTransport", "modeOfTransportCode", "importVoyage", "exportVoyage", "id", "facility",
       "facilityCode", "facilityCodeListProvider",
       // Currently not mapped
-      "otherFacility", "portCallStatusCode"
+      "otherFacility", "portCallStatusCode",
+      // Not necessary (only used internally)
+      "portVisit"
       );
   }
 }
