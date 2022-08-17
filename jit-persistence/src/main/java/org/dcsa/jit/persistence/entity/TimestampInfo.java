@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @NamedEntityGraph(
-  name = "graph.allAttributes",
+  name = "timestampInfo.allAttributes",
   attributeNodes = {
     @NamedAttributeNode(value = "operationsEvent", subgraph = "subgraph.operationsEvent"),
     @NamedAttributeNode(value = "timestampDefinition", subgraph = "subgraph.timestampDefinition"),
@@ -48,7 +48,8 @@ import java.util.UUID;
       @NamedAttributeNode(value = "facility", subgraph = "subgraph.facility"),
     }),
     @NamedSubgraph(name = "subgraph.timestampDefinition", attributeNodes = {
-      @NamedAttributeNode(value = "publisherPattern")
+      @NamedAttributeNode(value = "publisherPattern"),
+      @NamedAttributeNode(value = "negotiationCycle")
     }),
   })
 @Data

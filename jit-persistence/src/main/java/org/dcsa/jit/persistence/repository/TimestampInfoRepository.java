@@ -14,10 +14,10 @@ public interface TimestampInfoRepository
     extends JpaRepository<TimestampInfo, UUID>,
             JpaSpecificationExecutor<TimestampInfo> {
 
-  @EntityGraph(value = "graph.allAttributes")
+  @EntityGraph(value = "timestampInfo.allAttributes")
   List<TimestampInfo> findAll(Sort sort);
 
-  @EntityGraph(value = "graph.allAttributes")
-  List<TimestampInfo> findAll(Specification<TimestampInfo> spec, Sort sort);
+  @EntityGraph(value = "timestampInfo.allAttributes")
+  List<TimestampInfo> findAll(Specification<TimestampInfo> spec);
 
 }
