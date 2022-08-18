@@ -14,6 +14,7 @@ import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.beans.Transient;
 import java.time.OffsetDateTime;
 
 public record TimestampTO(
@@ -47,4 +48,17 @@ public record TimestampTO(
 ) {
   @Builder(toBuilder = true) // workaround for intellij issue
   public TimestampTO {}
+
+  /**
+   * Canonical way to get vesselIMONumber that will work on both jit 1.2 and pre jit 1.2 and won't
+   * break if vesselIMONumber is made optional (ie. if we get rid of forward compatibility requirement).
+   */
+  @Transient
+  public String canonicalVesselIMONumber() {
+    if (vessel != null && vessel.vesselIMONumber() != null) {
+      return vessel.vesselIMONumber(); // jit 1.2
+    } else {
+      return vesselIMONumber; // pre jit 1.2
+    }
+  }
 }

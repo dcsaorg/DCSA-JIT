@@ -61,9 +61,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency><!-- TODO: Move this to super-pom -->
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				<version>1.2</version>
+				<groupId>com.vladmihalcea</groupId><!-- Support for json and jsonb data types in hibernate/JPA -->
+				<artifactId>hibernate-types-55</artifactId>
+				<version>2.18.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dcsa.jit</groupId>

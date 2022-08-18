@@ -24,6 +24,6 @@ public class TimestampController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void create(@Valid @RequestBody TimestampTO timestamp) {
     timestamp.publisher().adjustIdentifyingCodesIfNmftaIsPresent();
-    timestampService.create(timestamp);
+    timestampService.createAndRouteMessage(timestamp);
   }
 }
