@@ -25,13 +25,7 @@ public class TimestampRoutingService {
   @Transactional
   @SneakyThrows // JsonProcessingException when serializing timestamp
   public void routeMessage(TimestampTO timestamp) {
-    String vesselIMONumber;
-    if (timestamp.vessel() != null && timestamp.vessel().vesselIMONumber() != null) {
-      vesselIMONumber = timestamp.vessel().vesselIMONumber(); // jit 1.2
-    } else {
-      vesselIMONumber = timestamp.vesselIMONumber(); // pre jit 1.2
-    }
-
+    String vesselIMONumber = timestamp.canonicalVesselIMONumber();
     List<MessageRoutingRule> messageRoutingRules = messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(vesselIMONumber);
     if (!messageRoutingRules.isEmpty()) {
       String payload = objectMapper.writeValueAsString(timestamp);
