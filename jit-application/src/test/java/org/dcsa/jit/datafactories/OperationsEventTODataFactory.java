@@ -1,4 +1,4 @@
-package datafactories;
+package org.dcsa.jit.datafactories;
 
 import lombok.experimental.UtilityClass;
 import org.dcsa.jit.transferobjects.*;
