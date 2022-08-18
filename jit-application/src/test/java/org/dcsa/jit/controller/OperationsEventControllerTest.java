@@ -1,6 +1,6 @@
 package org.dcsa.jit.controller;
 
-import datafactories.OperationsEventTODataFactory;
+import org.dcsa.jit.datafactories.OperationsEventTODataFactory;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.service.TimestampDefinitionService;
