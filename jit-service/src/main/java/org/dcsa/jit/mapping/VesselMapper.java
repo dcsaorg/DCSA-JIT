@@ -13,22 +13,20 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface VesselMapper {
   @Mappings(value = {
-    @Mapping( target = "vesselName", source = "name"),
+    @Mapping(target = "vesselName", source = "name"),
     @Mapping(target = "vesselFlag", source = "flag"),
     @Mapping(target = "vesselCallSignNumber", source = "callSignNumber"),
     @Mapping(target = "isDummy", constant = "false")
   })
   VesselTO toTO(Vessel vessel);
 
-  @Mapping(target = "isDummy", source = "isDummy", defaultValue = "false")
-  Vessel toEntity(VesselTO vesselTO);
-
   @Mappings(value = {
-    @Mapping(target = "length", source = "lengthOverall"),
-    @Mapping(target = "callSignNumber", source = "callSign"),
-    @Mapping(target = "isDummy", constant = "false")
+    @Mapping(target = "name", source = "vesselName"),
+    @Mapping(target = "flag", source = "vesselFlag"),
+    @Mapping(target = "callSignNumber", source = "vesselCallSignNumber"),
+    @Mapping(target = "isDummy", source = "isDummy", defaultValue = "false")
   })
-  Vessel toEntity(TimestampVesselTO vesselTO);
+  Vessel toEntity(VesselTO vesselTO);
 
   @AfterMapping
   default void mapVesselOperatorCarrier(
