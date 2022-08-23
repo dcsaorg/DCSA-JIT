@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public record IdentifyingCodeTO(
+  @Size(max = 3) String codeListResponsibleAgencyCode,
   @NotNull DCSAResponsibleAgencyCode DCSAResponsibleAgencyCode,
   @NotNull @Size(max = 100) String partyCode,
   @Size(max = 100) String codeListName
