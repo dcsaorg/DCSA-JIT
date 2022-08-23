@@ -47,6 +47,7 @@ class OperationsEventControllerTest {
   @MockBean UnmappedEventRepository unmappedEventRepository;
   @MockBean SMDGDelayReasonRepository smdgDelayReasonRepository;
   @MockBean PendingEmailNotificationRepository pendingEmailNotificationRepository;
+  @MockBean OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
 
   @Test
   @DisplayName("GET operations event should return 200 for given basic valid call")

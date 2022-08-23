@@ -2,6 +2,22 @@
 dcsa:
   specification:
     version: 1.1.0
+  email:
+    from: noreply@dcsa.org
+    timezone: "NOT_SPECIFIED"
+    dateFormat: MM/LLL/yyyy HH:mm
+    debugEmail: false
+    templates:
+      timestampReceived:
+        onlyForEventType:
+          - OPERATIONS
+        onlyForEventClassifierCode:
+          - EST
+          - REQ
+        subject: Response requested on timestamp from vessel {{VESSEL_NAME}}.
+        body: |
+          <p>Vessel {{VESSEL_NAME}} // IMO{{VESSEL_IMO_NUMBER}} registered a new {{TIMESTAMP_TYPE}}. Your response is required.</p>
+          <p>Please go to <a href="{{WEB_UI_BASE_URI}}/transportcall/{{TRANSPORT_CALL_ID}}">{{WEB_UI_BASE_URI}}/transportcall/{{TRANSPORT_CALL_ID}}</a> and respond to the timestamp.</p>
 
 spring:
   application:
