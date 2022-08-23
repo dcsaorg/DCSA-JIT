@@ -2,15 +2,17 @@ package org.dcsa.jit.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.service.TimestampService;
+import org.dcsa.jit.transferobjects.IdentifyingCodeTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
+import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Validated
 @RestController
@@ -24,6 +26,18 @@ public class TimestampController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void create(@Valid @RequestBody TimestampTO timestamp) {
     timestamp.publisher().adjustIdentifyingCodesIfNmftaIsPresent();
+    IdentifyingCodeTO invalid = Stream.ofNullable(timestamp.publisher().identifyingCodes())
+        .flatMap(List::stream)
+        .filter(c -> c.codeListResponsibleAgencyCode() != null)
+        .filter(c -> !c.DCSAResponsibleAgencyCode().getLegacyAgencyCode().equals(c.codeListResponsibleAgencyCode()))
+        .findAny()
+        .orElse(null);
+    if (invalid != null) {
+      throw ConcreteRequestErrorMessageException.invalidInput("The codeListResponsibleAgencyCode \""
+        + invalid.codeListResponsibleAgencyCode() + "\" does not match the DCSAResponsibleAgencyCode \""
+        + invalid.DCSAResponsibleAgencyCode() + "\" (\""
+        + invalid.DCSAResponsibleAgencyCode().getLegacyAgencyCode() + "\")");
+    }
     timestampService.createAndRouteMessage(timestamp);
   }
 }
