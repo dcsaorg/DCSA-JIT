@@ -2,6 +2,8 @@
 dcsa:
   specification:
     version: 1.1.0
+  webui:
+    baseUrl: "NOT_SPECIFIED"
   email:
     from: noreply@dcsa.org
     timezone: "NOT_SPECIFIED"
@@ -9,8 +11,6 @@ dcsa:
     debugEmail: false
     templates:
       timestampReceived:
-        onlyForEventType:
-          - OPERATIONS
         onlyForEventClassifierCode:
           - EST
           - REQ
@@ -42,6 +42,27 @@ spring:
       dev: nosecurity, logsql, localdb
       test: nosecurity, logsql, localdb
       prod: default
+  mail:
+    # Syntactically correct host name that will fail to resolve
+    # in DNS.  The hostname should be guide most admins to the
+    # proper solution. :)
+    host: please-set-spring.mail.host-property-in-dsca-app.invalid
+    # Leave username and password undefined here.
+    # That should be a deployment specific option
+    #
+    # See https://www.baeldung.com/spring-email for some
+    # examples.
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          # Leave port and auth undefined here.
+          # That should be a deployment specific option
+          starttls:
+            # We use a strict default.
+            enable: true
+            required: true
 
 server:
   port: 9090

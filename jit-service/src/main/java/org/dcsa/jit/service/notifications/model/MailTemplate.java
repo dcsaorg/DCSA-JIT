@@ -23,16 +23,14 @@ public class MailTemplate {
   @NotBlank
   private String body;
 
-  private Set<EventClassifierCode> onlyForEventClassifierCode = Collections.emptySet();
+  // Weather to send email notifications that are using this template
+  private boolean enableEmailNotifications = true;
 
-  private Set<EventType> onlyForEventType = Collections.emptySet(); // TODO
+  private Set<EventClassifierCode> onlyForEventClassifierCode = Collections.emptySet();
 
   private Set<PartyFunction> onlyWhenPrimaryReceiverIs = Collections.emptySet();
 
   public boolean appliesToEvent(OperationsEvent event, TimestampDefinition timestampDefinition) {
-    //if (!onlyForEventType.isEmpty() && !onlyForEventType.contains(event.getEventType())) {
-    //  return false;
-    //}
     if (!onlyForEventClassifierCode.isEmpty() && !onlyForEventClassifierCode.contains(event.getEventClassifierCode())) {
       return false;
     }

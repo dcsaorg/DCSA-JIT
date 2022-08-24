@@ -28,7 +28,7 @@ import java.util.UUID;
 @Table(name = "pending_email_notification")
 @NamedNativeQuery(
   name = "PendingEmailNotification.nextPendingEmailNotifications",
-  query = "SELECT * FROM pending_email_notification LIMIT 50",
+  query = "SELECT * FROM pending_email_notification LIMIT 10",
   resultSetMapping = "pending_email_notification_mapping"
 )
 @SqlResultSetMapping(name = "pending_email_notification_mapping",
