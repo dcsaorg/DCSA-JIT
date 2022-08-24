@@ -23,7 +23,7 @@ public record TransportCallTO(
   @Deprecated @Size(max = 50) String otherFacility, // Deprecated in JIT 1.2
   @NotNull ModeOfTransport modeOfTransport,
   LocationTO location,
-  VesselTO vessel,
+  TransportCallVesselTO vessel,
   @Size(max = 50) String portVisitReference
 ) {
   @Builder(toBuilder = true) // workaround for intellij issue
