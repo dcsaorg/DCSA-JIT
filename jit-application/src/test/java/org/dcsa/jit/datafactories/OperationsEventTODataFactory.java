@@ -23,14 +23,13 @@ public class OperationsEventTODataFactory {
             .UNLocationCode("USMIA")
             .build();
 
-    VesselTO vesselTO =
-        VesselTO.builder()
+    TransportCallVesselTO vesselTO =
+        TransportCallVesselTO.builder()
             .vesselIMONumber("9321483")
             .vesselName("Emma Maersk")
             .vesselFlag("DK")
             .vesselOperatorCarrierCode("MSK")
             .vesselOperatorCarrierCodeListProvider(CarrierCodeListProvider.SMDG)
-            .isDummy(false)
             .build();
 
     TransportCallTO transportCallTO =
