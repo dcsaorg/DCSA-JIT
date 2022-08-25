@@ -12,13 +12,14 @@ import org.dcsa.jit.transferobjects.enums.PublisherRole;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.beans.Transient;
 import java.time.OffsetDateTime;
 
 public record TimestampTO(
-  @NotNull PartyTO publisher,
+  @Valid @NotNull PartyTO publisher,
   @NotNull PublisherRole publisherRole,
   @Deprecated @ValidVesselIMONumber String vesselIMONumber, // Deprecated in JIT 1.2
   @NotNull @Size(max = 5) String UNLocationCode,
@@ -26,8 +27,8 @@ public record TimestampTO(
   FacilityTypeCodeOPR facilityTypeCode,
   @NotNull EventClassifierCode eventClassifierCode,
   @NotNull OperationsEventTypeCode operationsEventTypeCode,
-  LocationTO eventLocation,
-  LocationTO vesselPosition,
+  @Valid LocationTO eventLocation,
+  @Valid LocationTO vesselPosition,
   @Deprecated ModeOfTransport modeOfTransport, // Deprecated in JIT 1.2
   PortCallServiceTypeCode portCallServiceTypeCode,
   PortCallPhaseTypeCode portCallPhaseTypeCode,

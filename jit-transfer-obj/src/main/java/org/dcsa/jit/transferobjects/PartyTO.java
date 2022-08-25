@@ -4,6 +4,7 @@ import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.dcsa.jit.transferobjects.enums.DCSAResponsibleAgencyCode;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,7 @@ public record PartyTO(
   @Size(max = 500) String publicKey,
   AddressTO address,
   String nmftaCode,
-  List<IdentifyingCodeTO> identifyingCodes
+  @Valid List<IdentifyingCodeTO> identifyingCodes
 ) {
   private static IdentifyingCodeTO idcs;
   @Builder(toBuilder = true) // workaround for intellij issue
