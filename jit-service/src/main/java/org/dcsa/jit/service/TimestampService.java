@@ -6,7 +6,6 @@ import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
-import org.dcsa.jit.persistence.entity.OutboxMessage;
 import org.dcsa.jit.persistence.entity.Party;
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.persistence.entity.UnmappedEvent;
@@ -19,6 +18,7 @@ import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +36,7 @@ public class TimestampService {
   private final OperationsEventRepository operationsEventRepository;
   private final LocationMapper locationMapper;
   private final TimestampDefinitionService timestampDefinitionService;
+  private final SMDGDelayReasonRepository smdgDelayReasonRepository;
   private final UnLocationRepository unLocationRepository;
   private final LocationRepository locationRepository;
   private final UnmappedEventRepository unmappedEventRepository;
@@ -138,6 +139,7 @@ public class TimestampService {
     this.ensureValidUnLocationCode(
         (timestamp.eventLocation()) == null ? null : timestamp.eventLocation().UNLocationCode());
     this.ensureValidUnLocationCode(timestamp.UNLocationCode());
+    this.ensureValidDelayReasonCode(timestamp.delayReasonCode());
 
     // Manually handle some entities because JPA cannot do it for us (might be easier if
     // everything used UUID as PK or other IDs that JPA knows how to handle out of the box)
@@ -225,11 +227,24 @@ public class TimestampService {
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {
-    if (unLocationCode != null && unLocationRepository.findById(unLocationCode).isEmpty()) {
-      throw ConcreteRequestErrorMessageException.invalidParameter(
-          "UNLocation with UNLocationCode "
-              + unLocationCode
-              + " not part of reference implementation data set");
+    assertNullOrKnown(unLocationCode, unLocationRepository, code ->
+      ConcreteRequestErrorMessageException.invalidParameter(
+        "UNLocation with UNLocationCode "
+          + unLocationCode
+          + " not part of reference implementation data set")
+    );
+  }
+
+  private void ensureValidDelayReasonCode(String delayReasonCode){
+    assertNullOrKnown(delayReasonCode, smdgDelayReasonRepository, code ->
+      ConcreteRequestErrorMessageException.invalidParameter(
+      "The delayReasonCode \"" + code + "\" is not included in the reference implementation data set")
+    );
+  }
+
+  private static <T> void assertNullOrKnown(T key, JpaRepository<?, T> repository, Function<T, RuntimeException> exceptionFunction) {
+    if (key != null && repository.findById(key).isEmpty()) {
+      throw exceptionFunction.apply(key);
     }
   }
 
