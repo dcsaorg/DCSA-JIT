@@ -2,13 +2,16 @@ package org.dcsa.jit.service.notifications;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
 import org.dcsa.jit.persistence.entity.PendingEmailNotification;
+import org.dcsa.jit.persistence.entity.PendingEmailNotificationDead;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.repository.OperationsEventRepository;
 import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
+import org.dcsa.jit.persistence.repository.PendingEmailNotificationDeadRepository;
 import org.dcsa.jit.service.notifications.model.FormattedEmail;
 import org.dcsa.jit.service.notifications.model.MailConfiguration;
 import org.dcsa.jit.service.notifications.model.MailTemplate;
@@ -31,11 +34,19 @@ public class TimestampNotificationMailService extends RouteBuilder {
   private final MailConfiguration mailConfiguration;
   private final EmailFormatter emailFormatter;
   private final JavaMailSender emailSender;
+  private final PendingEmailNotificationDeadRepository pendingEmailNotificationDeadRepository;
 
   @Override
   public void configure() {
-    from("jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=3600&transacted=true")
-      .bean(this, "processEventMessage");
+    from("jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=3600&transacted=true&maximumResults=10")
+      .bean(this, "processEventMessage")
+      .onException(Exception.class)
+      .useOriginalMessage()
+      .maximumRedeliveries(3)
+      .redeliveryDelay(10000)
+      .process(this::handleFailedEventMessage)
+      .handled(true);
+    ;
   }
 
   // Called by camel.
@@ -49,6 +60,7 @@ public class TimestampNotificationMailService extends RouteBuilder {
     MailTemplate mailTemplate = mailConfiguration.getTemplate(pendingEmailNotification.getTemplateName());
     if (!mailTemplate.isEnableEmailNotifications()) {
       log.debug("Email notifications are disabled for template {}", pendingEmailNotification.getTemplateName());
+      // throw new RuntimeException("Email notifications are disabled for template " + pendingEmailNotification.getTemplateName());
       return;
     }
 
@@ -69,7 +81,7 @@ public class TimestampNotificationMailService extends RouteBuilder {
     TimestampDefinition timestampDefinition = timestampDefinitionOpt.get();
     log.info("Loaded TimestampDefinition {}", timestampDefinition);
 
-    if (mailTemplate.appliesToEvent(operationsEvent, timestampDefinition)) {
+    if (mailTemplate.appliesToEvent(operationsEvent)) {
       formatAndSendEmail(operationsEvent, timestampDefinition, pendingEmailNotification.getTemplateName(), mailTemplate);
     }
   }
@@ -96,5 +108,13 @@ public class TimestampNotificationMailService extends RouteBuilder {
       //return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
+  }
+
+  public void handleFailedEventMessage(Exchange exchange) {
+    PendingEmailNotification pendingEmailNotification = exchange.getUnitOfWork().getOriginalInMessage().getBody(PendingEmailNotification.class);
+    Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+
+    log.warn("Processing dead message: {} -> {} '{}'", pendingEmailNotification, cause.getClass().getName(), cause.getMessage());
+    pendingEmailNotificationDeadRepository.save(PendingEmailNotificationDead.from(pendingEmailNotification, cause));
   }
 }

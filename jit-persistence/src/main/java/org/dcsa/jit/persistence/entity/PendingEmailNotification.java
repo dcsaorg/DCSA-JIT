@@ -9,12 +9,9 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityResult;
-import javax.persistence.FieldResult;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.SqlResultSetMapping;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -26,21 +23,10 @@ import java.util.UUID;
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "pending_email_notification")
-@NamedNativeQuery(
+@NamedQuery(
   name = "PendingEmailNotification.nextPendingEmailNotifications",
-  query = "SELECT * FROM pending_email_notification LIMIT 10",
-  resultSetMapping = "pending_email_notification_mapping"
+  query = "FROM PendingEmailNotification"
 )
-@SqlResultSetMapping(name = "pending_email_notification_mapping",
-  entities = @EntityResult(
-    entityClass = PendingEmailNotification.class,
-    fields = {
-      @FieldResult(name = "id", column = "id"),
-      @FieldResult(name = "eventID", column = "event_id"),
-      @FieldResult(name = "templateName", column = "template_name"),
-      @FieldResult(name = "enqueuedAt", column = "enqueued_at_date_time")
-    }
-  ))
 public class PendingEmailNotification {
   @Id
   @GeneratedValue

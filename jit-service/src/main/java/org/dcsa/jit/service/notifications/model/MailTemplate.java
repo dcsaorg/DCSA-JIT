@@ -2,9 +2,7 @@ package org.dcsa.jit.service.notifications.model;
 
 import lombok.Data;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
-import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
-import org.dcsa.jit.persistence.entity.enums.PartyFunction;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -28,16 +26,7 @@ public class MailTemplate {
 
   private Set<EventClassifierCode> onlyForEventClassifierCode = Collections.emptySet();
 
-  private Set<PartyFunction> onlyWhenPrimaryReceiverIs = Collections.emptySet();
-
-  public boolean appliesToEvent(OperationsEvent event, TimestampDefinition timestampDefinition) {
-    if (!onlyForEventClassifierCode.isEmpty() && !onlyForEventClassifierCode.contains(event.getEventClassifierCode())) {
-      return false;
-    }
-    //if(!onlyWhenPrimaryReceiverIs.isEmpty() && (timestampDefinition == null || !onlyWhenPrimaryReceiverIs.contains(timestampDefinition.getPrimaryReceiver()))) {
-    //  return false;
-    //}
-    return true;
+  public boolean appliesToEvent(OperationsEvent event) {
+    return onlyForEventClassifierCode.isEmpty() || onlyForEventClassifierCode.contains(event.getEventClassifierCode());
   }
-
 }
