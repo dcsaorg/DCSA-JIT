@@ -9,6 +9,8 @@ import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.service.notifications.model.FormattedEmail;
 import org.dcsa.jit.service.notifications.model.MailConfiguration;
 import org.dcsa.jit.service.notifications.model.MailTemplate;
+import org.dcsa.jit.service.notifications.model.exceptions.NonRecoverableMailNotificationException;
+import org.dcsa.jit.service.notifications.model.exceptions.UnknownTemplateKeyException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +44,7 @@ public class EmailFormatter {
     );
 
     TemplateSubst subst = TemplateSubst.of(
+      mailTemplate.getTemplateName(),
       operationsEvent,
       mailConfiguration.getZoneId(),
       mailConfiguration.getDateFormat(),
@@ -56,6 +59,7 @@ public class EmailFormatter {
 
   @RequiredArgsConstructor(staticName = "of")
   private static class TemplateSubst implements Function<MatchResult, String> {
+    private final String templateName;
     private final OperationsEvent operationsEvent;
     private final ZoneId emailTimezone;
     private final String dateTimeFormat;
@@ -66,7 +70,7 @@ public class EmailFormatter {
 
     public String apply(MatchResult matchResult) {
       String key = matchResult.group(1);
-      Function<OperationsEvent, Object> valueFunction = substitutionValues.getOrDefault(key, oe -> { throw new UnknownTemplateKeyException(key); });
+      Function<OperationsEvent, Object> valueFunction = substitutionValues.getOrDefault(key, oe -> { throw new UnknownTemplateKeyException(key, templateName); });
       Object value = valueFunction.apply(operationsEvent);
       if (value instanceof OffsetDateTime) {
         Instant instant = ((OffsetDateTime) value).toInstant();
@@ -75,12 +79,6 @@ public class EmailFormatter {
         value = getFormatter().format(timeAtOffset);
       }
       return String.valueOf(value);
-    }
-  }
-
-  public static class UnknownTemplateKeyException extends RuntimeException {
-    UnknownTemplateKeyException(String key) {
-      super(key);
     }
   }
 }

@@ -8,7 +8,6 @@ dcsa:
     from: noreply@dcsa.org
     timezone: "NOT_SPECIFIED"
     dateFormat: MM/LLL/yyyy HH:mm
-    debugEmail: false
     templates:
       timestampReceived:
         onlyForEventClassifierCode:

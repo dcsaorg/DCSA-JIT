@@ -23,7 +23,10 @@ public class MailConfiguration {
   private String from = "NOT_SPECIFIED";
   private String timezone = "NOT_SPECIFIED";
   private String dateFormat = "NOT_SPECIFIED";
-  private boolean debugEmail = false;
+  private Integer batchSize = 10;
+  private Long delay = 3000L;
+  private Integer maximumRedeliveries = 3;
+  private Long redeliveryDelay = 10000L;
 
   // Weather to send email notifications at all
   private boolean enableEmailNotifications = true;
@@ -73,14 +76,15 @@ public class MailConfiguration {
       log.info("If the timezone is wrong, then please set dcsa.email.timezone to the desired timezone");
     }
     for (Map.Entry<String, MailTemplate> templateEntry : templates.entrySet()) {
-      String templateKey = templateEntry.getKey();
+      String templateName = templateEntry.getKey();
       MailTemplate template = templateEntry.getValue();
+      template.setTemplateName(templateName);
       String toAddress = template.getTo();
       if ("NOT_SPECIFIED".equals(toAddress)) {
-        log.info("Disabled email notification for template " + templateKey + " as it has no receiver (dcsa.email.templates." + templateKey + ".to)");
+        log.info("Disabled email notification for template " + templateName + " as it has no receiver (dcsa.email.templates." + templateName + ".to)");
         template.setEnableEmailNotifications(false);
       } else {
-        log.info("Will send email notifications to " + toAddress + " for mail template (dcsa.email.templates." + templateKey + ".to)");
+        log.info("Will send email notifications to " + toAddress + " for mail template (dcsa.email.templates." + templateName + ".to)");
         template.setEnableEmailNotifications(true);
       }
     }
