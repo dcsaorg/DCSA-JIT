@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/auth/token-failure"
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

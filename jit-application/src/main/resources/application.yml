@@ -139,3 +139,12 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+camel:
+  max-redeliveries: 3
+  redelivery-delay: 10000
+  route:
+    outbox-msg: jpa:org.dcsa.jit.persistence.entity.OutboxMessage?namedQuery=poll-outbox-messages&delay=3000&transacted=true&maximumResults=10
+    emit-message: direct:emit-message
+    oidc: direct:OIDC
+    timestamp-notify: direct:timestamp-notification
