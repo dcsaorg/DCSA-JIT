@@ -10,9 +10,10 @@ import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 @UtilityClass
 public class TimestampDefinitionDataFactory {
 
-  public TimestampDefinition timestampDefinition() {
+  public static TimestampDefinition timestampDefinition() {
     return TimestampDefinition.builder()
         .id("84d744d0-e867-4c88-a869-9b88fbe3239d")
+        .timestampTypeName("ETA-Berth")
         .eventClassifierCode(EventClassifierCode.ACT)
         .facilityTypeCode(FacilityTypeCodeOPR.BRTH)
         .isTerminalNeeded(false)

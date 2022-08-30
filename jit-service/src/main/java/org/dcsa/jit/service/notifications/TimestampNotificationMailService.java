@@ -52,6 +52,7 @@ public class TimestampNotificationMailService extends RouteBuilder {
       + mailConfiguration.getDelay() + "&maximumResults=" + mailConfiguration.getBatchSize())
       .bean(this, "processEventMessage")
       .onException(NonRecoverableMailNotificationException.class, MailAuthenticationException.class)
+        .useOriginalMessage()
         .process(this::handleFailedEventMessage)
         .handled(true)
       .end()

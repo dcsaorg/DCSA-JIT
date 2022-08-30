@@ -1,15 +1,14 @@
 package org.dcsa.jit.service.notifications;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Setter;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.service.notifications.model.FormattedEmail;
 import org.dcsa.jit.service.notifications.model.MailConfiguration;
 import org.dcsa.jit.service.notifications.model.MailTemplate;
-import org.dcsa.jit.service.notifications.model.exceptions.NonRecoverableMailNotificationException;
 import org.dcsa.jit.service.notifications.model.exceptions.UnknownTemplateKeyException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,6 +29,7 @@ public class EmailFormatter {
   private static final Pattern TEMPLATE_PATTERN = Pattern.compile("[{][{]\\s*([a-zA-Z-_./]+)\\s*[}][}]");
 
   @Value("${dcsa.webui.baseUrl:NOT_SPECIFIED}")
+  @Setter(AccessLevel.PACKAGE)
   private String webUIBaseUrl;
 
   private final MailConfiguration mailConfiguration;
