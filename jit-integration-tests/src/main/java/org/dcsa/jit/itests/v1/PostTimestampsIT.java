@@ -376,12 +376,50 @@ public class PostTimestampsIT {
         .statusCode(400);
   }
 
+
+  // Test conditional mandatory'ness of facilityCode
+  @Test
+  public void testFacilityCodeCheck() {
+
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
+    map.remove("facilitySMDGCode");
+    map.remove("modeOfTransport");
+    map.remove("eventLocation");
+    map.remove("modeOfTransport");
+    map.remove("portCallServiceTypeCode");
+
+    given()
+      .contentType("application/json")
+      .header("testname", "testFacilityCodeCheck_ShouldBePresent")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    map = jsonToMap(VALID_TIMESTAMP_1_1);
+    map.put("facilityTypeCode", "PBPL"); // PBPL must not have a facility
+    map.remove("modeOfTransport");
+    map.remove("eventLocation");
+    map.remove("modeOfTransport");
+    map.remove("portCallServiceTypeCode");
+
+    given()
+      .contentType("application/json")
+      .header("testname", "testFacilityCodeCheck_ShouldNotBePresent")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+  }
+
+
   // Testing with mandatory fields + OPTIONAL transportCallSequenceNumber field
   @Test
   public void testTransportCallSequenceNumberField() {
 
     Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
-    map.remove("facilitySMDGCode");
     map.remove("modeOfTransport");
     map.remove("eventLocation");
     map.remove("modeOfTransport");
@@ -870,6 +908,11 @@ public class PostTimestampsIT {
     map.put("eventClassifierCode", "ACT");
     map.put("operationsEventTypeCode", "STRT");
     map.put("portCallServiceTypeCode", "PILO");
+    // PBPL timestamps do not have facilities.
+    map.remove("facilitySMDGCode");
+    Map<String, Object> location = (Map<String, Object>) map.get("eventLocation");
+    location.remove("facilityCode");
+    location.remove("facilityCodeListProvider");
 
     given()
       .contentType("application/json")
