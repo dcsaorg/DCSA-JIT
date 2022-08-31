@@ -18,6 +18,12 @@ dcsa:
           <p>Vessel {{VESSEL_NAME}} // IMO{{VESSEL_IMO_NUMBER}} registered a new {{TIMESTAMP_TYPE}}. Your response is required.</p>
           <p>Please go to <a href="{{WEB_UI_BASE_URI}}/transportcall/{{TRANSPORT_CALL_ID}}">{{WEB_UI_BASE_URI}}/transportcall/{{TRANSPORT_CALL_ID}}</a> and respond to the timestamp.</p>
 
+camel:
+  max-redeliveries: 3
+  redelivery-delay: 10000
+  route:
+    pending-email-notification: "jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=3000&maximumResults=10"
+
 spring:
   application:
     name: DCSA-JIT

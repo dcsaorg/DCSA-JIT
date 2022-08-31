@@ -47,9 +47,7 @@ public class TimestampNotificationMailService extends RouteBuilder {
 
   @Override
   public void configure() {
-    log.info("Configuring camel route with batchSize {} and delay {}", mailConfiguration.getBatchSize(), mailConfiguration.getDelay());
-    from("jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay="
-      + mailConfiguration.getDelay() + "&maximumResults=" + mailConfiguration.getBatchSize())
+    from("{{camel.route.pending-email-notification}}")
       .bean(this, "processEventMessage")
       .onException(NonRecoverableMailNotificationException.class, MailAuthenticationException.class)
         .useOriginalMessage()
@@ -58,8 +56,8 @@ public class TimestampNotificationMailService extends RouteBuilder {
       .end()
       .onException(Exception.class)
         .useOriginalMessage()
-        .maximumRedeliveries(mailConfiguration.getMaximumRedeliveries())
-        .redeliveryDelay(mailConfiguration.getRedeliveryDelay())
+        .maximumRedeliveries("{{camel.max-redeliveries}}")
+        .redeliveryDelay("{{camel.redelivery-delay}}")
         .process(this::handleFailedEventMessage)
         .handled(true)
       .end()
@@ -90,7 +88,7 @@ public class TimestampNotificationMailService extends RouteBuilder {
     }
 
     Optional<OperationsEvent> operationsEventOpt = operationsEventRepository.findById(pendingEmailNotification.getEventID());
-    if (!operationsEventOpt.isPresent()) {
+    if (operationsEventOpt.isEmpty()) {
       throw new EntityNotFoundMailNotificationException("No OperationsEvent with id = " + pendingEmailNotification.getEventID());
     }
     OperationsEvent operationsEvent = operationsEventOpt.get();
@@ -98,7 +96,7 @@ public class TimestampNotificationMailService extends RouteBuilder {
 
     Optional<TimestampDefinition> timestampDefinitionOpt = opsEventTimestampDefinitionRepository.findById(pendingEmailNotification.getEventID())
       .map(OpsEventTimestampDefinition::getTimestampDefinition);
-    if (!timestampDefinitionOpt.isPresent()) {
+    if (timestampDefinitionOpt.isEmpty()) {
       throw new EntityNotFoundMailNotificationException("No TimestampDefinition for OperationsEvent with id = " + pendingEmailNotification.getEventID());
     }
     TimestampDefinition timestampDefinition = timestampDefinitionOpt.get();
@@ -131,7 +129,7 @@ public class TimestampNotificationMailService extends RouteBuilder {
     }
   }
 
-  public void handleFailedEventMessage(Exchange exchange) {
+  private void handleFailedEventMessage(Exchange exchange) {
     PendingEmailNotification pendingEmailNotification = exchange.getUnitOfWork().getOriginalInMessage().getBody(PendingEmailNotification.class);
     Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
     log.error("Processing dead message: {} -> {} '{}'", pendingEmailNotification, cause.getClass().getName(), cause.getMessage());

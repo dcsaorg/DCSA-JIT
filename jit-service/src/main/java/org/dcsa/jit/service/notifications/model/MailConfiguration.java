@@ -23,10 +23,6 @@ public class MailConfiguration {
   private String from = "NOT_SPECIFIED";
   private String timezone = "NOT_SPECIFIED";
   private String dateFormat = "NOT_SPECIFIED";
-  private Integer batchSize = 10;
-  private Long delay = 3000L;
-  private Integer maximumRedeliveries = 3;
-  private Long redeliveryDelay = 10000L;
 
   // Weather to send email notifications at all
   private boolean enableEmailNotifications = true;
