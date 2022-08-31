@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
-import org.dcsa.jit.persistence.entity.OperationsEvent;
-import org.dcsa.jit.persistence.entity.Party;
-import org.dcsa.jit.persistence.entity.TransportCall;
-import org.dcsa.jit.persistence.entity.UnmappedEvent;
+import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
@@ -215,7 +212,9 @@ public class TimestampService {
   public void create(OperationsEvent operationsEvent) {
 
     operationsEvent = operationsEventRepository.save(operationsEvent);
-    timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
+    TimestampDefinition timestampDefinition = timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
+
+    validateTimestamp(operationsEvent, timestampDefinition);
 
     UnmappedEvent unmappedEvent =
         UnmappedEvent.builder()
@@ -224,6 +223,26 @@ public class TimestampService {
             .newRecord(true)
             .build();
     unmappedEventRepository.save(unmappedEvent);
+  }
+
+  private void validateTimestamp(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
+    validateTimestampFacility(operationsEvent, timestampDefinition);
+  }
+
+  private void validateTimestampFacility(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
+    if (timestampDefinition.getIsTerminalNeeded() ^ operationsEvent.getEventLocation().getFacility() != null) {
+      if (timestampDefinition.getIsTerminalNeeded()) {
+        throw ConcreteRequestErrorMessageException.invalidInput("Input classified as "
+          + timestampDefinition.getTimestampTypeName()
+          + ", which requires a facility but none was given (facilitySMDGCode or"
+          + " eventLocation.facilityCode + eventLocation.facilityCodeListProvider)");
+      }
+      throw ConcreteRequestErrorMessageException.invalidInput("Input classified as "
+        + timestampDefinition.getTimestampTypeName()
+        + ", which should not have a facility but one was given (facilitySMDGCode and"
+        + " eventLocation.facilityCode + eventLocation.facilityCodeListProvider must be null)");
+
+    }
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {

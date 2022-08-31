@@ -31,7 +31,7 @@ public class TimestampDefinitionService {
   private final TimestampInfoRepository timestampInfoRepository;
 
   @Transactional
-  public void markOperationsEventAsTimestamp(OperationsEvent operationsEvent) {
+  public TimestampDefinition markOperationsEventAsTimestamp(OperationsEvent operationsEvent) {
     List<TimestampDefinition> timestampDefinitionList =
         timestampDefinitionRepository
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
@@ -80,14 +80,16 @@ public class TimestampDefinitionService {
             + errorMessage);
     }
 
+    TimestampDefinition timestampDefinition = timestampDefinitionList.get(0);
     TimestampInfo ops =
         TimestampInfo.builder()
             .eventID(operationsEvent.getEventID())
             .operationsEvent(operationsEvent)
-            .timestampDefinition(timestampDefinitionList.get(0))
+            .timestampDefinition(timestampDefinition)
             .newRecord(true)
             .build();
     timestampInfoRepository.save(ops);
+    return timestampDefinition;
   }
 
   /**
