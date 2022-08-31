@@ -414,6 +414,34 @@ public class PostTimestampsIT {
       .statusCode(400);
   }
 
+  @Test
+  public void testMilesToDestConditionalExclusion() {
+
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
+    map.put("milesToDestinationPort", 51.1);
+
+    // Allowed for ETA-Berth
+    given()
+      .contentType("application/json")
+      .header("testname", "testMilesToDestConditionalExclusion_Permitted")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+
+    // Not allowed for RTA-Berth
+    map.put("eventClassifierCode", "REQ");
+    given()
+      .contentType("application/json")
+      .header("testname", "testMilesToDestConditionalExclusion_NotPermitted")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+  }
 
   // Testing with mandatory fields + OPTIONAL transportCallSequenceNumber field
   @Test
