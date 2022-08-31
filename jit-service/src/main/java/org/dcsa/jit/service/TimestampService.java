@@ -227,6 +227,7 @@ public class TimestampService {
 
   private void validateTimestamp(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
     validateTimestampFacility(operationsEvent, timestampDefinition);
+    validateTimestampMilesToDest(operationsEvent, timestampDefinition);
   }
 
   private void validateTimestampFacility(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
@@ -241,6 +242,14 @@ public class TimestampService {
         + timestampDefinition.getTimestampTypeName()
         + ", which should not have a facility but one was given (facilitySMDGCode and"
         + " eventLocation.facilityCode + eventLocation.facilityCodeListProvider must be null)");
+
+    }
+  }
+
+  private void validateTimestampMilesToDest(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
+    if (!timestampDefinition.getIsMilesToDestinationRelevant() && operationsEvent.getMilesRemainingToDestination() != null) {
+      throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
+        + ", which should not have milesToDestinationPort specified but the input did have that field.");
 
     }
   }
