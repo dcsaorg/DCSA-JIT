@@ -34,7 +34,7 @@ jobs:
         run: cd DCSA-JIT && mvn clean -U -B package -Ddcsa.artifacttype=-SNAPSHOT
 
       - name: Build and run the microservices
-        run: cd DCSA-JIT && docker-compose -f docker-compose.yml up -d -V --build
+        run: cd DCSA-JIT && docker-compose -f docker-compose.yml --env-file=.github/.env up -d -V --build
 
       - name: Fetch Backend Status
         run: |
