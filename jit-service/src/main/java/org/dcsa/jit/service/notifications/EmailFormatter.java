@@ -38,6 +38,7 @@ public class EmailFormatter {
     Map<String, Function<OperationsEvent, Object>> customValues = Map.of(
       "WEB_UI_BASE_URI", oe -> webUIBaseUrl,
       "TRANSPORT_CALL_ID", oe -> oe.getTransportCall().getId(),
+      "PORT_VISIT_ID", oe -> oe.getTransportCall().getPortVisit().getId(),
       "TIMESTAMP_TYPE", oe -> timestampDefinition.getTimestampTypeName(),
       "VESSEL_NAME", oe -> oe.getTransportCall().getVessel().getName(),
       "VESSEL_IMO_NUMBER", oe -> oe.getTransportCall().getVessel().getVesselIMONumber()

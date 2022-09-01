@@ -39,14 +39,14 @@ public class EmailFormatterTest {
     // Setup
     MailTemplate mailTemplate = new MailTemplate();
     mailTemplate.setSubject("Notification for {{VESSEL_NAME}}");
-    mailTemplate.setBody("Stuff {{WEB_UI_BASE_URI}} Stuff {{TRANSPORT_CALL_ID}} Stuff {{TIMESTAMP_TYPE}} Stuff {{VESSEL_IMO_NUMBER}} Stuff");
+    mailTemplate.setBody("Stuff {{WEB_UI_BASE_URI}} Stuff {{TRANSPORT_CALL_ID}} Stuff {{PORT_VISIT_ID}} Stuff {{TIMESTAMP_TYPE}} Stuff {{VESSEL_IMO_NUMBER}} Stuff");
 
     // Execute
     FormattedEmail formattedEmail = emailFormatter.formatEmail(operationsEvent(), timestampDefinition(), mailTemplate);
 
     // Verify
     assertEquals("Notification for my-vessel-name", formattedEmail.subject());
-    assertEquals("Stuff WebUIBaseUrl Stuff 414f91c2-650c-4f73-82cb-bd1171296140 Stuff ETA-Berth Stuff 1234567 Stuff", formattedEmail.body());
+    assertEquals("Stuff WebUIBaseUrl Stuff 414f91c2-650c-4f73-82cb-bd1171296140 Stuff 5db49152-a0d3-41c6-af1d-219c0eb7abcd Stuff ETA-Berth Stuff 1234567 Stuff", formattedEmail.body());
   }
 
   @Test

@@ -21,6 +21,9 @@ public class MailNotificationsOperationsEventDataFactory {
           .vesselIMONumber("1234567")
           .name("my-vessel-name")
           .build())
+        .portVisit(TransportCall.builder()
+          .id(UUID.fromString("5db49152-a0d3-41c6-af1d-219c0eb7abcd"))
+          .build())
         .build())
       .eventClassifierCode(EventClassifierCode.ACT)
       .build();
