@@ -28,12 +28,9 @@ import java.util.UUID;
 
 import static org.dcsa.jit.service.datafactories.TimestampDefinitionDataFactory.timestampDefinition;
 import static org.dcsa.jit.service.notifications.MailNotificationsOperationsEventDataFactory.operationsEvent;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
