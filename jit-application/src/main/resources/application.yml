@@ -16,7 +16,7 @@ dcsa:
         subject: Response requested on timestamp from vessel {{VESSEL_NAME}}.
         body: |
           <p>Vessel {{VESSEL_NAME}} // IMO{{VESSEL_IMO_NUMBER}} registered a new {{TIMESTAMP_TYPE}}. Your response is required.</p>
-          <p>Please go to <a href="{{WEB_UI_BASE_URI}}/transportcall/{{TRANSPORT_CALL_ID}}">{{WEB_UI_BASE_URI}}/transportcall/{{TRANSPORT_CALL_ID}}</a> and respond to the timestamp.</p>
+          <p>Please go to <a href="{{WEB_UI_BASE_URI}}/transportcall/{{PORT_VISIT_ID}}">{{WEB_UI_BASE_URI}}/transportcall/{{PORT_VISIT_ID}}</a> and respond to the timestamp.</p>
 
 camel:
   max-redeliveries: 3

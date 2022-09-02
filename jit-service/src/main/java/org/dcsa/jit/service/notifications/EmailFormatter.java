@@ -37,7 +37,6 @@ public class EmailFormatter {
   public FormattedEmail formatEmail(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition, MailTemplate mailTemplate) {
     Map<String, Function<OperationsEvent, Object>> customValues = Map.of(
       "WEB_UI_BASE_URI", oe -> webUIBaseUrl,
-      "TRANSPORT_CALL_ID", oe -> oe.getTransportCall().getId(),
       "PORT_VISIT_ID", oe -> oe.getTransportCall().getPortVisit().getId(),
       "TIMESTAMP_TYPE", oe -> timestampDefinition.getTimestampTypeName(),
       "VESSEL_NAME", oe -> oe.getTransportCall().getVessel().getName(),
