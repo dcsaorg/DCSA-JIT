@@ -6,6 +6,7 @@ import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.*;
+import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
@@ -228,6 +229,7 @@ public class TimestampService {
   private void validateTimestamp(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
     validateTimestampFacility(operationsEvent, timestampDefinition);
     validateTimestampMilesToDest(operationsEvent, timestampDefinition);
+    validateVesselPosition(operationsEvent, timestampDefinition);
   }
 
   private void validateTimestampFacility(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
@@ -252,6 +254,15 @@ public class TimestampService {
         + ", which should not have milesToDestinationPort specified but the input did have that field.");
 
     }
+  }
+
+  private void validateVesselPosition(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
+    if (timestampDefinition.getVesselPositionRequirement() == LocationRequirement.EXCLUDED && operationsEvent.getVesselPosition() != null) {
+      throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
+        + ", which should not have vesselPosition specified but the input did have that field.");
+
+    }
+    assert timestampDefinition.getVesselPositionRequirement() != LocationRequirement.REQUIRED;
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {
