@@ -39,9 +39,9 @@ public class MailTemplate {
       log.info("Template '{}' does not apply to event '{}' since event classifier code does not match", templateName, event.getEventID());
       return false;
     }
-    if (!onlyWhenPrimaryReceiverIs.isEmpty() && !onlyWhenPrimaryReceiverIs.containsAll(
-      timestampDefinition.getPublisherPattern().stream().map(PublisherPattern::getPrimaryReceiver).toList()
-    )) {
+    if (!onlyWhenPrimaryReceiverIs.isEmpty() &&
+      timestampDefinition.getPublisherPattern().stream().map(PublisherPattern::getPrimaryReceiver).noneMatch(onlyWhenPrimaryReceiverIs::contains)
+    ) {
       log.info("Template '{}' does not apply to event '{}' since primary receiver does not match", templateName, event.getEventID());
       return false;
     }

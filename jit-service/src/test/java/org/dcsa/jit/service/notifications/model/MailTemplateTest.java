@@ -59,7 +59,15 @@ public class MailTemplateTest {
     MailTemplate mailTemplate = new MailTemplate();
     mailTemplate.setOnlyWhenPrimaryReceiverIs(Set.of(PublisherRole.CA, PublisherRole.VSL));
 
-    assertFalse(mailTemplate.appliesToEvent(OperationsEvent.builder().build(), timestampDefinition(PublisherRole.CA, PublisherRole.AG)));
+    assertTrue(mailTemplate.appliesToEvent(OperationsEvent.builder().build(), timestampDefinition(PublisherRole.CA, PublisherRole.AG)));
+  }
+
+  @Test
+  public void testPrimaryReceiverIsEmpty() {
+    MailTemplate mailTemplate = new MailTemplate();
+    mailTemplate.setOnlyWhenPrimaryReceiverIs(Set.of(PublisherRole.CA, PublisherRole.AG, PublisherRole.VSL));
+
+    assertFalse(mailTemplate.appliesToEvent(OperationsEvent.builder().build(), timestampDefinition()));
   }
 
   private OperationsEvent operationsEvent(EventClassifierCode eventClassifierCode) {

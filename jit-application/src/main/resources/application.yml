@@ -51,7 +51,7 @@ spring:
     # Syntactically correct host name that will fail to resolve
     # in DNS.  The hostname should be guide most admins to the
     # proper solution. :)
-    host: please-set-spring.mail.host-property-in-dsca-app.invalid
+    host: please-set-spring.mail.host-property-in-dcsa-app.invalid
     # Leave username and password undefined here.
     # That should be a deployment specific option
     #
