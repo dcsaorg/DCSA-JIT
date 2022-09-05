@@ -48,10 +48,7 @@
     "facilityCode": "PSABT",
     "facilityCodeListProvider": "SMDG"
   },
-  "vesselPosition": {
-    "latitude": "48.8585500",
-    "longitude": "2.294492036"
-  },
+  "vesselPosition": null,
   "modeOfTransport": "VESSEL",
   "portCallServiceTypeCode": null,
   "portCallPhaseTypeCode": "INBD",

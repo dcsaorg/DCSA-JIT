@@ -245,6 +245,10 @@ public class PostTimestampsIT {
     map.remove("modeOfTransport");
     map.remove("eventLocation");
     map.remove("portCallServiceTypeCode");
+    map.put("vesselPosition", Map.of(
+        "latitude", "48.8585500",
+        "longitude", "2.294492036"
+    ));
 
     given()
         .contentType("application/json")
@@ -403,6 +407,7 @@ public class PostTimestampsIT {
     map.remove("eventLocation");
     map.remove("modeOfTransport");
     map.remove("portCallServiceTypeCode");
+    map.remove("vesselPosition");
 
     given()
       .contentType("application/json")
@@ -419,6 +424,7 @@ public class PostTimestampsIT {
 
     Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
     map.put("milesToDestinationPort", 51.1);
+    map.remove("vesselPosition");
 
     // Allowed for ETA-Berth
     given()
@@ -436,6 +442,38 @@ public class PostTimestampsIT {
     given()
       .contentType("application/json")
       .header("testname", "testMilesToDestConditionalExclusion_NotPermitted")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+  }
+
+  @Test
+  public void testVesselPositionConditionalExclusion() {
+
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
+    map.put("vesselPosition", Map.of(
+      "latitude", "48.8585500",
+      "longitude", "2.294492036"
+    ));
+
+    // Allowed for ETA-Berth
+    given()
+      .contentType("application/json")
+      .header("testname", "testVesselPositionConditionalExclusion_Permitted")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+
+    // Not allowed for RTA-Berth
+    map.put("eventClassifierCode", "REQ");
+    given()
+      .contentType("application/json")
+      .header("testname", "testVesselPositionConditionalExclusion_NotPermitted")
       .body(map)
       .post(TIMESTAMPS)
       .then()
