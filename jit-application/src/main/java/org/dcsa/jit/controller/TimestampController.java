@@ -1,6 +1,8 @@
 package org.dcsa.jit.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.dcsa.jit.notifications.TimestampNotificationMailService;
+import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.service.TimestampService;
 import org.dcsa.jit.transferobjects.IdentifyingCodeTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
@@ -21,6 +23,7 @@ import java.util.stream.Stream;
 public class TimestampController {
 
   private final TimestampService timestampService;
+  private final TimestampNotificationMailService timestampNotificationMailService;
 
   @PostMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -38,6 +41,7 @@ public class TimestampController {
         + invalid.DCSAResponsibleAgencyCode() + "\" (\""
         + invalid.DCSAResponsibleAgencyCode().getLegacyAgencyCode() + "\")");
     }
-    timestampService.createAndRouteMessage(timestamp);
+    OperationsEvent operationsEvent = timestampService.createAndRouteMessage(timestamp);
+    timestampNotificationMailService.enqueueEmailNotificationForEvent(operationsEvent);
   }
 }

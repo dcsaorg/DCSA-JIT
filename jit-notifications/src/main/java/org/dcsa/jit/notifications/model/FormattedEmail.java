@@ -1,4 +1,4 @@
-package org.dcsa.jit.service.notifications.model;
+package org.dcsa.jit.notifications.model;
 
 public record FormattedEmail(
   String subject,

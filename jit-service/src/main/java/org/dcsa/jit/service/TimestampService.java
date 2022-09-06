@@ -8,7 +8,6 @@ import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.repository.*;
-import org.dcsa.jit.service.notifications.TimestampNotificationMailService;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
@@ -43,13 +42,12 @@ public class TimestampService {
   private final AddressRepository addressRepository;
   private final FacilityRepository facilityRepository;
   private final TimestampRoutingService timestampRoutingService;
-  private final TimestampNotificationMailService timestampNotificationMailService;
 
   @Transactional
-  public void createAndRouteMessage(TimestampTO timestamp) {
+  public OperationsEvent createAndRouteMessage(TimestampTO timestamp) {
     OperationsEvent operationsEvent = create(timestamp);
     timestampRoutingService.routeMessage(timestamp);
-    timestampNotificationMailService.enqueueEmailNotificationForEvent(operationsEvent);
+    return operationsEvent;
   }
 
   @Transactional

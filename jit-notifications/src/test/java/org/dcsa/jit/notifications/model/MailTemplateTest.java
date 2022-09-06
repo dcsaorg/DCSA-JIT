@@ -1,4 +1,4 @@
-package org.dcsa.jit.service.notifications.model;
+package org.dcsa.jit.notifications.model;
 
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.PublisherPattern;

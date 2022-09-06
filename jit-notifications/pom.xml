@@ -9,11 +9,11 @@
 
 	<name>DCSA JIT - Service</name>
 	<groupId>org.dcsa.jit</groupId>
-	<artifactId>dcsa-jit-service</artifactId>
+	<artifactId>dcsa-jit-notifications</artifactId>
 	<version>${revision}${sha1}${changelist}</version>
 	<packaging>jar</packaging>
 
-	<description>DCSA JIT - Service</description>
+	<description>DCSA JIT - Notifications</description>
 
 	<dependencies>
 		<dependency>
@@ -33,6 +33,18 @@
 			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-spring-boot</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-jpa-starter</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.dcsa.shared-kernel</groupId>
 			<artifactId>dcsa-shared-kernel-all</artifactId>
 		</dependency>
@@ -45,18 +57,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel.springboot</groupId>
-			<artifactId>camel-spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel.springboot</groupId>
-			<artifactId>camel-http-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel.springboot</groupId>
-			<artifactId>camel-jackson-starter</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -1,4 +1,4 @@
-package org.dcsa.jit.service.notifications;
+package org.dcsa.jit.notifications;
 
 import lombok.experimental.UtilityClass;
 import org.dcsa.jit.persistence.entity.OperationsEvent;

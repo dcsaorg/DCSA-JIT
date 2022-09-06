@@ -1,9 +1,9 @@
-package org.dcsa.jit.service.notifications;
+package org.dcsa.jit.notifications;
 
-import org.dcsa.jit.service.notifications.model.FormattedEmail;
-import org.dcsa.jit.service.notifications.model.MailConfiguration;
-import org.dcsa.jit.service.notifications.model.MailTemplate;
-import org.dcsa.jit.service.notifications.model.exceptions.UnknownTemplateKeyException;
+import org.dcsa.jit.notifications.model.FormattedEmail;
+import org.dcsa.jit.notifications.model.MailConfiguration;
+import org.dcsa.jit.notifications.model.MailTemplate;
+import org.dcsa.jit.notifications.model.exceptions.UnknownTemplateKeyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.ZoneId;
 
-import static org.dcsa.jit.service.datafactories.TimestampDefinitionDataFactory.timestampDefinition;
-import static org.dcsa.jit.service.notifications.MailNotificationsOperationsEventDataFactory.operationsEvent;
+import static org.dcsa.jit.notifications.TimestampDefinitionDataFactory.timestampDefinition;
+import static org.dcsa.jit.notifications.MailNotificationsOperationsEventDataFactory.operationsEvent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;

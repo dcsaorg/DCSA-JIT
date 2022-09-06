@@ -1,4 +1,4 @@
-package org.dcsa.jit.service.notifications;
+package org.dcsa.jit.notifications;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -14,13 +14,11 @@ import org.dcsa.jit.persistence.repository.OperationsEventRepository;
 import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.persistence.repository.PendingEmailNotificationDeadRepository;
 import org.dcsa.jit.persistence.repository.PendingEmailNotificationRepository;
-import org.dcsa.jit.service.notifications.model.FormattedEmail;
-import org.dcsa.jit.service.notifications.model.MailConfiguration;
-import org.dcsa.jit.service.notifications.model.MailTemplate;
-import org.dcsa.jit.service.notifications.model.exceptions.EntityNotFoundMailNotificationException;
-import org.dcsa.jit.service.notifications.model.exceptions.NonRecoverableMailNotificationException;
-import org.dcsa.jit.transferobjects.TimestampTO;
-import org.springframework.beans.factory.annotation.Value;
+import org.dcsa.jit.notifications.model.FormattedEmail;
+import org.dcsa.jit.notifications.model.MailConfiguration;
+import org.dcsa.jit.notifications.model.MailTemplate;
+import org.dcsa.jit.notifications.model.exceptions.EntityNotFoundMailNotificationException;
+import org.dcsa.jit.notifications.model.exceptions.NonRecoverableMailNotificationException;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
