@@ -8,11 +8,14 @@ import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.repository.*;
+import org.dcsa.jit.transferobjects.IdentifyingCodeTO;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
+import org.dcsa.jit.transferobjects.enums.DCSAResponsibleAgencyCode;
 import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
+import org.dcsa.skernel.domain.persistence.entity.Carrier;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
@@ -21,8 +24,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.dcsa.jit.persistence.entity.enums.LocationRequirement.EXCLUDED;
 import static org.dcsa.jit.persistence.entity.enums.LocationRequirement.REQUIRED;
@@ -44,6 +50,7 @@ public class TimestampService {
   private final UnmappedEventRepository unmappedEventRepository;
   private final PartyRepository partyRepository;
   private final AddressRepository addressRepository;
+  private final CarrierRepository carrierRepository;
   private final FacilityRepository facilityRepository;
   private final TimestampRoutingService timestampRoutingService;
   private final PendingEmailNotificationRepository pendingEmailNotificationRepository;
@@ -55,11 +62,60 @@ public class TimestampService {
     enqueueEmailNotificationForEvent(operationsEvent);
   }
 
+  private static boolean matchAgencyCode(IdentifyingCodeTO code, DCSAResponsibleAgencyCode agencyCode) {
+    return code.DCSAResponsibleAgencyCode() == agencyCode
+      || agencyCode.getLegacyAgencyCode().equals(code.codeListResponsibleAgencyCode());
+  }
+
+  private void checkIdentifyingPartyCodes(TimestampTO timestamp) {
+    List<IdentifyingCodeTO> partyCodes = timestamp.publisher().identifyingCodes();
+    if (partyCodes == null || partyCodes.isEmpty()) {
+      return;
+    }
+    Set<String> uneceCodes = partyCodes.stream()
+      .filter(c -> matchAgencyCode(c, DCSAResponsibleAgencyCode.UNECE))
+      .map(IdentifyingCodeTO::partyCode)
+      .collect(Collectors.toUnmodifiableSet());
+    List<IdentifyingCodeTO> smdgCodes = partyCodes.stream()
+      .filter(c -> matchAgencyCode(c, DCSAResponsibleAgencyCode.SMDG))
+      .toList();
+    for (IdentifyingCodeTO smdgPartyCode : smdgCodes) {
+      if ("TCL".equals(smdgPartyCode.codeListName())) {
+        if (uneceCodes.isEmpty()) {
+          throw ConcreteRequestErrorMessageException.invalidInput("SMDG TCL party codes must be accompanied by "
+            + " an UN/ECE party code defining the UN Location Code (as SMDG TCL codes are only defined with"
+            + " an UN Location Code).");
+        }
+        if (facilityRepository.findAllByFacilitySMDGCode(smdgPartyCode.partyCode()).stream()
+          .map(Facility::getUNLocationCode)
+          .noneMatch(uneceCodes::contains)) {
+          throw ConcreteRequestErrorMessageException.invalidInput("Could not find a valid UN/ECE UN location code"
+            + " matching the SMDG TCL party code \"" + smdgPartyCode.partyCode() + "\".  Please verify that"
+            + " a matching SMDG TCL party code and the UN/ECE UN Location Code has been provided in the"
+            + " identifyingCodes list.  Note the codes may be valid but not loaded into this system.");
+        }
+
+      } else if ("LCL".equals(smdgPartyCode.codeListName())) {
+        Carrier c = carrierRepository.findBySmdgCode(smdgPartyCode.partyCode());
+        if (c == null) {
+          throw ConcreteRequestErrorMessageException.invalidInput("Unrecognized SMDG LCL party code \""
+            + smdgPartyCode.partyCode() + "\". Note the code may be valid but not loaded into this system.");
+        }
+      } else {
+        throw ConcreteRequestErrorMessageException.invalidInput("SMDG (306) partyCode \"" + smdgPartyCode.partyCode()
+          + "\" is not classified with a (known) code list. Please use either \"TCL\" (Terminal codes) or \"LCL\" (Liner codes)"
+          + " for the identifyingPartyCode. (Note the strictness of this check is an implementation detail and not"
+          + " mandated by the JIT standard)");
+      }
+    }
+  }
+
   @Transactional
   public OperationsEvent create(TimestampTO timestamp) {
     TimestampTO.TimestampTOBuilder timestampTOBuilder = timestamp.toBuilder();
     LocationTO locationTO = timestamp.eventLocation();
     String facilitySMDGCode = timestamp.facilitySMDGCode();
+    checkIdentifyingPartyCodes(timestamp);
     if (timestamp.modeOfTransport() == null) {
       // JIT IFS says that Mode Of Transport must be omitted for some timestamps
       // and must be VESSEL for others.
