@@ -481,6 +481,80 @@ public class PostTimestampsIT {
       .statusCode(400);
   }
 
+
+  @Test
+  public void testEventLocationNameConditionalExclusion() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
+    Map<String, Object> location = (Map<String, Object>) map.get("eventLocation");
+    location.put("locationName", "   ");
+
+    // Allowed for ETA-Berth
+    given()
+      .contentType("application/json")
+      .header("testname", "testEventLocationNameConditionalExclusion_NotEmpty")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+
+    // RTA-Berth Requires an locationName
+    map.put("eventClassifierCode", "REQ");
+    location.put("locationName", null);
+    given()
+      .contentType("application/json")
+      .header("testname", "testEventLocationNameConditionalExclusion_RequiredButMissing")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // But it works if we have a locationName
+    location.put("locationName", "Berth 1/S");
+    given()
+      .contentType("application/json")
+      .header("testname", "testEventLocationNameConditionalExclusion_RequiredAndPresent")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+    // ESOP must not have a locationName
+    map.put("eventClassifierCode", "ACT");
+    map.put("facilityTypeCode", null);
+    map.put("facilitySMDGCode", null);
+    location.put("locationName", "somewhere");
+    location.put("facilityCode", null);
+    location.put("facilityCodeListProvider", null);
+    given()
+      .contentType("application/json")
+      .header("testname", "testEventLocationNameConditionalExclusion_ExcludedButPresent")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // But it works when locationName is omitted.
+    map.put("eventClassifierCode", "ACT");
+    map.put("facilityTypeCode", null);
+    map.put("facilitySMDGCode", null);
+    location.put("locationName", null);
+    location.put("facilityCode", null);
+    location.put("facilityCodeListProvider", null);
+    given()
+      .contentType("application/json")
+      .header("testname", "testEventLocationNameConditionalExclusion_ExcludedAndPresent")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+  }
+
   // Testing with mandatory fields + OPTIONAL transportCallSequenceNumber field
   @Test
   public void testTransportCallSequenceNumberField() {

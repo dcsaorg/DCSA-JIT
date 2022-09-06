@@ -31,7 +31,7 @@
   "eventClassifierCode": "EST",
   "operationsEventTypeCode": "ARRI",
   "eventLocation": {
-    "locationName": "Eiffel Tower",
+    "locationName": null,
     "latitude": "48.8585500",
     "longitude": "2.294492036",
     "UNLocationCode": "SGSIN",

@@ -24,6 +24,9 @@ import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static org.dcsa.jit.persistence.entity.enums.LocationRequirement.EXCLUDED;
+import static org.dcsa.jit.persistence.entity.enums.LocationRequirement.REQUIRED;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -243,6 +246,7 @@ public class TimestampService {
     validateTimestampFacility(operationsEvent, timestampDefinition);
     validateTimestampMilesToDest(operationsEvent, timestampDefinition);
     validateVesselPosition(operationsEvent, timestampDefinition);
+    validateEventLocationRequirement(operationsEvent, timestampDefinition);
   }
 
   private void validateTimestampFacility(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
@@ -270,12 +274,32 @@ public class TimestampService {
   }
 
   private void validateVesselPosition(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    if (timestampDefinition.getVesselPositionRequirement() == LocationRequirement.EXCLUDED && operationsEvent.getVesselPosition() != null) {
+    if (timestampDefinition.getVesselPositionRequirement() == EXCLUDED && operationsEvent.getVesselPosition() != null) {
       throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
         + ", which should not have vesselPosition specified but the input did have that field.");
-
     }
     assert timestampDefinition.getVesselPositionRequirement() != LocationRequirement.REQUIRED;
+  }
+
+  private void validateEventLocationRequirement(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
+    String locationName =  operationsEvent.getEventLocation().getLocationName();
+    boolean hasLocationName = locationName != null && !locationName.trim().isEmpty();
+    LocationRequirement locationRequirement = timestampDefinition.getEventLocationRequirement();
+
+    if (locationRequirement == REQUIRED && !hasLocationName) {
+      throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
+        + ", which should have locationName set (not null and not empty)");
+    } else if (locationRequirement == EXCLUDED && locationName != null) {
+      // Using locationName != null because it provides immediate correct advise.  Otherwise, people might set it to
+      // "" only to have it be caught by the exception below.
+      throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
+        + ", which should *not* locationName set (i.e., it should be null");
+    }
+    if (locationName != null && !hasLocationName) {
+      // Given "" or "   " is never a good locationName, we tell people to provide null or non-empty location names.
+      // For most parts, this should only apply to OPTIONAL - but it feels prudent to have as a fall-safe.
+      throw ConcreteRequestErrorMessageException.invalidInput("locationName should either be null or a non-empty string");
+    }
   }
 
   private void ensureValidUnLocationCode(String unLocationCode) {
