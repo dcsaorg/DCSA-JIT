@@ -8,6 +8,7 @@ import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.repository.*;
+import org.dcsa.jit.service.notifications.TimestampNotificationMailService;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
@@ -42,15 +43,17 @@ public class TimestampService {
   private final AddressRepository addressRepository;
   private final FacilityRepository facilityRepository;
   private final TimestampRoutingService timestampRoutingService;
+  private final TimestampNotificationMailService timestampNotificationMailService;
 
   @Transactional
   public void createAndRouteMessage(TimestampTO timestamp) {
-    create(timestamp);
+    OperationsEvent operationsEvent = create(timestamp);
     timestampRoutingService.routeMessage(timestamp);
+    timestampNotificationMailService.enqueueEmailNotificationForEvent(operationsEvent);
   }
 
   @Transactional
-  public void create(TimestampTO timestamp) {
+  public OperationsEvent create(TimestampTO timestamp) {
     TimestampTO.TimestampTOBuilder timestampTOBuilder = timestamp.toBuilder();
     LocationTO locationTO = timestamp.eventLocation();
     String facilitySMDGCode = timestamp.facilitySMDGCode();
@@ -171,7 +174,7 @@ public class TimestampService {
             .delayReasonCode(timestamp.delayReasonCode())
             .build();
 
-    create(operationsEvent);
+    return create(operationsEvent);
   }
 
 
@@ -210,7 +213,7 @@ public class TimestampService {
     return null;
   }
 
-  public void create(OperationsEvent operationsEvent) {
+  public OperationsEvent create(OperationsEvent operationsEvent) {
 
     operationsEvent = operationsEventRepository.save(operationsEvent);
     TimestampDefinition timestampDefinition = timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
@@ -224,6 +227,7 @@ public class TimestampService {
             .newRecord(true)
             .build();
     unmappedEventRepository.save(unmappedEvent);
+    return operationsEvent;
   }
 
   private void validateTimestamp(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {

@@ -5,6 +5,8 @@ import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.service.TimestampDefinitionService;
 import org.dcsa.jit.service.TimestampRoutingService;
+import org.dcsa.jit.service.notifications.EmailFormatter;
+import org.dcsa.jit.service.notifications.TimestampNotificationMailService;
 import org.dcsa.skernel.infrastructure.pagination.PagedResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,6 +49,11 @@ class OperationsEventControllerTest {
   @MockBean UnLocationRepository unLocationRepository;
   @MockBean UnmappedEventRepository unmappedEventRepository;
   @MockBean SMDGDelayReasonRepository smdgDelayReasonRepository;
+  @MockBean PendingEmailNotificationRepository pendingEmailNotificationRepository;
+  @MockBean OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
+  @MockBean EmailFormatter emailFormatter;
+  @MockBean JavaMailSender javaMailSender;
+  @MockBean PendingEmailNotificationDeadRepository pendingEmailNotificationDeadRepository;
 
   @Test
   @DisplayName("GET operations event should return 200 for given basic valid call")

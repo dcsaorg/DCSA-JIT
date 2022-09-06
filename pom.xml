@@ -40,6 +40,12 @@
 		<dcsa.shared-kernel.artifacttype>-SNAPSHOT</dcsa.shared-kernel.artifacttype>
 		<shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.shared-kernel.artifacttype}</shared-kernel.version>
 		<!-- End: Define Shared kernel version -->
+
+		<hibernate-types.version>2.18.0</hibernate-types.version>
+		<camel.version>3.18.1</camel.version>
+		<testcontainers.version>1.17.3</testcontainers.version>
+		<greenmail.version>1.6.10</greenmail.version>
+
 	</properties>
 
 	<modules>
@@ -63,8 +69,40 @@
 			<dependency><!-- TODO: Move this to super-pom -->
 				<groupId>com.vladmihalcea</groupId><!-- Support for json and jsonb data types in hibernate/JPA -->
 				<artifactId>hibernate-types-55</artifactId>
-				<version>2.18.0</version>
+				<version>${hibernate-types.version}</version>
 			</dependency>
+			<dependency><!-- TODO: Move this to super-pom -->
+				<groupId>org.apache.camel.springboot</groupId>
+				<artifactId>camel-spring-boot-bom</artifactId>
+				<version>${camel.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers</artifactId>
+				<version>${testcontainers.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${testcontainers.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${testcontainers.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.icegreen</groupId>
+				<artifactId>greenmail-junit5</artifactId>
+				<version>${greenmail.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.dcsa.jit</groupId>
 				<artifactId>dcsa-jit-transfer-obj</artifactId>
@@ -87,6 +125,24 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<!-- Solve convergence errors -->
+			<dependency>
+				<groupId>com.sun.istack</groupId>
+				<artifactId>istack-commons-runtime</artifactId>
+				<version>3.0.12</version>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.core</artifactId>
+				<version>4.3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jetbrains</groupId>
+				<artifactId>annotations</artifactId>
+				<version>21.0.1</version>
+			</dependency>
+			<!-- /Solve convergence errors -->
 		</dependencies>
 	</dependencyManagement>
 
