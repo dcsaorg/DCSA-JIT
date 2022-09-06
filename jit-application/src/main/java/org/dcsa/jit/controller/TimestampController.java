@@ -40,6 +40,9 @@ public class TimestampController {
         + invalid.DCSAResponsibleAgencyCode() + "\" (\""
         + invalid.DCSAResponsibleAgencyCode().getLegacyAgencyCode() + "\")");
     }
+    if (timestamp.portVisitReference() != null && timestamp.portVisitReference().trim().isEmpty()) {
+      throw ConcreteRequestErrorMessageException.invalidInput("The portVisitReference must be null or non-empty");
+    }
     timestampService.createAndRouteMessage(timestamp);
   }
 }
