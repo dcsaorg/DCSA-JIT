@@ -615,18 +615,156 @@ public class PostTimestampsIT {
 
     map.remove("publisher");
     Map<String, List<Map<String, String>>> identifyingCodes =
-        Map.of(
-            "identifyingCodes",
-            List.of(Map.of("DCSAResponsibleAgencyCode", "SMDG", "partyCode", "MSK")));
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of(
+          "DCSAResponsibleAgencyCode", "ZZZ",
+          "partyCode", "Non-standard-code"
+        )));
+
     map.put("publisher", identifyingCodes);
 
     given()
-        .contentType("application/json")
-        .body(map)
-        .post(TIMESTAMPS)
-        .then()
-        .assertThat()
-        .statusCode(204);
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+  }
+
+  @Test
+  public void testIdentifyingCodesCombinations() {
+    Map<String, Object> map = jsonToMap(VALID_TIMESTAMP_1_1);
+
+    map.remove("publisher");
+    Map<String, List<Map<String, String>>> identifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of(
+          "DCSAResponsibleAgencyCode", "SMDG",
+          "partyCode", "MSK",
+          // Our implementation requires codeListName to be provided for SMDG
+          "codeListName", "LCL"
+        )));
+    map.put("publisher", identifyingCodes);
+
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+    identifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of(
+          "DCSAResponsibleAgencyCode", "UNECE",
+          // We do not actually check this code on its own at the moment.  But if were to do,
+          // then at best we should require a codeListName
+          "partyCode", "DEHAM"
+        )));
+
+    map.put("publisher", identifyingCodes);
+
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+    identifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of(
+          "DCSAResponsibleAgencyCode", "UNECE",
+          // We do not actually check this code on its own at the moment.  But if were to do,
+          // then at best we should require a codeListName
+          "partyCode", "DEHAM"
+        ), Map.of(
+          "DCSAResponsibleAgencyCode", "SMDG",
+          "partyCode", "EGH",
+          "codeListName", "TCL"
+        )));
+
+    map.put("publisher", identifyingCodes);
+
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(204);
+
+    // Bad - missing UN Location Code
+    identifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of(
+          "DCSAResponsibleAgencyCode", "SMDG",
+          "partyCode", "EGH",
+          "codeListName", "TCL"
+        )));
+
+    map.put("publisher", identifyingCodes);
+
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+    // Bad - EGH is in DEHAM, but we do not provide that UN Location Code
+    identifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of(
+          "DCSAResponsibleAgencyCode", "UNECE",
+          // We do not actually check this code on its own at the moment.  But if were to do,
+          // then at best we should require a codeListName
+          "partyCode", "CYLMS"
+        ), Map.of(
+          "DCSAResponsibleAgencyCode", "SMDG",
+          "partyCode", "EGH",
+          "codeListName", "TCL"
+        )));
+
+    map.put("publisher", identifyingCodes);
+
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
+
+
+    // Bad - We are missing the codeListName, so we cannot tell if it is a Liner (LCL) or a Terminal code (TCL)
+    identifyingCodes =
+      Map.of(
+        "identifyingCodes",
+        List.of(Map.of(
+          "DCSAResponsibleAgencyCode", "SMDG",
+          "partyCode", "MSK"
+        )));
+
+    map.put("publisher", identifyingCodes);
+
+    given()
+      .contentType("application/json")
+      .body(map)
+      .post(TIMESTAMPS)
+      .then()
+      .assertThat()
+      .statusCode(400);
   }
 
   // Testing with mandatory fields - Except PublisherField field

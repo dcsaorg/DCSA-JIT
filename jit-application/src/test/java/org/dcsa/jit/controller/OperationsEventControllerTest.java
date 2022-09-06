@@ -53,6 +53,7 @@ class OperationsEventControllerTest {
   @MockBean EmailFormatter emailFormatter;
   @MockBean JavaMailSender javaMailSender;
   @MockBean PendingEmailNotificationDeadRepository pendingEmailNotificationDeadRepository;
+  @MockBean CarrierRepository carrierRepository;
 
   @Test
   @DisplayName("GET operations event should return 200 for given basic valid call")
