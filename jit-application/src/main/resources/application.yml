@@ -22,7 +22,7 @@ camel:
   max-redeliveries: 3
   redelivery-delay: 10000
   route:
-    pending-email-notification: "jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=3000&maximumResults=10"
+    pending-email-notification: "jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=60000&maximumResults=10"
 
 spring:
   application:
