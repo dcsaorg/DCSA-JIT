@@ -108,7 +108,7 @@ public class TimestampNotificationMailServiceIT {
       .assertThat()
       .statusCode(204);
 
-    Awaitility.await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+    Awaitility.await().atMost(65, TimeUnit.SECONDS).untilAsserted(() -> {
       MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
       assertEquals(1, receivedMessages.length);
 
