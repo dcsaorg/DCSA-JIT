@@ -50,26 +50,6 @@ public class TimestampNotificationMailServiceTest {
   @InjectMocks private TimestampNotificationMailService timestampNotificationMailService;
 
   @Test
-  @DisplayName("Test enqueueEmailNotificationForEvent")
-  public void testEnqueueEmailNotificationForEvent() {
-    // Setup
-    UUID eventId = UUID.fromString("414f91c2-650c-4f73-82cb-bd1171296140");
-
-    // Execute
-    timestampNotificationMailService.enqueueEmailNotificationForEvent(
-      OperationsEvent.builder()
-        .eventID(eventId)
-        .build());
-
-    // Verify
-    ArgumentCaptor<PendingEmailNotification> captor = ArgumentCaptor.forClass(PendingEmailNotification.class);
-    verify(pendingEmailNotificationRepository).save(captor.capture());
-    PendingEmailNotification pendingEmailNotification = captor.getValue();
-    assertEquals(eventId, pendingEmailNotification.getEventID());
-    assertEquals("timestampReceived", pendingEmailNotification.getTemplateName());
-  }
-
-  @Test
   @DisplayName("Test no attempt to load operations event or timestamp def when emails are disabled globally")
   public void testProcessEventMessageEmailsGloballyDisabledGlobally() {
     // Setup

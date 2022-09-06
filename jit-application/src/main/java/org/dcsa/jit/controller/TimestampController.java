@@ -23,7 +23,6 @@ import java.util.stream.Stream;
 public class TimestampController {
 
   private final TimestampService timestampService;
-  private final TimestampNotificationMailService timestampNotificationMailService;
 
   @PostMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -41,7 +40,6 @@ public class TimestampController {
         + invalid.DCSAResponsibleAgencyCode() + "\" (\""
         + invalid.DCSAResponsibleAgencyCode().getLegacyAgencyCode() + "\")");
     }
-    OperationsEvent operationsEvent = timestampService.createAndRouteMessage(timestamp);
-    timestampNotificationMailService.enqueueEmailNotificationForEvent(operationsEvent);
+    timestampService.createAndRouteMessage(timestamp);
   }
 }

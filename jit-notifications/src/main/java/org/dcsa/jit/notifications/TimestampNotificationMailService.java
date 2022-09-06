@@ -27,8 +27,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.transaction.Transactional;
-import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -60,15 +58,6 @@ public class TimestampNotificationMailService extends RouteBuilder {
         .handled(true)
       .end()
     ;
-  }
-
-  @Transactional
-  public void enqueueEmailNotificationForEvent(OperationsEvent operationsEvent) {
-    pendingEmailNotificationRepository.save(PendingEmailNotification.builder()
-        .eventID(operationsEvent.getEventID())
-        .templateName("timestampReceived")
-        .enqueuedAt(OffsetDateTime.now())
-        .build());
   }
 
   // Called by camel.

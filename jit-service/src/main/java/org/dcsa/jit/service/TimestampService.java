@@ -20,6 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -42,12 +43,13 @@ public class TimestampService {
   private final AddressRepository addressRepository;
   private final FacilityRepository facilityRepository;
   private final TimestampRoutingService timestampRoutingService;
+  private final PendingEmailNotificationRepository pendingEmailNotificationRepository;
 
   @Transactional
-  public OperationsEvent createAndRouteMessage(TimestampTO timestamp) {
+  public void createAndRouteMessage(TimestampTO timestamp) {
     OperationsEvent operationsEvent = create(timestamp);
     timestampRoutingService.routeMessage(timestamp);
-    return operationsEvent;
+    enqueueEmailNotificationForEvent(operationsEvent);
   }
 
   @Transactional
@@ -174,6 +176,15 @@ public class TimestampService {
 
     return create(operationsEvent);
   }
+
+  private void enqueueEmailNotificationForEvent(OperationsEvent operationsEvent) {
+    pendingEmailNotificationRepository.save(PendingEmailNotification.builder()
+      .eventID(operationsEvent.getEventID())
+      .templateName("timestampReceived")
+      .enqueuedAt(OffsetDateTime.now())
+      .build());
+  }
+
 
 
   private Party savePublisher(PartyTO partyTO) {
