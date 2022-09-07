@@ -1,4 +1,4 @@
-package org.dcsa.jit.service.notifications;
+package org.dcsa.jit.notifications;
 
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
@@ -8,10 +8,10 @@ import org.dcsa.jit.persistence.repository.OperationsEventRepository;
 import org.dcsa.jit.persistence.repository.OpsEventTimestampDefinitionRepository;
 import org.dcsa.jit.persistence.repository.PendingEmailNotificationDeadRepository;
 import org.dcsa.jit.persistence.repository.PendingEmailNotificationRepository;
-import org.dcsa.jit.service.notifications.model.FormattedEmail;
-import org.dcsa.jit.service.notifications.model.MailConfiguration;
-import org.dcsa.jit.service.notifications.model.MailTemplate;
-import org.dcsa.jit.service.notifications.model.exceptions.EntityNotFoundMailNotificationException;
+import org.dcsa.jit.notifications.model.FormattedEmail;
+import org.dcsa.jit.notifications.model.MailConfiguration;
+import org.dcsa.jit.notifications.model.MailTemplate;
+import org.dcsa.jit.notifications.model.exceptions.EntityNotFoundMailNotificationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,8 +26,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.dcsa.jit.service.datafactories.TimestampDefinitionDataFactory.timestampDefinition;
-import static org.dcsa.jit.service.notifications.MailNotificationsOperationsEventDataFactory.operationsEvent;
+import static org.dcsa.jit.notifications.TimestampDefinitionDataFactory.timestampDefinition;
+import static org.dcsa.jit.notifications.MailNotificationsOperationsEventDataFactory.operationsEvent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
@@ -48,26 +48,6 @@ public class TimestampNotificationMailServiceTest {
   @Mock private PendingEmailNotificationDeadRepository pendingEmailNotificationDeadRepository;
 
   @InjectMocks private TimestampNotificationMailService timestampNotificationMailService;
-
-  @Test
-  @DisplayName("Test enqueueEmailNotificationForEvent")
-  public void testEnqueueEmailNotificationForEvent() {
-    // Setup
-    UUID eventId = UUID.fromString("414f91c2-650c-4f73-82cb-bd1171296140");
-
-    // Execute
-    timestampNotificationMailService.enqueueEmailNotificationForEvent(
-      OperationsEvent.builder()
-        .eventID(eventId)
-        .build());
-
-    // Verify
-    ArgumentCaptor<PendingEmailNotification> captor = ArgumentCaptor.forClass(PendingEmailNotification.class);
-    verify(pendingEmailNotificationRepository).save(captor.capture());
-    PendingEmailNotification pendingEmailNotification = captor.getValue();
-    assertEquals(eventId, pendingEmailNotification.getEventID());
-    assertEquals("timestampReceived", pendingEmailNotification.getTemplateName());
-  }
 
   @Test
   @DisplayName("Test no attempt to load operations event or timestamp def when emails are disabled globally")

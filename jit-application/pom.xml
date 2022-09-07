@@ -29,6 +29,10 @@
 			<artifactId>dcsa-jit-service</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.dcsa.jit</groupId>
+			<artifactId>dcsa-jit-notifications</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 		</dependency>

@@ -1,4 +1,4 @@
-package org.dcsa.jit.service.notifications.model.exceptions;
+package org.dcsa.jit.notifications.model.exceptions;
 
 public class NonRecoverableMailNotificationException extends RuntimeException {
   public NonRecoverableMailNotificationException(String message) {

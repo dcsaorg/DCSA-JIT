@@ -8,7 +8,6 @@ import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.repository.*;
-import org.dcsa.jit.service.notifications.TimestampNotificationMailService;
 import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
@@ -21,6 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -43,13 +43,13 @@ public class TimestampService {
   private final AddressRepository addressRepository;
   private final FacilityRepository facilityRepository;
   private final TimestampRoutingService timestampRoutingService;
-  private final TimestampNotificationMailService timestampNotificationMailService;
+  private final PendingEmailNotificationRepository pendingEmailNotificationRepository;
 
   @Transactional
   public void createAndRouteMessage(TimestampTO timestamp) {
     OperationsEvent operationsEvent = create(timestamp);
     timestampRoutingService.routeMessage(timestamp);
-    timestampNotificationMailService.enqueueEmailNotificationForEvent(operationsEvent);
+    enqueueEmailNotificationForEvent(operationsEvent);
   }
 
   @Transactional
@@ -176,6 +176,15 @@ public class TimestampService {
 
     return create(operationsEvent);
   }
+
+  private void enqueueEmailNotificationForEvent(OperationsEvent operationsEvent) {
+    pendingEmailNotificationRepository.save(PendingEmailNotification.builder()
+      .eventID(operationsEvent.getEventID())
+      .templateName("timestampReceived")
+      .enqueuedAt(OffsetDateTime.now())
+      .build());
+  }
+
 
 
   private Party savePublisher(PartyTO partyTO) {

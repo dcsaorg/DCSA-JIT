@@ -52,6 +52,7 @@
 		<module>jit-transfer-obj</module>
 		<module>jit-persistence</module>
 		<module>jit-service</module>
+		<module>jit-notifications</module>
 		<module>jit-application</module>
 		<module>jit-integration-tests</module>
 	</modules>
@@ -116,6 +117,11 @@
 			<dependency>
 				<groupId>org.dcsa.jit</groupId>
 				<artifactId>dcsa-jit-service</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dcsa.jit</groupId>
+				<artifactId>dcsa-jit-notifications</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

@@ -1,4 +1,4 @@
-package org.dcsa.jit.service.notifications;
+package org.dcsa.jit.notifications;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
-import org.dcsa.jit.service.notifications.model.FormattedEmail;
-import org.dcsa.jit.service.notifications.model.MailConfiguration;
-import org.dcsa.jit.service.notifications.model.MailTemplate;
-import org.dcsa.jit.service.notifications.model.exceptions.UnknownTemplateKeyException;
+import org.dcsa.jit.notifications.model.FormattedEmail;
+import org.dcsa.jit.notifications.model.MailConfiguration;
+import org.dcsa.jit.notifications.model.MailTemplate;
+import org.dcsa.jit.notifications.model.exceptions.UnknownTemplateKeyException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
