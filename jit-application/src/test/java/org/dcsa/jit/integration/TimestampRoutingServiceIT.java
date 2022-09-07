@@ -161,8 +161,7 @@ class TimestampRoutingServiceIT {
   }
 
   @Test
-  void after_valid_timestamp_insert_should_notify_successfully_on_valid_credentials_test()
-      throws Exception {
+  void afterValidTimestampInsertShouldNotifySuccessfullyOnValidCredentialsTest() throws Exception {
     // mock all endpoints, add an advice on the routes you want to track
     AdviceWith.adviceWith(
         camelContext, "outbox-message-poll", AdviceWithRouteBuilder::mockEndpoints);
@@ -213,9 +212,8 @@ class TimestampRoutingServiceIT {
   }
 
   @Test
-  void
-      after_valid_timestamp_insert_notify_should_fail_for_invalid_credentials_and_update_dead_queue_test()
-          throws Exception {
+  void afterValidTimestampInsertNotifyShouldFailForInvalidCredentialsAndUpdateDeadQueueTest()
+      throws Exception {
     // mock all endpoints, add an advice on the routes you want to track
     AdviceWith.adviceWith(
         camelContext, "outbox-message-poll", AdviceWithRouteBuilder::mockEndpoints);
