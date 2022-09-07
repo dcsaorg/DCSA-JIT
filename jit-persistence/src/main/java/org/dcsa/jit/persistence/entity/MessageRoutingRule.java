@@ -1,22 +1,9 @@
 package org.dcsa.jit.persistence.entity;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
@@ -26,7 +13,6 @@ import java.util.UUID;
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "message_routing_rule")
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class MessageRoutingRule {
   public enum LoginType {
     OIDC
@@ -53,8 +39,8 @@ public class MessageRoutingRule {
   @Column(name = "login_type", length = 8, nullable = false)
   private LoginType loginType;
 
-  @Type(type = "jsonb")
-  @Column(name = "login_information", nullable = false, columnDefinition = "jsonb")
+  @Type(type = "com.vladmihalcea.hibernate.type.json.JsonStringType")
+  @Column(name = "login_information", nullable = false, columnDefinition = "TEXT")
   private LoginInformation loginInformation;
 
   @Column(name = "vessel_imo_number")

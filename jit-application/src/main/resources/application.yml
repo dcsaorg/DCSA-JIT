@@ -23,6 +23,10 @@ camel:
   redelivery-delay: 10000
   route:
     pending-email-notification: "jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=60000&maximumResults=10"
+    outbox-msg: jpa:org.dcsa.jit.persistence.entity.OutboxMessage?namedQuery=poll-outbox-messages&delay=3000&transacted=true&maximumResults=10
+    emit-message: direct:emit-message
+    oidc: direct:OIDC
+    timestamp-notify: direct:timestamp-notification
 
 spring:
   application:
