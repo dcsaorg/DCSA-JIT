@@ -43,8 +43,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @CamelSpringBootTest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWireMock(stubs = "classpath:/stubs")
-@ContextConfiguration(initializers = {TimestampRoutingServiceIT.Initializer.class})
-class TimestampRoutingServiceIT {
+@ContextConfiguration(initializers = {TimestampNotificationsHttpServiceIT.Initializer.class})
+class TimestampNotificationsHttpServiceIT {
 
   @Autowired MessageRoutingRuleRepository messageRoutingRuleRepository;
 
