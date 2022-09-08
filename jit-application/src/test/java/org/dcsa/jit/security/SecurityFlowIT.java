@@ -35,7 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
       "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,"
-          + "org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration"
+          + "org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration",
+      "camel.springboot.routes-collector-enabled=false"
     })
 @ContextConfiguration(initializers = {SecurityFlowIT.Initializer.class})
 class SecurityFlowIT {
@@ -54,6 +55,13 @@ class SecurityFlowIT {
   @MockBean UnmappedEventRepository unmappedEventRepository;
   @MockBean VesselRepository vesselRepository;
   @MockBean TimestampInfoRepository timestampInfoRepository;
+  @MockBean SMDGDelayReasonRepository smdgDelayReasonRepository;
+  @MockBean CarrierRepository carrierRepository;
+  @MockBean MessageRoutingRuleRepository messageRoutingRuleRepository;
+  @MockBean OutboxMessageRepository outboxMessageRepository;
+  @MockBean PendingEmailNotificationRepository pendingEmailNotificationRepository;
+  @MockBean PendingEmailNotificationDeadRepository pendingEmailNotificationDeadRepository;
+  @MockBean OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
 
   @Autowired TestRestTemplate testRestTemplate;
 
@@ -123,7 +131,7 @@ class SecurityFlowIT {
   }
 
   @Test
-  void valid_token_should_return_success() {
+  void validTokenShouldReturnSuccess() {
 
     HttpHeaders headers = new HttpHeaders();
     headers.add("Authorization", getBearerToken());
@@ -137,7 +145,7 @@ class SecurityFlowIT {
   }
 
   @Test
-  void invalid_token_should_return_unauthorized() {
+  void invalidTokenShouldReturnUnauthorized() {
 
     HttpHeaders headers = new HttpHeaders();
     headers.add("Authorization", "Bearer xxxxxx.yyyyyy.zzzzzz");
