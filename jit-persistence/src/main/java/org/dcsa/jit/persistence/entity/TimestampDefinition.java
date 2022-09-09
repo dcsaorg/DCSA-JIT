@@ -76,6 +76,9 @@ public class TimestampDefinition {
   @Column(name = "reject_timestamp_definition", nullable = false)
   private String rejectTimestampDefinition;
 
+  @Column(name = "implicit_variant_of", nullable = false)
+  private String implicitVariantOf;
+
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @OneToMany
