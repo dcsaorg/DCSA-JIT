@@ -24,4 +24,6 @@ public class NegotiationCycle {
   @Column(name = "cycle_name", nullable = false)
   private String cycleName;
 
+  @Column(name = "display_order", nullable = false)
+  private int displayOrder;
 }
