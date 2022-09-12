@@ -14,7 +14,7 @@ import org.mapstruct.Mapping;
       LocationMapper.class
     })
 public interface OperationsEventMapper {
-  @Mapping(target = "milesRemainingToDestination", source = "milesRemainingToDestination")
-  @Mapping(target = "milesToDestinationPort", source = "milesRemainingToDestination")
+  @Mapping(target = "milesRemainingToDestination", source = "milesToDestinationPort")
+  @Mapping(target = "milesToDestinationPort", source = "milesToDestinationPort")
   OperationsEventTO toTO(OperationsEvent operationsEvent);
 }

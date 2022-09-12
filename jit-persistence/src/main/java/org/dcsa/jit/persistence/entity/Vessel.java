@@ -45,14 +45,14 @@ public class Vessel {
   @Column(name = "is_dummy")
   private Boolean isDummy;
 
-  @Column(name = "length", columnDefinition = "numeric")
+  @Column(name = "length_overall", columnDefinition = "numeric")
   private Float length;
 
   @Column(name = "width", columnDefinition = "numeric")
   private Float width;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "type")
+  @Column(name = "vessel_type_code")
   private VesselType type;
 
   @Enumerated(EnumType.STRING)

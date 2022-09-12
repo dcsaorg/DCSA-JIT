@@ -68,7 +68,7 @@ public class TransportCall {
   private Voyage exportVoyage;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "port_call_status_code", length = 4, columnDefinition = "bpchar") // "bpchar" here is not a typing error
+  @Column(name = "port_call_status_type_code", length = 4, columnDefinition = "bpchar") // "bpchar" here is not a typing error
   private PortCallStatusCode portCallStatusCode;
 
   @Column(name="port_visit_reference", length=50)

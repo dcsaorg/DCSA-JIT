@@ -229,7 +229,7 @@ public class TimestampService {
             .transportCall(tc)
             .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().draft() : null)
             .vesselDraftUnit(timestamp.vessel() != null ? enumMappers.dimensionUnitToDao(timestamp.vessel().dimensionUnit()) : null)
-            .milesRemainingToDestination(timestamp.milesToDestinationPort())
+            .milesToDestinationPort(timestamp.milesToDestinationPort())
             .delayReasonCode(timestamp.delayReasonCode())
             .build();
 
@@ -322,7 +322,7 @@ public class TimestampService {
   }
 
   private void validateTimestampMilesToDest(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    if (!timestampDefinition.getIsMilesToDestinationRelevant() && operationsEvent.getMilesRemainingToDestination() != null) {
+    if (!timestampDefinition.getIsMilesToDestinationRelevant() && operationsEvent.getMilesToDestinationPort() != null) {
       throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
         + ", which should not have milesToDestinationPort specified but the input did have that field.");
 
