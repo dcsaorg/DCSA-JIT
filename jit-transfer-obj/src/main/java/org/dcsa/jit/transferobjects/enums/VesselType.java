@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum VesselType {
-  GCGO("General cargo"),
+  GECA("General cargo"),
   CONT("Container"),
   RORO("RoRo"),
   CARC("Car carrier"),
@@ -14,9 +14,9 @@ public enum VesselType {
   FERY("Ferry"),
   BULK("Bulk"),
   TANK("Tanker"),
-  LGTK("Liquified gaz tanker"),
+  LPGT("Liquified gaz tanker"),
   ASSI("Assistance"),
-  PILO("Pilot boat");
+  PLOT("Pilot boat");
 
   @Getter private final String description;
 }
