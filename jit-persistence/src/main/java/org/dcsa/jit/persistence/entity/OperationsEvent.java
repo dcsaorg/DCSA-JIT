@@ -95,7 +95,7 @@ public class OperationsEvent {
   @Setter
   private DimensionUnit vesselDraftUnit;
 
-  @Column(name = "miles_remaining_to_destination")
-  private Float milesRemainingToDestination;
+  @Column(name = "miles_to_destination_port")
+  private Float milesToDestinationPort;
 
 }

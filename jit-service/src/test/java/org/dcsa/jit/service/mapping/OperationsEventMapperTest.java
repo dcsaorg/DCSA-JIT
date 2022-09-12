@@ -12,7 +12,7 @@ public class OperationsEventMapperTest {
         OperationsEvent.class,
         OperationsEventTO.class,
         // Unmapped fields
-        "milesToDestinationPort",
+        "milesRemainingToDestination",
         "eventType",
         "facilityTypeCode");
   }
