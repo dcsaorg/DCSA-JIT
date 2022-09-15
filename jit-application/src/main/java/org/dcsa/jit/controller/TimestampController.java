@@ -1,8 +1,6 @@
 package org.dcsa.jit.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dcsa.jit.notifications.TimestampNotificationMailService;
-import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.service.TimestampService;
 import org.dcsa.jit.transferobjects.IdentifyingCodeTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
