@@ -4,7 +4,8 @@ This is part 2 of Module 9 of the DCSA JIT Adoption pack.
 The document is written for `JIT 1.2.0-beta1`.
 
 This document will cover how you interpret a DCSA JIT compliant
-requested time of arrival at berth (`RTA-Berth`) at the technical level.
+requested time of arrival at berth (`RTA-Berth`) at the technical
+level that you received from another party.
 
 To keep things simple, this module is written from a carrier's
 point of view using the first two timestamp of the process.
@@ -15,7 +16,8 @@ The reader is assumed to:
 
  * Have read [the previous part of this module].
  * Be familiar with JSON
- * Understand the `E -> R -> P` negotiation cycle covered in Module 4.
+ * Understand the "Estimated -> Requested -> Planned" (`E -> R -> P`)
+   negotiation cycle covered in Module 4.
 
 
 [the previous part of this module]: Module%209%20part%201%20-%20preparing%20an%20ETA-Berth.md
@@ -83,9 +85,9 @@ Let us assume the terminal provides the following payload:
   "facilityTypeCode": "BRTH",
   "portCallPhaseTypeCode": null,
   "portCallServiceTypeCode": null,
-  "eventDateTime": "2022-09-15T09:10:00.000+01:00",
+  "eventDateTime": "2022-09-15T12:10:00.000+01:00",
   "delayReasonCode": "CRN",
-  "remark": "We do not have enough cranes available for you before 09:00.  We advice a slowdown to 10 knots to save emissions.",
+  "remark": "We do not have enough cranes available for you before 12:00.",
 
 
   "eventLocation": {
@@ -112,7 +114,7 @@ Let us assume the terminal provides the following payload:
 }
 ```
 
-_The spacing and order of the fields is purely for showing each category.  JSON does not mandate a particular order nor all the whitespace._
+_The spacing and order of the fields is purely for grouping fields into the same category as used in the previous part of this module.  JSON does not mandate a particular field order nor any of the whitespace._
 
 Here is a quick overview at what happened per category:
 
@@ -137,9 +139,9 @@ Having a closer look at the event information - just highlighting it here to eas
   "facilityTypeCode": "BRTH",
   "portCallPhaseTypeCode": null,
   "portCallServiceTypeCode": null,
-  "eventDateTime": "2022-09-15T09:10:00.000+01:00",
+  "eventDateTime": "2022-09-15T12:10:00.000+01:00",
   "delayReasonCode": "CRN",
-  "remark": "We do not have enough cranes available for you before 09:00.  We advice a slowdown to 10 knots to save emissions."
+  "remark": "We do not have enough cranes available for you before 12:00."
 }
 ```
 
@@ -150,8 +152,8 @@ We see here that:
     `facilityTypeCode`, `portCalPhaseTypeCode` and `portCallServiceTypeCode` being the same, we know we went from an `ETA-Berth`
     to an `RTA-Berth`.
     - Note we will cover a more detailed break down of these fields in the next part.
- 2. The terminal requested an arrival time of `09:10` rather than `08:10` meaning they want us to arrive an hour later.
- 3. Their reason being they do not have enough cranes for processing our vessel before `09:00` and recommend we slow down.
+ 2. The terminal requested an arrival time of `12:10` rather than the `08:10` (which we sent in the previous part) meaning they want us to arrive a few hours later.
+ 3. Their reason being they do not have enough cranes for processing our vessel before `12:00`.
 
 
 ## Event location description
@@ -179,7 +181,7 @@ The actual berth names come from the terminals so local conventions apply. _(For
 berth name was made up)_
 
 
-As implied, the `locationName` is polymorphic and its meaning depend on the `facilityTypeCode`. When
+As implied, the `locationName` has different meaning depending on the `facilityTypeCode`. When
 `facilityTypeCode` is:
 
  * `BRTH` then `locationName` is the name of the berth.
