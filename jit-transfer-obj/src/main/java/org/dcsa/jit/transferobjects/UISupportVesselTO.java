@@ -19,8 +19,7 @@ public record UISupportVesselTO(
   Float length,
   Float width,
   VesselType type,
-  DimensionUnit dimensionUnit,
-  Float vesselDraft
+  DimensionUnit dimensionUnit
 ){
   @Builder(toBuilder = true) // workaround for intellij issue
   public UISupportVesselTO {}
