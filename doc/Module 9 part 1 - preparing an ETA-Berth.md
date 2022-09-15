@@ -15,13 +15,20 @@ to all actors (but for a different set of timestamps).
 The reader is assumed to:
 
  * Be familiar with JSON
- * Understand the `E -> R -> P` negotiation cycle covered in Module 4.
+ * Understand the "Estimated -> Requested -> Planned" (`E -> R -> P`)
+   negotiation cycle covered in Module 4.
+
+It is a bonus if you are also familiar with the Swagger spec of JIT
+as it has more contextual information about all the fields.
 
 ## Context of this document
 
 In this document, we will go over a small part of the DCSA JIT
-process.  The document will cover a carrier sending out
-an `ETA-Berth`.
+process by showing how to send a timestamp, which is a mandatory
+part of all actors in the DCSA JIT process.  To keep things simple
+and concrete, this document will cover a carrier sending out an
+`ETA-Berth`, which is the very first part of the DCSA JIT process.
+However, the concepts used in this document holds for all timestamps.
 
 The examples in this howto will use Evergreen Marine (`EMC`) as
 the carrier and the Eurogate (`EGH`) in Hamburg (`DEHAM`)
@@ -59,9 +66,8 @@ categories:
  * Vessel information - What vessel is this timestamp about.
  * Port Call information - Information about the port call (such as carrier voyage number)
 
-Note that we use these categories in the technical documentation primarily as an
-aid you as a reader. However, they are not a part of the standard.  I.e., you will
-not find it in the IFS and actors are not required to use this terminology.
+These categories are unofficial grouping to break down the timestamp into
+smaller parts.
 
 In the following subsections, we will go over each category and describe
 how to find this information.
@@ -157,7 +163,7 @@ For this category, we will need to know:
  * When will it (or do we expect it) to happen?
    - For this example, let us assume we expect the vessel to arrive on the 15th of September at 08:10 (07:10 UTC)
  * What kind of context do we give to the receiver?
-   - In this example, let us assume we were sending this estimate because we expect to be delayed by 1 hour due to wind conditions.
+   - In this example, let us assume we were sending this estimate because we expect to be delayed by 8 hours due to wind conditions.
 
 With these, we might end up with something like this:
 
@@ -170,7 +176,7 @@ With these, we might end up with something like this:
   "portCallServiceTypeCode": null,
   "eventDateTime": "2022-09-15T08:10:00.000+01:00",
   "delayReasonCode": "WEA",
-  "remark": "1 hour delayed from the original schedule due to weather. ETA based on maintaining 20 knots from here on."
+  "remark": "8 hour delay from the original schedule due to weather. ETA based on maintaining 20 knots from here on."
 }
 ```
 
@@ -256,8 +262,6 @@ negotiation arrival at berth and arrival at pilot boarding place (e.g., `ETA-PBP
 Generally, you should only provide the information that makes sense for the timestamp
 in question. As an example, we include the vessel draft information in this example
 because draft plays an important role when planning arrival and departure in Hamburg.
-However, there are ports where the vessel draft is irrelevant and were you could omit
-that information.
 
 
 ## Port Call information
@@ -314,7 +318,7 @@ Once we combine all of this, the `ETA-Berth` will look like this:
   "portCallServiceTypeCode": null,
   "eventDateTime": "2022-09-15T08:10:00.000+01:00",
   "delayReasonCode": "WEA",
-  "remark": "1 hour delayed from the original schedule due to weather. ETA based on maintaining 20 knots from here on.",
+  "remark": "8 hour delay from the original schedule due to weather. ETA based on maintaining 20 knots from here on.",
 
 
   "eventLocation": {
@@ -350,7 +354,7 @@ Once we combine all of this, the `ETA-Berth` will look like this:
 _The spacing is purely for showing each category._
 
 Now that we have this payload, we can submit this to the terminal by `POST`'ing it to their JIT server
-on the `/v1/timestamps` endpoint.  The terminal will confirm having received the timestamp with a HTTP
+on the `/v1/timestamps` endpoint.  The terminal will confirm having received the timestamp with an HTTP
 `204`. The actual reply will come asynchronously.
 
 This concludes part of 1 of Module 9 and covered how to create an `ETA-Berth`.
