@@ -17,10 +17,10 @@ The reader is assumed to:
  * Have read [the previous part of this module].
  * Be familiar with JSON
  * Understand the "Estimated -> Requested -> Planned" (`E -> R -> P`)
-   negotiation cycle covered in Module 4.
+   negotiation cycle covered in [Module 4].
 
-
-[the previous part of this module]: Module%209%20part%201%20-%20preparing%20an%20ETA-Berth.md
+It is a bonus if you are also familiar with the [Swagger spec of JIT]
+as it has more contextual information about all the fields.
 
 ## Context of this document
 
@@ -221,4 +221,8 @@ to a timestamp you sent out.
 
 You can find the [next part of this module here].
 
+<!-- Links -->
+[Module 4]: https://netorgft5018853.sharepoint.com/:v:/t/DCSAAssetProductivity-Vessel-InternalTeamDCSAonly/ETSfOTwaiy5CgM5TYerSyQgBTS48D_sRqxDANnb1F7Gu7g?e=qjTafP
+[the previous part of this module]: Module%209%20part%201%20-%20preparing%20an%20ETA-Berth.md
+[Swagger spec of JIT]: https://app.swaggerhub.com/apis/dcsaorg/DCSA_JIT/1.2.0-Beta-1
 [next part of this module here]: Module%209%20part%203%20-%20classifying%20timestamps.md

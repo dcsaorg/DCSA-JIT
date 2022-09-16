@@ -11,7 +11,7 @@ The reader is assumed to:
 
  * Be familiar with JSON
  * Understand the "Estimated -> Requested -> Planned" (`E -> R -> P`)
-   negotiation cycle covered in Module 4.
+   negotiation cycle covered in [Module 4].
 
 This part of the module _can_ be read without reading the previous
 parts. However, we still recommend you have read them first.
@@ -40,8 +40,6 @@ To start out, let us start by grouping timestamps into the following broad categ
     - For these, the best solution is to look them up in the IFS to see the proper
       combination of values to classify these timestamps.  DCSA also has a CSV file
       with [timestamp definitions] that you can use.
-
-[timestamp definitions]: ../DCSA-Information-Model/datamodel/samples.d/timestampdefinitions.csv
 
 The first group is most common and also easiest to understand, so we will begin with
 those.
@@ -311,3 +309,7 @@ This concludes part 3 of Module 9, and you now have a basic understanding of how
 high level timestamp and technical level timestamp.
 
 This is the end of Module 9.
+
+<!-- Links -->
+[Module 4]: https://netorgft5018853.sharepoint.com/:v:/t/DCSAAssetProductivity-Vessel-InternalTeamDCSAonly/ETSfOTwaiy5CgM5TYerSyQgBTS48D_sRqxDANnb1F7Gu7g?e=qjTafP
+[timestamp definitions]: ../DCSA-Information-Model/datamodel/samples.d/timestampdefinitions.csv
