@@ -16,9 +16,9 @@ The reader is assumed to:
 
  * Be familiar with JSON
  * Understand the "Estimated -> Requested -> Planned" (`E -> R -> P`)
-   negotiation cycle covered in Module 4.
+   negotiation cycle covered in [Module 4].
 
-It is a bonus if you are also familiar with the Swagger spec of JIT
+It is a bonus if you are also familiar with the [Swagger spec of JIT]
 as it has more contextual information about all the fields.
 
 ## Context of this document
@@ -361,4 +361,7 @@ This concludes part of 1 of Module 9 and covered how to create an `ETA-Berth`.
 
 You can find the [next part of this module here].
 
+<!-- Links -->
+[Module 4]: https://netorgft5018853.sharepoint.com/:v:/t/DCSAAssetProductivity-Vessel-InternalTeamDCSAonly/ETSfOTwaiy5CgM5TYerSyQgBTS48D_sRqxDANnb1F7Gu7g?e=qjTafP
+[Swagger spec of JIT]: https://app.swaggerhub.com/apis/dcsaorg/DCSA_JIT/1.2.0-Beta-1
 [next part of this module here]: Module%209%20part%202%20-%20receiving%20an%20RTA-Berth.md
