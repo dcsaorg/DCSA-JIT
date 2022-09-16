@@ -3,14 +3,15 @@
 This is part 3 of Module 9 of the DCSA JIT Adoption pack.
 The document is written for `JIT 1.2.0-beta1`.
 
-This document will cover how you translate between the high
+This document will cover a quick guide on translating between the high
 level `ETA-Berth` and the low level technical specification
 of the DCSA JIT specification.
 
 The reader is assumed to:
 
  * Be familiar with JSON
- * Understand the `E -> R -> P` negotiation cycle covered in Module 4.
+ * Understand the "Estimated -> Requested -> Planned" (`E -> R -> P`)
+   negotiation cycle covered in Module 4.
 
 This part of the module _can_ be read without reading the previous
 parts. However, we still recommend you have read them first.
@@ -72,7 +73,27 @@ example, it is set to `EST` and it makes up the `E` in the `ETA` of `ETA-Berth`.
  * `ACT` - actual (as in `ATA-Berth`)
 
 As you might be able to tell, the `eventClassifierCode` directly controls the initial letter
-of the timestamps that follow the nice patterns.
+of the timestamps that follow the nice patterns. In fact, _the_ field that is used to control
+the `E -> R -> P` negotiation cycle.  Therefore, with this knowledge, you can now transform
+`ETA-Berth` into:
+
+ * `RTA-Berth`
+ * `PTA-Berth`
+ * `ATA-Berth`
+
+As an example, here is how `PTA-Berth` would be represented:
+
+```json
+{
+  "eventClassifierCode": "PLN",
+  "operationsEventTypeCode": "ARRI",
+  "facilityTypeCode": "BRTH",
+  "portCallPhaseTypeCode": null,
+  "portCallServiceTypeCode": null
+}
+```
+
+Note that only the `eventClassifierCode` changed.
 
 # The `operationsEventTypeCode` attribute
 Similarly to the `eventClassifierCode`, the `operationsEventTypeCode` attribute makes up the `A`
@@ -86,28 +107,27 @@ from `ETA`. For timestamps that follow the pattern, it has a similar effect on t
  * `CANC` - cancel (`Cancel Bunkering` - timestamps with this value do not follow the "nice pattern")
  * `OMIT` - Omitting (`OMIT Port Call` - the timestamp with this value does not follow the "nice pattern")
 
-With `eventClassifierCode` and `operationsEventTypeCode` two fields, you can now take the above
+With `operationsEventTypeCode` (and `eventClassifierCode` from above), you can now take the above
 `ETA-Berth` and transform it into one of the following:
 
- * `RTA-Berth`
- * `PTA-Berth`
- * `ATA-Berth`
  * `ETD-Berth`
  * `RTD-Berth`
  * `PTD-Berth`
  * `ATD-Berth`
 
-To conclude this subsection with a concrete example, here is a `PTD-Berth`:
+To conclude this subsection with a concrete example, here is a `ETD-Berth`:
 
 ```json
 {
-  "eventClassifierCode": "PLN",
+  "eventClassifierCode": "EST",
   "operationsEventTypeCode": "DEPA",
   "facilityTypeCode": "BRTH",
   "portCallPhaseTypeCode": null,
   "portCallServiceTypeCode": null
 }
 ```
+
+Note that only the `operationsEventTypeCode` changed compared to the `ETA-Berth`.
 
 # The `facilityTypeCode` attribute
 
@@ -154,11 +174,11 @@ timestamps:
  * `ATA-Anchorage`
 
 
-To conclude this subsection with a concrete example, here is a `RTA-PBP`:
+To conclude this subsection with a concrete example, here is a `ETA-PBP`:
 
 ```json
 {
-  "eventClassifierCode": "REQ",
+  "eventClassifierCode": "EST",
   "operationsEventTypeCode": "ARRI",
   "facilityTypeCode": "PBPL",
   "portCallPhaseTypeCode": null,
@@ -166,11 +186,18 @@ To conclude this subsection with a concrete example, here is a `RTA-PBP`:
 }
 ```
 
+Note that only the `facilityTypeCode` changed compared to the `ETA-Berth`.
+
 # The `portCallServiceTypeCode`  attribute
 
 The `portCallServiceTypeCode` defines which service the timestamp is about. When the timestamp
 follows the nice pattern, then the `portCallServiceTypeCode` also contributes the name of the
 timestamp.
+
+It is worth noting that services use `STRT` (Start) / `CMPL` (Complete) rather than `ARRI`
+(Arrival) / `DEPA` (Departure) in the `operationsEventTypeCode`.  This also means that all the
+service related timestamps that follow the "nice pattern" use `S` or `C` in their third letter
+(such as `ETS-Cargo Ops`).
 
 The `portCallServiceTypeCode` has a long list of values, this guide will not cover all them.
 Instead, please review the Swagger specification or the IFS for the full list.  For now, here
@@ -178,7 +205,7 @@ is an incomplete list for the sake of the example:
 
  * `CRGO` - Cargo Ops (`ETS-Cargo Ops`)
  * `BUNK` - Bunkering (`ETS-Bunkering`)
- * `SLUG` - Slugde (`ETS-Slugde`)
+ * `SLUG` - Sludge (`ETS-Sludge`)
 
 The above here do not require `portCallPhaseTypeCode` and with these you can now start to specify
 the following timestamps:
@@ -196,13 +223,15 @@ Rinse and repeat for the other service types listed above.  As an example, here 
 
 ```json
 {
-  "eventClassifierCode": "REQ",
-  "operationsEventTypeCode": "ARRI",
+  "eventClassifierCode": "EST",
+  "operationsEventTypeCode": "CMPL",
   "facilityTypeCode": "PBPL",
-  "portCallPhaseTypeCode": null,
+  "portCallPhaseTypeCode": "CRGO",
   "portCallServiceTypeCode": null
 }
 ```
+
+Note that we changed `portCallPhaseTypeCode` and `operationsEventTypeCode` compared to the `ETA-Berth`.
 
 For some services, you also need a `portCallPhaseTypeCode` as they happen multiple times during a visit.
 These include:
