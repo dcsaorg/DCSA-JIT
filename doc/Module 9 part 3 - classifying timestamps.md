@@ -217,13 +217,13 @@ the following timestamps:
  * `PTC-Cargo Ops`
  * `ATC-Cargo Ops`
 
-Rinse and repeat for the other service types listed above.  As an example, here is a `RTC-Cargo Ops`:
+Rinse and repeat for the other service types listed above.  As an example, here is a `ETS-Cargo Ops`:
 
 ```json
 {
   "eventClassifierCode": "EST",
-  "operationsEventTypeCode": "CMPL",
-  "facilityTypeCode": "PBPL",
+  "operationsEventTypeCode": "STRT",
+  "facilityTypeCode": "BRTH",
   "portCallPhaseTypeCode": "CRGO",
   "portCallServiceTypeCode": null
 }
@@ -254,7 +254,7 @@ multiple phases. The vessel might need Pilotage when arriving, when moving from 
 or when departing from the port.  We use the `portCallPhaseTypeCode` attribute to tell these cases apart.
 
 
-As an example, here are two ETC-Pilotage timestamps.  The first one is for arrival and the other one is
+As an example, here are two `ETC-Pilotage` timestamps.  The first one is for arrival and the other one is
 for shifting.
 
 **ETC-Pilotage (Inbound)**:
