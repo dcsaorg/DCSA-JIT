@@ -1,6 +1,7 @@
 package org.dcsa.jit.persistence.entity;
 
 import lombok.*;
+import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -45,4 +46,8 @@ public class MessageRoutingRule {
 
   @Column(name = "vessel_imo_number")
   private String vesselIMONumber;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "publisher_role")
+  private PublisherRole publisherRole;
 }

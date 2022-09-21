@@ -7,6 +7,7 @@ import org.dcsa.jit.persistence.repository.MessageRoutingRuleRepository;
 import org.dcsa.jit.persistence.repository.OutboxMessageRepository;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.jit.transferobjects.TimestampVesselTO;
+import org.dcsa.jit.transferobjects.enums.PublisherRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,9 +42,10 @@ public class TimestampRoutingServiceTest {
   public void testNoRules() throws Exception {
     // Setup
     TimestampTO timestamp = TimestampTO.builder()
-      .vessel(TimestampVesselTO.builder().vesselIMONumber("stuff").build())
+      .vessel(TimestampVesselTO.builder().vesselIMONumber("1234567").build())
+      .publisherRole(PublisherRole.CA)
       .build();
-    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(anyString())).thenReturn(Collections.emptyList());
+    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumberAndPublisherRole(anyString(), any())).thenReturn(Collections.emptyList());
 
     // Execute
     timestampRoutingService.routeMessage(timestamp);
@@ -58,10 +60,11 @@ public class TimestampRoutingServiceTest {
   public void testWithOneRule() throws Exception {
     // Setup
     TimestampTO timestamp = TimestampTO.builder()
-      .vessel(TimestampVesselTO.builder().vesselIMONumber("stuff").build())
+      .vessel(TimestampVesselTO.builder().vesselIMONumber("1234567").build())
+      .publisherRole(PublisherRole.CA)
       .build();
     MessageRoutingRule messageRoutingRule = MessageRoutingRule.builder().id(UUID.randomUUID()).build();
-    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(anyString())).thenReturn(List.of(messageRoutingRule));
+    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumberAndPublisherRole(anyString(), any())).thenReturn(List.of(messageRoutingRule));
     when(objectMapper.writeValueAsString(any(TimestampTO.class))).thenReturn("serialized timestamp");
 
     // Execute
@@ -85,14 +88,15 @@ public class TimestampRoutingServiceTest {
   public void testWithMultipleRules() throws Exception {
     // Setup
     TimestampTO timestamp = TimestampTO.builder()
-      .vessel(TimestampVesselTO.builder().vesselIMONumber("stuff").build())
+      .vessel(TimestampVesselTO.builder().vesselIMONumber("1234567").build())
+      .publisherRole(PublisherRole.CA)
       .build();
     List<MessageRoutingRule> messageRoutingRules = List.of(
       MessageRoutingRule.builder().id(UUID.randomUUID()).build(),
       MessageRoutingRule.builder().id(UUID.randomUUID()).build(),
       MessageRoutingRule.builder().id(UUID.randomUUID()).build()
     );
-    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(anyString())).thenReturn(messageRoutingRules);
+    when(messageRoutingRuleRepository.findRulesMatchingVesselIMONumberAndPublisherRole(anyString(), any())).thenReturn(messageRoutingRules);
 
     // Execute
     timestampRoutingService.routeMessage(timestamp);
