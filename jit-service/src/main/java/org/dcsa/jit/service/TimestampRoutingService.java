@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.persistence.entity.MessageRoutingRule;
 import org.dcsa.jit.persistence.entity.OutboxMessage;
+import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.dcsa.jit.persistence.repository.MessageRoutingRuleRepository;
 import org.dcsa.jit.persistence.repository.OutboxMessageRepository;
 import org.dcsa.jit.transferobjects.TimestampTO;
@@ -28,15 +29,20 @@ public class TimestampRoutingService {
   @SneakyThrows // JsonProcessingException when serializing timestamp
   public void routeMessage(TimestampTO timestamp) {
     String vesselIMONumber = timestamp.canonicalVesselIMONumber();
+    String publisherRole = timestamp.publisherRole().name();
     List<MessageRoutingRule> messageRoutingRules =
-        messageRoutingRuleRepository.findRulesMatchingVesselIMONumber(vesselIMONumber);
+        messageRoutingRuleRepository.findRulesMatchingVesselIMONumberAndPublisherRole(
+          vesselIMONumber,
+          PublisherRole.valueOf(publisherRole)
+    );
     if (!messageRoutingRules.isEmpty()) {
       String payload = objectMapper.writeValueAsString(timestamp);
       List<OutboxMessage> outboxMessages =
           messageRoutingRules.stream().map(rule -> toOutboxMessage(rule, payload)).toList();
       outboxMessageRepository.saveAll(outboxMessages);
     } else {
-      log.debug("No message routing rules found for vesselIMONumber '{}'", vesselIMONumber);
+      log.debug("No message routing rules found for vesselIMONumber '{}' and publisherRole '{}'",
+        vesselIMONumber, publisherRole);
     }
   }
 
