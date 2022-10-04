@@ -46,7 +46,7 @@ public class TimestampDefinition {
   @Column(name = "facility_type_code", length = 4)
   private FacilityTypeCodeOPR facilityTypeCode;
 
-  @Column(name = "port_call_phase", length = 4)
+  @Column(name = "port_call_part", length = 100)
   private String portCallPart;
 
   @Enumerated(EnumType.STRING)
