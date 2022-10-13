@@ -4,6 +4,7 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.PublisherPattern;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
+import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +37,23 @@ public class MailTemplateTest {
     mailTemplate.setOnlyForEventClassifierCode(Set.of(EventClassifierCode.EST, EventClassifierCode.ACT));
 
     assertFalse(mailTemplate.appliesToEvent(operationsEvent(EventClassifierCode.PLN), TimestampDefinition.builder().build()));
+  }
+
+
+  @Test
+  public void testOperationsEventTypeCodeMatch() {
+    MailTemplate mailTemplate = new MailTemplate();
+    mailTemplate.setOnlyWhenOperationsEventTypeCode(Set.of(OperationsEventTypeCode.CANC, OperationsEventTypeCode.OMIT));
+
+    assertTrue(mailTemplate.appliesToEvent(operationsEvent(OperationsEventTypeCode.OMIT), TimestampDefinition.builder().build()));
+  }
+
+  @Test
+  public void testOperationsEventTypeCodeDoesNotMatch() {
+    MailTemplate mailTemplate = new MailTemplate();
+    mailTemplate.setOnlyWhenOperationsEventTypeCode(Set.of(OperationsEventTypeCode.CANC, OperationsEventTypeCode.OMIT));
+
+    assertFalse(mailTemplate.appliesToEvent(operationsEvent(OperationsEventTypeCode.DEPA), TimestampDefinition.builder().build()));
   }
 
   @Test
@@ -73,6 +91,12 @@ public class MailTemplateTest {
   private OperationsEvent operationsEvent(EventClassifierCode eventClassifierCode) {
     return OperationsEvent.builder()
       .eventClassifierCode(eventClassifierCode)
+      .build();
+  }
+
+  private OperationsEvent operationsEvent(OperationsEventTypeCode operationsEventTypeCode) {
+    return OperationsEvent.builder()
+      .operationsEventTypeCode(operationsEventTypeCode)
       .build();
   }
 

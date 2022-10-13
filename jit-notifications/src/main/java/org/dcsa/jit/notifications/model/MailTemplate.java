@@ -6,6 +6,7 @@ import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.PublisherPattern;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
+import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 
 import javax.validation.constraints.Email;
@@ -27,6 +28,7 @@ public class MailTemplate {
   private String body;
 
   private Set<EventClassifierCode> onlyForEventClassifierCode = Collections.emptySet();
+  private Set<OperationsEventTypeCode> onlyWhenOperationsEventTypeCode = Collections.emptySet();
   private Set<PublisherRole> onlyWhenPrimaryReceiverIs = Collections.emptySet();
 
   // Weather to send email notifications that are using this template (set when validating templates)
@@ -37,6 +39,10 @@ public class MailTemplate {
   public boolean appliesToEvent(OperationsEvent event, TimestampDefinition timestampDefinition) {
     if (!onlyForEventClassifierCode.isEmpty() && !onlyForEventClassifierCode.contains(event.getEventClassifierCode())) {
       log.info("Template '{}' does not apply to event '{}' since event classifier code does not match", templateName, event.getEventID());
+      return false;
+    }
+    if (!onlyWhenOperationsEventTypeCode.isEmpty() && !onlyWhenOperationsEventTypeCode.contains(event.getOperationsEventTypeCode())) {
+      log.info("Template '{}' does not apply to event '{}' since event operations event type code does not match", templateName, event.getEventID());
       return false;
     }
     if (!onlyWhenPrimaryReceiverIs.isEmpty() &&
