@@ -301,8 +301,16 @@ public class TimestampService {
   private void validateTimestamp(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
     validateTimestampFacility(operationsEvent, timestampDefinition);
     validateTimestampMilesToDest(operationsEvent, timestampDefinition);
+    validateVesselDraft(operationsEvent, timestampDefinition);
     validateVesselPosition(operationsEvent, timestampDefinition);
     validateEventLocationRequirement(operationsEvent, timestampDefinition);
+  }
+
+  private void validateVesselDraft(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
+    if (!timestampDefinition.getIsVesselDraftRelevant() && operationsEvent.getVesselDraft() != null) {
+      throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
+        + ", which should not have vesselDraft specified but the input did have that field.");
+    }
   }
 
   private void validateTimestampFacility(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {

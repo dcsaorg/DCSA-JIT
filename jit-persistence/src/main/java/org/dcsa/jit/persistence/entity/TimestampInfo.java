@@ -4,7 +4,6 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.UUID;
 
 @NamedEntityGraph(
@@ -12,8 +11,7 @@ import java.util.UUID;
   attributeNodes = {
     @NamedAttributeNode(value = "operationsEvent", subgraph = "subgraph.operationsEvent"),
     @NamedAttributeNode(value = "timestampDefinition", subgraph = "subgraph.timestampDefinition"),
-    @NamedAttributeNode("unmappedEvent"),
-    @NamedAttributeNode("pendingEvents"),
+    @NamedAttributeNode("eventSyncState"),
   },
   subgraphs = {
     @NamedSubgraph(name = "subgraph.operationsEvent", attributeNodes = {
@@ -75,13 +73,7 @@ public class TimestampInfo implements Persistable<UUID> {
 
   @OneToOne
   @JoinColumn(name = "event_id", insertable = false, updatable = false)
-  UnmappedEvent unmappedEvent;
-
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
-  @OneToMany
-  @JoinColumn(name = "event_id", insertable = false, updatable = false)
-  List<PendingEvent> pendingEvents;
+  private EventSyncState eventSyncState;
 
   @Transient
   private boolean newRecord;
