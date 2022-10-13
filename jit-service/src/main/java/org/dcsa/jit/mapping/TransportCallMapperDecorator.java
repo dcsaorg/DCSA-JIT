@@ -19,10 +19,6 @@ public abstract class TransportCallMapperDecorator extends TransportCallMapper {
     if (transportCall.getLocation() != null) {
       facility = transportCall.getLocation().getFacility();
     }
-    if (facility == null) {
-      // Fallback to deprecated way for now because location.facility is not always populated in our test data
-      facility = transportCall.getFacility();
-    }
     if (facility != null) {
       TransportCallTO.TransportCallTOBuilder builder = delegate.toTO(transportCall).toBuilder();
       if (facility.getFacilitySMDGCode() != null) {

@@ -3,7 +3,6 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN;
 import org.dcsa.jit.persistence.entity.enums.PortCallStatusCode;
-import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 
 import javax.persistence.*;
@@ -28,13 +27,6 @@ public class TransportCall {
 
   @Column(name = "transport_call_sequence_number")
   private Integer transportCallSequenceNumber;
-
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
-  @Deprecated
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "facility_id")
-  private Facility facility;
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude

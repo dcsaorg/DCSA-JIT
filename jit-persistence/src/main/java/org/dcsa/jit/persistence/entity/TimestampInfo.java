@@ -43,7 +43,6 @@ import java.util.UUID;
       @NamedAttributeNode(value = "importVoyage", subgraph = "subgraph.voyage"),
       @NamedAttributeNode(value = "vessel", subgraph = "subgraph.vessel"),
       @NamedAttributeNode(value = "location", subgraph = "subgraph.location"),
-      @NamedAttributeNode(value = "facility", subgraph = "subgraph.facility"),
     }),
     @NamedSubgraph(name = "subgraph.timestampDefinition", attributeNodes = {
       @NamedAttributeNode(value = "publisherPattern"),
