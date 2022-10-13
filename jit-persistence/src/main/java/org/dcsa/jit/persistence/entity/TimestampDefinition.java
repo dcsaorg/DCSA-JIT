@@ -56,6 +56,9 @@ public class TimestampDefinition {
   @Column(name = "is_terminal_needed", nullable = false)
   private Boolean isTerminalNeeded;
 
+  @Column(name = "is_vessel_draft_relevant", nullable = false)
+  private Boolean isVesselDraftRelevant;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "vessel_position_requirement", nullable = false)
   private LocationRequirement vesselPositionRequirement;

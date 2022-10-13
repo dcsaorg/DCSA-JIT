@@ -40,4 +40,6 @@ public interface EnumMappers {
 
   org.dcsa.skernel.domain.persistence.entity.enums.DimensionUnit dimensionUnitToDao(
      DimensionUnit dimensionUnit);
+
+  DeliveryStatus deliveryStatusToTO(org.dcsa.jit.persistence.entity.enums.DeliveryStatus deliveryStatus);
 }
