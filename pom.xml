@@ -21,18 +21,6 @@
 		<sha1/>
 		<changelist>-SNAPSHOT</changelist>
 		<!-- End: Define DCSA-JIT version -->
-		<!-- Define DCSA-Event-Core version -->
-		<dcsa.events.version>0.0.61</dcsa.events.version>
-		<dcsa.event.tag/>
-		<dcsa.artifacttype>-SNAPSHOT</dcsa.artifacttype>
-		<event-core.version>${dcsa.events.version}${dcsa.event.tag}${dcsa.artifacttype}</event-core.version>
-		<!-- End: Define DCSA-Event-Core version -->
-
-		<!-- Re-Define DCSA-Core version -->
-		<dcsa.core.tag/>
-		<dcsa.core.version>0.8.33</dcsa.core.version>
-		<core.version>${dcsa.core.version}${dcsa.core.tag}${dcsa.artifacttype}</core.version>
-		<!-- End: Re-Define DCSA-Core version -->
 
 		<!-- Define Shared Kernel version -->
 		<dcsa.shared-kernel.version>0.1.0</dcsa.shared-kernel.version>
