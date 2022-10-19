@@ -23,7 +23,32 @@ jobs:
         uses: whelk-io/maven-settings-xml-action@v12
         with:
           repositories: '[{ "id": "github", "name": "DCSA Backend repo", "url": "https://maven.pkg.github.com/dcsaorg/DCSA-Core", "releases": { "enabled": "true" }, "snapshots": { "enabled": "false" } }]'
-          servers: '[{ "id": "github", "username": "${{ secrets.DCSA_USER }}", "password": "${{ secrets.DCSA_PACKAGES_PAT }}" }]'    
+          servers: '[{ "id": "github", "username": "${{ secrets.DCSA_USER }}", "password": "${{ secrets.DCSA_PACKAGES_PAT }}" }]'
+
+      - name: Get changelist from pom.xml
+        id: get-changelist
+        uses: mavrosxristoforos/get-xml-info@1.0
+        with:
+          xml-file: 'pom.xml'
+          xpath: '//*[local-name()="changelist"]'
+
+      - name: Get version from pom.xml
+        id: get-version
+        run: echo ::set-output name=version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+      - name: Confirm RELEASE Version
+        run: |
+
+          IFS='-'
+          read -ra PROJ_TAG <<<"${{ steps.get-version.outputs.version }}"
+
+          if [[ "${{ steps.get-changelist.outputs.info }}" == "-RELEASE" &&  "${PROJ_TAG[1]}" == "RELEASE" ]];
+          then
+            echo "Version is RELEASE"
+          else
+            echo "The Version is not RELEASE"
+            exit 1
+          fi
 
       - name: Publish package
         run: mvn -B deploy -Dchangelist=-RELEASE
