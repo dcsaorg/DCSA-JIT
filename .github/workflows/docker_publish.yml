@@ -44,7 +44,7 @@ jobs:
           servers: '[{ "id": "github", "username": "${{ secrets.DCSA_USER }}", "password": "${{ secrets.DCSA_PACKAGES_PAT }}" }]'
 
       - name: maven build
-        run: mvn -B package --file pom.xml
+        run: mvn -B package -Dchangelist=-RELEASE
 
 
       # Build and push Docker image
