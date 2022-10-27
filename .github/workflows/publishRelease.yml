@@ -42,7 +42,7 @@ jobs:
           IFS='-'
           read -ra PROJ_TAG <<<"${{ steps.get-version.outputs.version }}"
 
-          if [[ "${{ steps.get-changelist.outputs.info }}" == "-RELEASE" &&  "${PROJ_TAG[1]}" == "RELEASE" ]];
+          if [[ "${{ steps.get-changelist.outputs.info }}" == "-RELEASE" &&  "${PROJ_TAG[-1]}" == "RELEASE" ]];
           then
             echo "Version is RELEASE"
           else
