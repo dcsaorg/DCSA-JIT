@@ -39,19 +39,20 @@ jobs:
       - name: Fetch Backend Status
         run: |
           sleep 10
-          status=$(curl -s http://localhost:9090/v1/actuator/health | jq -r '.status')
+          url=http://localhost:9090/jit/v1/actuator/health
+          status=$(curl -s "${url}" | jq -r '.status')
           retries=12
 
           while [[ "$status" != "UP" ]] && [[ $retries -gt 0 ]]; do
             echo "Status is '$status' - waiting 5 secs ($retries retries left)"
             sleep 5
             retries=$((retries - 1))
-            status=$(curl -s http://localhost:9090/v1/actuator/health | jq -r '.status')
+            status=$(curl -s "${url}" | jq -r '.status')
           done
 
           echo "Final status is '$status'"
           if [[ "$status" != "UP" ]]; then
-            curl -v http://localhost:9090/v1/actuator/health || :
+            curl -v "${url}" || :
             docker ps || :
             docker logs dcsa-jit_dcsa-jit_1 || :
             exit 1
