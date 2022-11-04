@@ -107,7 +107,8 @@ public class TimestampNotificationsHttpService extends RouteBuilder {
       .setHeader("Content-Type", simple("application/json"))
       .setHeader("Authorization", simple("${body}"))
       .setBody(simple("${exchangeProperty.outboxMessage.payload}"))
-      .toD("${exchangeProperty.outboxMessage.messageRoutingRule.apiUrl}");
+      .toD("${exchangeProperty.outboxMessage.messageRoutingRule.apiUrl}")
+      .log("Successfully forwarded a timestamp to ${exchangeProperty.outboxMessage.messageRoutingRule.apiUrl}");
   }
 
   // inner class as its only required within TimestampRoutingService
