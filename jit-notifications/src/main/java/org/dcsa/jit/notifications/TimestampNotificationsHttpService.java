@@ -120,12 +120,7 @@ public class TimestampNotificationsHttpService extends RouteBuilder {
       log.info("Failed to delivery timestamp: {} -> {} '{}'", outboxMessage, cause.getClass().getName(), cause.getMessage());
       exchange
         .getIn()
-        .setBody(
-          TimestampNotificationDead.builder()
-            .messageRoutingRule(outboxMessage.getMessageRoutingRule())
-            .payload(outboxMessage.getPayload())
-            .latestDeliveryAttemptedDatetime(OffsetDateTime.now())
-            .build());
+        .setBody(TimestampNotificationDead.from(outboxMessage));
     }
   }
 }
