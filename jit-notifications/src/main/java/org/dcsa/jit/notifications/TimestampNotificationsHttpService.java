@@ -100,7 +100,6 @@ public class TimestampNotificationsHttpService extends RouteBuilder {
       .redeliveryDelay("{{camel.redelivery-delay}}")
       .useExponentialBackOff()
       .backOffMultiplier(2)
-      .log("Timestamp request failed!")
       .process(new DeadTimestampProcessor())
       .to("jpa:org.dcsa.jit.persistence.entity.TimestampNotificationDead")
       .end()
@@ -115,8 +114,10 @@ public class TimestampNotificationsHttpService extends RouteBuilder {
   static class DeadTimestampProcessor implements Processor {
 
     @Override
-    public void process(Exchange exchange) throws Exception {
+    public void process(Exchange exchange) {
       OutboxMessage outboxMessage = (OutboxMessage) exchange.getProperty("outboxMessage");
+      Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+      log.info("Failed to delivery timestamp: {} -> {} '{}'", outboxMessage, cause.getClass().getName(), cause.getMessage());
       exchange
         .getIn()
         .setBody(
