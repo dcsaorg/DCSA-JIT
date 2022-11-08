@@ -47,7 +47,6 @@ public class TimestampService {
   private final SMDGDelayReasonRepository smdgDelayReasonRepository;
   private final UnLocationRepository unLocationRepository;
   private final LocationRepository locationRepository;
-  private final UnmappedEventRepository unmappedEventRepository;
   private final PartyRepository partyRepository;
   private final AddressRepository addressRepository;
   private final CarrierRepository carrierRepository;
@@ -288,13 +287,6 @@ public class TimestampService {
 
     validateTimestamp(operationsEvent, timestampDefinition);
 
-    UnmappedEvent unmappedEvent =
-        UnmappedEvent.builder()
-            .eventID(operationsEvent.getEventID())
-            .enqueuedAtDateTime(operationsEvent.getEventDateTime())
-            .newRecord(true)
-            .build();
-    unmappedEventRepository.save(unmappedEvent);
     return operationsEvent;
   }
 

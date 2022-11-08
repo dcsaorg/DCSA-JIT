@@ -52,7 +52,6 @@ class SecurityFlowIT {
   @MockBean TimestampDefinitionRepository timestampDefinitionRepository;
   @MockBean TransportCallRepository transportCallRepository;
   @MockBean UnLocationRepository unLocationRepository;
-  @MockBean UnmappedEventRepository unmappedEventRepository;
   @MockBean VesselRepository vesselRepository;
   @MockBean TimestampInfoRepository timestampInfoRepository;
   @MockBean SMDGDelayReasonRepository smdgDelayReasonRepository;

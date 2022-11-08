@@ -46,7 +46,6 @@ class OperationsEventControllerTest {
   @MockBean ServiceRepository serviceRepository;
   @MockBean OperationsEventRepository operationsEventRepository;
   @MockBean UnLocationRepository unLocationRepository;
-  @MockBean UnmappedEventRepository unmappedEventRepository;
   @MockBean SMDGDelayReasonRepository smdgDelayReasonRepository;
   @MockBean PendingEmailNotificationRepository pendingEmailNotificationRepository;
   @MockBean OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
