@@ -4,6 +4,9 @@ dcsa:
     version: 1.1.0
   webui:
     baseUrl: "NOT_SPECIFIED"
+  sync:
+    pollFrequency: ${SYNC_POLL_FREQUENCY:60000}
+    maxMessagesPerPoll: ${SYNC_MAX_MESSAGES_PER_POLL:10}
   email:
     from: noreply@dcsa.org
     timezone: "NOT_SPECIFIED"
@@ -22,8 +25,8 @@ camel:
   max-redeliveries: 3
   redelivery-delay: 10000
   route:
-    pending-email-notification: "jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=60000&maximumResults=10"
-    outbox-msg: "jpa:org.dcsa.jit.persistence.entity.OutboxMessage?namedQuery=poll-outbox-messages&delay=60000&transacted=true&maximumResults=10"
+    pending-email-notification: "jpa:org.dcsa.jit.persistence.entity.PendingEmailNotification?namedQuery=PendingEmailNotification.nextPendingEmailNotifications&delay=${dcsa.sync.pollFrequency}&maximumResults=${dcsa.sync.maxMessagesPerPoll}"
+    outbox-msg: "jpa:org.dcsa.jit.persistence.entity.OutboxMessage?namedQuery=poll-outbox-messages&delay=${dcsa.sync.pollFrequency}&transacted=true&maximumResults=${dcsa.sync.maxMessagesPerPoll}"
     emit-message: direct:emit-message
     oidc: direct:OIDC
     timestamp-notify: direct:timestamp-notification
