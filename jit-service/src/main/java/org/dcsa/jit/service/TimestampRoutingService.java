@@ -40,8 +40,12 @@ public class TimestampRoutingService {
       List<OutboxMessage> outboxMessages =
           messageRoutingRules.stream().map(rule -> toOutboxMessage(rule, payload)).toList();
       outboxMessageRepository.saveAll(outboxMessages);
+      log.info("Timestamp for vessel IMO number {} scheduled for delivery to {} recipient(s)",
+        vesselIMONumber,
+        messageRoutingRules.size()
+      );
     } else {
-      log.debug("No message routing rules found for vesselIMONumber '{}' and publisherRole '{}'",
+      log.info("No message routing rules found for vesselIMONumber '{}' and publisherRole '{}'",
         vesselIMONumber, publisherRole);
     }
   }
