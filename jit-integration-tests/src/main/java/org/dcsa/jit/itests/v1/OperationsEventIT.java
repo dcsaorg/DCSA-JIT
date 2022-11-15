@@ -325,7 +325,7 @@ public class OperationsEventIT {
         .assertThat()
         .statusCode(200)
         .contentType(ContentType.JSON)
-        .header("API-Version", equalTo("1.1.0"))
+        .header("API-Version", equalTo("1.2"))
         .header("Current-Page", matchesRegex("^https?://.*/v1/events\\?cursor=[a-zA-Z\\d=]*$"))
         .header("First-Page", matchesRegex("^https?://.*/v1/events\\?cursor=[a-zA-Z\\d=]*$"))
         .header("Next-Page", matchesRegex("^https?://.*/v1/events\\?cursor=[a-zA-Z\\d=]*$"))
