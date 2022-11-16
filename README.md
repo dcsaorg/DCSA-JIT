@@ -34,3 +34,37 @@ docker-compose up -d -V --build
 ```
 curl http://localhost:9090/v2/actuator/health
 ```
+
+
+Testing all timestamps via postman/newman
+-----------------------------------------
+
+The repo includes a postman/newman collection for testing all
+valid and some invalid combinations of timestamps and their
+input.  The test input is generated via the script
+`generate_pm_test_data.py` using data from the
+`DCSA-Information-Model` submodule.
+
+The flow is:
+
+     # Start the JIT application (and have it listen to localhost:9090)
+     $ python3 generate_pm_test_data.py iteration-data.csv
+     $ newman run -d iteration-data.csv postman_collection.combinatorial.json
+
+Note that the iteration-data by default covers 4500+ test cases of both
+positive and negative test cases. Keep in mind that:
+
+ * The test will generate a lot of timestamps (1900+ on a successful run)
+ * The postman UI (at least at version `10.1.2`) may not handle the iteration
+   data very gracefully performance-wise.  We recommend you use `newman`
+   for running the tests as it has considerably less overhead.
+ * You can split the iteration-data up into smaller parts.  E.g.:
+
+       (head -n1 iteration-data.csv ; grep ,positive, iteration-data.csv) > only-positive.csv
+
+   Will give you a file `only-positive.csv` with only the positive tests.
+
+If a test fail, you can read the corresponding row in the `iteration-data.csv`
+file to see what the test covered.  This includes the "timestamp name",
+whether the test was positive (expected to be accepted) or negative (expected
+to be rejected) as well as which fields are included/excluded.

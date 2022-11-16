@@ -58,14 +58,22 @@ jobs:
             exit 1
           fi
 
-          echo "::set-output name=STATUS::$status"
-        id: healthcheck
-
-      - name: Confirm microservice status
-        if: ${{ steps.healthcheck.outputs.STATUS == 'UP' }}
-        run: |
-          echo "The DCSA-JIT service is UP."
-
       - name: Run Integration Tests
         run: |
           cd DCSA-JIT && java -jar jit-integration-tests/target/dcsa-jit-integration-tests-with-dependencies.jar
+
+      - name: Generate newman iteration data
+        run: |
+          python3 DCSA-JIT/generate_pm_test_data.py newman_iteration.csv
+          # Work around https://github.com/anthonyvscode/newman-action/pull/242
+          echo ITERATION_COUNT=$(($(wc -l newman_iteration.csv | awk '{print $1}') - 1)) >> $GITHUB_ENV
+
+      - name: Run Postman Integration Tests
+        id: run-newman
+        uses: anthonyvscode/newman-action@v1
+        with:
+          collection: DCSA-JIT/postman_collection.combinatorial.json
+          reporters: cli
+          iterationData: newman_iteration.csv
+          iterationCount: ${{env.ITERATION_COUNT}}
+          insecure: true
