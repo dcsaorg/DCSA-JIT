@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "190fb2aa-fb94-45a2-98f7-f66e36f9261d",
+		"name": "DCSA-JIT - generic POST timestamps test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST timestamp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const timestampName = pm.iterationData.get(\"timestampTypeName\");\r",
+							"const testID = pm.iterationData.get(\"testID\");\r",
+							"const expectedHTTPCode = pm.iterationData.get(\"expectedHTTPCode\");\r",
+							"const errorExpectedReason = pm.iterationData.get(\"errorExpectedReason\")\r",
+							"const testType = pm.iterationData.get(\"testType\");\r",
+							"const negativeTestOnly = testType == 'negative' ? pm.test : pm.test.skip\r",
+							"const schema = pm.collectionVariables.get(\"ERROR_SCHEMA\");\r",
+							"const errorSchemaObject = JSON.parse(schema);\r",
+							"const negativeOnlyText = '<Skipped: negative tests only> '\r",
+							"\r",
+							"\r",
+							"// Reset variables between runs\r",
+							"pm.variables.unset(\"timestamp\");\r",
+							"\r",
+							"pm.test(`[${timestampName}, testID: ${testID} (${testType})] Status code is ${expectedHTTPCode}`, () => {\r",
+							"    pm.response.to.have.status(expectedHTTPCode);\r",
+							"});\r",
+							"\r",
+							"negativeTestOnly(`[${timestampName}, testID: ${testID} (${testType})] Expected Reason is code as expected`, () => {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errors[0].reason).to.eql(errorExpectedReason);\r",
+							"});\r",
+							"\r",
+							"negativeTestOnly(`${negativeOnlyText}[${timestampName}, testID: ${testID} (${testType})] Error response matches schema`, () => {\r",
+							"    pm.response.to.have.jsonSchema(errorSchemaObject);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const UNLocationCode = getCollVar(\"UN_LOCATION_CODE\");\r",
+							"const vesselIMONumber = getCollVar(\"VESSEL_IMO_NUMBER\");\r",
+							"const eventClassifierCode = getCSVVar(\"eventClassifierCode\");\r",
+							"const isTerminalNeeded = getCSVBool(\"isTerminalNeeded\");\r",
+							"const includeEventLocationName = getCSVBool(\"includeEventLocationName\");\r",
+							"const includeVesselDraft = getCSVBool(\"includeVesselDraft\");\r",
+							"const includeVesselPosition = getCSVBool(\"includeVesselPosition\");\r",
+							"const includeMilesToDestination = getCSVBool(\"includeMilesToDestination\");\r",
+							"// ACT is generally in the past while ERP timestamps are in the future\r",
+							"const eventDateTime = getCollVar(eventClassifierCode == 'ACT' ? \"ACT_EVENT_DATE_TIME\" : \"ERP_EVENT_DATE_TIME\");\r",
+							"let vesselDraft = null;\r",
+							"let vesselDimensionUnit = null;\r",
+							"let vesselPosition = null;\r",
+							"let facilitySMDGCode = null;\r",
+							"let facilityCodeListProvider = null;\r",
+							"let locationName = null;\r",
+							"let milesToDestinationPort = null;\r",
+							"\r",
+							"\r",
+							"if (isTerminalNeeded) {\r",
+							"    facilitySMDGCode = getCollVar(\"FACILITY_SMDG_CODE\", true);\r",
+							"    facilityCodeListProvider = 'SMDG';\r",
+							"}\r",
+							"\r",
+							"if (includeVesselPosition) {\r",
+							"    vesselPosition = {\r",
+							"        \"latitude\": getCollVar(\"VESSEL_POSITION_LATITUDE\"),\r",
+							"        \"longitude\": getCollVar(\"VESSEL_POSITION_LONGITUDE\"),\r",
+							"    };\r",
+							"}\r",
+							"\r",
+							"if (includeMilesToDestination) {\r",
+							"    milesToDestinationPort = getCollVar(\"VESSEL_MILES_TO_DEST\")\r",
+							"}\r",
+							"\r",
+							"/**\r",
+							"    \"lengthOverall\": 245.45,\r",
+							"    \"width\": 37.33,\r",
+							"    \"callSign\": \"NCVV\",\r",
+							"    \"type\": \"CONT\",\r",
+							" */\r",
+							"\r",
+							"if (includeVesselDraft) {\r",
+							"    vesselDraft = getCollVar(\"VESSEL_DRAFT_IN_METERS\");\r",
+							"    vesselDimensionUnit = 'MTR';\r",
+							"}\r",
+							"\r",
+							"\r",
+							"if (includeEventLocationName) {\r",
+							"    const facilityTypeCode = getCSVVar(\"facilityTypeCode\");\r",
+							"    switch (facilityTypeCode) {\r",
+							"        case 'BRTH':\r",
+							"            locationName = getCollVar(\"BERTH_LOCATION_NAME\");\r",
+							"            break;\r",
+							"        case 'PBPL':\r",
+							"            locationName = getCollVar(\"PBP_LOCATION_NAME\");\r",
+							"            break;\r",
+							"        case 'ANCH':\r",
+							"            locationName = getCollVar(\"ANCHORAGE_LOCATION_NAME\");\r",
+							"            break;\r",
+							"        default:\r",
+							"            // Happens for negative tests fiddling with the\r",
+							"            // includeEventLocationName for test with\r",
+							"            // \"facilityTypeCode\" being null\r",
+							"            locationName = getCollVar(\"FALLBACK_LOCATION_NAME\");\r",
+							"            break;\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"const body = {\r",
+							"  \"publisher\": {\r",
+							"    \"partyName\": \"Asseco Denmark\",\r",
+							"    \"identifyingCodes\": [\r",
+							"      {\r",
+							"        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r",
+							"        \"partyCode\": \"MSK\",\r",
+							"        \"codeListName\": \"LCL\"\r",
+							"      }\r",
+							"    ]\r",
+							"  },\r",
+							"  \"publisherRole\": getCSVVar(\"publisherRole\"),\r",
+							"  \"vesselIMONumber\": vesselIMONumber,\r",
+							"  \"vessel\": {\r",
+							"    \"vesselIMONumber\": vesselIMONumber,\r",
+							"    \"name\": getCollVar(\"VESSEL_NAME\"),\r",
+							"    \"draft\": vesselDraft,\r",
+							"    \"dimensionUnit\": vesselDimensionUnit\r",
+							"  },\r",
+							"  \"vesselPosition\": vesselPosition,\r",
+							"  \"carrierServiceCode\": getCollVar(\"CARRIER_SERVICE_CODE\"),\r",
+							"  \"carrierImportVoyageNumber\": getCollVar(\"CARRIER_IMPORT_VOYAGE_NUMBER\"),\r",
+							"  \"carrierExportVoyageNumber\": getCollVar(\"CARRIER_EXPORT_VOYAGE_NUMBER\"),\r",
+							"  \"UNLocationCode\": UNLocationCode,\r",
+							"  \"eventLocation\": {\r",
+							"    \"locationName\": locationName,\r",
+							"    \"UNLocationCode\": UNLocationCode,\r",
+							"    \"facilityCode\": facilitySMDGCode,\r",
+							"    \"facilityCodeListProvider\": facilityCodeListProvider\r",
+							"  },\r",
+							"  \"eventClassifierCode\": eventClassifierCode,\r",
+							"  \"operationsEventTypeCode\": getCSVVar(\"operationsEventTypeCode\"),\r",
+							"  \"portCallPhaseTypeCode\": getCSVVar(\"portCallPhaseTypeCode\"),\r",
+							"  \"portCallServiceTypeCode\":  getCSVVar(\"portCallServiceTypeCode\"),\r",
+							"  \"facilityTypeCode\": getCSVVar(\"facilityTypeCode\"),\r",
+							"  \"eventDateTime\": eventDateTime,\r",
+							"  \"carrierVoyageNumber\": getCollVar(\"CARRIER_EXPORT_VOYAGE_NUMBER\"),\r",
+							"  \"milesToDestinationPort\": milesToDestinationPort\r",
+							"}\r",
+							"\r",
+							"pm.variables.set('timestamp', JSON.stringify(body));\r",
+							"\r",
+							"function _translate(value) {\r",
+							"    if (value == \"null\") {\r",
+							"        value = null;\r",
+							"    }\r",
+							"    return value;\r",
+							"}\r",
+							"\r",
+							"function getCollVar(key, quote_string = false) {\r",
+							"    return _translate(pm.collectionVariables.get(key), quote_string);\r",
+							"}\r",
+							"\r",
+							"function getCSVVar(key, quote_string=false) {\r",
+							"    return _translate(pm.iterationData.get(key), quote_string);\r",
+							"}\r",
+							"\r",
+							"function getCSVBool(key) {\r",
+							"    const value = getCSVVar(key).toLowerCase();\r",
+							"    if (value === \"true\") {\r",
+							"        return true;\r",
+							"    }\r",
+							"    if (value === \"false\") {\r",
+							"        return false;\r",
+							"    }\r",
+							"    console.log(`CSV field {key} did not contain a boolean but {value}`);\r",
+							"    // Abort here if data is wrong\r",
+							"    pm.expect(false).to.eql(true);\r",
+							"    postman.setNextRequest(null);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{timestamp}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+					"host": [
+						"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+					],
+					"path": [
+						"timestamps"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"API-Version is present\", () => {",
+					"    pm.response.to.have.header(\"API-Version\");",
+					"});",
+					"",
+					"pm.test(\"API-Version header is set correctly\", () => {",
+					"    pm.expect(pm.response.headers.get(\"API-Version\")).to.eql(pm.collectionVariables.get(\"JIT_SPEC_VERSION\"));",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ERROR_SCHEMA",
+			"value": "{\"required\":[\"errorDateTime\",\"errors\",\"httpMethod\",\"requestUri\",\"statusCode\",\"statusCodeText\"],\"type\":\"object\",\"properties\":{\"httpMethod\":{\"type\":\"string\",\"description\":\"The http request method type e.g. GET, POST\\n\",\"enum\":[\"GET\",\"HEAD\",\"POST\",\"PUT\",\"DELETE\",\"OPTION\",\"PATCH\"]},\"requestUri\":{\"type\":\"string\",\"description\":\"The request URI as it was sent\\n\"},\"statusCode\":{\"type\":\"integer\",\"description\":\"The HTTP status code\\n\"},\"statusCodeText\":{\"type\":\"string\",\"description\":\"The textual representation of the status code\\n\"},\"errorMessage\":{\"maxLength\":200,\"type\":\"string\",\"description\":\"Other error information\\n\"},\"providerCorrelationID\":{\"type\":\"string\",\"description\":\"A unique identifier for the transaction, e.g. a UUID\\n\"},\"errorDateTime\":{\"type\":\"string\",\"description\":\"The date and time (in ISO 8601 format) the error occurred.\\n\",\"format\":\"date-time\"},\"errors\":{\"minItems\":1,\"type\":\"array\",\"description\":\"List of detailed errors, e.g. fields that could not pass validation\\n\",\"items\":{\"allOf\":[{\"required\":[\"message\",\"reason\"],\"type\":\"object\",\"properties\":{\"errorCode\":{\"maximum\":7999,\"minimum\":7000,\"type\":\"integer\",\"description\":\"Standard error code see http://dcsa.org/error-codes (to be created). Examples: 7003 â€“ out or range value, 7004 -  invalid type\\n\"},\"field\":{\"type\":\"string\",\"description\":\"The field that caused the error, e.g. a failed validation\\n\"},\"value\":{\"type\":\"string\",\"description\":\"The value that of the field that caused the error\\n\"},\"reason\":{\"type\":\"string\",\"description\":\"High level error message\\n\"},\"message\":{\"type\":\"string\",\"description\":\"Additional information as to why the error occured\\n\"}},\"$schema\":\"http://json-schema.org/schema#\"}]}}},\"$schema\":\"http://json-schema.org/schema#\"}",
+			"type": "string"
+		},
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:9090",
+			"type": "string"
+		},
+		{
+			"key": "JIT_CONTEXT_PATH",
+			"value": "/jit/v1"
+		},
+		{
+			"key": "JIT_SPEC_VERSION",
+			"value": "1.2",
+			"type": "default"
+		},
+		{
+			"key": "CARRIER_IMPORT_VOYAGE_NUMBER",
+			"value": "2103N",
+			"type": "default"
+		},
+		{
+			"key": "CARRIER_EXPORT_VOYAGE_NUMBER",
+			"value": "2103S",
+			"type": "default"
+		},
+		{
+			"key": "CARRIER_SERVICE_CODE",
+			"value": "FE1",
+			"type": "default"
+		},
+		{
+			"key": "VESSEL_IMO_NUMBER",
+			"value": "9321483",
+			"type": "default"
+		},
+		{
+			"key": "VESSEL_NAME",
+			"value": "King of the Seas",
+			"type": "default"
+		},
+		{
+			"key": "VESSEL_DRAFT_IN_METERS",
+			"value": "12.5",
+			"type": "default"
+		},
+		{
+			"key": "VESSEL_POSITION_LATITUDE",
+			"value": "52.4120",
+			"type": "default"
+		},
+		{
+			"key": "VESSEL_POSITION_LONGITUDE",
+			"value": "4.8079",
+			"type": "default"
+		},
+		{
+			"key": "VESSEL_MILES_TO_DEST",
+			"value": "10",
+			"type": "default"
+		},
+		{
+			"key": "UN_LOCATION_CODE",
+			"value": "NLAMS",
+			"type": "default"
+		},
+		{
+			"key": "FACILITY_SMDG_CODE",
+			"value": "ACT",
+			"type": "default"
+		},
+		{
+			"key": "BERTH_LOCATION_NAME",
+			"value": "BRTH1/S",
+			"type": "default"
+		},
+		{
+			"key": "PBP_LOCATION_NAME",
+			"value": "PBP1",
+			"type": "default"
+		},
+		{
+			"key": "ANCHORAGE_LOCATION_NAME",
+			"value": "ANCH1",
+			"type": "default"
+		},
+		{
+			"key": "FALLBACK_LOCATION_NAME",
+			"value": "Fallback location name",
+			"type": "default"
+		},
+		{
+			"key": "ERP_EVENT_DATE_TIME",
+			"value": "2030-11-12T07:41:00+08:30",
+			"type": "default"
+		},
+		{
+			"key": "ACT_EVENT_DATE_TIME",
+			"value": "2020-12-12T07:41:00+08:30",
+			"type": "default"
+		}
+	]
+}
