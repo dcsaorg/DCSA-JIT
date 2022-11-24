@@ -81,7 +81,7 @@ public class TimestampService {
     for (IdentifyingCodeTO smdgPartyCode : smdgCodes) {
       if ("TCL".equals(smdgPartyCode.codeListName())) {
         if (uneceCodes.isEmpty()) {
-          throw ConcreteRequestErrorMessageException.invalidInput("SMDG TCL party codes must be accompanied by "
+          throw ConcreteRequestErrorMessageException.invalidInput("SMDG TCL party codes must be accompanied by"
             + " an UN/ECE party code defining the UN Location Code (as SMDG TCL codes are only defined with"
             + " an UN Location Code).");
         }

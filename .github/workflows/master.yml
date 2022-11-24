@@ -58,6 +58,12 @@ jobs:
             exit 1
           fi
 
+      - name: Run Postman Integration Tests
+        uses: anthonyvscode/newman-action@v1
+        with:
+          collection: DCSA-JIT/postman_collection.json
+          reporters: cli
+
       - name: Run Integration Tests
         run: |
           cd DCSA-JIT && java -jar jit-integration-tests/target/dcsa-jit-integration-tests-with-dependencies.jar
@@ -68,8 +74,7 @@ jobs:
           # Work around https://github.com/anthonyvscode/newman-action/pull/242
           echo ITERATION_COUNT=$(($(wc -l newman_iteration.csv | awk '{print $1}') - 1)) >> $GITHUB_ENV
 
-      - name: Run Postman Integration Tests
-        id: run-newman
+      - name: Run Postman Test for all timestamp combinations
         uses: anthonyvscode/newman-action@v1
         with:
           collection: DCSA-JIT/postman_collection.combinatorial.json
