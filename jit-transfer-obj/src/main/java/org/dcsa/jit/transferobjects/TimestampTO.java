@@ -2,17 +2,11 @@ package org.dcsa.jit.transferobjects;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Builder;
-import org.dcsa.jit.transferobjects.enums.EventClassifierCode;
-import org.dcsa.jit.transferobjects.enums.FacilityTypeCodeOPR;
-import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
-import org.dcsa.jit.transferobjects.enums.OperationsEventTypeCode;
-import org.dcsa.jit.transferobjects.enums.PortCallPhaseTypeCode;
-import org.dcsa.jit.transferobjects.enums.PortCallServiceTypeCode;
-import org.dcsa.jit.transferobjects.enums.PublisherRole;
+import org.dcsa.jit.transferobjects.enums.*;
+import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.beans.Transient;
@@ -28,7 +22,7 @@ public record TimestampTO(
   @NotNull EventClassifierCode eventClassifierCode,
   @NotNull OperationsEventTypeCode operationsEventTypeCode,
   @Valid LocationTO eventLocation,
-  @Valid LocationTO vesselPosition,
+  @Valid LocationTO.GeoLocationTO vesselPosition,
   @Deprecated ModeOfTransport modeOfTransport, // Deprecated in JIT 1.2
   PortCallServiceTypeCode portCallServiceTypeCode,
   PortCallPhaseTypeCode portCallPhaseTypeCode,

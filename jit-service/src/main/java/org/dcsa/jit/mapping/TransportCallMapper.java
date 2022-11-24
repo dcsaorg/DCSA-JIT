@@ -5,6 +5,7 @@ import org.dcsa.jit.persistence.entity.enums.DCSATransportType;
 import org.dcsa.jit.transferobjects.TransportCallTO;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
+import org.dcsa.skernel.infrastructure.services.mapping.LocationMapper;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,7 +22,7 @@ public abstract class TransportCallMapper {
         @Mapping(target = "carrierExportVoyageNumber", source = "exportVoyage.carrierVoyageNumber"),
         @Mapping(target = "importVoyageNumber", source = "importVoyage.carrierVoyageNumber"),
         @Mapping(target = "exportVoyageNumber", source = "exportVoyage.carrierVoyageNumber"),
-        @Mapping(target = "location", source = "location",  qualifiedByName = "mappingFacilityLocationTO"),
+        @Mapping(target = "location", source = "location"),
         @Mapping(target = "UNLocationCode", source = "location.UNLocationCode"),
         @Mapping(target = "carrierServiceCode", source = "exportVoyage.service.carrierServiceCode"),
         @Mapping(target = "modeOfTransport", source = "modeOfTransportCode"),

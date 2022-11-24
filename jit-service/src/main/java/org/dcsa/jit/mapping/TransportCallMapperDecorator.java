@@ -2,8 +2,8 @@ package org.dcsa.jit.mapping;
 
 import org.dcsa.jit.persistence.entity.TransportCall;
 import org.dcsa.jit.transferobjects.TransportCallTO;
-import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
+import org.dcsa.skernel.infrastructure.transferobject.enums.FacilityCodeListProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 

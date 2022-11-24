@@ -3,29 +3,30 @@ package org.dcsa.jit.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.mapping.EnumMappers;
-import org.dcsa.jit.mapping.LocationMapper;
 import org.dcsa.jit.mapping.PartyMapper;
 import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.entity.enums.LocationRequirement;
 import org.dcsa.jit.persistence.repository.*;
 import org.dcsa.jit.transferobjects.IdentifyingCodeTO;
-import org.dcsa.jit.transferobjects.LocationTO;
 import org.dcsa.jit.transferobjects.PartyTO;
 import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.jit.transferobjects.enums.DCSAResponsibleAgencyCode;
-import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.domain.persistence.entity.Carrier;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
+import org.dcsa.skernel.domain.persistence.repository.AddressRepository;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
+import org.dcsa.skernel.infrastructure.services.LocationService;
+import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
+import org.dcsa.skernel.infrastructure.transferobject.enums.FacilityCodeListProvider;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -42,17 +43,15 @@ public class TimestampService {
   private final PartyMapper partyMapper;
   private final TransportCallService transportCallService;
   private final OperationsEventRepository operationsEventRepository;
-  private final LocationMapper locationMapper;
   private final TimestampDefinitionService timestampDefinitionService;
   private final SMDGDelayReasonRepository smdgDelayReasonRepository;
-  private final UnLocationRepository unLocationRepository;
-  private final LocationRepository locationRepository;
   private final PartyRepository partyRepository;
   private final AddressRepository addressRepository;
   private final CarrierRepository carrierRepository;
-  private final FacilityRepository facilityRepository;
+  private final JITFacilityRepository facilityRepository;
   private final TimestampRoutingService timestampRoutingService;
   private final PendingEmailNotificationRepository pendingEmailNotificationRepository;
+  private final LocationService locationService;
 
   @Transactional
   public void createAndRouteMessage(TimestampTO timestamp) {
@@ -127,14 +126,17 @@ public class TimestampService {
     }
 
     if (locationTO != null) {
-      if (locationTO.UNLocationCode() != null
-          && !locationTO.UNLocationCode().equals(timestamp.UNLocationCode())) {
+      String locationUNLocation = getUNLocationCode(locationTO);
+      String locationFacilityCode = getFacilityCode(locationTO);
+      FacilityCodeListProvider locationFacilityCodeListProvider = getFacilityCodeListProvider(locationTO);
+      if (locationUNLocation != null
+          && !locationUNLocation.equals(timestamp.UNLocationCode())) {
         throw ConcreteRequestErrorMessageException.invalidInput(
             "Conflicting UNLocationCode between the timestamp and the event location");
       }
 
-      if (locationTO.facilityCode() == null ^ locationTO.facilityCodeListProvider() == null) {
-        if (locationTO.facilityCode() == null) {
+      if (locationFacilityCode == null ^ locationFacilityCodeListProvider == null) {
+        if (locationFacilityCode == null) {
           throw ConcreteRequestErrorMessageException.invalidInput(
               "Cannot create location where facility code list provider is present but facility code is missing");
         }
@@ -142,7 +144,7 @@ public class TimestampService {
             "Cannot create location where facility code is present but facility code list provider is missing");
       }
 
-      if (locationTO.facilityCodeListProvider() == FacilityCodeListProvider.BIC) {
+      if (locationFacilityCodeListProvider == FacilityCodeListProvider.BIC) {
         // It is complex enough without having to deal with BIC codes, so exclude BIC as an
         // implementation detail.
         throw ConcreteRequestErrorMessageException.invalidInput(
@@ -151,40 +153,41 @@ public class TimestampService {
       // Ensure timestamp.facilitySMDGCode is set if location.facilityCode is also set
       // The errors for misaligned values are handled below.
       if (timestamp.facilitySMDGCode() == null
-          && locationTO.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
-        timestampTOBuilder.facilitySMDGCode(locationTO.facilityCode());
-        facilitySMDGCode = locationTO.facilityCode();
+          && locationFacilityCodeListProvider == FacilityCodeListProvider.SMDG) {
+        timestampTOBuilder.facilitySMDGCode(locationFacilityCode);
+        facilitySMDGCode = locationFacilityCode;
       }
     }
     if (facilitySMDGCode != null) {
-      if (locationTO == null) {
-        locationTO = LocationTO.builder().build();
-      }
-      if (locationTO.facilityCodeListProvider() != null
-          && locationTO.facilityCodeListProvider() != FacilityCodeListProvider.SMDG) {
+      String locationName = locationTO != null ? locationTO.locationName() : null;
+      String locationFacilityCode = getFacilityCode(locationTO);
+      FacilityCodeListProvider locationFacilityCodeListProvider = getFacilityCodeListProvider(locationTO);
+      if (locationFacilityCodeListProvider != null
+          && locationFacilityCodeListProvider != FacilityCodeListProvider.SMDG) {
         throw ConcreteRequestErrorMessageException.invalidInput(
             "Conflicting facilityCodeListProvider definition (got a facilitySMDGCode but location had a facility with provider: "
-                + locationTO.facilityCodeListProvider()
+                + locationFacilityCodeListProvider
                 + ")");
       }
-      if (locationTO.facilityCode() != null
-          && !locationTO.facilityCode().equals(facilitySMDGCode)) {
+      if (locationFacilityCode != null
+          && !locationFacilityCode.equals(facilitySMDGCode)) {
         throw ConcreteRequestErrorMessageException.invalidInput(
             "Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)");
       }
-      locationTO =
-          locationTO.toBuilder()
-              .UNLocationCode(timestamp.UNLocationCode())
-              // We need the UNLocationCode to resolve the facility.
-              .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
-              .facilityCode(facilitySMDGCode)
-              .build();
+      locationTO = new LocationTO.FacilityLocationTO(
+        locationName,
+        // We need the UNLocationCode to resolve the facility.
+        timestamp.UNLocationCode(),
+        Objects.requireNonNullElse(timestamp.facilitySMDGCode(), locationFacilityCode),
+        FacilityCodeListProvider.SMDG
+      );
     } else if (locationTO == null) {
       // Implementation detail: We *always* ensure that the TC has a location (so we can always rely on the
       // location.UNLocationCode)
-      locationTO = LocationTO.builder()
-        .UNLocationCode(timestamp.UNLocationCode())
-        .build();
+      locationTO = new LocationTO.UNLocationLocationTO(
+        null,
+        timestamp.UNLocationCode()
+      );
     }
     if (timestamp.vessel() != null && timestamp.vessel().vesselIMONumber() != null
       && !timestamp.vesselIMONumber().equals(timestamp.vessel().vesselIMONumber())) {
@@ -195,15 +198,12 @@ public class TimestampService {
     timestampTOBuilder.eventLocation(locationTO);
     timestamp = timestampTOBuilder.build();
 
-    this.ensureValidUnLocationCode(
-        (timestamp.eventLocation()) == null ? null : timestamp.eventLocation().UNLocationCode());
-    this.ensureValidUnLocationCode(timestamp.UNLocationCode());
     this.ensureValidDelayReasonCode(timestamp.delayReasonCode());
 
     // Manually handle some entities because JPA cannot do it for us (might be easier if
     // everything used UUID as PK or other IDs that JPA knows how to handle out of the box)
-    Location location = saveLocationIfNotNull(timestamp.eventLocation());
-    Location vesselPos = saveLocationIfNotNull(timestamp.vesselPosition());
+    Location location = locationService.ensureResolvable(timestamp.eventLocation());
+    Location vesselPos = locationService.ensureResolvable(timestamp.vesselPosition());
     Party party = savePublisher(timestamp.publisher());
 
     TransportCall tc = transportCallService.ensureTransportCallExists(timestamp,location);
@@ -260,18 +260,6 @@ public class TimestampService {
         });
   }
 
-  private Location saveLocationIfNotNull(LocationTO locationTO) {
-    return saveIfNotNull(
-        locationTO,
-        lTO -> {
-          Location l = locationMapper.toDao(lTO);
-          return locationRepository.save(
-              l.toBuilder()
-                  .facility(ensureValidFacilityCode(locationTO))
-                  .address(saveIfNotNull(l.getAddress(), addressRepository::save))
-                  .build());
-        });
-  }
 
   private static <T, D> D saveIfNotNull(T entity, Function<T, D> saver) {
     if (entity != null) {
@@ -358,15 +346,6 @@ public class TimestampService {
     }
   }
 
-  private void ensureValidUnLocationCode(String unLocationCode) {
-    assertNullOrKnown(unLocationCode, unLocationRepository, code ->
-      ConcreteRequestErrorMessageException.invalidParameter(
-        "UNLocation with UNLocationCode "
-          + unLocationCode
-          + " not part of reference implementation data set")
-    );
-  }
-
   private void ensureValidDelayReasonCode(String delayReasonCode){
     assertNullOrKnown(delayReasonCode, smdgDelayReasonRepository, code ->
       ConcreteRequestErrorMessageException.invalidParameter(
@@ -380,28 +359,29 @@ public class TimestampService {
     }
   }
 
-  private Facility ensureValidFacilityCode(LocationTO locationTO) {
-    if (locationTO.UNLocationCode() != null
-        && locationTO.facilityCode() != null
-        && locationTO.facilityCodeListProvider() != null) {
-      Optional<Facility> facilityCode = Optional.empty();
-      if (locationTO.facilityCodeListProvider() == FacilityCodeListProvider.SMDG) {
-        facilityCode =
-            facilityRepository.findByUNLocationCodeAndFacilitySMDGCode(
-                locationTO.UNLocationCode(), locationTO.facilityCode());
-      } else if (locationTO.facilityCodeListProvider() == FacilityCodeListProvider.BIC) {
-        facilityCode =
-            facilityRepository.findByUNLocationCodeAndFacilityBICCode(
-                locationTO.UNLocationCode(), locationTO.facilityCode());
-      }
-      return facilityCode.orElseThrow(
-          () ->
-              ConcreteRequestErrorMessageException.invalidParameter(
-                  "UNLocation with UNLocationCode "
-                      + locationTO.UNLocationCode()
-                      + " does not have a facility with facilityCode "
-                      + locationTO.facilityCode()));
+  private String getUNLocationCode(LocationTO locationTO) {
+    if (locationTO instanceof LocationTO.UNLocationLocationTO unLoc) {
+      return unLoc.UNLocationCode();
+    }
+    if (locationTO instanceof LocationTO.FacilityLocationTO facLoc) {
+      return facLoc.UNLocationCode();
     }
     return null;
   }
+
+  private String getFacilityCode(LocationTO locationTO) {
+    if (locationTO instanceof LocationTO.FacilityLocationTO facLoc) {
+      return facLoc.facilityCode();
+    }
+    return null;
+  }
+
+
+  private FacilityCodeListProvider getFacilityCodeListProvider(LocationTO locationTO) {
+    if (locationTO instanceof LocationTO.FacilityLocationTO facLoc) {
+      return facLoc.facilityCodeListProvider();
+    }
+    return null;
+  }
+
 }

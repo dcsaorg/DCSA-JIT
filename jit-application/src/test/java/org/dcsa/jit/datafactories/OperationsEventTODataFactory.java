@@ -3,6 +3,8 @@ package org.dcsa.jit.datafactories;
 import lombok.experimental.UtilityClass;
 import org.dcsa.jit.transferobjects.*;
 import org.dcsa.jit.transferobjects.enums.*;
+import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
+import org.dcsa.skernel.infrastructure.transferobject.enums.FacilityCodeListProvider;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,11 +18,9 @@ public class OperationsEventTODataFactory {
     PartyTO partyTO = PartyTO.builder().partyName("FDM Quality Control").build();
 
     LocationTO locationTO =
-        LocationTO.builder()
+        LocationTO.UNLocationLocationTO.builder()
             .locationName("Copenhagen")
-            .latitude("55.671° N")
-            .longitude("12.453° E")
-            .UNLocationCode("USMIA")
+            .UNLocationCode("DKCPH")
             .build();
 
     TransportCallVesselTO vesselTO =
@@ -48,11 +48,10 @@ public class OperationsEventTODataFactory {
             .build();
 
     LocationTO vesselPosition =
-        LocationTO.builder()
+        LocationTO.GeoLocationTO.builder()
             .locationName("Orlando")
             .latitude("28.481° N")
             .longitude("-81.48° E")
-            .UNLocationCode("USMIA")
             .build();
 
     OperationsEventTO operationsEventTO =
