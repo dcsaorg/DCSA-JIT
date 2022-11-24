@@ -1,6 +1,8 @@
 package org.dcsa.jit.persistence.repository;
 
 import org.dcsa.jit.persistence.entity.TimestampInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -18,6 +20,6 @@ public interface TimestampInfoRepository
   List<TimestampInfo> findAll(Sort sort);
 
   @EntityGraph(value = "timestampInfo.allAttributes")
-  List<TimestampInfo> findAll(Specification<TimestampInfo> spec);
+  Page<TimestampInfo> findAll(Specification<TimestampInfo> spec, Pageable pageable);
 
 }

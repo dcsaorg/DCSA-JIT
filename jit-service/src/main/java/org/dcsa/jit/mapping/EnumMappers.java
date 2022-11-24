@@ -2,6 +2,7 @@ package org.dcsa.jit.mapping;
 
 import org.dcsa.jit.persistence.entity.enums.DCSATransportType;
 import org.dcsa.jit.transferobjects.enums.*;
+import org.dcsa.skernel.infrastructure.transferobject.enums.FacilityCodeListProvider;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

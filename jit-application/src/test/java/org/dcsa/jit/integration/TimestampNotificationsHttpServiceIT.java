@@ -14,6 +14,9 @@ import org.dcsa.jit.persistence.repository.OutboxMessageRepository;
 import org.dcsa.jit.persistence.repository.TimestampNotificationDeadRepository;
 import org.dcsa.jit.transferobjects.*;
 import org.dcsa.jit.transferobjects.enums.*;
+import org.dcsa.skernel.infrastructure.transferobject.AddressTO;
+import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
+import org.dcsa.skernel.infrastructure.transferobject.enums.FacilityCodeListProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,17 +139,14 @@ class TimestampNotificationsHttpServiceIT {
             .eventClassifierCode(EventClassifierCode.EST)
             .operationsEventTypeCode(OperationsEventTypeCode.ARRI)
             .eventLocation(
-                LocationTO.builder()
-                    .locationName("Eiffel Tower")
-                    .latitude("48.8585500")
-                    .longitude("2.294492036")
+                LocationTO.FacilityLocationTO.builder()
+                    .locationName("Singapore")
                     .UNLocationCode("SGSIN")
-                    .address(addressTO)
                     .facilityCode("PSABT")
                     .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
                     .build())
             .vesselPosition(
-                LocationTO.builder().latitude("48.8585500").longitude("2.294492036").build())
+                LocationTO.GeoLocationTO.builder().latitude("48.8585500").longitude("2.294492036").build())
             .portCallPhaseTypeCode(null)
             .portCallPhaseTypeCode(PortCallPhaseTypeCode.INBD)
             .eventDateTime(OffsetDateTime.now())

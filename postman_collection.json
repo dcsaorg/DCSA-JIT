@@ -1223,17 +1223,17 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Status code is correct\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
+											"    pm.response.to.have.status(404);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"Error reason is correct\", () => {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidParameter\");\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"notFound\");\r",
 											"});\r",
 											"\r",
 											"pm.test(\"Error message is correct\", () => {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.errors[0].message).to.eql(\"UNLocation with UNLocationCode XXXXX not part of reference implementation data set\");\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"No UNLocation found for UNLocationCode = 'XXXXX'\");\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1281,17 +1281,17 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Status code is correct\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
+											"    pm.response.to.have.status(404);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"Error reason is correct\", () => {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidParameter\");\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"notFound\");\r",
 											"});\r",
 											"\r",
 											"pm.test(\"Error message is correct\", () => {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.errors[0].message).to.eql(\"UNLocation with UNLocationCode DEHAM does not have a facility with facilityCode XXXXX\");\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"No facility found for UNLocationCode = 'DEHAM' and facilitySMDGCode = 'XXXXX'\");\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -2510,7 +2510,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Non-empty response\", () => {\r",
+											"pm.test(\"Empty response\", () => {\r",
 											"    const jsonData = pm.response.json();\r",
 											"    pm.expect(jsonData.length).to.eq(0);\r",
 											"});\r",
@@ -2556,6 +2556,44 @@
 										{
 											"key": "eventCreatedDateTime:lt",
 											"value": "2020-01-01T00:00:00Z"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unknown facilitySMDGCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eq(0);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?facilitySMDGCode=xxxxxx",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "facilitySMDGCode",
+											"value": "xxxxxx"
 										}
 									]
 								}

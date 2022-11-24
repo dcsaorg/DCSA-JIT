@@ -1,9 +1,10 @@
 package org.dcsa.jit.transferobjects;
 
 import lombok.Builder;
-import org.dcsa.jit.transferobjects.enums.FacilityCodeListProvider;
 import org.dcsa.jit.transferobjects.enums.FacilityTypeCodeTRN;
 import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
+import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
+import org.dcsa.skernel.infrastructure.transferobject.enums.FacilityCodeListProvider;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

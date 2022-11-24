@@ -3,6 +3,7 @@ package org.dcsa.jit.transferobjects;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.dcsa.jit.transferobjects.enums.DCSAResponsibleAgencyCode;
+import org.dcsa.skernel.infrastructure.transferobject.AddressTO;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;

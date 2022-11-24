@@ -46,6 +46,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.dcsa.shared-kernel</groupId>
+			<artifactId>dcsa-shared-kernel-infrastructure-services</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

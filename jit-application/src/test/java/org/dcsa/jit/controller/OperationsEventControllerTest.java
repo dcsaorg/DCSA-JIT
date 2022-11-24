@@ -6,7 +6,12 @@ import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.service.TimestampDefinitionService;
 import org.dcsa.jit.service.TimestampRoutingService;
 import org.dcsa.jit.notifications.EmailFormatter;
+import org.dcsa.skernel.domain.persistence.repository.AddressRepository;
+import org.dcsa.skernel.domain.persistence.repository.FacilityRepository;
+import org.dcsa.skernel.domain.persistence.repository.LocationRepository;
+import org.dcsa.skernel.domain.persistence.repository.UnLocationRepository;
 import org.dcsa.skernel.infrastructure.pagination.PagedResult;
+import org.dcsa.skernel.infrastructure.services.LocationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +46,9 @@ class OperationsEventControllerTest {
   @MockBean AddressRepository addressRepository;
   @MockBean PartyRepository partyRepository;
   @MockBean LocationRepository locationRepository;
+  @MockBean LocationService locationService;
   @MockBean FacilityRepository facilityRepository;
+  @MockBean JITFacilityRepository jitFacilityRepository;
   @MockBean VesselRepository vesselRepository;
   @MockBean ServiceRepository serviceRepository;
   @MockBean OperationsEventRepository operationsEventRepository;
@@ -53,6 +60,10 @@ class OperationsEventControllerTest {
   @MockBean JavaMailSender javaMailSender;
   @MockBean PendingEmailNotificationDeadRepository pendingEmailNotificationDeadRepository;
   @MockBean CarrierRepository carrierRepository;
+  @MockBean TimestampNotificationDeadRepository timestampNotificationDeadRepository;
+  @MockBean MessageRoutingRuleRepository messageRoutingRuleRepository;
+  @MockBean TimestampInfoRepository timestampInfoRepository;
+  @MockBean OutboxMessageRepository outboxMessageRepository;
 
   @Test
   @DisplayName("GET operations event should return 200 for given basic valid call")

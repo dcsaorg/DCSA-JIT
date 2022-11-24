@@ -4,6 +4,11 @@ import dasniko.testcontainers.keycloak.KeycloakContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.utils.URIBuilder;
 import org.dcsa.jit.persistence.repository.*;
+import org.dcsa.skernel.domain.persistence.repository.AddressRepository;
+import org.dcsa.skernel.domain.persistence.repository.FacilityRepository;
+import org.dcsa.skernel.domain.persistence.repository.LocationRepository;
+import org.dcsa.skernel.domain.persistence.repository.UnLocationRepository;
+import org.dcsa.skernel.infrastructure.services.LocationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -45,7 +50,9 @@ class SecurityFlowIT {
   // can be replaced by another test container later if required.
   @MockBean AddressRepository addressRepository;
   @MockBean FacilityRepository facilityRepository;
+  @MockBean JITFacilityRepository jitFacilityRepository;
   @MockBean LocationRepository locationRepository;
+  @MockBean LocationService locationService;
   @MockBean OperationsEventRepository operationsEventRepository;
   @MockBean PartyRepository partyRepository;
   @MockBean ServiceRepository serviceRepository;
@@ -61,6 +68,7 @@ class SecurityFlowIT {
   @MockBean PendingEmailNotificationRepository pendingEmailNotificationRepository;
   @MockBean PendingEmailNotificationDeadRepository pendingEmailNotificationDeadRepository;
   @MockBean OpsEventTimestampDefinitionRepository opsEventTimestampDefinitionRepository;
+  @MockBean TimestampNotificationDeadRepository timestampNotificationDeadRepository;
 
   @Autowired TestRestTemplate testRestTemplate;
 
