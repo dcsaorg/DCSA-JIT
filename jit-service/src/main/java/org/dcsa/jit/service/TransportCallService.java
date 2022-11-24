@@ -31,6 +31,19 @@ public class TransportCallService {
 
   @Transactional
   public TransportCall ensureTransportCallExists(TimestampTO timestampTO, Location location) {
+    if (timestampTO.carrierImportVoyageNumber() != null || timestampTO.carrierExportVoyageNumber() != null) {
+      if (timestampTO.carrierImportVoyageNumber() == null || timestampTO.carrierExportVoyageNumber() == null) {
+        throw ConcreteRequestErrorMessageException.invalidInput(
+            "Both voyage carrierExportVoyageNumber + carrierImportVoyageNumber should either be provided together or not at all");
+      }
+      if (!(timestampTO.carrierImportVoyageNumber().equals(timestampTO.carrierVoyageNumber())
+          || timestampTO.carrierExportVoyageNumber().equals(timestampTO.carrierVoyageNumber()))) {
+        throw ConcreteRequestErrorMessageException.invalidInput(
+            "When carrierImportVoyageNumber & carrierExportVoyageNumber is given, then one of them has to equal the carrierVoyageNumber."
+                + " Please verify the values");
+      }
+    }
+
     // Backwards compatibility with JIT 1.1
     if (timestampTO.importVoyageNumber() != null || timestampTO.exportVoyageNumber() != null) {
       if (timestampTO.carrierImportVoyageNumber() != null || timestampTO.carrierExportVoyageNumber() != null) {
@@ -46,18 +59,6 @@ public class TransportCallService {
         .build();
     }
 
-    if (timestampTO.carrierImportVoyageNumber() != null || timestampTO.carrierExportVoyageNumber() != null) {
-      if (timestampTO.carrierImportVoyageNumber() == null || timestampTO.carrierExportVoyageNumber() == null) {
-        throw ConcreteRequestErrorMessageException.invalidInput(
-            "Both voyage carrierExportVoyageNumber + carrierImportVoyageNumber should either be provided together or not at all");
-      }
-      if (!(timestampTO.carrierImportVoyageNumber().equals(timestampTO.carrierVoyageNumber())
-          || timestampTO.carrierExportVoyageNumber().equals(timestampTO.carrierVoyageNumber()))) {
-        throw ConcreteRequestErrorMessageException.invalidInput(
-            "When carrierImportVoyageNumber & carrierExportVoyageNumber is given, then one of them has to equal the carrierVoyageNumber."
-                + " Please verify the values");
-      }
-    }
 
     // Backwards compatibility with JIT 1.1
     // if both carrierExportVoyageNumber & carrierImportVoyageNumber are not given

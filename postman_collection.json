@@ -1,0 +1,1565 @@
+{
+	"info": {
+		"_postman_id": "190fb2aa-fb94-45a2-98f7-f66e36f9261d",
+		"name": "DCSA-JIT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST Timestamps",
+			"item": [
+				{
+					"name": "Positive test cases",
+					"item": [
+						{
+							"name": "Basic v1.0 timestamp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Maersk\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"MSK\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"DEHAM\",\r\n  \"facilitySMDGCode\": \"EGH\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"Eurogate terminal\",\r\n    \"UNLocationCode\": \"DEHAM\",\r\n    \"facilityCode\": \"EGH\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic v1.1 timestamp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilitySMDGCode\": \"PSABT\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": null,\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"importVoyageNumber\": \"2103S\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"exportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic v1.2 timestamp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Swagger reference example v1.1 (DDT-1052)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Maersk\",\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"MSK\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ]\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"DEHAM\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"DEHAM\",\r\n    \"facilityCode\": \"EGH\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": null,\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"exportVoyageNumber\": \"2103S\",\r\n  \"importVoyageNumber\": \"2103N\",\r\n  \"carrierVoyageNumber\": \"2103N\",\r\n  \"carrierServiceCode\": \"FE1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Swagger reference example v1.2 (DDT-1052)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"MSK\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ]\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\",\r\n    \"name\": \"King of the Seas\",\r\n    \"lengthOverall\": 245.45,\r\n    \"width\": 37.33,\r\n    \"callSign\": \"NCVV\",\r\n    \"type\": \"CONT\",\r\n    \"draft\": 12.5,\r\n    \"dimensionUnit\": \"MTR\"\r\n  },\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"carrierImportVoyageNumber\": \"2103N\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"portVisitReference\": \"NLRTM1234589\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"UNLocationCode\": \"NLAMS\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"Amsterdam Container Terminal\",\r\n    \"UNLocationCode\": \"NLAMS\",\r\n    \"facilityCode\": \"ACT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"eventClassifierCode\": \"ACT\",\r\n  \"operationsEventTypeCode\": \"STRT\",\r\n  \"portCallPhaseTypeCode\": \"SHIF\",\r\n  \"portCallServiceTypeCode\": \"PILO\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No vessel object - just IMO number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ported Java IT test: testFacilitySMDGCodeField",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilitySMDGCode\": \"PSABT\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Timestamp (v1.2)  without eventLocation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilitySMDGCode\": \"PSABT\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Timestamp (v1.2)  with explicit modeOfTransport",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic v1.2 timestamp transportCallSequenceNumber 1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"AEJEA\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"AEJEA\",\r\n    \"facilityCode\": \"DPWJ2\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 1,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic v1.2 timestamp transportCallSequenceNumber 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"AEJEA\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"AEJEA\",\r\n    \"facilityCode\": \"DPWJ2\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", () => {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Negative test cases",
+					"item": [
+						{
+							"name": "Invalid mix of JIT 1.1 and 1.2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"Both voyage carrierExportVoyageNumber + carrierImportVoyageNumber should either be provided together or not at all\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilitySMDGCode\": \"PSABT\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"importVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Empty body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.contain(\"Required request body is missing\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Wrong type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"// Error is Spring/Jackson specific - seems weird to validate."
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"\"",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid SMDG Code (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"eventLocation.facilityCode\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.contain(\"size must be between 0 and 6\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"aBCDaFGHaE222\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid event location (type)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"// Error is Spring/Jackson specific - seems weird to validate."
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": \"aBCDaFGHaE\",\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid modeOfTransport (value)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"// Error is Spring/Jackson specific - seems weird to validate."
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VES\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid modeOfTransport (empty)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"// Error is Spring/Jackson specific - seems weird to validate."
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unknown UNLocationCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidParameter\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"UNLocation with UNLocationCode XXXXX not part of reference implementation data set\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"XXXXX\",\r\n  \"facilityTypeCode\": \"PBPL\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PBP location A\",\r\n    \"UNLocationCode\": \"XXXXX\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unknown Facility code",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidParameter\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"UNLocation with UNLocationCode DEHAM does not have a facility with facilityCode XXXXX\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"DEHAM\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"DEHAM\",\r\n    \"facilityCode\": \"XXXXX\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid IMO numbers should be rejected",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.oneOf([\"vesselIMONumber\", \"vessel.vesselIMONumber\"]);\r",
+											"    pm.expect(jsonData.errors[1].reason).to.oneOf([\"vesselIMONumber\", \"vessel.vesselIMONumber\"]);\r",
+											"    pm.expect(jsonData.errors[0].reason).to.not.eql(jsonData.errors[1].reason);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"must be a valid Vessel IMO Number\");\r",
+											"    pm.expect(jsonData.errors[1].message).to.eql(\"must be a valid Vessel IMO Number\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321482\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321482\",\r\n  \"UNLocationCode\": \"DEHAM\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"DEHAM\",\r\n    \"facilityCode\": \"XXXXX\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"modeOfTransport\": \"VESSEL\",\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"transportCallSequenceNumber\": 2,\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ambigous transport call (assumes positive tests have been run)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"Ambiguous transport call; please define sequence number\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"AEJEA\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"UNLocationCode\": \"AEJEA\",\r\n    \"facilityCode\": \"DPWJ2\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing LCL codeListName for publisher",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing TCL codeListName for publisher",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"SMDG (306) partyCode \\\"EGH\\\" is not classified with a (known) code list. Please use either \\\"TCL\\\" (Terminal codes) or \\\"LCL\\\" (Liner codes) for the identifyingPartyCode. (Note the strictness of this check is an implementation detail and not mandated by the JIT standard)\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"UNECE\",\r\n        \"partyCode\": \"DEHAM\"\r\n      },\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EGH\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"TR\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"REQ\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing UN Location Code TCL code for publisher",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"SMDG TCL party codes must be accompanied by an UN/ECE party code defining the UN Location Code (as SMDG TCL codes are only defined with an UN Location Code).\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EGH\",\r\n        \"codeListName\": \"TCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"TR\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Carrier Export Voyage Number without Import Voyage number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"Both voyage carrierExportVoyageNumber + carrierImportVoyageNumber should either be provided together or not at all\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Carrier Import Voyage Number without Export Voyage number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"Both voyage carrierExportVoyageNumber + carrierImportVoyageNumber should either be provided together or not at all\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Carrier Voyage Number not matching either carrierExportVoyageNumber nor carrierImportVoyageNumber",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"When carrierImportVoyageNumber & carrierExportVoyageNumber is given, then one of them has to equal the carrierVoyageNumber. Please verify the values\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2104E\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"API-Version is present\", () => {",
+					"    pm.response.to.have.header(\"API-Version\");",
+					"});",
+					"",
+					"pm.test(\"API-Version header is set correctly\", () => {",
+					"    pm.expect(pm.response.headers.get(\"API-Version\")).to.eql(pm.collectionVariables.get(\"JIT_SPEC_VERSION\"));",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ERROR_SCHEMA",
+			"value": "{\"required\":[\"errorDateTime\",\"errors\",\"httpMethod\",\"requestUri\",\"statusCode\",\"statusCodeText\"],\"type\":\"object\",\"properties\":{\"httpMethod\":{\"type\":\"string\",\"description\":\"The http request method type e.g. GET, POST\\n\",\"enum\":[\"GET\",\"HEAD\",\"POST\",\"PUT\",\"DELETE\",\"OPTION\",\"PATCH\"]},\"requestUri\":{\"type\":\"string\",\"description\":\"The request URI as it was sent\\n\"},\"statusCode\":{\"type\":\"integer\",\"description\":\"The HTTP status code\\n\"},\"statusCodeText\":{\"type\":\"string\",\"description\":\"The textual representation of the status code\\n\"},\"errorMessage\":{\"maxLength\":200,\"type\":\"string\",\"description\":\"Other error information\\n\"},\"providerCorrelationID\":{\"type\":\"string\",\"description\":\"A unique identifier for the transaction, e.g. a UUID\\n\"},\"errorDateTime\":{\"type\":\"string\",\"description\":\"The date and time (in ISO 8601 format) the error occurred.\\n\",\"format\":\"date-time\"},\"errors\":{\"minItems\":1,\"type\":\"array\",\"description\":\"List of detailed errors, e.g. fields that could not pass validation\\n\",\"items\":{\"allOf\":[{\"required\":[\"message\",\"reason\"],\"type\":\"object\",\"properties\":{\"errorCode\":{\"maximum\":7999,\"minimum\":7000,\"type\":\"integer\",\"description\":\"Standard error code see http://dcsa.org/error-codes (to be created). Examples: 7003 â€“ out or range value, 7004 -  invalid type\\n\"},\"field\":{\"type\":\"string\",\"description\":\"The field that caused the error, e.g. a failed validation\\n\"},\"value\":{\"type\":\"string\",\"description\":\"The value that of the field that caused the error\\n\"},\"reason\":{\"type\":\"string\",\"description\":\"High level error message\\n\"},\"message\":{\"type\":\"string\",\"description\":\"Additional information as to why the error occured\\n\"}},\"$schema\":\"http://json-schema.org/schema#\"}]}}},\"$schema\":\"http://json-schema.org/schema#\"}",
+			"type": "string"
+		},
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:9090",
+			"type": "string"
+		},
+		{
+			"key": "JIT_CONTEXT_PATH",
+			"value": "/jit/v1"
+		},
+		{
+			"key": "JIT_SPEC_VERSION",
+			"value": "1.2",
+			"type": "default"
+		}
+	]
+}
