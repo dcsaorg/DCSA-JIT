@@ -34,6 +34,7 @@ public class OperationsEventService {
     String transportCallID;
     String vesselIMONumber;
     String carrierVoyageNumber;
+    String exportVoyageNumber;
     String carrierExportVoyageNumber;
     String carrierServiceCode;
     String unLocationCode;
@@ -55,6 +56,7 @@ public class OperationsEventService {
                     .transportCallID(requestFilters.transportCallID)
                     .vesselIMONumber(requestFilters.vesselIMONumber)
                     .carrierVoyageNumber(requestFilters.carrierVoyageNumber)
+                    .exportVoyageNumber(requestFilters.exportVoyageNumber)
                     .carrierExportVoyageNumber(requestFilters.carrierExportVoyageNumber)
                     .carrierServiceCode(requestFilters.carrierServiceCode)
                     .unLocationCode(requestFilters.unLocationCode)

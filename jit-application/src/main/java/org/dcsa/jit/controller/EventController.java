@@ -51,7 +51,8 @@ public class EventController {
       @ValidVesselIMONumber(allowNull = true) @RequestParam(required = false)
           String vesselIMONumber,
       @Deprecated @Size(max = 50) @RequestParam(required = false) String carrierVoyageNumber,
-      @Size(max = 50) @RequestParam(required = false) @JsonAlias("exportVoyageNumber") String carrierExportVoyageNumber,
+      @Size(max = 50) @RequestParam(required = false) String carrierExportVoyageNumber,
+      @Size(max = 50) @RequestParam(required = false) String exportVoyageNumber,
       @Size(max = 5) @RequestParam(required = false) String carrierServiceCode,
       @Size(max = 5) @RequestParam(value = "UNLocationCode", required = false)
           String unLocationCode,
@@ -75,6 +76,8 @@ public class EventController {
             .transportCallID(transportCallID)
             .vesselIMONumber(vesselIMONumber)
             .carrierVoyageNumber(carrierVoyageNumber)
+            .carrierExportVoyageNumber(exportVoyageNumber)
+            .exportVoyageNumber(exportVoyageNumber)
             .carrierExportVoyageNumber(carrierExportVoyageNumber)
             .carrierServiceCode(carrierServiceCode)
             .unLocationCode(unLocationCode)

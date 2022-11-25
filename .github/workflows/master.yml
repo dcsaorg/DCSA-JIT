@@ -64,10 +64,6 @@ jobs:
           collection: DCSA-JIT/postman_collection.json
           reporters: cli
 
-      - name: Run Integration Tests
-        run: |
-          cd DCSA-JIT && java -jar jit-integration-tests/target/dcsa-jit-integration-tests-with-dependencies.jar
-
       - name: Generate newman iteration data
         run: |
           python3 DCSA-JIT/generate_pm_test_data.py newman_iteration.csv

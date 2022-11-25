@@ -42,7 +42,6 @@
 		<module>jit-service</module>
 		<module>jit-notifications</module>
 		<module>jit-application</module>
-		<module>jit-integration-tests</module>
 	</modules>
 
 	<dependencies>

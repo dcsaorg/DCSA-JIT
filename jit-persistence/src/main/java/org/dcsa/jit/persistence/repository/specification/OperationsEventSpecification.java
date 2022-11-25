@@ -7,6 +7,7 @@ import org.dcsa.jit.persistence.entity.*;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
+import org.dcsa.skernel.domain.persistence.entity.Facility_;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.infrastructure.http.queryparams.ParsedQueryParameter;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,6 +27,7 @@ public class OperationsEventSpecification {
     String transportCallID;
     String vesselIMONumber;
     String carrierVoyageNumber;
+    String exportVoyageNumber;
     String carrierExportVoyageNumber;
     String carrierServiceCode;
     String unLocationCode;
@@ -57,17 +59,22 @@ public class OperationsEventSpecification {
       }
 
       if (null != filters.carrierVoyageNumber) {
-        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get("carrierVoyageNumber"), filters.carrierVoyageNumber);
+        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get(Voyage_.CARRIER_VOYAGE_NUMBER), filters.carrierVoyageNumber);
+        predicates.add(predicate);
+      }
+
+      if (null != filters.exportVoyageNumber) {
+        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get(Voyage_.CARRIER_VOYAGE_NUMBER), filters.exportVoyageNumber);
         predicates.add(predicate);
       }
 
       if (null != filters.carrierExportVoyageNumber) {
-        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get("carrierVoyageNumber"), filters.carrierExportVoyageNumber);
+        Predicate predicate = builder.equal(transportCallExportVoyageJoin.get(Voyage_.CARRIER_VOYAGE_NUMBER), filters.carrierExportVoyageNumber);
         predicates.add(predicate);
       }
 
       if (null != filters.carrierServiceCode) {
-        Predicate predicate = builder.equal(voyageServiceJoin.get("carrierServiceCode"), filters.carrierServiceCode);
+        Predicate predicate = builder.equal(voyageServiceJoin.get(Service_.CARRIER_SERVICE_CODE), filters.carrierServiceCode);
         predicates.add(predicate);
       }
 
@@ -79,20 +86,20 @@ public class OperationsEventSpecification {
       if (null != filters.facilitySMDGCode) {
         Predicate predicate;
         if (filters.facilitySMDGCode.equalsIgnoreCase("null")) {
-          predicate = builder.isNull(locationFacilityJoin.get("smdgCode"));
+          predicate = builder.isNull(locationFacilityJoin.get(Facility_.FACILITY_SM_DG_CODE));
         } else {
-          predicate = builder.equal(locationFacilityJoin.get("smdgCode"), filters.facilitySMDGCode);
+          predicate = builder.equal(locationFacilityJoin.get(Facility_.FACILITY_SM_DG_CODE), filters.facilitySMDGCode);
         }
         predicates.add(predicate);
       }
 
       if (null != filters.operationsEventTypeCodes && !filters.operationsEventTypeCodes.isEmpty()) {
-        Predicate predicate = root.get("operationsEventTypeCode").in(filters.operationsEventTypeCodes);
+        Predicate predicate = root.get(OperationsEvent_.OPERATIONS_EVENT_TYPE_CODE).in(filters.operationsEventTypeCodes);
         predicates.add(predicate);
       }
 
       if (null != filters.eventClassifierCodes && !filters.eventClassifierCodes.isEmpty()) {
-        Predicate predicate = root.get("eventClassifierCode").in(filters.eventClassifierCodes);
+        Predicate predicate = root.get(OperationsEvent_.EVENT_CLASSIFIER_CODE).in(filters.eventClassifierCodes);
         predicates.add(predicate);
       }
 
