@@ -187,14 +187,14 @@ class OperationsEventControllerTest {
         .perform(
             get("/events")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param("facilitySMDGCode", "x".repeat(6)))
+                .param("facilitySMDGCode", "x".repeat(7)))
         .andDo(print())
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.httpMethod").value("GET"))
         .andExpect(jsonPath("$.requestUri").value("/events"))
         .andExpect(jsonPath("$.errors[0].reason").value("invalidInput"))
         .andExpect(
-            jsonPath("$.errors[0].message").value(containsString("size must be between 0 and 5")));
+            jsonPath("$.errors[0].message").value(containsString("facilitySMDGCode size must be between 0 and 6")));
   }
 
   @Test
@@ -212,6 +212,6 @@ class OperationsEventControllerTest {
         .andExpect(jsonPath("$.requestUri").value("/events"))
         .andExpect(jsonPath("$.errors[0].reason").value("invalidInput"))
         .andExpect(
-            jsonPath("$.errors[0].message").value(containsString("size must be between 0 and 5")));
+            jsonPath("$.errors[0].message").value(containsString("No enum constant org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode.xxxxxx")));
   }
 }

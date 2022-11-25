@@ -516,6 +516,282 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Basic RTA-Berth v1.2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"UNECE\",\r\n        \"partyCode\": \"SGSIN\"\r\n      },\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"PSABT\",\r\n        \"codeListName\": \"TCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"TR\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"REQ\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic PTA-Berth v1.2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"VSL\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"PLN\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic ETD-Berth v1.2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"DEPA\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"eventDateTime\": \"2019-11-14T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic RTS-Cargo OPS v1.2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"REQ\",\r\n  \"operationsEventTypeCode\": \"STRT\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"eventDateTime\": \"2019-11-14T08:41:00+08:30\",\r\n  \"portCallServiceTypeCode\": \"CRGO\",\r\n  \"portCallPhaseTypeCode\": \"ALGS\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic RTC-Cargo OPS v1.2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"REQ\",\r\n  \"operationsEventTypeCode\": \"CMPL\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"eventDateTime\": \"2019-11-14T06:41:00+08:30\",\r\n  \"portCallServiceTypeCode\": \"CRGO\",\r\n  \"portCallPhaseTypeCode\": \"ALGS\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Basic ETA-Berth v1.2 timestamp - separate vessel",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9811000\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9811000\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2104S\",\r\n  \"carrierImportVoyageNumber\": \"2104S\",\r\n  \"carrierExportVoyageNumber\": \"2104S\",\r\n  \"carrierServiceCode\": \"FE2\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"event": [
@@ -1181,7 +1457,19 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"SMDG (306) partyCode \\\"EMC\\\" is not classified with a (known) code list. Please use either \\\"TCL\\\" (Terminal codes) or \\\"LCL\\\" (Liner codes) for the identifyingPartyCode. (Note the strictness of this check is an implementation detail and not mandated by the JIT standard)\");\r",
+											"});"
 										],
 										"type": "text/javascript"
 									}
@@ -1201,7 +1489,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\",\r\n        \"codeListName\": \"LCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"EMC\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"CA\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"EST\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"vesselPosition\": {\r\n    \"latitude\": \"48.8585500\",\r\n    \"longitude\": \"2.294492036\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\",\r\n  \"remark\": \"Port closed due to strike\",\r\n  \"delayReasonCode\": \"WEA\"\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1510,6 +1798,969 @@
 							},
 							"response": []
 						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = pm.collectionVariables.get(\"ERROR_SCHEMA\");",
+									"const schemaObject = JSON.parse(schema);",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.response.to.have.jsonSchema(schemaObject);",
+									"});",
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "GET Events",
+			"item": [
+				{
+					"name": "Positive test cases",
+					"item": [
+						{
+							"name": "Basic unfiltered GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 10 events at this point.\r",
+											"    pm.expect(jsonData.length).to.gt(10);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET with limit 1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Limit is repected\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eql(1);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?limit=1",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET with limit 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Limit is repected\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eql(2);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?limit=2",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By eventClassifierCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 2 events of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(2);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.eventClassifierCode).to.be.oneOf([\"REQ\", \"PLN\"]);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?eventClassifierCode=REQ,PLN",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "eventClassifierCode",
+											"value": "REQ,PLN"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By operationsEventTypeCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 2 events of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(2);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.operationsEventTypeCode).to.be.oneOf([\"STRT\", \"CMPL\"]);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?operationsEventTypeCode=STRT,CMPL",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "operationsEventTypeCode",
+											"value": "STRT,CMPL"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By vesselIMONumber",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 1 event of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.transportCall.vessel.vesselIMONumber).to.be.eq(\"9811000\");\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?vesselIMONumber=9811000",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "vesselIMONumber",
+											"value": "9811000"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By UNLocationCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 2 events of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(2);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.eventLocation.UNLocationCode).to.be.eq(\"AEJEA\");\r",
+											"        pm.expect(event.transportCall.UNLocationCode).to.be.eq(\"AEJEA\");\r",
+											"        pm.expect(event.transportCall.location.UNLocationCode).to.be.eq(\"AEJEA\");\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?UNLocationCode=AEJEA",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "UNLocationCode",
+											"value": "AEJEA"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By carrierServiceCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 1 event of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.transportCall.carrierServiceCode).to.be.eq(\"FE2\");\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?carrierServiceCode=FE2",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "carrierServiceCode",
+											"value": "FE2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By carrierExportVoyageNumber",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 1 event of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.transportCall.exportVoyageNumber).to.be.eq(\"2104S\");\r",
+											"        pm.expect(event.transportCall.carrierExportVoyageNumber).to.be.eq(\"2104S\");\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?carrierExportVoyageNumber=2104S",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "carrierExportVoyageNumber",
+											"value": "2104S"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By exportVoyageNumber",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 1 event of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.transportCall.exportVoyageNumber).to.be.eq(\"2104S\");\r",
+											"        pm.expect(event.transportCall.carrierExportVoyageNumber).to.be.eq(\"2104S\");\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?exportVoyageNumber=2104S",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "exportVoyageNumber",
+											"value": "2104S"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By carrierVoyageNumber",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // The positive test cases will have created at least 1 event of this kind.\r",
+											"    pm.expect(jsonData.length).to.gte(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All requests match query parameters\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    for (const event of jsonData) {\r",
+											"        pm.expect(event.transportCall.exportVoyageNumber).to.be.eq(\"2104S\");\r",
+											"        pm.expect(event.transportCall.carrierExportVoyageNumber).to.be.eq(\"2104S\");\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?carrierVoyageNumber=2104S",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "carrierVoyageNumber",
+											"value": "2104S"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "By eventCreatedDateTime (before DCSA existed)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Non-empty response\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eq(0);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?eventCreatedDateTime:lt=2020-01-01T00:00:00Z",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "eventCreatedDateTime:lt",
+											"value": "2020-01-01T00:00:00Z"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = pm.collectionVariables.get(\"EVENTS_SCHEMA\");",
+									"const schemaObject = JSON.parse(schema);",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.response.to.have.jsonSchema(schemaObject);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Negative test cases",
+					"item": [
+						{
+							"name": "Invalid IMO numbers should be rejected",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.vesselIMONumber must be a valid Vessel IMO Number\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?vesselIMONumber=1234561",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "vesselIMONumber",
+											"value": "1234561"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid eventClassifierCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"No enum constant org.dcsa.jit.persistence.entity.enums.EventClassifierCode.123\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?eventClassifierCode=123",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "eventClassifierCode",
+											"value": "123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid eventClassifierCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"No enum constant org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode.123\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?operationsEventTypeCode=123",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "operationsEventTypeCode",
+											"value": "123"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const schema = pm.collectionVariables.get(\"ERROR_SCHEMA\");",
+									"const schemaObject = JSON.parse(schema);",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.response.to.have.jsonSchema(schemaObject);",
+									"});",
+									""
+								]
+							}
+						}
 					]
 				}
 			]
@@ -1559,6 +2810,11 @@
 		{
 			"key": "JIT_SPEC_VERSION",
 			"value": "1.2",
+			"type": "default"
+		},
+		{
+			"key": "EVENTS_SCHEMA",
+			"value": "{\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"required\": [\n      \"eventClassifierCode\",\n      \"eventCreatedDateTime\",\n      \"eventDateTime\",\n      \"eventType\",\n      \"operationsEventTypeCode\",\n      \"publisher\",\n      \"publisherRole\"\n    ],\n    \"description\": \"The Event entity is described as a generalization of all the specific event categories. An event always takes place in relation to a shipment and can additionally be linked to a transport or an equipment\\n\",\n    \"properties\": {\n      \"eventID\": {\n        \"type\": \"string\",\n        \"description\": \"The unique identifier for the event (the message - not the source).\\n\\n<b>NB</b>&#58; This field should be considered Metadata\\n\",\n        \"format\": \"uuid\"\n      },\n      \"eventCreatedDateTime\": {\n        \"type\": \"string\",\n        \"description\": \"The timestamp of when the event was created.\\n\\n<b>NB</b>&#58; This field should be considered Metadata\\n\",\n        \"format\": \"date-time\"\n      },\n      \"eventType\": {\n        \"type\": \"string\",\n        \"description\": \"The Event Type of the object - to be used as a discriminator.\\n\\n<b>NB</b>&#58; This field should be considered Metadata\\n\",\n        \"enum\": [\n          \"OPERATIONS\"\n        ]\n      },\n      \"eventClassifierCode\": {\n        \"type\": \"string\",\n        \"description\": \"Code for the event classifier. Values can vary depending on eventType\\n\",\n        \"enum\": [\n          \"ACT\",\n          \"PLN\",\n          \"EST\",\n          \"REQ\"\n        ]\n      },\n      \"eventDateTime\": {\n        \"type\": \"string\",\n        \"description\": \"The local date and time, where the event took place or when the event will take place, in ISO 8601 format.\",\n        \"format\": \"date-time\"\n      },\n      \"operationsEventTypeCode\": {\n        \"type\": \"string\",\n        \"description\": \"The code to identify the type of event that is related to the operation\\n- STRT (Started)\\n- CMPL (Completed)\\n- ARRI (Arrived)\\n- DEPA (Departed)\\n\\nMore details can be found on <a href=\\\"https://github.com/dcsaorg/DCSA-Information-Model/blob/master/datamodel/referencedata.d/operationseventtypecodes.csv\\\">GitHub</a>\\n\",\n        \"enum\": [\n          \"STRT\",\n          \"CMPL\",\n          \"ARRI\",\n          \"DEPA\",\n          \"CANC\",\n          \"OMIT\"\n        ]\n      },\n      \"publisher\": {\n        \"type\": \"object\",\n        \"description\": \"refers to a company or a legal entity.\",\n        \"properties\": {\n          \"partyName\": {\n            \"maxLength\": 100,\n            \"type\": \"string\",\n            \"description\": \"Name of the party.\"\n          },\n          \"taxReference1\": {\n            \"maxLength\": 20,\n            \"type\": \"string\",\n            \"description\": \"The identifying number of the consignee or shipper (Individual or entity) used for tax purposes.\"\n          },\n          \"taxReference2\": {\n            \"maxLength\": 20,\n            \"type\": \"string\",\n            \"description\": \"Optional second identifying number of the consignee or shipper (Individual or entity) used for tax purposes.\"\n          },\n          \"publicKey\": {\n            \"maxLength\": 500,\n            \"type\": \"string\",\n            \"description\": \"The public key used for a digital signature.\"\n          },\n          \"address\": {\n            \"type\": \"object\",\n            \"description\": \"An object for storing address related information\",\n            \"properties\": {\n              \"name\": {\n                \"maxLength\": 100,\n                \"type\": \"string\",\n                \"description\": \"Name of the address\"\n              },\n              \"street\": {\n                \"maxLength\": 100,\n                \"type\": \"string\",\n                \"description\": \"The name of the street of the partyÔÇÖs address.\"\n              },\n              \"streetNumber\": {\n                \"maxLength\": 50,\n                \"type\": \"string\",\n                \"description\": \"The number of the street of the partyÔÇÖs address.\"\n              },\n              \"floor\": {\n                \"maxLength\": 50,\n                \"type\": \"string\",\n                \"description\": \"The floor of the partyÔÇÖs street number.\"\n              },\n              \"postCode\": {\n                \"maxLength\": 10,\n                \"type\": \"string\",\n                \"description\": \"The post code of the partyÔÇÖs address.\"\n              },\n              \"city\": {\n                \"maxLength\": 65,\n                \"type\": \"string\",\n                \"description\": \"The city name of the partyÔÇÖs address.\"\n              },\n              \"stateRegion\": {\n                \"maxLength\": 65,\n                \"type\": \"string\",\n                \"description\": \"The state/region of the partyÔÇÖs address.\"\n              },\n              \"country\": {\n                \"maxLength\": 75,\n                \"type\": \"string\",\n                \"description\": \"The country of the partyÔÇÖs address.\"\n              }\n            }\n          },\n          \"identifyingCodes\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"required\": [\n                \"DCSAResponsibleAgencyCode\",\n                \"partyCode\"\n              ],\n              \"type\": \"object\",\n              \"properties\": {\n                \"codeListResponsibleAgencyCode\": {\n                  \"type\": \"string\",\n                  \"description\": \"UN/CEFACT codes for code list providers:\\n- 5 (ISO)\\n- 6 (UN/ECE)\\n- 11 (Lloyd's register of shipping)\\n- 20 (BIC (Bureau International des Containeurs)\\n- 54 (IMO (incl. IMDG))\\n- 182 (Standard Carrier Alpha Code (SCAC))\\n- 274 (ITIGG)\\n- 296 (ITU)\\n- 306 (SMDG)\\n- 399 (EXIS)\\n- zzz (Mutually defined)\\n\\n<b>Deprecated:</b> Use DCSAResponsibleAgencyCode instead\\n\",\n                  \"enum\": [\n                    \"5\",\n                    \"6\",\n                    \"11\",\n                    \"20\",\n                    \"54\",\n                    \"182\",\n                    \"274\",\n                    \"296\",\n                    \"306\",\n                    \"399\",\n                    \"zzz\"\n                  ]\n                },\n                \"DCSAResponsibleAgencyCode\": {\n                  \"type\": \"string\",\n                  \"description\": \"A DCSA provided code for UN/CEFACT code list providers:\\n- ISO\\n- UNECE\\n- LLOYD (Lloyd's register of shipping)\\n- BIC (Bureau International des Containeurs)\\n- IMO\\n- SCAC (Standard Carrier Alpha Code)\\n- ITIGG\\n- ITU\\n- SMDG\\n- EXIS\\n- FMC (Federal Maritime Commission)\\n- CBSA (Canada Border Services Agency)\\n- ZZZ (Mutually defined)\\n\",\n                  \"enum\": [\n                    \"ISO\",\n                    \"UNECE\",\n                    \"LLOYD\",\n                    \"BIC\",\n                    \"IMO\",\n                    \"SCAC\",\n                    \"ITIGG\",\n                    \"ITU\",\n                    \"SMDG\",\n                    \"EXIS\",\n                    \"FMC\",\n                    \"CBSA\",\n                    \"ZZZ\"\n                  ]\n                },\n                \"partyCode\": {\n                  \"maxLength\": 100,\n                  \"type\": \"string\",\n                  \"description\": \"Code to identify the party as provided by the agency\\n\"\n                },\n                \"codeListName\": {\n                  \"maxLength\": 100,\n                  \"type\": \"string\",\n                  \"description\": \"The name of the list, provided by the responsible agency\\n\"\n                }\n              }\n            }\n          },\n          \"nmftaCode\": {\n            \"maxLength\": 4,\n            \"type\": \"string\",\n            \"description\": \"The Standard Carrier Alpha Code (SCAC) provided by NMFTA.\"\n          }\n        }\n      },\n      \"publisherRole\": {\n        \"type\": \"string\",\n        \"description\": \"The party function code of the publisher:\\n- CA (Carrier)\\n- AG (Carrier local agent)\\n- VSL (Experimental: Vessel)\\n- ATH (Experimental: Port Authorities)\\n- PLT (Experimental: Port Pilot)\\n- TR (Terminal)\\n- TWG (Experimental: Towage serice provider)\\n- LSH (Experimental: Lashing serice provider)\\n- BUK (Experimental: Bunker serice provider)\\n\\nMore details can be found on <a href=\\\"https://github.com/dcsaorg/DCSA-Information-Model/blob/master/datamodel/referencedata.d/publisherrole.csv\\\">GitHub</a>\\n\",\n        \"enum\": [\n          \"CA\",\n          \"AG\",\n          \"VSL\",\n          \"ATH\",\n          \"PLT\",\n          \"TR\",\n          \"TWG\",\n          \"LSH\",\n          \"BUK\"\n        ]\n      },\n      \"eventLocation\": {\n        \"type\": \"object\",\n        \"description\": \"generally used to capture location-related data, also for locations without UN Location Codes.\\n\",\n        \"properties\": {\n          \"locationName\": {\n            \"maxLength\": 100,\n            \"type\": \"string\",\n            \"description\": \"The name of the location.\"\n          },\n          \"latitude\": {\n            \"maxLength\": 10,\n            \"type\": \"string\",\n            \"description\": \"Geographic coordinate that specifies the northÔÇôsouth position of a point on the Earth&apos;s surface.\"\n          },\n          \"longitude\": {\n            \"maxLength\": 11,\n            \"type\": \"string\",\n            \"description\": \"Geographic coordinate that specifies the eastÔÇôwest position of a point on the Earth&apos;s surface.\"\n          },\n          \"UNLocationCode\": {\n            \"maxLength\": 5,\n            \"type\": \"string\",\n            \"description\": \"The UN Location code specifying where the place is located.\"\n          },\n          \"facilityCode\": {\n            \"maxLength\": 6,\n            \"type\": \"string\",\n            \"description\": \"The code used for identifying the specific facility. This code does <b>not</b> include the UN Location Code.\\n\"\n          },\n          \"facilityCodeListProvider\": {\n            \"type\": \"string\",\n            \"description\": \"The provider used for identifying the facility Code\\n\",\n            \"enum\": [\n              \"BIC\",\n              \"SMDG\"\n            ]\n          },\n          \"address\": {\n            \"description\": \"Address related information\",\n            \"type\": \"object\",\n            \"properties\": {\n              \"name\": {\n                \"maxLength\": 100,\n                \"type\": \"string\",\n                \"description\": \"Name of the address\"\n              },\n              \"street\": {\n                \"maxLength\": 100,\n                \"type\": \"string\",\n                \"description\": \"The name of the street of the partyÔÇÖs address.\"\n              },\n              \"streetNumber\": {\n                \"maxLength\": 50,\n                \"type\": \"string\",\n                \"description\": \"The number of the street of the partyÔÇÖs address.\"\n              },\n              \"floor\": {\n                \"maxLength\": 50,\n                \"type\": \"string\",\n                \"description\": \"The floor of the partyÔÇÖs street number.\"\n              },\n              \"postCode\": {\n                \"maxLength\": 10,\n                \"type\": \"string\",\n                \"description\": \"The post code of the partyÔÇÖs address.\"\n              },\n              \"city\": {\n                \"maxLength\": 65,\n                \"type\": \"string\",\n                \"description\": \"The city name of the partyÔÇÖs address.\"\n              },\n              \"stateRegion\": {\n                \"maxLength\": 65,\n                \"type\": \"string\",\n                \"description\": \"The state/region of the partyÔÇÖs address.\"\n              },\n              \"country\": {\n                \"maxLength\": 75,\n                \"type\": \"string\",\n                \"description\": \"The country of the partyÔÇÖs address.\"\n              }\n            }\n          }\n        }\n      },\n      \"portCallServiceTypeCode\": {\n        \"type\": \"string\",\n        \"description\": \"The type of the service provided in the port call\\n- PILO (Pilotage)\\n- MOOR (Mooring)\\n- CRGO (Cargo operations)\\n- TOWG (Towage)\\n- BUNK (Bunkering)\\n- LASH (Lashing)\\n- SAFE (Safety)\\n- FAST (All Fast)\\n- GWAY (Gangway down and secure)\\n\\nMore details can be found on <a href=\\\"https://github.com/dcsaorg/DCSA-Information-Model/blob/master/datamodel/referencedata.d/portcallservicetypecodes.csv\\\">GitHub</a>\\n\",\n        \"enum\": [\n          \"PILO\",\n          \"MOOR\",\n          \"CRGO\",\n          \"TOWG\",\n          \"BUNK\",\n          \"LASH\",\n          \"SAFE\",\n          \"FAST\",\n          \"GWAY\",\n          \"ANCO\",\n          \"SLUG\",\n          \"CONV\",\n          \"ICEN\",\n          \"ESCO\",\n          \"SHPW\",\n          \"LCRO\",\n          \"DCRO\",\n          \"VRDY\"\n        ]\n      },\n      \"portCallPhaseTypeCode\": {\n        \"type\": \"string\",\n        \"description\": \"The general direction of the vessel for which information applies\\n- INBD (Inbound)\\n- ALGS (Alongside)\\n- SHIF (Shifting)\\n- OUTB (Outbound)\\n\\nMore details can be found on <a href=\\\"https://github.com/dcsaorg/DCSA-Information-Model/blob/master/datamodel/referencedata.d/portcallphasetypecodes.csv\\\">GitHub</a>\\n\",\n        \"enum\": [\n          \"INBD\",\n          \"ALGS\",\n          \"SHIF\",\n          \"OUTB\"\n        ]\n      },\n      \"facilityTypeCode\": {\n        \"type\": \"string\",\n        \"description\": \"A specialized version of the facilityCode to be used in Operations events. The code to identify the specific type of facility.\\n- PBPL (Pilot boarding place)\\n- BRTH (Berth)\\n\",\n        \"enum\": [\n          \"PBPL\",\n          \"BRTH\"\n        ]\n      },\n      \"delayReasonCode\": {\n        \"maxLength\": 3,\n        \"type\": \"string\",\n        \"description\": \"Reason code for the delay. The SMDG-Delay-Reason-Codes are used for this attribute. The code list can be found at http://www.smdg.org/smdg-code-lists/\"\n      },\n      \"remark\": {\n        \"maxLength\": 500,\n        \"type\": \"string\",\n        \"description\": \"Free text to provide additional information on the context.\\n\"\n      },\n      \"transportCall\": {\n        \"required\": [\n          \"modeOfTransport\",\n          \"transportCallReference\"\n        ],\n        \"type\": \"object\",\n        \"properties\": {\n          \"transportCallReference\": {\n            \"maxLength\": 100,\n            \"type\": \"string\",\n            \"description\": \"The unique identifier for a transport call\"\n          },\n          \"portVisitReference\": {\n            \"maxLength\": 50,\n            \"type\": \"string\",\n            \"description\": \"The unique reference that can be used to link different transportCallReferences to the same port visit. The reference is provided by the port to uniquely identify a port call.\"\n          },\n          \"carrierServiceCode\": {\n            \"maxLength\": 5,\n            \"type\": \"string\",\n            \"description\": \"The code of the service for which the schedule details are published.\\n\"\n          },\n          \"carrierVoyageNumber\": {\n            \"maxLength\": 50,\n            \"type\": \"string\",\n            \"description\": \"The vessel operator-specific identifier of the Voyage.\"\n          },\n          \"exportVoyageNumber\": {\n            \"maxLength\": 50,\n            \"type\": \"string\",\n            \"description\": \"The vessel operator-specific identifier of the export Voyage.\"\n          },\n          \"importVoyageNumber\": {\n            \"maxLength\": 50,\n            \"type\": \"string\",\n            \"description\": \"The vessel operator-specific identifier of the import Voyage.\"\n          },\n          \"carrierExportVoyageNumber\": {\n            \"maxLength\": 50,\n            \"type\": \"string\",\n            \"description\": \"The vessel operator-specific identifier of the export Voyage.\"\n          },\n          \"carrierImportVoyageNumber\": {\n            \"maxLength\": 50,\n            \"type\": \"string\",\n            \"description\": \"The vessel operator-specific identifier of the import Voyage.\"\n          },\n          \"transportCallSequenceNumber\": {\n            \"type\": \"integer\",\n            \"description\": \"Transport operator&apos;s key that uniquely identifies each individual call. This key is essential to distinguish between two separate calls at the same location within one voyage.\"\n          },\n          \"UNLocationCode\": {\n            \"maxLength\": 5,\n            \"type\": \"string\",\n            \"description\": \"The UN Location code specifying where the place is located.\"\n          },\n          \"facilityCode\": {\n            \"maxLength\": 6,\n            \"type\": \"string\",\n            \"description\": \"The code used for identifying the specific facility. This code does <b>not</b> include the UN Location Code.\\n\"\n          },\n          \"facilityCodeListProvider\": {\n            \"type\": \"string\",\n            \"description\": \"The provider used for identifying the facility Code\\n\",\n            \"enum\": [\n              \"BIC\",\n              \"SMDG\"\n            ]\n          },\n          \"facilityTypeCode\": {\n            \"type\": \"string\",\n            \"description\": \"A specialized version of the facilityCode to be used in TransportCalls. The code to identify the specific type of facility.\\n- BOCR (Border crossing)\\n- CLOC (Customer location)\\n- COFS (Container freight station)\\n- COYA (Deprecated - use OFFD intead)\\n- OFFD (Off dock storage)\\n- DEPO (Depot)\\n- INTE (Inland terminal)\\n- POTE (Port terminal)\\n- RAMP (Ramp)\\n\",\n            \"enum\": [\n              \"BOCR\",\n              \"CLOC\",\n              \"COFS\",\n              \"COYA\",\n              \"OFFD\",\n              \"DEPO\",\n              \"INTE\",\n              \"POTE\",\n              \"RAMP\"\n            ]\n          },\n          \"otherFacility\": {\n            \"maxLength\": 50,\n            \"type\": \"string\",\n            \"description\": \"An alternative way to capture the facility when no standardized DCSA facility code can be found.\"\n          },\n          \"modeOfTransport\": {\n            \"type\": \"string\",\n            \"description\": \"The mode of transport as defined by DCSA.\\n\",\n            \"enum\": [\n              \"VESSEL\",\n              \"RAIL\",\n              \"TRUCK\",\n              \"BARGE\"\n            ]\n          },\n          \"location\": {\n            \"type\": \"object\",\n            \"description\": \"generally used to capture location-related data, also for locations without UN Location Codes.\\n\",\n            \"properties\": {\n              \"locationName\": {\n                \"maxLength\": 100,\n                \"type\": \"string\",\n                \"description\": \"The name of the location.\"\n              },\n              \"latitude\": {\n                \"maxLength\": 10,\n                \"type\": \"string\",\n                \"description\": \"Geographic coordinate that specifies the northÔÇôsouth position of a point on the Earth&apos;s surface.\"\n              },\n              \"longitude\": {\n                \"maxLength\": 11,\n                \"type\": \"string\",\n                \"description\": \"Geographic coordinate that specifies the eastÔÇôwest position of a point on the Earth&apos;s surface.\"\n              },\n              \"UNLocationCode\": {\n                \"maxLength\": 5,\n                \"type\": \"string\",\n                \"description\": \"The UN Location code specifying where the place is located.\"\n              },\n              \"facilityCode\": {\n                \"maxLength\": 6,\n                \"type\": \"string\",\n                \"description\": \"The code used for identifying the specific facility. This code does <b>not</b> include the UN Location Code.\\n\"\n              },\n              \"facilityCodeListProvider\": {\n                \"type\": \"string\",\n                \"description\": \"The provider used for identifying the facility Code\\n\",\n                \"enum\": [\n                  \"BIC\",\n                  \"SMDG\"\n                ]\n              },\n              \"address\": {\n                \"description\": \"Address related information\",\n                \"type\": \"object\",\n                \"properties\": {\n                  \"name\": {\n                    \"maxLength\": 100,\n                    \"type\": \"string\",\n                    \"description\": \"Name of the address\"\n                  },\n                  \"street\": {\n                    \"maxLength\": 100,\n                    \"type\": \"string\",\n                    \"description\": \"The name of the street of the partyÔÇÖs address.\"\n                  },\n                  \"streetNumber\": {\n                    \"maxLength\": 50,\n                    \"type\": \"string\",\n                    \"description\": \"The number of the street of the partyÔÇÖs address.\"\n                  },\n                  \"floor\": {\n                    \"maxLength\": 50,\n                    \"type\": \"string\",\n                    \"description\": \"The floor of the partyÔÇÖs street number.\"\n                  },\n                  \"postCode\": {\n                    \"maxLength\": 10,\n                    \"type\": \"string\",\n                    \"description\": \"The post code of the partyÔÇÖs address.\"\n                  },\n                  \"city\": {\n                    \"maxLength\": 65,\n                    \"type\": \"string\",\n                    \"description\": \"The city name of the partyÔÇÖs address.\"\n                  },\n                  \"stateRegion\": {\n                    \"maxLength\": 65,\n                    \"type\": \"string\",\n                    \"description\": \"The state/region of the partyÔÇÖs address.\"\n                  },\n                  \"country\": {\n                    \"maxLength\": 75,\n                    \"type\": \"string\",\n                    \"description\": \"The country of the partyÔÇÖs address.\"\n                  }\n                }\n              }\n            }\n          },\n          \"vessel\": {\n            \"required\": [\n              \"vesselIMONumber\"\n            ],\n            \"type\": \"object\",\n            \"description\": \"describes a floating, sea going structure (mother vessels and feeder vessels) with either an internal or external mode of propulsion designed for the transport of cargo and/or passengers. Ocean vessels are uniquely identified by an IMO number consisting of 7 digits, or alternatively by their AIS signal with an MMSI number. \\n\",\n            \"properties\": {\n              \"vesselIMONumber\": {\n                \"maxLength\": 7,\n                \"type\": \"string\",\n                \"description\": \"The unique reference for a registered Vessel. The reference is the International Maritime Organisation (IMO) number, also sometimes known as the Lloyd&apos;s register code, which does not change during the lifetime of the vessel\\n\"\n              },\n              \"vesselName\": {\n                \"maxLength\": 35,\n                \"type\": \"string\",\n                \"description\": \"The name of the Vessel given by the Vessel Operator and registered with IMO.\\n\"\n              },\n              \"vesselFlag\": {\n                \"maxLength\": 2,\n                \"type\": \"string\",\n                \"description\": \"The flag of the nation whose laws the vessel is registered under. This is the ISO 3166 two-letter country code\\n\"\n              },\n              \"vesselCallSignNumber\": {\n                \"maxLength\": 10,\n                \"type\": \"string\",\n                \"description\": \"A unique alphanumeric identity that belongs to the vessel and is assigned by the International Telecommunication Union (ITU). It consists of a threeletter alphanumeric prefix that indicates nationality, followed by one to four characters to identify the individual vessel. For instance, vessels registered under Denmark are assigned the prefix ranges 5PA-5QZ, OUAOZZ, and XPA-XPZ. The Call Sign changes whenever a vessel changes its flag.\\n\"\n              },\n              \"vesselOperatorCarrierCode\": {\n                \"maxLength\": 10,\n                \"type\": \"string\",\n                \"description\": \"The carrier who is in charge of the vessel operation based on either the SMDG or SCAC code lists\\n\"\n              },\n              \"vesselOperatorCarrierCodeListProvider\": {\n                \"type\": \"string\",\n                \"description\": \"Identifies the code list provider used for the operator and partner carriercodes.\",\n                \"enum\": [\n                  \"SMDG\",\n                  \"NMFTA\"\n                ]\n              }\n            }\n          }\n        }\n      },\n      \"vesselPosition\": {\n        \"type\": \"object\",\n        \"description\": \"on object used to capture latitude and longitude on a location\",\n        \"properties\": {\n          \"latitude\": {\n            \"maxLength\": 10,\n            \"type\": \"string\",\n            \"description\": \"Geographic coordinate that specifies the northÔÇôsouth position of a point on the Earth&apos;s surface.\"\n          },\n          \"longitude\": {\n            \"maxLength\": 11,\n            \"type\": \"string\",\n            \"description\": \"Geographic coordinate that specifies the eastÔÇôwest position of a point on the Earth&apos;s surface.\"\n          }\n        }\n      },\n      \"dimensionUnit\": {\n        \"type\": \"string\",\n        \"description\": \"The actual draft of the vessel.\\n\\nIf the draft is specified in feet (FOT) then the decimal part should be concidered as a fraction of a foot and not as a number of inches. E.g. 120.5 feet means 120 and a half foot (which would be 120'6\",\n        \"enum\": [\n          \"FOT\",\n          \"MTR\"\n        ]\n      },\n      \"milesToDestinationPort\": {\n        \"type\": \"number\",\n        \"description\": \"Remaining distance reported by the vessel to the next destination port in nautical miles\"\n      }\n    }\n  }\n}\n",
 			"type": "default"
 		}
 	]
