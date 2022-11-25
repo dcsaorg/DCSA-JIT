@@ -2,6 +2,8 @@ package org.dcsa.jit.controller;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.RequiredArgsConstructor;
+import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
+import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.service.OperationsEventService;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
 import org.dcsa.skernel.infrastructure.http.queryparams.DCSAQueryParameterParser;
@@ -27,6 +29,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
+import static org.dcsa.skernel.infrastructure.util.EnumUtil.toEnumList;
+
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -51,8 +55,9 @@ public class EventController {
       @Size(max = 5) @RequestParam(required = false) String carrierServiceCode,
       @Size(max = 5) @RequestParam(value = "UNLocationCode", required = false)
           String unLocationCode,
-      @Size(max = 5) @RequestParam(required = false) String facilitySMDGCode,
-      @Size(max = 5) @RequestParam(required = false) String operationsEventTypeCode,
+      @Size(max = 6) @RequestParam(required = false) String facilitySMDGCode,
+      @RequestParam(required = false) String eventClassifierCode,
+      @RequestParam(required = false) String operationsEventTypeCode,
       @RequestParam(required = false) String sort,
       @RequestParam(required = false, defaultValue = "100") Integer limit,
       @RequestParam(required = false) String cursor,
@@ -74,7 +79,8 @@ public class EventController {
             .carrierServiceCode(carrierServiceCode)
             .unLocationCode(unLocationCode)
             .facilitySMDGCode(facilitySMDGCode)
-            .operationsEventTypeCode(operationsEventTypeCode)
+            .operationsEventTypeCodes(toEnumList(operationsEventTypeCode, OperationsEventTypeCode.class))
+            .eventClassifierCodes(toEnumList(eventClassifierCode, EventClassifierCode.class))
             .eventCreatedDateTime(parsedQueryParams)
             .sort(sort)
             .limit(limit)
