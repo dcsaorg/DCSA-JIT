@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.dcsa.jit.persistence.entity.*;
+import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
@@ -29,7 +30,8 @@ public class OperationsEventSpecification {
     String carrierServiceCode;
     String unLocationCode;
     String facilitySMDGCode;
-    String operationsEventTypeCode;
+    List<OperationsEventTypeCode> operationsEventTypeCodes;
+    List<EventClassifierCode> eventClassifierCodes;
     List<ParsedQueryParameter<OffsetDateTime>> eventCreatedDateTime;
   }
 
@@ -84,8 +86,13 @@ public class OperationsEventSpecification {
         predicates.add(predicate);
       }
 
-      if (null != filters.operationsEventTypeCode) {
-        Predicate predicate = builder.equal(root.get("operationsEventTypeCode"), OperationsEventTypeCode.valueOf(filters.operationsEventTypeCode));
+      if (null != filters.operationsEventTypeCodes && !filters.operationsEventTypeCodes.isEmpty()) {
+        Predicate predicate = root.get("operationsEventTypeCode").in(filters.operationsEventTypeCodes);
+        predicates.add(predicate);
+      }
+
+      if (null != filters.eventClassifierCodes && !filters.eventClassifierCodes.isEmpty()) {
+        Predicate predicate = root.get("eventClassifierCode").in(filters.eventClassifierCodes);
         predicates.add(predicate);
       }
 

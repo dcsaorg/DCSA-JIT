@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dcsa.jit.mapping.OperationsEventMapper;
 import org.dcsa.jit.persistence.entity.OperationsEvent;
+import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
+import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.repository.OperationsEventRepository;
 import org.dcsa.jit.persistence.repository.specification.OperationsEventSpecification;
 import org.dcsa.jit.transferobjects.OperationsEventTO;
@@ -36,7 +38,8 @@ public class OperationsEventService {
     String carrierServiceCode;
     String unLocationCode;
     String facilitySMDGCode;
-    String operationsEventTypeCode;
+    List<OperationsEventTypeCode> operationsEventTypeCodes;
+    List<EventClassifierCode> eventClassifierCodes;
     List<ParsedQueryParameter<OffsetDateTime>> eventCreatedDateTime;
     String sort;
     Integer limit;
@@ -56,7 +59,8 @@ public class OperationsEventService {
                     .carrierServiceCode(requestFilters.carrierServiceCode)
                     .unLocationCode(requestFilters.unLocationCode)
                     .facilitySMDGCode(requestFilters.facilitySMDGCode)
-                    .operationsEventTypeCode(requestFilters.operationsEventTypeCode)
+                    .operationsEventTypeCodes(requestFilters.operationsEventTypeCodes)
+                    .eventClassifierCodes(requestFilters.eventClassifierCodes)
                     .eventCreatedDateTime(requestFilters.eventCreatedDateTime)
                     .build()),
             cursor.toPageRequest()),
