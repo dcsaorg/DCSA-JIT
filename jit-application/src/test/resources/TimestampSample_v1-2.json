@@ -18,7 +18,7 @@
       {
         "DCSAResponsibleAgencyCode": "SMDG",
         "partyCode": "EMC",
-        "codeListName": "Evergreen Marine Corporation"
+        "codeListName": "LCL"
       }
     ],
     "nmftaCode" : "CSK"
@@ -33,26 +33,9 @@
   "eventClassifierCode": "EST",
   "operationsEventTypeCode": "ARRI",
   "eventLocation": {
-    "locationName": "Eiffel Tower",
-    "latitude": "48.8585500",
-    "longitude": "2.294492036",
     "UNLocationCode": "SGSIN",
-    "address": {
-      "name": "Henrik",
-      "street": "Kronprincessegade",
-      "streetNumber": "54",
-      "floor": "5. sal",
-      "postCode": "1306",
-      "city": "København",
-      "stateRegion": "N/A",
-      "country": "Denmark"
-    },
     "facilityCode": "PSABT",
     "facilityCodeListProvider": "SMDG"
-  },
-  "vesselPosition": {
-    "latitude": "48.8585500",
-    "longitude": "2.294492036"
   },
   "portCallServiceTypeCode": null,
   "portCallPhaseTypeCode": "INBD",

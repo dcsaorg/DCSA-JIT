@@ -2728,7 +2728,7 @@
 							"response": []
 						},
 						{
-							"name": "Invalid eventClassifierCode",
+							"name": "Invalid OperationsEventTypeCode",
 							"event": [
 								{
 									"listen": "test",
@@ -2767,6 +2767,328 @@
 										{
 											"key": "operationsEventTypeCode",
 											"value": "123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid facilitySMDGCode (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.facilitySMDGCode size must be between 0 and 6\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?facilitySMDGCode=1234567",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "facilitySMDGCode",
+											"value": "1234567"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid UNLocationCode (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.unLocationCode size must be between 0 and 5\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?UNLocationCode=123456",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "UNLocationCode",
+											"value": "123456"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid carrierServiceCode (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.carrierServiceCode size must be between 0 and 5\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?carrierServiceCode=123456",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "carrierServiceCode",
+											"value": "123456"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid carrierVoyageNumber (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.carrierVoyageNumber size must be between 0 and 50\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?carrierVoyageNumber=123456789012345678901234567890123456789012345678901",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "carrierVoyageNumber",
+											"value": "123456789012345678901234567890123456789012345678901"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid exportVoyageNumber (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.exportVoyageNumber size must be between 0 and 50\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?exportVoyageNumber=123456789012345678901234567890123456789012345678901",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "exportVoyageNumber",
+											"value": "123456789012345678901234567890123456789012345678901"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid carrierExportVoyageNumber (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.carrierExportVoyageNumber size must be between 0 and 50\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?carrierExportVoyageNumber=123456789012345678901234567890123456789012345678901",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "carrierExportVoyageNumber",
+											"value": "123456789012345678901234567890123456789012345678901"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid transportCallID (length)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is correct\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error reason is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].reason).to.eql(\"invalidInput\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message is correct\", () => {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors[0].message).to.eql(\"findAll.transportCallID size must be between 0 and 100\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/events?transportCallID=12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"events"
+									],
+									"query": [
+										{
+											"key": "transportCallID",
+											"value": "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901"
 										}
 									]
 								}
