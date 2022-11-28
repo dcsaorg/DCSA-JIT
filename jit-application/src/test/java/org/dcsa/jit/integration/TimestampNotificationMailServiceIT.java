@@ -84,6 +84,7 @@ public class TimestampNotificationMailServiceIT {
           "spring.mail.test-connection=false",
           "spring.mail.properties.mail.smtp.starttls.enable=false",
           "spring.mail.properties.mail.smtp.starttls.required=false",
+          "dcsa.sync.pollFrequency=1000",
           "dcsa.email.templates.timestampReceived.to=dcsatest@dcsa.org.invalid",
           "dcsa.email.templates.timestampReceived.subject=Subject line",
           "dcsa.email.templates.timestampReceived.body=Body content"
@@ -103,12 +104,12 @@ public class TimestampNotificationMailServiceIT {
     given()
       .contentType("application/json")
       .body(VALID_TIMESTAMP_1_2)
-      .post("/v1/timestamps")
+      .post("/jit/v1/timestamps")
       .then()
       .assertThat()
       .statusCode(204);
 
-    Awaitility.await().atMost(65, TimeUnit.SECONDS).untilAsserted(() -> {
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
       MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
       assertEquals(1, receivedMessages.length);
 
