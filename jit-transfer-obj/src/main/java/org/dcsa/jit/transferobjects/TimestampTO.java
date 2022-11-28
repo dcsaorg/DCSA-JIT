@@ -27,6 +27,8 @@ public record TimestampTO(
   PortCallServiceTypeCode portCallServiceTypeCode,
   PortCallPhaseTypeCode portCallPhaseTypeCode,
   @NotNull OffsetDateTime eventDateTime,
+
+  OffsetDateTime eventCreatedDateTime,
   @Deprecated @Size(max = 50) String exportVoyageNumber, // Deprecated in JIT 1.2
   @Deprecated @Size(max = 50) String importVoyageNumber, // Deprecated in JIT 1.2
   @Deprecated @NotNull @Size(max = 50) String carrierVoyageNumber, // Deprecated in JIT 1.2
