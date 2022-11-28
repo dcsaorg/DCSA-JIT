@@ -196,6 +196,12 @@ public class TimestampService {
     }
 
     timestampTOBuilder.eventLocation(locationTO);
+
+    OffsetDateTime eventCreatedDateTime = timestamp.eventCreatedDateTime() != null
+      ? timestamp.eventCreatedDateTime() : OffsetDateTime.now();
+
+    timestampTOBuilder.eventCreatedDateTime(eventCreatedDateTime);
+
     timestamp = timestampTOBuilder.build();
 
     this.ensureValidDelayReasonCode(timestamp.delayReasonCode());
