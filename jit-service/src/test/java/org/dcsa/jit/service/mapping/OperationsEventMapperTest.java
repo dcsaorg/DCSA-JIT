@@ -14,6 +14,7 @@ public class OperationsEventMapperTest {
         // Unmapped fields
         "milesRemainingToDestination",
         "eventType",
-        "facilityTypeCode");
+        "facilityTypeCode",
+        "newRecord");
   }
 }

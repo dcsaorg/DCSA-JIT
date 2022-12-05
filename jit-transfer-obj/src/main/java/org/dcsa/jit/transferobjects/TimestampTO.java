@@ -11,8 +11,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.beans.Transient;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 public record TimestampTO(
+  UUID timestampID,
   @Valid @NotNull PartyTO publisher,
   @NotNull PublisherRole publisherRole,
   @Deprecated @ValidVesselIMONumber String vesselIMONumber, // Deprecated in JIT 1.2

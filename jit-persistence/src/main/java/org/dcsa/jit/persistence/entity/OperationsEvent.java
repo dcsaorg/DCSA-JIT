@@ -6,6 +6,7 @@ import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.domain.persistence.entity.enums.DimensionUnit;
 import org.hibernate.annotations.GenerationTime;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -18,9 +19,8 @@ import java.util.UUID;
 @Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "operations_event")
-public class OperationsEvent {
+public class OperationsEvent implements Persistable<UUID> {
   @Id
-  @GeneratedValue
   @Column(name = "event_id", nullable = false)
   private UUID eventID;
 
@@ -98,4 +98,14 @@ public class OperationsEvent {
   @Column(name = "miles_to_destination_port")
   private Float milesToDestinationPort;
 
+  @Transient Boolean newRecord;
+  @Override
+  public boolean isNew() {
+    return getId() != null || this.newRecord;
+  }
+
+  @Override
+  public UUID getId() {
+    return this.eventID;
+  }
 }

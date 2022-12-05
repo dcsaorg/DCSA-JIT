@@ -28,6 +28,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -55,9 +56,11 @@ public class TimestampService {
 
   @Transactional
   public void createAndRouteMessage(TimestampTO timestamp) {
-    OperationsEvent operationsEvent = create(timestamp);
-    timestampRoutingService.routeMessage(timestamp);
-    enqueueEmailNotificationForEvent(operationsEvent);
+    if (!timestampIDExists(timestamp.timestampID())) {
+      OperationsEvent operationsEvent = create(timestamp);
+      timestampRoutingService.routeMessage(timestamp);
+      enqueueEmailNotificationForEvent(operationsEvent);
+    }
   }
 
   private static boolean matchAgencyCode(IdentifyingCodeTO code, DCSAResponsibleAgencyCode agencyCode) {
@@ -216,6 +219,7 @@ public class TimestampService {
 
     OperationsEvent operationsEvent =
         OperationsEvent.builder()
+            .eventID(timestamp.timestampID() != null ? timestamp.timestampID() : UUID.randomUUID())
             .eventClassifierCode(
                 enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
             .eventDateTime(timestamp.eventDateTime())
@@ -236,6 +240,7 @@ public class TimestampService {
             .vesselDraftUnit(timestamp.vessel() != null ? enumMappers.dimensionUnitToDao(timestamp.vessel().dimensionUnit()) : null)
             .milesToDestinationPort(timestamp.milesToDestinationPort())
             .delayReasonCode(timestamp.delayReasonCode())
+            .newRecord(true)
             .build();
 
     return create(operationsEvent);
@@ -282,6 +287,10 @@ public class TimestampService {
     validateTimestamp(operationsEvent, timestampDefinition);
 
     return operationsEvent;
+  }
+
+  private Boolean timestampIDExists(UUID timestampID) {
+    return timestampID != null && operationsEventRepository.existsById(timestampID);
   }
 
   private void validateTimestamp(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
