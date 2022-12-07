@@ -54,6 +54,7 @@ public class TimestampService {
   private final TimestampRoutingService timestampRoutingService;
   private final PendingEmailNotificationRepository pendingEmailNotificationRepository;
   private final LocationService locationService;
+  private final TimestampInfoRepository timestampInfoRepository;
 
   @Transactional
   public void createAndRouteMessage(TimestampTO timestamp) {
@@ -113,7 +114,86 @@ public class TimestampService {
   }
 
   @Transactional
-  public OperationsEvent create(TimestampTO timestamp) {
+  public OperationsEvent create(TimestampTO clientProvidedTimestamp) {
+    var timestamp = normalizeTimestamp(clientProvidedTimestamp);
+    TimestampDefinition timestampDefinition = timestampDefinitionService.findTimestampDefinition(timestamp);
+    validateTimestamp(timestamp, timestampDefinition);
+
+    this.ensureValidDelayReasonCode(timestamp.delayReasonCode());
+
+    // Manually handle some entities because JPA cannot do it for us (might be easier if
+    // everything used UUID as PK or other IDs that JPA knows how to handle out of the box)
+    Location location = locationService.ensureResolvable(timestamp.eventLocation());
+    Location vesselPos = locationService.ensureResolvable(timestamp.vesselPosition());
+    Party party = savePublisher(timestamp.publisher());
+
+    TransportCall tc = transportCallService.ensureTransportCallExists(timestamp,location);
+
+    OperationsEvent operationsEvent =
+        OperationsEvent.builder()
+            .eventID(timestamp.timestampID() != null ? timestamp.timestampID() : UUID.randomUUID())
+            .eventClassifierCode(
+                enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
+            .eventDateTime(timestamp.eventDateTime())
+            .operationsEventTypeCode(
+                enumMappers.operationsEventTypeCodeToDao(timestamp.operationsEventTypeCode()))
+            .portCallPhaseTypeCode(
+                enumMappers.portCallPhaseTypeCodeCodetoDao(timestamp.portCallPhaseTypeCode()))
+            .portCallServiceTypeCode(
+                enumMappers.portCallServiceTypeCodeToDao(timestamp.portCallServiceTypeCode()))
+            .publisherRole(enumMappers.publisherRoleToDao(timestamp.publisherRole()))
+            .facilityTypeCode(enumMappers.facilityTypeCodeOPRToDao(timestamp.facilityTypeCode()))
+            .remark(timestamp.remark())
+            .eventLocation(location)
+            .vesselPosition(vesselPos)
+            .publisher(party)
+            .transportCall(tc)
+            .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().draft() : null)
+            .vesselDraftUnit(timestamp.vessel() != null ? enumMappers.dimensionUnitToDao(timestamp.vessel().dimensionUnit()) : null)
+            .milesToDestinationPort(timestamp.milesToDestinationPort())
+            .delayReasonCode(timestamp.delayReasonCode())
+            .newRecord(true)
+            .build();
+
+    TimestampInfo ops =
+      TimestampInfo.builder()
+        .eventID(operationsEvent.getEventID())
+        .operationsEvent(operationsEvent)
+        .timestampDefinition(timestampDefinition)
+        .replyToTimestampID(timestamp.replyToTimestampID())
+        .newRecord(true)
+        .build();
+
+    var savedOps = timestampInfoRepository.save(ops);
+    return savedOps.getOperationsEvent();
+  }
+
+  private void enqueueEmailNotificationForEvent(OperationsEvent operationsEvent) {
+    pendingEmailNotificationRepository.save(PendingEmailNotification.builder()
+      .eventID(operationsEvent.getEventID())
+      .templateName("timestampReceived")
+      .enqueuedAt(OffsetDateTime.now())
+      .build());
+  }
+
+
+
+  private Party savePublisher(PartyTO partyTO) {
+    // While the method does support partyTO being null, we do not advertise it as
+    // the publisher is not null according to the swagger spec.  Calling it "IfNotNull"
+    // would send mixed signals.
+    return saveIfNotNull(
+        partyTO,
+        pTO -> {
+          Party party = partyMapper.toDao(pTO);
+          return partyRepository.save(
+              party.toBuilder()
+                  .address(saveIfNotNull(party.getAddress(), addressRepository::save))
+                  .build());
+        });
+  }
+
+  private TimestampTO normalizeTimestamp(TimestampTO timestamp) {
     TimestampTO.TimestampTOBuilder timestampTOBuilder = timestamp.toBuilder();
     LocationTO locationTO = timestamp.eventLocation();
     String facilitySMDGCode = timestamp.facilitySMDGCode();
@@ -199,6 +279,8 @@ public class TimestampService {
           "Conflicting vesselIMONumber (vesselIMONumber and vessel.vesselIMONumber must be the same)");
     }
 
+    Objects.requireNonNull(locationTO, "Internal Error: Later code assumes locationTO is always not null, but it was null");
+
     timestampTOBuilder.eventLocation(locationTO);
 
     OffsetDateTime eventCreatedDateTime = timestamp.eventCreatedDateTime() != null
@@ -206,70 +288,7 @@ public class TimestampService {
 
     timestampTOBuilder.eventCreatedDateTime(eventCreatedDateTime);
 
-    timestamp = timestampTOBuilder.build();
-
-    this.ensureValidDelayReasonCode(timestamp.delayReasonCode());
-
-    // Manually handle some entities because JPA cannot do it for us (might be easier if
-    // everything used UUID as PK or other IDs that JPA knows how to handle out of the box)
-    Location location = locationService.ensureResolvable(timestamp.eventLocation());
-    Location vesselPos = locationService.ensureResolvable(timestamp.vesselPosition());
-    Party party = savePublisher(timestamp.publisher());
-
-    TransportCall tc = transportCallService.ensureTransportCallExists(timestamp,location);
-
-    OperationsEvent operationsEvent =
-        OperationsEvent.builder()
-            .eventID(timestamp.timestampID() != null ? timestamp.timestampID() : UUID.randomUUID())
-            .eventClassifierCode(
-                enumMappers.eventClassifierCodetoDao(timestamp.eventClassifierCode()))
-            .eventDateTime(timestamp.eventDateTime())
-            .operationsEventTypeCode(
-                enumMappers.operationsEventTypeCodeFromDao(timestamp.operationsEventTypeCode()))
-            .portCallPhaseTypeCode(
-                enumMappers.portCallPhaseTypeCodeCodetoDao(timestamp.portCallPhaseTypeCode()))
-            .portCallServiceTypeCode(
-                enumMappers.portCallServiceTypeCodeToDao(timestamp.portCallServiceTypeCode()))
-            .publisherRole(enumMappers.publisherRoleToDao(timestamp.publisherRole()))
-            .facilityTypeCode(enumMappers.facilityTypeCodeOPRToDao(timestamp.facilityTypeCode()))
-            .remark(timestamp.remark())
-            .eventLocation(location)
-            .vesselPosition(vesselPos)
-            .publisher(party)
-            .transportCall(tc)
-            .vesselDraft(timestamp.vessel() != null ? timestamp.vessel().draft() : null)
-            .vesselDraftUnit(timestamp.vessel() != null ? enumMappers.dimensionUnitToDao(timestamp.vessel().dimensionUnit()) : null)
-            .milesToDestinationPort(timestamp.milesToDestinationPort())
-            .delayReasonCode(timestamp.delayReasonCode())
-            .newRecord(true)
-            .build();
-
-    return create(operationsEvent, timestamp);
-  }
-
-  private void enqueueEmailNotificationForEvent(OperationsEvent operationsEvent) {
-    pendingEmailNotificationRepository.save(PendingEmailNotification.builder()
-      .eventID(operationsEvent.getEventID())
-      .templateName("timestampReceived")
-      .enqueuedAt(OffsetDateTime.now())
-      .build());
-  }
-
-
-
-  private Party savePublisher(PartyTO partyTO) {
-    // While the method does support partyTO being null, we do not advertise it as
-    // the publisher is not null according to the swagger spec.  Calling it "IfNotNull"
-    // would send mixed signals.
-    return saveIfNotNull(
-        partyTO,
-        pTO -> {
-          Party party = partyMapper.toDao(pTO);
-          return partyRepository.save(
-              party.toBuilder()
-                  .address(saveIfNotNull(party.getAddress(), addressRepository::save))
-                  .build());
-        });
+    return timestampTOBuilder.build();
   }
 
 
@@ -280,40 +299,28 @@ public class TimestampService {
     return null;
   }
 
-  public OperationsEvent create(OperationsEvent operationsEvent, TimestampTO timestampTO) {
-
-    operationsEvent = operationsEventRepository.save(operationsEvent);
-    TimestampDefinition timestampDefinition = timestampDefinitionService.linkOperationsEventToTimestamp(
-      operationsEvent,
-      timestampTO.replyToTimestampID()
-    );
-
-    validateTimestamp(operationsEvent, timestampDefinition);
-
-    return operationsEvent;
-  }
-
   private Boolean timestampIDExists(UUID timestampID) {
     return timestampID != null && operationsEventRepository.existsById(timestampID);
   }
 
-  private void validateTimestamp(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    validateTimestampFacility(operationsEvent, timestampDefinition);
-    validateTimestampMilesToDest(operationsEvent, timestampDefinition);
-    validateVesselDraft(operationsEvent, timestampDefinition);
-    validateVesselPosition(operationsEvent, timestampDefinition);
-    validateEventLocationRequirement(operationsEvent, timestampDefinition);
+  private void validateTimestamp(TimestampTO timestamp, TimestampDefinition timestampDefinition) {
+    validateTimestampFacility(timestamp, timestampDefinition);
+    validateTimestampMilesToDest(timestamp, timestampDefinition);
+    validateVesselDraft(timestamp, timestampDefinition);
+    validateVesselPosition(timestamp, timestampDefinition);
+    validateEventLocationRequirement(timestamp, timestampDefinition);
   }
 
-  private void validateVesselDraft(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    if (!timestampDefinition.getIsVesselDraftRelevant() && operationsEvent.getVesselDraft() != null) {
+  private void validateVesselDraft(TimestampTO timestamp, TimestampDefinition timestampDefinition) {
+    var draft = timestamp.vessel() != null ? timestamp.vessel().draft() : null;
+    if (!timestampDefinition.getIsVesselDraftRelevant() && draft != null) {
       throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
         + ", which should not have vesselDraft specified but the input did have that field.");
     }
   }
 
-  private void validateTimestampFacility(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    if (timestampDefinition.getIsTerminalNeeded() ^ operationsEvent.getEventLocation().getFacility() != null) {
+  private void validateTimestampFacility(TimestampTO timestampTO, TimestampDefinition timestampDefinition) {
+    if (timestampDefinition.getIsTerminalNeeded() ^ timestampTO.eventLocation() instanceof LocationTO.FacilityLocationTO) {
       if (timestampDefinition.getIsTerminalNeeded()) {
         throw ConcreteRequestErrorMessageException.invalidInput("Input classified as "
           + timestampDefinition.getTimestampTypeName()
@@ -328,24 +335,24 @@ public class TimestampService {
     }
   }
 
-  private void validateTimestampMilesToDest(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    if (!timestampDefinition.getIsMilesToDestinationRelevant() && operationsEvent.getMilesToDestinationPort() != null) {
+  private void validateTimestampMilesToDest(TimestampTO timestamp, TimestampDefinition timestampDefinition) {
+    if (!timestampDefinition.getIsMilesToDestinationRelevant() && timestamp.milesToDestinationPort() != null) {
       throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
         + ", which should not have milesToDestinationPort specified but the input did have that field.");
 
     }
   }
 
-  private void validateVesselPosition(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    if (timestampDefinition.getVesselPositionRequirement() == EXCLUDED && operationsEvent.getVesselPosition() != null) {
+  private void validateVesselPosition(TimestampTO timestamp, TimestampDefinition timestampDefinition) {
+    if (timestampDefinition.getVesselPositionRequirement() == EXCLUDED && timestamp.vesselPosition() != null) {
       throw ConcreteRequestErrorMessageException.invalidInput("Input classified as " + timestampDefinition.getTimestampTypeName()
         + ", which should not have vesselPosition specified but the input did have that field.");
     }
     assert timestampDefinition.getVesselPositionRequirement() != LocationRequirement.REQUIRED;
   }
 
-  private void validateEventLocationRequirement(OperationsEvent operationsEvent, TimestampDefinition timestampDefinition) {
-    String locationName =  operationsEvent.getEventLocation().getLocationName();
+  private void validateEventLocationRequirement(TimestampTO timestamp, TimestampDefinition timestampDefinition) {
+    String locationName = timestamp.eventLocation().locationName();
     boolean hasLocationName = locationName != null && !locationName.trim().isEmpty();
     LocationRequirement locationRequirement = timestampDefinition.getEventLocationRequirement();
 

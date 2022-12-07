@@ -1,22 +1,20 @@
 package org.dcsa.jit.service;
 
 import lombok.RequiredArgsConstructor;
-import org.dcsa.jit.persistence.entity.OperationsEvent;
-import org.dcsa.jit.persistence.entity.TimestampInfo;
+import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.persistence.entity.PublisherPattern;
 import org.dcsa.jit.persistence.entity.TimestampDefinition;
 import org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PortCallServiceTypeCode;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
-import org.dcsa.jit.persistence.repository.TimestampInfoRepository;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
+import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,20 +27,20 @@ public class TimestampDefinitionService {
           PublisherRole.VSL, PublisherRole.CA);
 
   private final TimestampDefinitionRepository timestampDefinitionRepository;
-  private final TimestampInfoRepository timestampInfoRepository;
+  private final EnumMappers enumMappers;
 
   @Transactional
-  public TimestampDefinition linkOperationsEventToTimestamp(OperationsEvent operationsEvent, UUID replyToTimestamp) {
+  public TimestampDefinition findTimestampDefinition(TimestampTO timestampTO) {
     List<TimestampDefinition> timestampDefinitionList =
         timestampDefinitionRepository
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
-                operationsEvent.getEventClassifierCode(),
-                operationsEvent.getOperationsEventTypeCode(),
-                operationsEvent.getPortCallPhaseTypeCode(),
-                operationsEvent.getPortCallServiceTypeCode(),
-                operationsEvent.getFacilityTypeCode())
+              enumMappers.eventClassifierCodetoDao(timestampTO.eventClassifierCode()),
+              enumMappers.operationsEventTypeCodeToDao(timestampTO.operationsEventTypeCode()),
+              enumMappers.portCallPhaseTypeCodeCodetoDao(timestampTO.portCallPhaseTypeCode()),
+              enumMappers.portCallServiceTypeCodeToDao(timestampTO.portCallServiceTypeCode()),
+              enumMappers.facilityTypeCodeOPRToDao(timestampTO.facilityTypeCode()))
             .stream()
-            .filter(definition -> isCorrectTimestampsForEvent(definition, operationsEvent))
+            .filter(definition -> isCorrectTimestampsForEvent(definition, timestampTO))
             .toList();
 
 
@@ -50,15 +48,15 @@ public class TimestampDefinitionService {
     if (timestampDefinitionList.isEmpty()) {
       String errorMessage =
         "EventClassifierCode: "
-          + operationsEvent.getEventClassifierCode()
+          + timestampTO.eventClassifierCode()
           + ", OperationsEventTypeCode: "
-          + operationsEvent.getOperationsEventTypeCode()
+          + timestampTO.operationsEventTypeCode()
           + ", PortCallPhaseTypeCode: "
-          + operationsEvent.getPortCallPhaseTypeCode()
+          + timestampTO.portCallPhaseTypeCode()
           + ", PortCallServiceTypeCode: "
-          + operationsEvent.getPortCallServiceTypeCode()
+          + timestampTO.portCallServiceTypeCode()
           + ", FacilityTypeCode: "
-          + operationsEvent.getFacilityTypeCode();
+          + timestampTO.facilityTypeCode();
       throw ConcreteRequestErrorMessageException.invalidInput(
           "Cannot determine JIT timestamp type for provided timestamp! No JIT timestamp type found for the given fields: "
             + errorMessage);
@@ -66,32 +64,22 @@ public class TimestampDefinitionService {
     if (timestampDefinitionList.size() >= 2) {
         String errorMessage =
           "EventClassifierCode: "
-            + operationsEvent.getEventClassifierCode()
+            + timestampTO.eventClassifierCode()
             + ", OperationsEventTypeCode: "
-            + operationsEvent.getOperationsEventTypeCode()
+            + timestampTO.operationsEventTypeCode()
             + ", PortCallPhaseTypeCode: "
-            + operationsEvent.getPortCallPhaseTypeCode()
+            + timestampTO.portCallPhaseTypeCode()
             + ", PortCallServiceTypeCode: "
-            + operationsEvent.getPortCallServiceTypeCode()
+            + timestampTO.portCallServiceTypeCode()
             + ", FacilityTypeCode: "
-            + operationsEvent.getFacilityTypeCode();
+            + timestampTO.facilityTypeCode();
 
         throw ConcreteRequestErrorMessageException.internalServerError(
           "There should be exactly one timestamp! More than one JIT timestamp type found for the given fields: "
             + errorMessage);
     }
 
-    TimestampDefinition timestampDefinition = timestampDefinitionList.get(0);
-    TimestampInfo ops =
-        TimestampInfo.builder()
-            .eventID(operationsEvent.getEventID())
-            .operationsEvent(operationsEvent)
-            .timestampDefinition(timestampDefinition)
-            .replyToTimestampID(replyToTimestamp)
-            .newRecord(true)
-            .build();
-    timestampInfoRepository.save(ops);
-    return timestampDefinition;
+    return timestampDefinitionList.get(0);
   }
 
   /**
@@ -105,15 +93,15 @@ public class TimestampDefinitionService {
    * <p>This Predicate-like method is here to prune obvious mismatches
    */
   private boolean isCorrectTimestampsForEvent(
-      TimestampDefinition definition, OperationsEvent operationsEvent) {
+      TimestampDefinition definition, TimestampTO timestampTO) {
     // Since it is gross hack to rely on publisherRole, lets limit it to only the JIT 1.1 version of
     // these problematic timestamps
     // - they are the only ones that are "SAFE" + "DEPA"
-    if (operationsEvent.getPortCallServiceTypeCode() == PortCallServiceTypeCode.SAFE
-        && operationsEvent.getOperationsEventTypeCode() == OperationsEventTypeCode.DEPA) {
+    if (enumMappers.portCallServiceTypeCodeToDao(timestampTO.portCallServiceTypeCode()) == PortCallServiceTypeCode.SAFE
+        && enumMappers.operationsEventTypeCodeToDao(timestampTO.operationsEventTypeCode()) == OperationsEventTypeCode.DEPA) {
       PublisherPattern pattern = definition.getPublisherPattern().iterator().next();
       return arePublisherRolesInterchangeable(
-        pattern.getPublisherRole(), operationsEvent.getPublisherRole());
+        pattern.getPublisherRole(), enumMappers.publisherRoleToDao(timestampTO.publisherRole()));
     }
     return true;
   }

@@ -15,7 +15,7 @@ public interface EnumMappers {
   org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN facilityTypeCodeToDao(
       FacilityTypeCodeTRN code);
 
-  org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode operationsEventTypeCodeFromDao(
+  org.dcsa.jit.persistence.entity.enums.OperationsEventTypeCode operationsEventTypeCodeToDao(
       OperationsEventTypeCode code);
 
   PortCallPhaseTypeCode portCallPhaseTypeCodeCodeFromDao(
