@@ -1,9 +1,12 @@
 package org.dcsa.jit.persistence.entity;
 
 import lombok.*;
+import org.hibernate.annotations.GenerationTime;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @NamedEntityGraph(
@@ -61,14 +64,26 @@ public class TimestampInfo implements Persistable<UUID> {
   @Id
   private UUID eventID;
 
+  @Column(name = "reply_to_timestamp_id")
+  private UUID replyToTimestampID;
+
+  // Internal field, differs from OperationsEvent.eventCreatedDateTime
+  // in that this field is *always* when we processed the timestamp
+  // whereas OperationsEvent.eventCreatedDateTime is when the origin
+  // processed the timestamp.
+  @CreatedDate
+  @org.hibernate.annotations.Generated(value = GenerationTime.INSERT)
+  @Column(name = "timestamp_processed_date_time", nullable = false)
+  private OffsetDateTime timestampProcessedDateTime;
+
   @JoinColumn(name = "event_id", nullable = false)
   @MapsId
   @OneToOne
-  OperationsEvent operationsEvent;
+  private OperationsEvent operationsEvent;
 
   @OneToOne
   @JoinColumn(name = "timestamp_definition", nullable = false)
-  TimestampDefinition timestampDefinition;
+  private TimestampDefinition timestampDefinition;
 
   @OneToOne
   @JoinColumn(name = "event_id", insertable = false, updatable = false)

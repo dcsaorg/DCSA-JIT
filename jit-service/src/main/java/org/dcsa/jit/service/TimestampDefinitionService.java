@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class TimestampDefinitionService {
   private final TimestampInfoRepository timestampInfoRepository;
 
   @Transactional
-  public TimestampDefinition markOperationsEventAsTimestamp(OperationsEvent operationsEvent) {
+  public TimestampDefinition linkOperationsEventToTimestamp(OperationsEvent operationsEvent, UUID replyToTimestamp) {
     List<TimestampDefinition> timestampDefinitionList =
         timestampDefinitionRepository
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
@@ -86,6 +87,7 @@ public class TimestampDefinitionService {
             .eventID(operationsEvent.getEventID())
             .operationsEvent(operationsEvent)
             .timestampDefinition(timestampDefinition)
+            .replyToTimestampID(replyToTimestamp)
             .newRecord(true)
             .build();
     timestampInfoRepository.save(ops);

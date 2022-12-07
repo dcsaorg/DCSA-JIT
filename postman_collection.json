@@ -884,6 +884,52 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "ReplyToTimestampID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"publisher\": {\r\n    \"partyName\": \"Asseco Denmark\",\r\n    \"taxReference1\": \"CVR-25645774\",\r\n    \"taxReference2\": \"CVR-25645774\",\r\n    \"publicKey\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFzaW\",\r\n    \"address\": {\r\n      \"name\": \"Henrik\",\r\n      \"street\": \"Kronprincessegade\",\r\n      \"streetNumber\": \"54\",\r\n      \"floor\": \"5. sal\",\r\n      \"postCode\": \"1306\",\r\n      \"city\": \"København\",\r\n      \"stateRegion\": \"N/A\",\r\n      \"country\": \"Denmark\"\r\n    },\r\n    \"identifyingCodes\": [\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"UNECE\",\r\n        \"partyCode\": \"SGSIN\"\r\n      },\r\n      {\r\n        \"DCSAResponsibleAgencyCode\": \"SMDG\",\r\n        \"partyCode\": \"PSABT\",\r\n        \"codeListName\": \"TCL\"\r\n      }\r\n    ],\r\n    \"nmftaCode\" : \"CSK\"\r\n  },\r\n  \"vessel\": {\r\n    \"vesselIMONumber\": \"9321483\"\r\n  },\r\n  \"publisherRole\": \"TR\",\r\n  \"vesselIMONumber\": \"9321483\",\r\n  \"UNLocationCode\": \"SGSIN\",\r\n  \"facilityTypeCode\": \"BRTH\",\r\n  \"eventClassifierCode\": \"REQ\",\r\n  \"operationsEventTypeCode\": \"ARRI\",\r\n  \"eventLocation\": {\r\n    \"locationName\": \"PSABT terminal in Singapore\",\r\n    \"UNLocationCode\": \"SGSIN\",\r\n    \"facilityCode\": \"PSABT\",\r\n    \"facilityCodeListProvider\": \"SMDG\"\r\n  },\r\n  \"portCallServiceTypeCode\": null,\r\n  \"portCallPhaseTypeCode\": \"INBD\",\r\n  \"eventDateTime\": \"2019-11-12T07:41:00+08:30\",\r\n  \"carrierVoyageNumber\": \"2103S\",\r\n  \"carrierImportVoyageNumber\": \"2103S\",\r\n  \"carrierExportVoyageNumber\": \"2103S\",\r\n  \"carrierServiceCode\": \"FE1\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/timestamps",
+									"host": [
+										"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+									],
+									"path": [
+										"timestamps"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"event": [
