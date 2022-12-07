@@ -16,6 +16,7 @@ import org.dcsa.skernel.domain.persistence.entity.Carrier;
 import org.dcsa.skernel.domain.persistence.entity.Facility;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 import org.dcsa.skernel.domain.persistence.repository.AddressRepository;
+import org.dcsa.skernel.domain.persistence.repository.CarrierRepository;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.dcsa.skernel.infrastructure.services.LocationService;
 import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
