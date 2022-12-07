@@ -1,15 +1,13 @@
 package org.dcsa.jit.service;
 
-import org.dcsa.jit.persistence.entity.OperationsEvent;
-import org.dcsa.jit.persistence.entity.TimestampInfo;
+import org.dcsa.jit.mapping.EnumMappers;
 import org.dcsa.jit.persistence.repository.TimestampDefinitionRepository;
-import org.dcsa.jit.persistence.repository.TimestampInfoRepository;
 import org.dcsa.jit.service.datafactories.TimestampDefinitionDataFactory;
+import org.dcsa.jit.transferobjects.TimestampTO;
 import org.dcsa.skernel.errors.exceptions.ConcreteRequestErrorMessageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,12 +17,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TimestampDefinitionServiceTest {
+
+  @Mock EnumMappers enumMappers;
   @Mock TimestampDefinitionRepository timestampDefinitionRepository;
-  @Mock TimestampInfoRepository timestampInfoRepository;
   @InjectMocks TimestampDefinitionService timestampDefinitionService;
 
   @Test
@@ -35,16 +34,13 @@ class TimestampDefinitionServiceTest {
                 any(), any(), any(), any(), any()))
         .thenReturn(List.of(TimestampDefinitionDataFactory.timestampDefinition()));
 
-    ArgumentCaptor<TimestampInfo> argumentCaptorTimestampDefinition =
-        ArgumentCaptor.forClass(TimestampInfo.class);
-    assertDoesNotThrow(
-        () -> timestampDefinitionService.linkOperationsEventToTimestamp(new OperationsEvent(), null));
-
-    verify(timestampInfoRepository, times(1)).save(argumentCaptorTimestampDefinition.capture());
+    var timestamp = TimestampTO.builder().build();
+    var tsDef = assertDoesNotThrow(
+        () -> timestampDefinitionService.findTimestampDefinition(timestamp));
 
     assertEquals(
         TimestampDefinitionDataFactory.timestampDefinition().getId(),
-        argumentCaptorTimestampDefinition.getValue().getTimestampDefinition().getId());
+        tsDef.getId());
   }
 
   @Test
@@ -54,11 +50,12 @@ class TimestampDefinitionServiceTest {
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
                 any(), any(), any(), any(), any()))
         .thenReturn(Collections.emptyList());
+    var timestamp = TimestampTO.builder().build();
 
     Throwable exception =
         assertThrows(
             ConcreteRequestErrorMessageException.class,
-            () -> timestampDefinitionService.linkOperationsEventToTimestamp(new OperationsEvent(), null));
+            () -> timestampDefinitionService.findTimestampDefinition(timestamp));
     assertTrue(
         exception
             .getMessage()
@@ -73,11 +70,11 @@ class TimestampDefinitionServiceTest {
             .findByEventClassifierCodeAndOperationsEventTypeCodeAndPortCallPhaseTypeCodeAndPortCallServiceTypeCodeAndFacilityTypeCode(
                 any(), any(), any(), any(), any()))
         .thenReturn(List.of(TimestampDefinitionDataFactory.timestampDefinition(), TimestampDefinitionDataFactory.timestampDefinition()));
-
+    var timestamp = TimestampTO.builder().build();
     Throwable exception =
         assertThrows(
             ConcreteRequestErrorMessageException.class,
-            () -> timestampDefinitionService.linkOperationsEventToTimestamp(new OperationsEvent(), null));
+            () -> timestampDefinitionService.findTimestampDefinition(timestamp));
     assertTrue(
         exception
             .getMessage()
