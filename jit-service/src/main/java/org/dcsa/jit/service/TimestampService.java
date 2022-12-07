@@ -244,7 +244,7 @@ public class TimestampService {
             .newRecord(true)
             .build();
 
-    return create(operationsEvent);
+    return create(operationsEvent, timestamp);
   }
 
   private void enqueueEmailNotificationForEvent(OperationsEvent operationsEvent) {
@@ -280,10 +280,13 @@ public class TimestampService {
     return null;
   }
 
-  public OperationsEvent create(OperationsEvent operationsEvent) {
+  public OperationsEvent create(OperationsEvent operationsEvent, TimestampTO timestampTO) {
 
     operationsEvent = operationsEventRepository.save(operationsEvent);
-    TimestampDefinition timestampDefinition = timestampDefinitionService.markOperationsEventAsTimestamp(operationsEvent);
+    TimestampDefinition timestampDefinition = timestampDefinitionService.linkOperationsEventToTimestamp(
+      operationsEvent,
+      timestampTO.replyToTimestampID()
+    );
 
     validateTimestamp(operationsEvent, timestampDefinition);
 

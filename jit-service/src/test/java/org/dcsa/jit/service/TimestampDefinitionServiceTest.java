@@ -38,7 +38,7 @@ class TimestampDefinitionServiceTest {
     ArgumentCaptor<TimestampInfo> argumentCaptorTimestampDefinition =
         ArgumentCaptor.forClass(TimestampInfo.class);
     assertDoesNotThrow(
-        () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
+        () -> timestampDefinitionService.linkOperationsEventToTimestamp(new OperationsEvent(), null));
 
     verify(timestampInfoRepository, times(1)).save(argumentCaptorTimestampDefinition.capture());
 
@@ -58,7 +58,7 @@ class TimestampDefinitionServiceTest {
     Throwable exception =
         assertThrows(
             ConcreteRequestErrorMessageException.class,
-            () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
+            () -> timestampDefinitionService.linkOperationsEventToTimestamp(new OperationsEvent(), null));
     assertTrue(
         exception
             .getMessage()
@@ -77,7 +77,7 @@ class TimestampDefinitionServiceTest {
     Throwable exception =
         assertThrows(
             ConcreteRequestErrorMessageException.class,
-            () -> timestampDefinitionService.markOperationsEventAsTimestamp(new OperationsEvent()));
+            () -> timestampDefinitionService.linkOperationsEventToTimestamp(new OperationsEvent(), null));
     assertTrue(
         exception
             .getMessage()

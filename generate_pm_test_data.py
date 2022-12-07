@@ -160,7 +160,7 @@ def mark_all_as_positive_test(table):
 
 
 def build_data_sets(jit_root_dir, jit_test_data_path):
-    data_dir = os.path.join(jit_root_dir, 'DCSA-Information-Model', 'datamodel', 'samples.d')
+    data_dir = os.path.join(jit_root_dir, 'DCSA-Information-Model', 'datamodel', 'implementation-detail-data.d')
     if not os.path.isdir(data_dir):
         print(f"Missing {data_dir}: Ensure the DCSA-Information-Model git submodule has been setup correctly")
         sys.exit(1)

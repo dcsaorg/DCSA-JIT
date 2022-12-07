@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public record TimestampTO(
   UUID timestampID,
+  UUID replyToTimestampID,
   @Valid @NotNull PartyTO publisher,
   @NotNull PublisherRole publisherRole,
   @Deprecated @ValidVesselIMONumber String vesselIMONumber, // Deprecated in JIT 1.2
