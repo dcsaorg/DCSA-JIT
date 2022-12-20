@@ -210,9 +210,9 @@ public class TimestampService {
     }
 
     if (locationTO != null) {
-      String locationUNLocation = getUNLocationCode(locationTO);
-      String locationFacilityCode = getFacilityCode(locationTO);
-      FacilityCodeListProvider locationFacilityCodeListProvider = getFacilityCodeListProvider(locationTO);
+      String locationUNLocation = locationTO.UNLocationCode();
+      String locationFacilityCode = locationTO.facilityCode();
+      FacilityCodeListProvider locationFacilityCodeListProvider = locationTO.facilityCodeListProvider();
       if (locationUNLocation != null
           && !locationUNLocation.equals(timestamp.UNLocationCode())) {
         throw ConcreteRequestErrorMessageException.invalidInput(
@@ -244,8 +244,8 @@ public class TimestampService {
     }
     if (facilitySMDGCode != null) {
       String locationName = locationTO != null ? locationTO.locationName() : null;
-      String locationFacilityCode = getFacilityCode(locationTO);
-      FacilityCodeListProvider locationFacilityCodeListProvider = getFacilityCodeListProvider(locationTO);
+      String locationFacilityCode = locationTO != null ? locationTO.facilityCode() : null;
+      FacilityCodeListProvider locationFacilityCodeListProvider = locationTO != null ?  locationTO.facilityCodeListProvider() : null;
       if (locationFacilityCodeListProvider != null
           && locationFacilityCodeListProvider != FacilityCodeListProvider.SMDG) {
         throw ConcreteRequestErrorMessageException.invalidInput(
@@ -258,20 +258,20 @@ public class TimestampService {
         throw ConcreteRequestErrorMessageException.invalidInput(
             "Conflicting facilityCode definition (got a facilitySMDGCode but location had a facility code with a different value provider)");
       }
-      locationTO = new LocationTO.FacilityLocationTO(
-        locationName,
+      locationTO = LocationTO.builder()
+        .locationName(locationName)
         // We need the UNLocationCode to resolve the facility.
-        timestamp.UNLocationCode(),
-        Objects.requireNonNullElse(timestamp.facilitySMDGCode(), locationFacilityCode),
-        FacilityCodeListProvider.SMDG
-      );
+        .UNLocationCode(timestamp.UNLocationCode())
+        .facilityCode(Objects.requireNonNullElse(timestamp.facilitySMDGCode(), locationFacilityCode))
+        .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
+        .build();
     } else if (locationTO == null) {
       // Implementation detail: We *always* ensure that the TC has a location (so we can always rely on the
       // location.UNLocationCode)
-      locationTO = new LocationTO.UNLocationLocationTO(
-        null,
-        timestamp.UNLocationCode()
-      );
+      locationTO = LocationTO.builder()
+        .locationName(null)
+        .UNLocationCode(timestamp.UNLocationCode())
+        .build();
     }
     if (timestamp.vessel() != null && timestamp.vessel().vesselIMONumber() != null
       && !timestamp.vesselIMONumber().equals(timestamp.vessel().vesselIMONumber())) {
@@ -320,7 +320,9 @@ public class TimestampService {
   }
 
   private void validateTimestampFacility(TimestampTO timestampTO, TimestampDefinition timestampDefinition) {
-    if (timestampDefinition.getIsTerminalNeeded() ^ timestampTO.eventLocation() instanceof LocationTO.FacilityLocationTO) {
+    if (timestampDefinition.getIsTerminalNeeded()
+        ^ (timestampTO.facilitySMDGCode() != null
+            | timestampTO.eventLocation().facilityCode() != null)) {
       if (timestampDefinition.getIsTerminalNeeded()) {
         throw ConcreteRequestErrorMessageException.invalidInput("Input classified as "
           + timestampDefinition.getTimestampTypeName()
@@ -384,30 +386,4 @@ public class TimestampService {
       throw exceptionFunction.apply(key);
     }
   }
-
-  private String getUNLocationCode(LocationTO locationTO) {
-    if (locationTO instanceof LocationTO.UNLocationLocationTO unLoc) {
-      return unLoc.UNLocationCode();
-    }
-    if (locationTO instanceof LocationTO.FacilityLocationTO facLoc) {
-      return facLoc.UNLocationCode();
-    }
-    return null;
-  }
-
-  private String getFacilityCode(LocationTO locationTO) {
-    if (locationTO instanceof LocationTO.FacilityLocationTO facLoc) {
-      return facLoc.facilityCode();
-    }
-    return null;
-  }
-
-
-  private FacilityCodeListProvider getFacilityCodeListProvider(LocationTO locationTO) {
-    if (locationTO instanceof LocationTO.FacilityLocationTO facLoc) {
-      return facLoc.facilityCodeListProvider();
-    }
-    return null;
-  }
-
 }

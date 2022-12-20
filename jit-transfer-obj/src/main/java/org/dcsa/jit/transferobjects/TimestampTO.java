@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Builder;
 import org.dcsa.jit.transferobjects.enums.*;
 import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
+import org.dcsa.skernel.infrastructure.validation.RestrictLocationTO;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 
 import javax.validation.Valid;
@@ -25,7 +26,9 @@ public record TimestampTO(
   @NotNull EventClassifierCode eventClassifierCode,
   @NotNull OperationsEventTypeCode operationsEventTypeCode,
   @Valid LocationTO eventLocation,
-  @Valid LocationTO.GeoLocationTO vesselPosition,
+
+  @RestrictLocationTO({LocationTO.LocationType.GEO})
+  @Valid LocationTO vesselPosition,
   @Deprecated ModeOfTransport modeOfTransport, // Deprecated in JIT 1.2
   PortCallServiceTypeCode portCallServiceTypeCode,
   PortCallPhaseTypeCode portCallPhaseTypeCode,
