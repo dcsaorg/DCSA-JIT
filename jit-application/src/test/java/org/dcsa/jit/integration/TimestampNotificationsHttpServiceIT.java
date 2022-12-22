@@ -139,14 +139,14 @@ class TimestampNotificationsHttpServiceIT {
             .eventClassifierCode(EventClassifierCode.EST)
             .operationsEventTypeCode(OperationsEventTypeCode.ARRI)
             .eventLocation(
-                LocationTO.FacilityLocationTO.builder()
+                LocationTO.builder()
                     .locationName("Singapore")
                     .UNLocationCode("SGSIN")
                     .facilityCode("PSABT")
                     .facilityCodeListProvider(FacilityCodeListProvider.SMDG)
                     .build())
             .vesselPosition(
-                LocationTO.GeoLocationTO.builder().latitude("48.8585500").longitude("2.294492036").build())
+                LocationTO.builder().latitude("48.8585500").longitude("2.294492036").build())
             .portCallPhaseTypeCode(null)
             .portCallPhaseTypeCode(PortCallPhaseTypeCode.INBD)
             .eventDateTime(OffsetDateTime.now())
