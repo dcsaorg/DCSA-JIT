@@ -29,7 +29,7 @@
 		<shared-kernel.version>${dcsa.shared-kernel.version}${dcsa.shared-kernel.tag}${dcsa.shared-kernel.artifacttype}</shared-kernel.version>
 		<!-- End: Define Shared kernel version -->
 
-		<hibernate-types.version>2.18.0</hibernate-types.version>
+		<hibernate-types.version>2.21.1</hibernate-types.version>
 		<camel.version>3.18.1</camel.version>
 		<testcontainers.version>1.17.3</testcontainers.version>
 		<greenmail.version>1.6.10</greenmail.version>
@@ -56,7 +56,7 @@
 		<dependencies>
 			<dependency><!-- TODO: Move this to super-pom -->
 				<groupId>com.vladmihalcea</groupId><!-- Support for json and jsonb data types in hibernate/JPA -->
-				<artifactId>hibernate-types-55</artifactId>
+				<artifactId>hibernate-types-60</artifactId>
 				<version>${hibernate-types.version}</version>
 			</dependency>
 			<dependency><!-- TODO: Move this to super-pom -->
@@ -65,11 +65,6 @@
 				<version>${camel.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.vladmihalcea</groupId>
-				<artifactId>hibernate-types-60</artifactId>
-				<version>2.21.1</version>
 			</dependency>
 			<dependency><!-- Convergence error between spring-boot-start-data-jpa and hibernate-types-60 -->
 				<groupId>org.hibernate.common</groupId>
