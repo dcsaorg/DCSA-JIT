@@ -3,7 +3,7 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.DeliveryStatus;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Data

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.dcsa.jit.persistence.repository.ServiceRepository;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 @Service

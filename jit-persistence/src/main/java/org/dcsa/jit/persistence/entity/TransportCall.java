@@ -5,7 +5,7 @@ import org.dcsa.jit.persistence.entity.enums.FacilityTypeCodeTRN;
 import org.dcsa.jit.persistence.entity.enums.PortCallStatusCode;
 import org.dcsa.skernel.domain.persistence.entity.Location;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Data

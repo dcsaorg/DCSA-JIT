@@ -7,9 +7,9 @@ import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
 import org.dcsa.skernel.infrastructure.validation.RestrictLocationTO;
 import org.dcsa.skernel.infrastructure.validation.ValidVesselIMONumber;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.beans.Transient;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -26,7 +26,6 @@ public record TimestampTO(
   @NotNull EventClassifierCode eventClassifierCode,
   @NotNull OperationsEventTypeCode operationsEventTypeCode,
   @Valid LocationTO eventLocation,
-
   @RestrictLocationTO({LocationTO.LocationType.GEO})
   @Valid LocationTO vesselPosition,
   @Deprecated ModeOfTransport modeOfTransport, // Deprecated in JIT 1.2

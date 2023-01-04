@@ -6,8 +6,8 @@ import org.dcsa.jit.transferobjects.enums.ModeOfTransport;
 import org.dcsa.skernel.infrastructure.transferobject.LocationTO;
 import org.dcsa.skernel.infrastructure.transferobject.enums.FacilityCodeListProvider;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record TransportCallTO(
   @NotNull @Size(max = 100) String transportCallReference,

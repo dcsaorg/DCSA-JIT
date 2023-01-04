@@ -3,7 +3,7 @@ package org.dcsa.jit.persistence.entity;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

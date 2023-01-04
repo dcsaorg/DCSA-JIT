@@ -1,10 +1,11 @@
 package org.dcsa.jit.persistence.entity;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.dcsa.jit.persistence.entity.enums.PublisherRole;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Data
@@ -40,7 +41,7 @@ public class MessageRoutingRule {
   @Column(name = "login_type", length = 8, nullable = false)
   private LoginType loginType;
 
-  @Type(type = "com.vladmihalcea.hibernate.type.json.JsonStringType")
+  @Type(JsonBinaryType.class)
   @Column(name = "login_information", nullable = false, columnDefinition = "TEXT")
   private LoginInformation loginInformation;
 

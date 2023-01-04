@@ -5,7 +5,7 @@ import org.dcsa.jit.persistence.entity.Vessel;
 import org.dcsa.jit.persistence.repository.VesselRepository;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

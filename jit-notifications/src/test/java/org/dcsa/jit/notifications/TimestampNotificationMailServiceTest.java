@@ -1,6 +1,5 @@
 package org.dcsa.jit.notifications;
 
-import org.dcsa.jit.persistence.entity.OperationsEvent;
 import org.dcsa.jit.persistence.entity.OpsEventTimestampDefinition;
 import org.dcsa.jit.persistence.entity.PendingEmailNotification;
 import org.dcsa.jit.persistence.entity.enums.EventClassifierCode;
@@ -15,13 +14,12 @@ import org.dcsa.jit.notifications.model.exceptions.EntityNotFoundMailNotificatio
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;

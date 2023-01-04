@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.dcsa.jit.persistence.entity.enums.LocationRequirement.EXCLUDED;
@@ -41,6 +42,10 @@ import static org.dcsa.jit.persistence.entity.enums.LocationRequirement.REQUIRED
 @RequiredArgsConstructor
 @Service
 public class TimestampService {
+
+
+  private static final Predicate<LocationTO> IS_FACILITY_LOCATION = LocationTO.LocationType.FACILITY.getIsType();
+
 
   private final EnumMappers enumMappers;
   private final PartyMapper partyMapper;
@@ -296,7 +301,7 @@ public class TimestampService {
               .longitude(locationTOLongitude)
               .build();
     }
-    
+
     timestampTOBuilder.eventLocation(locationTO);
 
     OffsetDateTime eventCreatedDateTime = timestamp.eventCreatedDateTime() != null

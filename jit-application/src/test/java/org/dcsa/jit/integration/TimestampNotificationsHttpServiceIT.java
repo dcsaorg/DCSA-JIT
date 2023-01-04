@@ -92,7 +92,7 @@ class TimestampNotificationsHttpServiceIT {
               "spring.datasource.password=9c072fe8-c59c-11ea-b8d1-7b6577e9f3f5",
               "spring.datasource.driver-class-name=org.postgresql.Driver",
               "spring.jpa.hibernate.ddl-auto=none",
-              "spring.jpa.database-platform: org.hibernate.dialect.PostgreSQL10Dialect",
+              "spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect",
               "camel.redelivery-delay=1000") // lower retry delay so the tests run quicker
           .applyTo(configurableApplicationContext.getEnvironment());
     }
