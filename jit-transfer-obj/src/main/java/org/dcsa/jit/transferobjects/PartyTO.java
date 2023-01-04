@@ -5,8 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.dcsa.jit.transferobjects.enums.DCSAResponsibleAgencyCode;
 import org.dcsa.skernel.infrastructure.transferobject.AddressTO;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import java.util.Collections;
 import java.util.List;
 

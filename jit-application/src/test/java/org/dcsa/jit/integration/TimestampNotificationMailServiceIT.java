@@ -24,12 +24,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.awaitility.Awaitility;
 import org.testcontainers.utility.MountableFile;
 
-import javax.mail.internet.MimeMessage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
@@ -75,7 +70,7 @@ public class TimestampNotificationMailServiceIT {
           "spring.datasource.password=9c072fe8-c59c-11ea-b8d1-7b6577e9f3f5",
           "spring.datasource.driver-class-name=org.postgresql.Driver",
           "spring.jpa.hibernate.ddl-auto=none",
-          "spring.jpa.database-platform: org.hibernate.dialect.PostgreSQL10Dialect",
+          "spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect",
           "spring.mail.host=127.0.0.1",
           "spring.mail.port=3025",
           "spring.mail.username=dcsa",
@@ -110,10 +105,10 @@ public class TimestampNotificationMailServiceIT {
       .statusCode(204);
 
     Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
-      MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+      var receivedMessages = greenMail.getReceivedMessages();
       assertEquals(1, receivedMessages.length);
 
-      MimeMessage receivedMessage = receivedMessages[0];
+      var receivedMessage = receivedMessages[0];
       assertEquals("Subject line", receivedMessage.getSubject());
       assertEquals("Body content", GreenMailUtil.getBody(receivedMessage));
       assertEquals(1, receivedMessage.getAllRecipients().length);

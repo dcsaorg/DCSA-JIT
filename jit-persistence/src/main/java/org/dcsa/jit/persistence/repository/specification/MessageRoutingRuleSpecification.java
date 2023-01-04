@@ -8,7 +8,7 @@ import org.dcsa.jit.persistence.entity.MessageRoutingRule;
 import org.dcsa.jit.persistence.entity.MessageRoutingRule_;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
