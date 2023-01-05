@@ -288,17 +288,12 @@ public class TimestampService {
     Objects.requireNonNull(locationTO, "Internal Error: Later code assumes locationTO is always not null, but it was null");
 
     if (timestamp.eventLocation() != null) {
-      // temp implementation (AnyOfLocation): We keep all fields/Location-types on the eventLocation with no side effects.
-      // TODO: Does GeoLocation eventLocation overwrite vesselPosition on a 1.2 Timestamp?
-      //  If so then check for equality to vesselPosition.
-      String locationTOLatitude = timestamp.eventLocation().latitude();
-      String locationTOLongitude = timestamp.eventLocation().longitude();
-      AddressTO locationTOAddress = timestamp.eventLocation().address();
+      // Include Geo & Address locations found on timestamp
       locationTO =
           locationTO.toBuilder()
-              .address(locationTOAddress)
-              .latitude(locationTOLatitude)
-              .longitude(locationTOLongitude)
+              .address(timestamp.eventLocation().address())
+              .latitude(timestamp.eventLocation().latitude())
+              .longitude(timestamp.eventLocation().longitude())
               .build();
     }
 
