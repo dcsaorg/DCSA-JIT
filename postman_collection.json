@@ -3353,7 +3353,7 @@
 		},
 		{
 			"key": "JIT_SPEC_VERSION",
-			"value": "1.2",
+			"value": "1.2.0",
 			"type": "default"
 		},
 		{
