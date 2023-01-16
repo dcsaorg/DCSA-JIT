@@ -1,7 +1,7 @@
 
 dcsa:
   specification:
-    version: 1.2
+    version: 1.2.0
   webui:
     baseUrl: "NOT_SPECIFIED"
   sync:
