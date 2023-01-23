@@ -82,7 +82,7 @@ public class TransportCallService {
   private Optional<TransportCall> findTransportCall(TimestampTO timestampTO) {
     List<TransportCall> transportCalls = transportCallRepository.findAllTransportCall(
       timestampTO.UNLocationCode(),
-      timestampTO.facilitySMDGCode(),  // TODO: SHOULD ALSO BE ABLE TO FIND USING BIC CODES
+      timestampTO.facilitySMDGCode(),
       timestampTO.modeOfTransport().name(),
       timestampTO.vesselIMONumber(),
       timestampTO.carrierServiceCode(),

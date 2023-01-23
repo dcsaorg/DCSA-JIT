@@ -52,7 +52,7 @@ public class EventController {
       @Deprecated @Size(max = 50) @RequestParam(required = false) String carrierVoyageNumber,
       @Size(max = 50) @RequestParam(required = false) String carrierExportVoyageNumber,
       @Size(max = 50) @RequestParam(required = false) String exportVoyageNumber,
-      @Size(max = 5) @RequestParam(required = false) String carrierServiceCode,
+      @Size(max = 11) @RequestParam(required = false) String carrierServiceCode,
       @Size(max = 5) @RequestParam(value = "UNLocationCode", required = false)
           String unLocationCode,
       @Size(max = 6) @RequestParam(required = false) String facilitySMDGCode,

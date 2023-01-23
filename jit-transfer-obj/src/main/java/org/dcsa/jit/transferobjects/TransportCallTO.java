@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 
 public record TransportCallTO(
   @NotNull @Size(max = 100) String transportCallReference,
-  @Size(max = 5) String carrierServiceCode,
+  @Size(max = 11) String carrierServiceCode,
   @Deprecated @Size(max = 50) String exportVoyageNumber, // Deprecated in JIT 1.2
   @Deprecated @Size(max = 50) String importVoyageNumber, // Deprecated in JIT 1.2
   @Size(max = 50) String carrierExportVoyageNumber,
