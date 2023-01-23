@@ -39,7 +39,7 @@ public record TimestampTO(
   @Deprecated @NotNull @Size(max = 50) String carrierVoyageNumber, // Deprecated in JIT 1.2
   @Size(max = 50) String carrierExportVoyageNumber,
   @Size(max = 50) String carrierImportVoyageNumber,
-  @NotNull @Size(max = 5) String carrierServiceCode,
+  @NotNull @Size(max = 11) String carrierServiceCode,
   Integer transportCallSequenceNumber,
   String remark,
   @Size(max = 3) String delayReasonCode,
