@@ -58,6 +58,10 @@
 			<artifactId>dcsa-shared-kernel-all</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.dcsa.shared-kernel</groupId>
+			<artifactId>dcsa-shared-kernel-dataloader</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>

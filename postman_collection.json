@@ -1,10 +1,35 @@
 {
 	"info": {
-		"_postman_id": "190fb2aa-fb94-45a2-98f7-f66e36f9261d",
+		"_postman_id": "ba98cc09-806b-4168-b71e-3918c5bad48c",
 		"name": "DCSA-JIT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Load Test Data",
+			"item": [
+				{
+					"name": "Load Test Data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}{{JIT_CONTEXT_PATH}}/unofficial/dataloader/load/test",
+							"host": [
+								"{{BASE_URL}}{{JIT_CONTEXT_PATH}}"
+							],
+							"path": [
+								"unofficial",
+								"dataloader",
+								"load",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "POST Timestamps",
 			"item": [
@@ -2010,6 +2035,28 @@
 						}
 					]
 				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"API-Version header is set correctly\", () => {",
+							"    pm.expect(pm.response.headers.get(\"API-Version\")).to.eql(pm.collectionVariables.get(\"JIT_SPEC_VERSION\"));",
+							"});"
+						]
+					}
+				}
 			]
 		},
 		{
@@ -3307,6 +3354,28 @@
 						}
 					]
 				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"API-Version header is set correctly\", () => {",
+							"    pm.expect(pm.response.headers.get(\"API-Version\")).to.eql(pm.collectionVariables.get(\"JIT_SPEC_VERSION\"));",
+							"});"
+						]
+					}
+				}
 			]
 		}
 	],
@@ -3328,10 +3397,7 @@
 					"pm.test(\"API-Version is present\", () => {",
 					"    pm.response.to.have.header(\"API-Version\");",
 					"});",
-					"",
-					"pm.test(\"API-Version header is set correctly\", () => {",
-					"    pm.expect(pm.response.headers.get(\"API-Version\")).to.eql(pm.collectionVariables.get(\"JIT_SPEC_VERSION\"));",
-					"});"
+					""
 				]
 			}
 		}
