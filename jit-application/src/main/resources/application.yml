@@ -20,6 +20,10 @@ dcsa:
         body: |
           <p>Vessel {{VESSEL_NAME}} // IMO{{VESSEL_IMO_NUMBER}} registered a new {{TIMESTAMP_TYPE}}. Your response is required.</p>
           <p>Please go to <a href="{{WEB_UI_BASE_URI}}/transportcall/{{PORT_VISIT_ID}}">{{WEB_UI_BASE_URI}}/transportcall/{{PORT_VISIT_ID}}</a> and respond to the timestamp.</p>
+  dataloader:
+    autoload: [reference]
+    sources: classpath:db/dataloader-sources.yml
+    endpoint: /unofficial/dataloader/load
 
 camel:
   max-redeliveries: 3
@@ -36,10 +40,8 @@ spring:
     name: DCSA-JIT
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${db_hostname}/dcsa_openapi
+    url: jdbc:postgresql://${db_hostname}/dcsa_jit
     username: dcsa_db_owner
-    hikari:
-      schema: dcsa_im_v3_0
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate.ddl-auto: validate
@@ -118,7 +120,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${db_hostname:localhost}/dcsa_openapi
+    url: jdbc:postgresql://${db_hostname:localhost}/dcsa_jit
     username: dcsa_db_owner
     password: 9c072fe8-c59c-11ea-b8d1-7b6577e9f3f5
 

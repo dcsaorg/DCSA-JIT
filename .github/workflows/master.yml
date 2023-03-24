@@ -54,7 +54,7 @@ jobs:
           if [[ "$status" != "UP" ]]; then
             curl -v "${url}" || :
             docker ps || :
-            docker logs dcsa-jit_dcsa-jit_1 || :
+            docker logs dcsa_jit || :
             exit 1
           fi
 
